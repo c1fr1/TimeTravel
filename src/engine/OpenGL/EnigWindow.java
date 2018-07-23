@@ -252,7 +252,7 @@ public class EnigWindow {
 		
 		mainWindow = this;
 		
-		runOpeningSequence();
+		//runOpeningSequence();
 	}
 	
 	/**
