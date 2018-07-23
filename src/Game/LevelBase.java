@@ -6,6 +6,7 @@ import engine.OpenGL.VAO;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class LevelBase
@@ -27,6 +28,7 @@ public class LevelBase
     		wallTexture = new Texture("present-wall.png");
     		levelProgram = new ShaderProgram("levelShader");
 		}
+		//creates a room from a string
 		layout = new char[width][height];
         for (int i = 0; i < width; i++)
         {
@@ -36,16 +38,29 @@ public class LevelBase
             }
         }
     }
-
-	public void getMap(String filename)
+    //gets the map
+	public LevelBase(String filename)
 	{
+        if (tileObj == null) {
+            tileObj = new VAO(-0.2f, -0.2f, 0.4f, 0.4f);
+            floorTexture = new Texture("present-floor.png");
+            wallTexture = new Texture("present-wall.png");
+            levelProgram = new ShaderProgram("levelShader");
+        }
 		Scanner fileInput;
+        ArrayList<Character[]> room = new ArrayList<Character[]>();
 		try
 		{
 			fileInput = new Scanner(new File(filename));
 			while (fileInput.hasNextLine())
 			{
-				String nextline = fileInput.nextLine();
+                String nextline = fileInput.nextLine();
+                Character[] row = new Character[nextline.length()];
+                for (int i = 0; i < nextline.length(); i++)
+                {
+                    row[i] = nextline.charAt(i);
+                }
+                room.add(row);
 			}
 		}
 		catch (FileNotFoundException ex)
