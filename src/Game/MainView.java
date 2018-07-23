@@ -24,7 +24,6 @@ public class MainView extends EnigView {
 	@Override
 	public void setup() {
 		//set variables here
-		EnigWindow.mainWindow.toggleCursorInput();
 		level1 = new LevelBase("####" +
 				"#  #" +
 				"#  #" +

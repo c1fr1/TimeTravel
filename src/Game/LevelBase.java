@@ -87,14 +87,11 @@ public class LevelBase
     	levelProgram.enable();
     	tileObj.prepareRender();
     	for (int row = 0; row < layout.length;++row) {
-    		for (int chr = 0; chr < layout[row].length; ++row) {
-    			switch (layout[row][chr]) {
-					case ' ' :
-						floorTexture.bind();
-					case '#' :
-						floorTexture.bind();
-					default:
-						System.out.println("missing tile texture");
+    		for (int chr = 0; chr < layout[row].length; ++chr) {
+				if (layout[row][chr] == ' ') {
+    				floorTexture.bind();
+				}else if (layout[row][chr] == '#') {
+    				wallTexture.bind();
 				}
 				float x = ((float) row) * 0.4f;
 				float y = ((float) chr) * 0.4f;
