@@ -4,6 +4,10 @@ import engine.OpenGL.ShaderProgram;
 import engine.OpenGL.Texture;
 import engine.OpenGL.VAO;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class LevelBase
 {
     int width;
@@ -32,7 +36,26 @@ public class LevelBase
             }
         }
     }
-	
+
+	public void getMap(String filename)
+	{
+		Scanner fileInput;
+		try
+		{
+			fileInput = new Scanner(new File(filename));
+			while (fileInput.hasNextLine())
+			{
+				String nextline = fileInput.nextLine();
+			}
+		}
+		catch (FileNotFoundException ex)
+		{
+			ex.printStackTrace();
+			System.exit(0);
+		}
+
+	}
+
     public void render() {
     	tileObj.prepareRender();
     	for (int row = 0; row < layout.length;++row) {
