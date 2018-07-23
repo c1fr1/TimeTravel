@@ -1,0 +1,13 @@
+#version 400 core
+
+layout (location = 0) in vec3 vertices;
+layout (location = 1) in vec2 txtPos;
+
+out vec2 texCoords;
+
+uniform vec2 playerPos;
+
+void main() {
+	gl_Position = vec4(vertices.x - playerPos.x, vertices.y - playerPos.y, vertices.z, 1);
+	texCoords = txtPos;
+}
