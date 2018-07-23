@@ -19,7 +19,7 @@ public class LevelBase
     public static Texture floorTexture;
     public static Texture wallTexture;
     public static ShaderProgram levelProgram;
-
+//Render Crap
     public LevelBase(String level, int width, int height)
     {
     	if (tileObj == null) {
@@ -47,8 +47,10 @@ public class LevelBase
             wallTexture = new Texture("present-wall.png");
             levelProgram = new ShaderProgram("levelShader");
         }
+
 		Scanner fileInput;
         ArrayList<Character[]> room = new ArrayList<Character[]>();
+
 		try
 		{
 			fileInput = new Scanner(new File(filename));
@@ -69,6 +71,16 @@ public class LevelBase
 			System.exit(0);
 		}
 
+		layout = new char[room.size()][0];
+		for (int i = 0; i < room.size(); i++)
+		{
+			Character[] lane = room.get(i);
+			layout[i] = new char[lane.length];
+			for (int j = 0; j < lane.length; j++)
+			{
+				layout[i][j] = lane[j];
+			}
+		}
 	}
 
     public void render() {
