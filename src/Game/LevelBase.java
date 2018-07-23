@@ -24,8 +24,8 @@ public class LevelBase
     {
     	if (tileObj == null) {
     		tileObj = new VAO(-0.2f, -0.2f, 0.4f, 0.4f);
-    		floorTexture = new Texture("present-floor.png");
-    		wallTexture = new Texture("present-wall.png");
+    		floorTexture = new Texture("res/present-floor.png");
+    		wallTexture = new Texture("res/present-wall.png");
     		levelProgram = new ShaderProgram("levelShader");
 		}
 		//creates a room from a string
@@ -84,6 +84,7 @@ public class LevelBase
 	}
 
     public void render() {
+    	levelProgram.enable();
     	tileObj.prepareRender();
     	for (int row = 0; row < layout.length;++row) {
     		for (int chr = 0; chr < layout[row].length; ++row) {
@@ -95,7 +96,9 @@ public class LevelBase
 					default:
 						System.out.println("missing tile texture");
 				}
-				
+				float x = ((float) row) * 0.4f;
+				float y = ((float) chr) * 0.4f;
+				levelProgram.shaders[0].uniforms[0].set(new float[]{x, y});
     			tileObj.drawTriangles();
 			}
 		}

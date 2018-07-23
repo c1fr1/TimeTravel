@@ -16,7 +16,7 @@ public abstract class EnigView {
 	 * creates a new main view
 	 */
 	public EnigView() {
-		window = new EnigWindow(getName());
+		window = new EnigWindow(600, 480, getName());
 		setup();
 		while ( !glfwWindowShouldClose(EnigWindow.mainWindow.id) ) {
 			window.update();
