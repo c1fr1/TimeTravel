@@ -19,20 +19,24 @@ public class MainView extends EnigView {
 	
 	//project variables
 	
+	public LevelBase level1;
+	
 	@Override
 	public void setup() {
 		//set variables here
-		EnigWindow.mainWindow.toggleCursorInput();
-		
+		level1 = new LevelBase("####" +
+				"#  #" +
+				"#  #" +
+				"####", 4, 4);
 	}
 	
 	@Override
 	public boolean loop() {
 		//game here
 		glEnable(GL_DEPTH_TEST);
-		
 		FBO.prepareDefaultRender();
 		glDisable(GL_DEPTH_TEST);
+		level1.render();
 		if (UserControls.quit(window)) {
 			return true;
 		}
@@ -41,6 +45,7 @@ public class MainView extends EnigView {
 	
 	public static void main(String[] args) {
 		main = new MainView();
+		
 	}
 	
 	@Override
