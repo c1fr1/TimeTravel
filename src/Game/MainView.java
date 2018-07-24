@@ -38,6 +38,11 @@ public class MainView extends EnigView {
 	
 	@Override
 	public boolean loop() {
+
+		long time = System.nanoTime();
+		int delta_time = (int) ((time - window.lastTime) / 1000000);
+		//window.lastTime = time;
+		
 		//game here
 		glEnable(GL_DEPTH_TEST);
 		FBO.prepareDefaultRender();
