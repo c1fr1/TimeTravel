@@ -127,11 +127,11 @@ public class MainView extends EnigView {
 			}
 			if (vSpeed != 0) {
 				hSpeed *= Math.sqrt(2) / 2;
-			}/*
+			}
 			if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ)) != '#'){
 			    cam.x += CamCollision.getMoveX(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ));
                 cam.y += CamCollision.getMoveY(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ));
-            }*/
+            }
 
 
 			LevelBase.levelProgram.enable();
