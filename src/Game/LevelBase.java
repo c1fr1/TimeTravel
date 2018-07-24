@@ -13,7 +13,6 @@ import java.util.Scanner;
 public class LevelBase
 {
 	ArrayList<ArrayList<Character[]>> levelseries;
-    int currentTZ = 0;
 	float[] xstart;
 	float[] ystart;
     
@@ -126,12 +125,12 @@ public class LevelBase
 		*/
 	}
 
-    public void render(Camera cam) {
+    public void render(Camera cam, int timezone) {
     	levelProgram.enable();
     	tileObj.prepareRender();
-    	for (int row = 0; row < levelseries.get(currentTZ).size();++row) {
-    		for (int chr = 0; chr < levelseries.get(currentTZ).get(row).length; ++chr) {
-    			char currentChar = levelseries.get(currentTZ).get(row)[chr];
+    	for (int row = 0; row < levelseries.get(timezone).size();++row) {
+    		for (int chr = 0; chr < levelseries.get(timezone).get(row).length; ++chr) {
+    			char currentChar = levelseries.get(timezone).get(row)[chr];
 				if (currentChar != ' ') {
 					if (currentChar == '_' || currentChar == 's') {
     					floorTexture.bind();

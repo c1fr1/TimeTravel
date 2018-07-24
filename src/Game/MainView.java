@@ -21,6 +21,7 @@ public class MainView extends EnigView {
 	public Camera cam;
 	
 	//project variables
+	int currentTZ = 0;
 	
 	public LevelBase level1;
 	
@@ -29,8 +30,8 @@ public class MainView extends EnigView {
 		//set variables here
 		level1 = new LevelBase("res/Levels/Level1");
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
-		cam.x = level1.ystart[level1.currentTZ] * 50;
-		cam.y = -level1.xstart[level1.currentTZ] * 50;
+		cam.x = level1.ystart[currentTZ] * 50;
+		cam.y = -level1.xstart[currentTZ] * 50;
 	}
 	
 	@Override
@@ -44,7 +45,7 @@ public class MainView extends EnigView {
 		glEnable(GL_DEPTH_TEST);
 		FBO.prepareDefaultRender();
 		glDisable(GL_DEPTH_TEST);
-		level1.render(cam);
+		level1.render(cam, currentTZ);
 		float vSpeed = 0;
 		float hSpeed = 0;
 
