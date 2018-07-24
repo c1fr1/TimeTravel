@@ -124,15 +124,17 @@ public class LevelBase
     	for (int row = 0; row < levelseries.get(currentTZ).size();++row) {
     		for (int chr = 0; chr < levelseries.get(currentTZ).get(row).length; ++chr) {
     			char currentChar = levelseries.get(currentTZ).get(row)[chr];
-				if (currentChar == '_') {
-    				floorTexture.bind();
-				}else if (currentChar == '#') {
-    				newwallTexture.bind();
+				if (currentChar != ' ') {
+					if (currentChar == '_') {
+    					floorTexture.bind();
+					}else if (currentChar == '#') {
+    					newwallTexture.bind();
+					}
+					float x = ((float) chr) * 50f;
+					float y = ((float) row) * 50f;
+					levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, -y, 0));
+					tileObj.drawTriangles();
 				}
-				float x = ((float) chr) * 50f;
-				float y = ((float) row) * 50f;
-				levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, -y, 0));
-    			tileObj.drawTriangles();
 			}
 		}
 		tileObj.unbind();
