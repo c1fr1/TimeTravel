@@ -46,6 +46,8 @@ public class MainView extends EnigView {
 	public boolean pause = false;
 	public boolean cooldown = false;
 
+	public int animationFrameCounter = 0;
+
 	@Override
 	public void setup() {
 		//set variables here
@@ -86,7 +88,7 @@ public class MainView extends EnigView {
 		} else if(!UserControls.pause(window)){
 			cooldown = false;
 		}
-		
+
 		mainFBO.prepareForTexture();
 		if(pause){
 			guiShader.enable();
@@ -138,6 +140,7 @@ public class MainView extends EnigView {
 			if (CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ)) == 't') {
 				ttoGUI.bind();
 				ttoGUIVAO.fullRender();
+				animationFrameCounter ++;
 			}
 		}
 
