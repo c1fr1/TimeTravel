@@ -146,7 +146,7 @@ public class MainView extends EnigView {
 				ttoGUI.bind();
 				ttoGUIVAO.fullRender();
 				animationFrameCounter ++;
-				 = new Texture("res/present-tto"+animationFrameCounter+".png");
+				 //= new Texture("res/present-tto"+animationFrameCounter+".png");
 			}
 			else {
 				animationFrameCounter --;
