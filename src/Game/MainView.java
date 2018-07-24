@@ -27,12 +27,7 @@ public class MainView extends EnigView {
 	@Override
 	public void setup() {
 		//set variables here
-		level1 = new LevelBase("res/Levels/Level1");/*new LevelBase("#####" +
-				"#   #" +
-				"#   #" +
-				"#   #" +
-				"# # #" +
-				"#####", 5, 6);*/
+		level1 = new LevelBase("res/Levels/Level1");
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
 	}
 	
