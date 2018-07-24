@@ -128,9 +128,9 @@ public class MainView extends EnigView {
 			if (vSpeed != 0) {
 				hSpeed *= Math.sqrt(2) / 2;
 			}
-			if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ)) != '#'){
-			    cam.x += hSpeed;
-			    cam.y += vSpeed;
+			if(CamCollision.checkCollision(cam.x + getSign(hSpeed)*15,cam.y + getSign(vSpeed)*15, hSpeed, vSpeed, level1.levelseries.get(currentTZ)) != '#'){
+			    cam.x += CamCollision.getMoveX(cam.x + getSign(hSpeed)*15,cam.y + getSign(vSpeed)*15, hSpeed, vSpeed, level1.levelseries.get(currentTZ));
+                cam.y += CamCollision.getMoveY(cam.x + getSign(hSpeed)*15,cam.y + getSign(vSpeed)*15, hSpeed, vSpeed, level1.levelseries.get(currentTZ));
             }
 
 
