@@ -34,6 +34,8 @@ public class MainView extends EnigView {
 				"# # #" +
 				"#####", 5, 6);*/
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
+		cam.x = level1.xstart[level1.currentTZ];
+		cam.y = level1.ystart[level1.currentTZ];
 	}
 	
 	@Override

@@ -12,10 +12,10 @@ import java.util.Scanner;
 
 public class LevelBase
 {
-    int width;
-    int height;
 	ArrayList<ArrayList<Character[]>> levelseries;
     int currentTZ = 0;
+	float[] xstart;
+	float[] ystart;
     
     
     public static VAO tileObj;
@@ -57,7 +57,6 @@ public class LevelBase
 		String roomlist = "";
 		//stores level rooms
 		levelseries = new ArrayList<ArrayList<Character[]>>();
-
 		//get the rooms
 		try
 		{
@@ -77,6 +76,10 @@ public class LevelBase
 
 		//splits the main string into level strings
 		String[] rooms = roomlist.split(",");
+		//start position of avatar
+		xstart = new float[rooms.length];
+		ystart = new float[rooms.length];
+
 		//goes through each room
 		for (int i = 0; i < rooms.length; i++)//level depth
 		{
@@ -94,6 +97,11 @@ public class LevelBase
 				{
 					//puts a character into the char array
 					levelrow[k] = lane.charAt(k);
+					if (lane.charAt(k) == 's')
+					{
+						xstart[i] = j;
+						ystart[i] = k;
+					}
 				}
 				//adds the row char array to the level arraylist
 				levelroom.add(levelrow);
