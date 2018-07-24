@@ -10,11 +10,11 @@ public class CamCollision {
      * @param speed Speed of movement
      * @return character at intended move
      */
-    public char collisionH(float x, float y, LevelBase level, float speed){
+    public char collisionH(float x, float y, LevelBase level, float speed, int currentTZ){
         float newX = x;
         float newY = y;
         float yPosition = newY/50f;
-        ArrayList<Character[]> current = level.levelseries.get(level.currentTZ);
+        ArrayList<Character[]> current = level.levelseries.get(currentTZ);
         return (current.get((int)yPosition)[(int)((newX + speed)/50f)]);
 
     }
@@ -25,11 +25,11 @@ public class CamCollision {
      * @param speed Speed of movement
      * @return character at intended move
      */
-    public char collisionV(float x, float y, LevelBase level, float speed){
+    public char collisionV(float x, float y, LevelBase level, float speed, int currentTZ){
         float newX = x;
         float newY = y;
         float xPosition = newX/50f;
-        ArrayList<Character[]> current = level.levelseries.get(level.currentTZ);
+        ArrayList<Character[]> current = level.levelseries.get(currentTZ);
         return (current.get((int)((newY + speed)/50f))[(int)xPosition]);
     }
 }
