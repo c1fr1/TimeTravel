@@ -1,7 +1,7 @@
 package Game;
 
 import engine.Entities.Camera;
-
+import java.util.ArrayList;
 public class CamCollision {
     Camera cam;
     LevelBase level;
@@ -14,7 +14,7 @@ public class CamCollision {
     public boolean collisionNS(int speed){
         float x = cam.x;
         float y = cam.y;
-        level.
+        ArrayList<Character[]> current = level.levelseries.get(level.currentTZ);
 
         return false;
     }

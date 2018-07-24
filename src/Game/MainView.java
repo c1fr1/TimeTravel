@@ -50,7 +50,7 @@ public class MainView extends EnigView {
 		level1.render(cam);
 		float vSpeed = 0;
 		float hSpeed = 0;
-		
+
 		if (UserControls.forward(window)) {
 			vSpeed += delta_time/3;
 		}
