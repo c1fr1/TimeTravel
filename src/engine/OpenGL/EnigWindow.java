@@ -568,7 +568,7 @@ public class EnigWindow {
 		return inputEnabled;
 	}
 	
-	private long variableYieldTime, lastTime;
+	public long variableYieldTime, lastTime;
 	
 	/**
 	 * An accurate sync method that adapts automatically
