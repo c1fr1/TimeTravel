@@ -39,7 +39,7 @@ public class MainView extends EnigView {
 	public Texture pauseGUI;
 	public VAO pauseGUIVAO;
 	
-	public Texture ttoTexture;
+	public Texture[] ttoTexture;
 
 	public VAO screenVAO;
 
@@ -68,7 +68,7 @@ public class MainView extends EnigView {
 		spriteTexture[2] = new Texture("res/sprite-right.png");
 		spriteTexture[3] = new Texture("res/sprite-up.png");
 
-		//ttoTexture = new Texture[9];
+		ttoTexture = new Texture[9];
 
 
 		pauseGUI = new Texture("res/timeTravelGUI.png");
