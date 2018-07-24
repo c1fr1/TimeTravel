@@ -22,6 +22,7 @@ public class LevelBase
     public static Texture wallTexture;
     public static Texture newwallTexture;
     public static Texture ttoTexture;
+    public static Texture controllerTexture;
     public static ShaderProgram levelProgram;
 //Render Crap
     /*public LevelBase(String level, int width, int height)
@@ -52,6 +53,7 @@ public class LevelBase
             newwallTexture = new Texture("res/future-wall.png");
             ttoTexture = new Texture("res/present-tto.png");
             levelProgram = new ShaderProgram("levelShader");
+            controllerTexture = new Texture("res/controller-tto.png");
         }
 
 		Scanner fileInput;
@@ -139,7 +141,7 @@ public class LevelBase
 					}else if (currentChar == '#') {
     					newwallTexture.bind();
 					}else if (currentChar == 't') {
-						ttoTexture.bind();
+						controllerTexture.bind();
 					}
 					float x = ((float) chr) * 50f;
 					float y = -((float) row) * 50f;
