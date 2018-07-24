@@ -21,6 +21,7 @@ public class LevelBase
     public static VAO tileObj;
     public static Texture floorTexture;
     public static Texture wallTexture;
+    public static Texture newwallTexture;
     public static ShaderProgram levelProgram;
 //Render Crap
     /*public LevelBase(String level, int width, int height)
@@ -48,6 +49,7 @@ public class LevelBase
 			tileObj = new VAO(-25f, -25f, 50f, 50f);
             floorTexture = new Texture("res/present-floor.png");
             wallTexture = new Texture("res/present-wall.png");
+            newwallTexture = new Texture("res/future-wall.png");
             levelProgram = new ShaderProgram("levelShader");
         }
 
@@ -125,7 +127,7 @@ public class LevelBase
 				if (currentChar == ' ') {
     				floorTexture.bind();
 				}else if (currentChar == '#') {
-    				wallTexture.bind();
+    				newwallTexture.bind();
 				}
 				float x = ((float) chr) * 50f;
 				float y = ((float) row) * 50f;
