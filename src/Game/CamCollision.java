@@ -30,6 +30,6 @@ public class CamCollision {
         float y = cam.y;
         float xPosition = x/50f;
         ArrayList<Character[]> current = level.levelseries.get(level.currentTZ);
-        return (current.get((int)xPosition)[(int)((y + speed)/50f)]);
+        return (current.get((int)((y + speed)/50f))[(int)xPosition]);
     }
 }
