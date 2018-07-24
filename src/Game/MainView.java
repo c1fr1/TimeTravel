@@ -11,6 +11,8 @@ import engine.Platform.Box3d;
 import engine.Platform.ModelPlatform;
 import engine.Platform.PlatformSegment;
 
+import java.util.logging.Level;
+
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_K;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_L;
 import static org.lwjgl.opengl.GL11.*;
@@ -28,7 +30,10 @@ public class MainView extends EnigView {
 	public ShaderProgram guiShader;
 	
 	public Texture ttoGUI;
+	public Texture[] spriteTexture;
+	
 	public VAO ttoGUIVAO;
+	public VAO playerVAO;
 
 	public Texture pauseGUI;
 	public VAO pauseGUIVAO;
@@ -43,6 +48,13 @@ public class MainView extends EnigView {
 		guiShader = new ShaderProgram("guiShader");
 		ttoGUI = new Texture("res/timeTravelGUI.png");
 		ttoGUIVAO = new VAO(-0.5f, -0.125f, 1f, 0.25f);
+		playerVAO = new VAO(-45, 0f, 30f, 30f);
+		
+		spriteTexture = new Texture[4];//down left right up;
+		spriteTexture[0] = new Texture("res/future-wall.png");
+		spriteTexture[1] = new Texture("res/sprite-left.png");
+		spriteTexture[2] = new Texture("res/sprite-right.png");
+		spriteTexture[3] = new Texture("res/sprite-up.png");
 
 		pauseGUI = new Texture("res/timeTravelGUI.png");
 		pauseGUIVAO = new VAO(-0.5f, -0.125f, 1f, 0.25f);
@@ -65,35 +77,41 @@ public class MainView extends EnigView {
 		level1.render(cam, currentTZ);
 		float vSpeed = 0;
 		float hSpeed = 0;
-		if(!pause) {
-			if (UserControls.forward(window)) {
-				vSpeed -= delta_time / 3;
-			}
-			if (UserControls.backward(window)) {
-				vSpeed += delta_time / 3;
-			}
-			if (UserControls.left(window)) {
-				hSpeed -= delta_time / 3;
-			}
-			if (UserControls.right(window)) {
-				hSpeed += delta_time / 3;
-			}
-			if (hSpeed != 0) {
-				vSpeed *= Math.sqrt(2) / 2;
-			}
-			if (vSpeed != 0) {
-				hSpeed *= Math.sqrt(2) / 2;
-			}
-			if (new CamCollision().collisionV(cam.x + (getSign(hSpeed) * 15) + (hSpeed), cam.y + (getSign(vSpeed) * 15) + (vSpeed), level1, vSpeed, currentTZ) != '#') {
-				cam.y += vSpeed;
-			}
-			if (new CamCollision().collisionH(cam.x + (getSign(hSpeed) * 15) + (hSpeed), cam.y + (getSign(vSpeed) * 15) + (vSpeed), level1, hSpeed, currentTZ) != '#') {
-				cam.x += hSpeed;
-			}
+
+		if (UserControls.forward(window)) {
+			vSpeed -= delta_time/3;
 		}
+		if (UserControls.backward(window)) {
+			vSpeed += delta_time/3;
+		}
+		if (UserControls.left(window)) {
+			hSpeed -= delta_time/3;
+		}
+		if (UserControls.right(window)) {
+			hSpeed += delta_time/3;
+		}
+		if(hSpeed != 0){
+			vSpeed *= Math.sqrt(2)/2;
+		}
+		if(vSpeed != 0){
+			hSpeed *= Math.sqrt(2)/2;
+		}
+		if(new CamCollision().collisionV(cam.x+(getSign(hSpeed)*15)+(hSpeed), cam.y+(getSign(vSpeed)*15)+(vSpeed), level1, vSpeed, currentTZ) != '#') {
+            cam.y += vSpeed;
+        }
+        if(CamCollision.collisionH(cam.x+(getSign(hSpeed)*15)+(hSpeed), cam.y+(getSign(vSpeed)*15)+(vSpeed), level1, hSpeed, currentTZ) != '#') {
+            cam.x += hSpeed;
+        }
+        
+        LevelBase.levelProgram.enable();
+		LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
+		spriteTexture[0].bind();
+		playerVAO.fullRender();
+		
+		guiShader.enable();
+		guiShader.shaders[0].uniforms[0].set((float)window.getHeight()/(float)window.getWidth());
+        //render tto gui if the player is on the tto
         if (new CamCollision().collisionH(cam.x, cam.y, level1, 0, currentTZ) == 't') {
-			guiShader.enable();
-			guiShader.shaders[0].uniforms[0].set((float)window.getHeight()/(float)window.getWidth());
         	ttoGUI.bind();
         	ttoGUIVAO.fullRender();
 		}

@@ -10,7 +10,7 @@ public class CamCollision {
      * @param speed Speed of movement
      * @return character at intended move
      */
-    public char collisionH(float x, float y, LevelBase level, float speed, int currentTZ){
+    public static char collisionH(float x, float y, LevelBase level, float speed, int currentTZ){
         float newX = x;
         float newY = y;
         float yPosition = newY/50f;
@@ -25,7 +25,7 @@ public class CamCollision {
      * @param speed Speed of movement
      * @return character at intended move
      */
-    public char collisionV(float x, float y, LevelBase level, float speed, int currentTZ){
+    public static char collisionV(float x, float y, LevelBase level, float speed, int currentTZ){
         float newX = x;
         float newY = y;
         float xPosition = newX/50f;
