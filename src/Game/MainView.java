@@ -24,13 +24,16 @@ public class MainView extends EnigView {
 	
 	public LevelBase level1;
 	
+	public Texture ttoGUI;
+	
 	@Override
 	public void setup() {
 		//set variables here
 		level1 = new LevelBase("res/Levels/Level1");
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
+		ttoGUI = new Texture("res/timeTravelGUI.png");
 		cam.x = level1.ystart[level1.currentTZ] * 50;
-		cam.y = -level1.xstart[level1.currentTZ] * 50;
+		cam.y = level1.xstart[level1.currentTZ] * 50;
 	}
 	
 	@Override
@@ -49,10 +52,10 @@ public class MainView extends EnigView {
 		float hSpeed = 0;
 
 		if (UserControls.forward(window)) {
-			vSpeed += delta_time/3;
+			vSpeed -= delta_time/3;
 		}
 		if (UserControls.backward(window)) {
-			vSpeed -= delta_time/3;
+			vSpeed += delta_time/3;
 		}
 		if (UserControls.left(window)) {
 			hSpeed -= delta_time/3;
