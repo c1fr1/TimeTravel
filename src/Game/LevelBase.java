@@ -15,7 +15,7 @@ public class LevelBase
     int width;
     int height;
 	ArrayList<ArrayList<Character[]>> levelseries;
-    int currentTZ = 0;
+    int currentTZ = 1;
     
     
     public static VAO tileObj;
@@ -127,8 +127,8 @@ public class LevelBase
 				}else if (currentChar == '#') {
     				wallTexture.bind();
 				}
-				float x = ((float) row) * 50f;
-				float y = ((float) chr) * 50f;
+				float x = ((float) chr) * 50f;
+				float y = ((float) row) * 50f;
 				levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, -y, 0));
     			tileObj.drawTriangles();
 			}
