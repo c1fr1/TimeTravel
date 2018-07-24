@@ -76,10 +76,10 @@ public class MainView extends EnigView {
 		if(vSpeed != 0){
 			hSpeed *= Math.sqrt(2)/2;
 		}
-		if(new CamCollision().collisionV(cam.x+(hSpeed), cam.y+(vSpeed), level1, vSpeed, currentTZ) != '#') {
+		if(new CamCollision().collisionV(cam.x+(getSign(hSpeed)*15)+(hSpeed), cam.y+(getSign(vSpeed)*15)+(vSpeed), level1, vSpeed, currentTZ) != '#') {
             cam.y += vSpeed;
         }
-        if(new CamCollision().collisionH(cam.x+(hSpeed), cam.y+(vSpeed), level1, hSpeed, currentTZ) != '#') {
+        if(new CamCollision().collisionH(cam.x+(getSign(hSpeed)*15)+(hSpeed), cam.y+(getSign(vSpeed)*15)+(vSpeed), level1, hSpeed, currentTZ) != '#') {
             cam.x += hSpeed;
         }
         if (new CamCollision().collisionH(cam.x, cam.y, level1, 0, currentTZ) == 't') {
@@ -98,7 +98,15 @@ public class MainView extends EnigView {
 	public static void main(String[] args) {
 		main = new MainView();
 	}
-	
+
+	public int getSign(float thing){
+		if(thing >= 0){
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+
 	@Override
 	public String getName() {
 		return "Time Travel Puzzle game";
