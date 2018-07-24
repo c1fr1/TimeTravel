@@ -70,10 +70,10 @@ public class MainView extends EnigView {
 		if(vSpeed != 0){
 			hSpeed *= Math.sqrt(2)/2;
 		}
-		if(new CamCollision().collisionV(cam.x+(hSpeed*20), cam.y+(vSpeed*20), level1, vSpeed, currentTZ) != '#') {
+		if(new CamCollision().collisionV(cam.x+(hSpeed*15), cam.y+(vSpeed*15), level1, vSpeed, currentTZ) != '#') {
             cam.y += vSpeed;
         }
-        if(new CamCollision().collisionH(cam.x+(hSpeed*20), cam.y+(vSpeed*20), level1, hSpeed, currentTZ) != '#') {
+        if(new CamCollision().collisionH(cam.x+(hSpeed*15), cam.y+(vSpeed*15), level1, hSpeed, currentTZ) != '#') {
             cam.x += hSpeed;
         }
 		if (UserControls.quit(window)) {
