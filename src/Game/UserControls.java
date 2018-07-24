@@ -11,7 +11,10 @@ public class UserControls {
 	public static int[] right = new int[] {GLFW_KEY_D};
 	public static int[] down = new int[] {GLFW_KEY_LEFT_SHIFT};
 	public static int[] up = new int[] {GLFW_KEY_SPACE};
-	public static int[] pause = new int[] {GLFW_KEY_ESCAPE};
+	public static int[] lroll = new int[] {GLFW_KEY_Q};
+	public static int[] rroll = new int[] {GLFW_KEY_E};
+	public static int[] pause = new int[] {GLFW_KEY_P};
+	public static int[] quit = new int[] {GLFW_KEY_ESCAPE};
 	public static float sensitivity = 1f/500f;
 	
 	public static boolean forward(EnigWindow window) {
@@ -62,8 +65,32 @@ public class UserControls {
 		}
 		return false;
 	}
+	public static boolean lroll(EnigWindow window) {
+		for (int i:lroll) {
+			if (window.keys[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean rroll(EnigWindow window) {
+		for (int i:rroll) {
+			if (window.keys[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public static boolean pause(EnigWindow window) {
 		for (int i:pause) {
+			if (window.keys[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean quit(EnigWindow window) {
+		for (int i:quit) {
 			if (window.keys[i] > 0) {
 				return true;
 			}

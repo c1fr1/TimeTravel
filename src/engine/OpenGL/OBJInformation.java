@@ -25,7 +25,7 @@ public class OBJInformation {//based off of https://github.com/MCRewind/3DGame/b
 		List<Vector3f> vertices = new ArrayList<>();
 		List<Vector2f> textures = new ArrayList<>();
 		List<Vector3f> normals = new ArrayList<>();
-		List<OBJInformation.Face> faces = new ArrayList<>();
+		List<Face> faces = new ArrayList<>();
 		
 		for (String line : lines) {
 			//split("\\s+") gets a string without whitespace
@@ -56,7 +56,7 @@ public class OBJInformation {//based off of https://github.com/MCRewind/3DGame/b
 					normals.add(vec3fNorm);
 					break;
 				case "f":
-					OBJInformation.Face face = new OBJInformation.Face(tokens[1], tokens[2], tokens[3]);
+					Face face = new Face(tokens[1], tokens[2], tokens[3]);
 					faces.add(face);
 					break;
 				default:
@@ -69,7 +69,7 @@ public class OBJInformation {//based off of https://github.com/MCRewind/3DGame/b
 	
 	//reorders lists from obj's into usable form
 	private OBJInformation(List<Vector3f> posList, List<Vector2f> textCoordList,
-									List<Vector3f> normList, List<OBJInformation.Face> facesList) {
+									List<Vector3f> normList, List<Face> facesList) {
 		
 		List<Integer> indices = new ArrayList();
 		// Create position array in the order it has been declared
@@ -84,9 +84,9 @@ public class OBJInformation {//based off of https://github.com/MCRewind/3DGame/b
 		float[] textCoordArr = new float[posList.size() * 2];
 		float[] normArr = new float[posList.size() * 3];
 		
-		for (OBJInformation.Face face : facesList) {
-			OBJInformation.IdxGroup[] faceVertexIndices = face.getFaceVertexIndices();
-			for (OBJInformation.IdxGroup indValue : faceVertexIndices) {
+		for (Face face : facesList) {
+			IdxGroup[] faceVertexIndices = face.getFaceVertexIndices();
+			for (IdxGroup indValue : faceVertexIndices) {
 				processFaceVertex(indValue, textCoordList, normList,
 						indices, textCoordArr, normArr);
 			}
@@ -98,7 +98,7 @@ public class OBJInformation {//based off of https://github.com/MCRewind/3DGame/b
 		textCoords = textCoordArr;
 		normals = normArr;
 	}
-	private static void processFaceVertex(OBJInformation.IdxGroup indices, List<Vector2f> textCoordList,
+	private static void processFaceVertex(IdxGroup indices, List<Vector2f> textCoordList,
 										  List<Vector3f> normList, List<Integer> indicesList,
 										  float[] texCoordArr, float[] normArr) {
 		
@@ -126,18 +126,18 @@ public class OBJInformation {//based off of https://github.com/MCRewind/3DGame/b
 		/**
 		 * List of idxGroup groups for a face triangle (3 vertices per face).
 		 */
-		private OBJInformation.IdxGroup[] idxGroups = new OBJInformation.IdxGroup[3];
+		private IdxGroup[] idxGroups = new IdxGroup[3];
 		
 		public Face(String v1, String v2, String v3) {
-			idxGroups = new OBJInformation.IdxGroup[3];
+			idxGroups = new IdxGroup[3];
 			// Parse the lines
 			idxGroups[0] = parseLine(v1);
 			idxGroups[1] = parseLine(v2);
 			idxGroups[2] = parseLine(v3);
 		}
 		
-		private OBJInformation.IdxGroup parseLine(String line) {
-			OBJInformation.IdxGroup idxGroup = new OBJInformation.IdxGroup();
+		private IdxGroup parseLine(String line) {
+			IdxGroup idxGroup = new IdxGroup();
 			
 			String[] lineTokens = line.split("/");
 			int length = lineTokens.length;
@@ -147,7 +147,7 @@ public class OBJInformation {//based off of https://github.com/MCRewind/3DGame/b
 			if (length > 1){
 				// It can be empty if the obj does not define text coords
 				String textCoord = lineTokens[1];
-				idxGroup.idxTextCoord = textCoord.length() > 0 ? Integer.parseInt(textCoord) - 1 : OBJInformation.IdxGroup.NO_VALUE;
+				idxGroup.idxTextCoord = textCoord.length() > 0 ? Integer.parseInt(textCoord) - 1 : IdxGroup.NO_VALUE;
 				//if normals present
 				if (length > 2) {
 					idxGroup.idxVecNormal = Integer.parseInt(lineTokens[2]) - 1;
@@ -156,7 +156,7 @@ public class OBJInformation {//based off of https://github.com/MCRewind/3DGame/b
 			return idxGroup;
 		}
 		
-		public OBJInformation.IdxGroup[] getFaceVertexIndices() {
+		public IdxGroup[] getFaceVertexIndices() {
 			return idxGroups;
 		}
 		
