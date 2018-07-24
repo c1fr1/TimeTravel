@@ -50,20 +50,19 @@ public class LevelBase
         }
 
 		Scanner fileInput;
-        ArrayList<Character[]> room = new ArrayList<Character[]>();
+		String roomlist = "";
+		//stores level rooms
+		ArrayList<ArrayList<Character[]>> levelseries = new ArrayList<ArrayList<Character[]>>();
 
+		//get the rooms
 		try
 		{
 			fileInput = new Scanner(new File(filename));
+
 			while (fileInput.hasNextLine())
 			{
-                String nextline = fileInput.nextLine();
-                Character[] row = new Character[nextline.length()];
-                for (int i = 0; i < nextline.length(); i++)
-                {
-                    row[i] = nextline.charAt(i);
-                }
-                room.add(row);
+				String nextline = fileInput.nextLine();
+				roomlist += nextline;
 			}
 		}
 		catch (FileNotFoundException ex)
@@ -72,16 +71,47 @@ public class LevelBase
 			System.exit(0);
 		}
 
-		layout = new char[room.size()][0];
-		for (int i = 0; i < room.size(); i++)
+		//splits the main string into level strings
+		String[] rooms = roomlist.split(",");
+		//goes through each room
+		for (int i = 0; i < rooms.length; i++)//level depth
 		{
-			Character[] lane = room.get(i);
-			layout[i] = new char[lane.length];
-			for (int j = 0; j < lane.length; j++)
+			//splits level string into rows
+			String[] levelslices = rooms[i].split("@");
+			ArrayList<Character[]> levelroom = new ArrayList<Character[]>();
+			//goes through each row
+			for (int j = 0; j < levelslices.length; j++)//character row number
 			{
-				layout[i][j] = lane[j];
+				//gets a row from the level string split
+				String lane = levelslices[j];
+				Character[] levelrow = new Character[levelslices[j].length()];
+				//goes through the row
+				for (int k = 0; k < lane.length(); k++)//character column number
+				{
+					//puts a character into the char array
+					levelrow[k] = lane.charAt(k);
+				}
+				//adds the row char array to the level arraylist
+				levelroom.add(levelrow);
 			}
+			//adds the level arraylist to the levelseries arraylist
+			levelseries.add(levelroom);
 		}
+
+		//LEVEL EXTRACTION
+		/*
+		String output = "";
+		int tense = 2;//time period - 0,1,2
+		for (int j = 0; j < levelseries.get(tense).size(); j++)
+		{
+			for (int k = 0; k < levelseries.get(tense).get(j).length; k++)
+			{
+				output += levelseries.get(tense).get(j)[k];
+			}
+			output += "\n";
+		}
+		System.out.println(output);
+		*/
 	}
 
     public void render(Camera cam) {
