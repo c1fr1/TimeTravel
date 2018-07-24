@@ -96,8 +96,15 @@ public class MainView extends EnigView {
         	ttoGUI.bind();
         	ttoGUIVAO.fullRender();
 		}
+		boolean cooldown = false;
 		if(UserControls.pause(window)){
-			pause = !pause;
+			if(!cooldown){
+				pause = !pause;
+			}
+			cooldown = true;
+
+		} else if(!UserControls.pause(window)){
+			cooldown = false;
 		}
 		if(pause){
 			guiShader.enable();
