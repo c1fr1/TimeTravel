@@ -25,14 +25,20 @@ public class MainView extends EnigView {
 
 	public LevelBase level1;
 	
+	public ShaderProgram guiShader;
+	
 	public Texture ttoGUI;
+	public VAO ttoGUIVAO;
 
 	@Override
 	public void setup() {
 		//set variables here
 		level1 = new LevelBase("res/Levels/Level1");
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
+		guiShader = new ShaderProgram("guiShader");
 		ttoGUI = new Texture("res/timeTravelGUI.png");
+		ttoGUIVAO = new VAO(-0.5f, -0.125f, 1f, 0.25f);
+		
 		cam.x = level1.ystart[currentTZ] * 50;
 		cam.y = level1.xstart[currentTZ] * 50;
 	}
@@ -76,6 +82,12 @@ public class MainView extends EnigView {
         if(new CamCollision().collisionH(cam.x+(hSpeed), cam.y+(vSpeed), level1, hSpeed, currentTZ) != '#') {
             cam.x += hSpeed;
         }
+        if (new CamCollision().collisionH(cam.x, cam.y, level1, 0, currentTZ) == 't') {
+			guiShader.enable();
+			guiShader.shaders[0].uniforms[0].set((float)window.getHeight()/(float)window.getWidth());
+        	ttoGUI.bind();
+        	ttoGUIVAO.fullRender();
+		}
 		if (UserControls.quit(window)) {
 			return true;
 		}
