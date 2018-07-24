@@ -22,7 +22,7 @@ public class CamCollision {
         Vector2f positionVector = new Vector2f(x,y);
         Vector2f totalVector = speedVector.add(positionVector);
 
-        while(room.get((int)(totalVector.x/50f))[(int)(totalVector.y/50f)] == '#'){
+        while(room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] == '#'){
             totalVector.set((float)Math.floor(totalVector.x-(hSpeed/16f)), totalVector.y);
         }
         return totalVector.x;
@@ -34,7 +34,7 @@ public class CamCollision {
         Vector2f positionVector = new Vector2f(x,y);
         Vector2f totalVector = speedVector.add(positionVector);
 
-        while(room.get((int)(totalVector.x/50f))[(int)(totalVector.y/50f)] == '#'){
+        while(room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] == '#'){
             totalVector.set(totalVector.x, (float)Math.floor(totalVector.y-(vSpeed/16f)));
         }
         return totalVector.y;
