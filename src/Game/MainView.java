@@ -38,7 +38,7 @@ public class MainView extends EnigView {
 		guiShader = new ShaderProgram("guiShader");
 		ttoGUI = new Texture("res/timeTravelGUI.png");
 		ttoGUIVAO = new VAO(-0.5f, -0.125f, 1f, 0.25f);
-		
+
 		cam.x = level1.ystart[currentTZ] * 50;
 		cam.y = level1.xstart[currentTZ] * 50;
 	}
@@ -88,9 +88,11 @@ public class MainView extends EnigView {
         	ttoGUI.bind();
         	ttoGUIVAO.fullRender();
 		}
+		/*
 		if (UserControls.quit(window)) {
 			return true;
 		}
+		*/
 
 		return false;
 	}
