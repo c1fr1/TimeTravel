@@ -49,16 +49,16 @@ public class MainView extends EnigView {
 		glDisable(GL_DEPTH_TEST);
 		level1.render(cam);
 		if (UserControls.forward(window)) {
-			cam.y += 1*delta_time/3;
+			cam.y += delta_time/3;
 		}
 		if (UserControls.backward(window)) {
-			cam.y -= 1*delta_time/3;
+			cam.y -= delta_time/3;
 		}
 		if (UserControls.left(window)) {
-			cam.x -= 1*delta_time/3;
+			cam.x -= delta_time/3;
 		}
 		if (UserControls.right(window)) {
-			cam.x += 1*delta_time/3;
+			cam.x += delta_time/3;
 		}
 		if (UserControls.quit(window)) {
 			return true;
