@@ -65,31 +65,32 @@ public class MainView extends EnigView {
 		level1.render(cam, currentTZ);
 		float vSpeed = 0;
 		float hSpeed = 0;
-
-		if (UserControls.forward(window)) {
-			vSpeed -= delta_time/3;
+		if(!pause) {
+			if (UserControls.forward(window)) {
+				vSpeed -= delta_time / 3;
+			}
+			if (UserControls.backward(window)) {
+				vSpeed += delta_time / 3;
+			}
+			if (UserControls.left(window)) {
+				hSpeed -= delta_time / 3;
+			}
+			if (UserControls.right(window)) {
+				hSpeed += delta_time / 3;
+			}
+			if (hSpeed != 0) {
+				vSpeed *= Math.sqrt(2) / 2;
+			}
+			if (vSpeed != 0) {
+				hSpeed *= Math.sqrt(2) / 2;
+			}
+			if (new CamCollision().collisionV(cam.x + (getSign(hSpeed) * 15) + (hSpeed), cam.y + (getSign(vSpeed) * 15) + (vSpeed), level1, vSpeed, currentTZ) != '#') {
+				cam.y += vSpeed;
+			}
+			if (new CamCollision().collisionH(cam.x + (getSign(hSpeed) * 15) + (hSpeed), cam.y + (getSign(vSpeed) * 15) + (vSpeed), level1, hSpeed, currentTZ) != '#') {
+				cam.x += hSpeed;
+			}
 		}
-		if (UserControls.backward(window)) {
-			vSpeed += delta_time/3;
-		}
-		if (UserControls.left(window)) {
-			hSpeed -= delta_time/3;
-		}
-		if (UserControls.right(window)) {
-			hSpeed += delta_time/3;
-		}
-		if(hSpeed != 0){
-			vSpeed *= Math.sqrt(2)/2;
-		}
-		if(vSpeed != 0){
-			hSpeed *= Math.sqrt(2)/2;
-		}
-		if(new CamCollision().collisionV(cam.x+(getSign(hSpeed)*15)+(hSpeed), cam.y+(getSign(vSpeed)*15)+(vSpeed), level1, vSpeed, currentTZ) != '#') {
-            cam.y += vSpeed;
-        }
-        if(new CamCollision().collisionH(cam.x+(getSign(hSpeed)*15)+(hSpeed), cam.y+(getSign(vSpeed)*15)+(vSpeed), level1, hSpeed, currentTZ) != '#') {
-            cam.x += hSpeed;
-        }
         if (new CamCollision().collisionH(cam.x, cam.y, level1, 0, currentTZ) == 't') {
 			guiShader.enable();
 			guiShader.shaders[0].uniforms[0].set((float)window.getHeight()/(float)window.getWidth());
