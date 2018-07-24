@@ -49,6 +49,8 @@ public class MainView extends EnigView {
 	@Override
 	public void setup() {
 		//set variables here
+		
+		glDisable(GL_DEPTH_TEST);
 		level1 = new LevelBase("res/Levels/Level1");
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
 		guiShader = new ShaderProgram("guiShader");
@@ -84,6 +86,8 @@ public class MainView extends EnigView {
 		} else if(!UserControls.pause(window)){
 			cooldown = false;
 		}
+		
+		mainFBO.prepareForTexture();
 		if(pause){
 			guiShader.enable();
 			guiShader.shaders[0].uniforms[0].set((float)window.getHeight()/(float)window.getWidth());
@@ -95,9 +99,6 @@ public class MainView extends EnigView {
 			//window.lastTime = time;
 			
 			//game here
-			glEnable(GL_DEPTH_TEST);
-			mainFBO.prepareForTexture();
-			glDisable(GL_DEPTH_TEST);
 			level1.render(cam, currentTZ);
 			float vSpeed = 0;
 			float hSpeed = 0;
