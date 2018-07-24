@@ -5,31 +5,31 @@ import java.util.ArrayList;
 public class CamCollision {
     /**
      * Using level, camera position and speed predicts what object(in character form) will be in the move
-     * @param cam Camera object
+     * @param x,y  origin for collision
      * @param level LevelBase object
      * @param speed Speed of movement
      * @return character at intended move
      */
-    public char collisionH(Camera cam, LevelBase level, float speed){
-        float x = cam.x;
-        float y = cam.y;
-        float yPosition = y/50f;
+    public char collisionH(float x, float y, LevelBase level, float speed){
+        float newX = x;
+        float newY = y;
+        float yPosition = newY/50f;
         ArrayList<Character[]> current = level.levelseries.get(level.currentTZ);
-        return (current.get((int)yPosition)[(int)((x + speed)/50f)]);
+        return (current.get((int)yPosition)[(int)((newX + speed)/50f)]);
 
     }
     /**
      * Using level, camera position and speed predicts what object(in character form) will be in the move
-     * @param cam Camera object
+     * @param x,y origin for collision
      * @param level LevelBase object
      * @param speed Speed of movement
      * @return character at intended move
      */
-    public char collisionV(Camera cam, LevelBase level, float speed){
-        float x = cam.x;
-        float y = cam.y;
-        float xPosition = x/50f;
+    public char collisionV(float x, float y, LevelBase level, float speed){
+        float newX = x;
+        float newY = y;
+        float xPosition = newX/50f;
         ArrayList<Character[]> current = level.levelseries.get(level.currentTZ);
-        return (current.get((int)((y + speed)/50f))[(int)xPosition]);
+        return (current.get((int)((newY + speed)/50f))[(int)xPosition]);
     }
 }
