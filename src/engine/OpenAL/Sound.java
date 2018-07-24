@@ -1,6 +1,6 @@
 package engine.OpenAL;
 
-import com.sun.media.sound.WaveFileReader;
+//import com.sun.media.sound.WaveFileReader;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -28,6 +28,7 @@ public class Sound {
 	 * a lot of this is copied straight from the LWJGL github page, I couldn't find the WaveData class in the library that I had locally, so I went to the github page.
 	 * @param file file path to a .wav file
 	 */
+	/*
 	public Sound(String file) {
 		try {
 			id = alGenBuffers();
@@ -103,7 +104,7 @@ public class Sound {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	/**
 	 * gets the handle for the openAL sound buffer
