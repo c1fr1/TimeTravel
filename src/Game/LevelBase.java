@@ -14,14 +14,16 @@ public class LevelBase
 {
     int width;
     int height;
-    char[][] layout = new char[width][height];
+	ArrayList<ArrayList<Character[]>> levelseries;
+    int currentTZ = 1;
+    
     
     public static VAO tileObj;
     public static Texture floorTexture;
     public static Texture wallTexture;
     public static ShaderProgram levelProgram;
 //Render Crap
-    public LevelBase(String level, int width, int height)
+    /*public LevelBase(String level, int width, int height)
     {
     	if (tileObj == null) {
 			tileObj = new VAO(-25f, -25f, 50f, 50f);
@@ -38,21 +40,21 @@ public class LevelBase
                 layout[i][j] =  level.charAt(i+j*width);
             }
         }
-    }
+    }*/
     //gets the map
 	public LevelBase(String filename)
 	{
         if (tileObj == null) {
 			tileObj = new VAO(-25f, -25f, 50f, 50f);
-            floorTexture = new Texture("present-floor.png");
-            wallTexture = new Texture("present-wall.png");
+            floorTexture = new Texture("res/present-floor.png");
+            wallTexture = new Texture("res/present-wall.png");
             levelProgram = new ShaderProgram("levelShader");
         }
 
 		Scanner fileInput;
 		String roomlist = "";
 		//stores level rooms
-		ArrayList<ArrayList<Character[]>> levelseries = new ArrayList<ArrayList<Character[]>>();
+		levelseries = new ArrayList<ArrayList<Character[]>>();
 
 		//get the rooms
 		try
@@ -117,15 +119,16 @@ public class LevelBase
     public void render(Camera cam) {
     	levelProgram.enable();
     	tileObj.prepareRender();
-    	for (int row = 0; row < layout.length;++row) {
-    		for (int chr = 0; chr < layout[row].length; ++chr) {
-				if (layout[row][chr] == ' ') {
+    	for (int row = 0; row < levelseries.get(currentTZ).size();++row) {
+    		for (int chr = 0; chr < levelseries.get(currentTZ).get(row).length; ++chr) {
+    			char currentChar = levelseries.get(currentTZ).get(row)[chr];
+				if (currentChar == ' ') {
     				floorTexture.bind();
-				}else if (layout[row][chr] == '#') {
+				}else if (currentChar == '#') {
     				wallTexture.bind();
 				}
-				float x = ((float) row) * 50f;
-				float y = ((float) chr) * 50f;
+				float x = ((float) chr) * 50f;
+				float y = ((float) row) * 50f;
 				levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, -y, 0));
     			tileObj.drawTriangles();
 			}
