@@ -29,8 +29,8 @@ public class MainView extends EnigView {
 		//set variables here
 		level1 = new LevelBase("res/Levels/Level1");
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
-		cam.x = level1.xstart[level1.currentTZ];
-		cam.y = level1.ystart[level1.currentTZ];
+		cam.x = level1.ystart[level1.currentTZ] * 50;
+		cam.y = -level1.xstart[level1.currentTZ] * 50;
 	}
 	
 	@Override
