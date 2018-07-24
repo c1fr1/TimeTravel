@@ -1,5 +1,6 @@
 package Game;
 
+import engine.Entities.Camera;
 import engine.OpenGL.ShaderProgram;
 import engine.OpenGL.Texture;
 import engine.OpenGL.VAO;
@@ -23,7 +24,7 @@ public class LevelBase
     public LevelBase(String level, int width, int height)
     {
     	if (tileObj == null) {
-    		tileObj = new VAO(-0.2f, -0.2f, 0.4f, 0.4f);
+			tileObj = new VAO(-25f, -25f, 50f, 50f);
     		floorTexture = new Texture("res/present-floor.png");
     		wallTexture = new Texture("res/present-wall.png");
     		levelProgram = new ShaderProgram("levelShader");
@@ -34,7 +35,7 @@ public class LevelBase
         {
             for (int j = 0; j < height; j++)
             {
-                layout[i][j] =  level.charAt(width*i+j);
+                layout[i][j] =  level.charAt(i+j*width);
             }
         }
     }
@@ -42,7 +43,7 @@ public class LevelBase
 	public LevelBase(String filename)
 	{
         if (tileObj == null) {
-            tileObj = new VAO(-0.2f, -0.2f, 0.4f, 0.4f);
+			tileObj = new VAO(-25f, -25f, 50f, 50f);
             floorTexture = new Texture("present-floor.png");
             wallTexture = new Texture("present-wall.png");
             levelProgram = new ShaderProgram("levelShader");
@@ -83,7 +84,7 @@ public class LevelBase
 		}
 	}
 
-    public void render() {
+    public void render(Camera cam) {
     	levelProgram.enable();
     	tileObj.prepareRender();
     	for (int row = 0; row < layout.length;++row) {
@@ -93,9 +94,9 @@ public class LevelBase
 				}else if (layout[row][chr] == '#') {
     				wallTexture.bind();
 				}
-				float x = ((float) row) * 0.4f;
-				float y = ((float) chr) * 0.4f;
-				levelProgram.shaders[0].uniforms[0].set(new float[]{x, y});
+				float x = ((float) row) * 50f;
+				float y = ((float) chr) * 50f;
+				levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, -y, 0));
     			tileObj.drawTriangles();
 			}
 		}

@@ -5,9 +5,9 @@ layout (location = 1) in vec2 txtPos;
 
 out vec2 texCoords;
 
-uniform vec2 playerPos;
+uniform mat4 cam;
 
 void main() {
-	gl_Position = vec4(vertices.x - playerPos.x, vertices.y - playerPos.y, vertices.z, 1);
+	gl_Position = cam * vec4(vertices.x, vertices.y, vertices.z, 1);
 	texCoords = txtPos;
 }

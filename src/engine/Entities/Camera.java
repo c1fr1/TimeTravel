@@ -91,12 +91,12 @@ public class Camera extends Vector3f {
 	
 	/**
 	 * creates a new camera with an orthographic perspective matrix
-	 * @param minDistance minimum render distance
-	 * @param farDistance maximum render distance
+	 * @param width width of screen
+	 * @param height height of screen
 	 */
-	public Camera(float minDistance, float farDistance) {
-		projectionMatrix = new Matrix4f().ortho(-1f, 1, -1f, 1, minDistance, farDistance);
-		rotationMatrix= new Matrix4f();
+	public Camera(float width, float height) {
+		projectionMatrix = new Matrix4f().ortho(-width/2, width/2, -height/2, height/2, 0, 1);
+		rotationMatrix = new Matrix4f();
 		setPos(0f, 0f, 0f);
 	}
 	
@@ -220,6 +220,20 @@ public class Camera extends Vector3f {
 				retVal = retVal.mul(rotationMatrix);
 			}else if (m==2) {
 				retVal = retVal.translate(-this.x, -this.y, -this.z);
+			}
+		}
+		return retVal;
+	}
+	
+	public Matrix4f getCameraMatrix(float xoffset, float yoffset, float zoffset) {
+		Matrix4f retVal = new Matrix4f();
+		for (int m:orderOfTransformations) {
+			if (m == 0) {
+				retVal = retVal.mul(projectionMatrix);
+			}else if (m==1) {
+				retVal = retVal.mul(rotationMatrix);
+			}else if (m==2) {
+				retVal = retVal.translate(xoffset-this.x, yoffset-this.y, zoffset-this.z);
 			}
 		}
 		return retVal;
