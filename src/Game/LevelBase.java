@@ -125,7 +125,7 @@ public class LevelBase
     		for (int chr = 0; chr < levelseries.get(currentTZ).get(row).length; ++chr) {
     			char currentChar = levelseries.get(currentTZ).get(row)[chr];
 				if (currentChar != ' ') {
-					if (currentChar == '_') {
+					if (currentChar == '_' || currentChar == 's') {
     					floorTexture.bind();
 					}else if (currentChar == '#') {
     					newwallTexture.bind();
