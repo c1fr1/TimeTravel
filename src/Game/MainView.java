@@ -48,21 +48,33 @@ public class MainView extends EnigView {
 		FBO.prepareDefaultRender();
 		glDisable(GL_DEPTH_TEST);
 		level1.render(cam);
+		float vSpeed = 0;
+		float hSpeed = 0;
+		
 		if (UserControls.forward(window)) {
-			cam.y += delta_time/3;
+			vSpeed += delta_time/3;
 		}
 		if (UserControls.backward(window)) {
-			cam.y -= delta_time/3;
+			vSpeed -= delta_time/3;
 		}
 		if (UserControls.left(window)) {
-			cam.x -= delta_time/3;
+			hSpeed -= delta_time/3;
 		}
 		if (UserControls.right(window)) {
-			cam.x += delta_time/3;
+			hSpeed += delta_time/3;
 		}
+		if(hSpeed != 0){
+			vSpeed *= Math.sqrt(2)/2;
+		}
+		if(vSpeed != 0){
+			hSpeed *= Math.sqrt(2)/2;
+		}
+		cam.y += vSpeed;
+		cam.x += hSpeed;
 		if (UserControls.quit(window)) {
 			return true;
 		}
+
 		return false;
 	}
 	
