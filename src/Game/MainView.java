@@ -42,23 +42,23 @@ public class MainView extends EnigView {
 		long time = System.nanoTime();
 		int delta_time = (int) ((time - window.lastTime) / 1000000);
 		//window.lastTime = time;
-		
+
 		//game here
 		glEnable(GL_DEPTH_TEST);
 		FBO.prepareDefaultRender();
 		glDisable(GL_DEPTH_TEST);
 		level1.render(cam);
 		if (UserControls.forward(window)) {
-			cam.y += 1;
+			cam.y += 1*delta_time/3;
 		}
 		if (UserControls.backward(window)) {
-			cam.y -= 1;
+			cam.y -= 1*delta_time/3;
 		}
 		if (UserControls.left(window)) {
-			cam.x -= 1;
+			cam.x -= 1*delta_time/3;
 		}
 		if (UserControls.right(window)) {
-			cam.x += 1;
+			cam.x += 1*delta_time/3;
 		}
 		if (UserControls.quit(window)) {
 			return true;
