@@ -38,6 +38,8 @@ public class MainView extends EnigView {
 
 	public Texture pauseGUI;
 	public VAO pauseGUIVAO;
+	
+	public Texture ttoTexture;
 
 	public VAO screenVAO;
 
@@ -65,6 +67,9 @@ public class MainView extends EnigView {
 		spriteTexture[1] = new Texture("res/sprite-left.png");
 		spriteTexture[2] = new Texture("res/sprite-right.png");
 		spriteTexture[3] = new Texture("res/sprite-up.png");
+
+		ttoTexture = new Texture[9];
+
 
 		pauseGUI = new Texture("res/timeTravelGUI.png");
 		pauseGUIVAO = new VAO(-0.5f, -0.125f, 1f, 0.25f);
@@ -141,6 +146,10 @@ public class MainView extends EnigView {
 				ttoGUI.bind();
 				ttoGUIVAO.fullRender();
 				animationFrameCounter ++;
+				 = new Texture("res/present-tto"+animationFrameCounter+".png");
+			}
+			else {
+				animationFrameCounter --;
 			}
 		}
 
