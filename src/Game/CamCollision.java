@@ -1,35 +1,19 @@
 package Game;
 
 import engine.Entities.Camera;
-import java.util.ArrayList;
-public class CamCollision {
-    /**
-     * Using level, camera position and speed predicts what object(in character form) will be in the move
-     * @param x,y  origin for collision
-     * @param level LevelBase object
-     * @param speed Speed of movement
-     * @return character at intended move
-     */
-    public static char collisionH(float x, float y, LevelBase level, float speed, int currentTZ){
-        float newX = x;
-        float newY = y;
-        float yPosition = newY/50f;
-        ArrayList<Character[]> current = level.levelseries.get(currentTZ);
-        return (current.get((int)yPosition)[(int)((newX + speed)/50f)]);
+import org.joml.Vector2f;
 
-    }
-    /**
-     * Using level, camera position and speed predicts what object(in character form) will be in the move
-     * @param x,y origin for collision
-     * @param level LevelBase object
-     * @param speed Speed of movement
-     * @return character at intended move
-     */
-    public static char collisionV(float x, float y, LevelBase level, float speed, int currentTZ){
-        float newX = x;
-        float newY = y;
-        float xPosition = newX/50f;
-        ArrayList<Character[]> current = level.levelseries.get(currentTZ);
-        return (current.get((int)((newY + speed)/50f))[(int)xPosition]);
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.logging.Level;
+
+public class CamCollision {
+
+    public static char checkCollision(float x, float y, float hSpeed, float vSpeed, ArrayList<Character[]> room){
+        Vector2f speedVector = new Vector2f(hSpeed, vSpeed);
+        Vector2f positionVector = new Vector2f(x,y);
+        Vector2f totalVector = speedVector.add(positionVector);
+        totalVector.set(totalVector.x/50f, totalVector.y/50f);
+        return room.get((int)totalVector.y)[(int)totalVector.x];
     }
 }

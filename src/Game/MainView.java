@@ -29,7 +29,7 @@ public class MainView extends EnigView {
 	
 	public ShaderProgram guiShader;
 	public ShaderProgram textureShader;
-	
+
 	public Texture ttoGUI;
 	public Texture[] spriteTexture;
 	
@@ -38,9 +38,9 @@ public class MainView extends EnigView {
 
 	public Texture pauseGUI;
 	public VAO pauseGUIVAO;
-	
+
 	public VAO screenVAO;
-	
+
 	public FBO mainFBO;
 
 	public boolean pause = false;
@@ -66,7 +66,7 @@ public class MainView extends EnigView {
 
 		pauseGUI = new Texture("res/timeTravelGUI.png");
 		pauseGUIVAO = new VAO(-0.5f, -0.125f, 1f, 0.25f);
-		
+
 		textureShader = new ShaderProgram("textureShaders");
 		mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));
 		screenVAO = new VAO(-1f, -1f, 2f, 2f);
@@ -82,7 +82,7 @@ public class MainView extends EnigView {
 				pause = !pause;
 			}
 			cooldown = true;
-			
+
 		} else if(!UserControls.pause(window)){
 			cooldown = false;
 		}
@@ -97,12 +97,12 @@ public class MainView extends EnigView {
 			long time = System.nanoTime();
 			int delta_time = (int) ((time - window.lastTime) / 1000000);
 			//window.lastTime = time;
-			
+
 			//game here
 			level1.render(cam, currentTZ);
 			float vSpeed = 0;
 			float hSpeed = 0;
-			
+
 			if (UserControls.forward(window)) {
 				vSpeed -= delta_time / 3;
 			}
@@ -121,27 +121,26 @@ public class MainView extends EnigView {
 			if (vSpeed != 0) {
 				hSpeed *= Math.sqrt(2) / 2;
 			}
-			if (new CamCollision().collisionV(cam.x + (getSign(hSpeed) * 15) + (hSpeed), cam.y + (getSign(vSpeed) * 15) + (vSpeed), level1, vSpeed, currentTZ) != '#') {
-				cam.y += vSpeed;
-			}
-			if (CamCollision.collisionH(cam.x + (getSign(hSpeed) * 15) + (hSpeed), cam.y + (getSign(vSpeed) * 15) + (vSpeed), level1, hSpeed, currentTZ) != '#') {
-				cam.x += hSpeed;
-			}
-			
+			if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ)) != '#'){
+			    cam.x += hSpeed;
+			    cam.y += vSpeed;
+            }
+
+
 			LevelBase.levelProgram.enable();
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
 			spriteTexture[0].bind();
 			playerVAO.fullRender();
-			
+
 			guiShader.enable();
 			guiShader.shaders[0].uniforms[0].set((float) window.getHeight() / (float) window.getWidth());
 			//render tto gui if the player is on the tto
-			if (new CamCollision().collisionH(cam.x, cam.y, level1, 0, currentTZ) == 't') {
+			if (CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ)) == 't') {
 				ttoGUI.bind();
 				ttoGUIVAO.fullRender();
 			}
 		}
-		
+
 		FBO.prepareDefaultRender();
 		textureShader.enable();
 		mainFBO.getBoundTexture().bind();
