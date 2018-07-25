@@ -65,16 +65,9 @@ public class MainView extends EnigView {
 		spriteTexture[2] = new Texture("res/sprite-right.png");
 		spriteTexture[3] = new Texture("res/sprite-up.png");
 
-
-        pauseGUI = new Texture[3];
-        pauseGUIVAO = new VAO[3];
-        pauseGUI[1] = new Texture("res/menu/restart.png");
-        pauseGUIVAO[1] = new VAO(-0.39f, -0.125f, .78f, 0.55f);
-        pauseGUI[2] = new Texture("res/menu/menu.png");
-        pauseGUIVAO[2] = new VAO(-0.71f, -0.725f, 1.42f, 0.25f);
-
-        SpriteButton continue = new SpriteButton(-0.5f,0.525f,1f,0.4f,"res/menu/continue.png");
-
+        SpriteButton cont = new SpriteButton(-0.5f,0.525f,1f,0.4f,"res/menu/continue.png");
+		SpriteButton restart = new SpriteButton(-0.39f, -0.125f, .78f, 0.55f,"res/menu/restart.png");
+		SpriteButton menu = new SpriteButton(-0.71f, -0.725f, 1.42f, 0.25f,"res/menu/menu.png");
 
 		textureShader = new ShaderProgram("textureShaders");
 		pauseShader = new ShaderProgram("pauseShaders");
