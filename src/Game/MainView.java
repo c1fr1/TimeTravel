@@ -97,6 +97,7 @@ public class MainView extends EnigView {
 		} else if(!UserControls.pause(window)){
 			cooldown = false;
 		}
+		//Pause menu
 		if(pause){
 			++framesPaused;
 			float scalar = 1-((float)framesPaused/50f);
@@ -117,7 +118,9 @@ public class MainView extends EnigView {
 			guiShader.shaders[0].uniforms[0].set((float)window.getHeight()/(float)window.getWidth());
 			pauseGUI.bind();
 			pauseGUIVAO.fullRender();
-		}  else if (timeTravelFrames > 0) {
+		}
+		//Time Travel animation
+		else if (timeTravelFrames > 0) {
 			FBO.prepareDefaultRender();
 			
 			currentlevel.render(cam);
@@ -140,6 +143,7 @@ public class MainView extends EnigView {
 				timeTravelFrames = 0;
 			}
 		}
+		//run game
 		else {
 			mainFBO.prepareForTexture();
 			long time = System.nanoTime();
