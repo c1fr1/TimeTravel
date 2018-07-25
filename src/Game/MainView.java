@@ -67,12 +67,12 @@ public class MainView extends EnigView {
 
         pauseGUI = new Texture[3];
         pauseGUIVAO = new VAO[3];
-		pauseGUI[0] = new Texture("res/timeTravelGUI.png");
-		pauseGUIVAO[0] = new VAO(-0.5f, -0.125f, 1f, 0.25f);
-        pauseGUI[1] = new Texture("res/timeTravelGUI.png");
-        pauseGUIVAO[1] = new VAO(-0.5f, -0.725f, 1f, 0.25f);
-        pauseGUI[2] = new Texture("res/timeTravelGUI.png");
-        pauseGUIVAO[2] = new VAO(-0.5f, 0.525f, 1f, 0.25f);
+		pauseGUI[0] = new Texture("res/menu/continue.png");
+		pauseGUIVAO[0] = new VAO(-0.5f, 0.525f, 1f, 0.4f);
+        pauseGUI[1] = new Texture("res/menu/restart.png");
+        pauseGUIVAO[1] = new VAO(-0.39f, -0.125f, .78f, 0.55f);
+        pauseGUI[2] = new Texture("res/menu/menu.png");
+        pauseGUIVAO[2] = new VAO(-0.71f, -0.725f, 1.42f, 0.25f);
 
 
 		textureShader = new ShaderProgram("textureShaders");
@@ -185,10 +185,13 @@ public class MainView extends EnigView {
 				hSpeed *= Math.sqrt(2) / 2;
 			}
 
-			//if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ)) != '#'){
-			cam.x = CamCollision.getMoveX(cam.x + getSign(hSpeed)*15f, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '#') - getSign(hSpeed)*15f;
-			cam.y = CamCollision.getMoveY(cam.x, cam.y + getSign(vSpeed)*15f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '#') - getSign(vSpeed)*15f;
-			//}
+			if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '#'){
+				cam.x = CamCollision.getMoveX(cam.x + getSign(hSpeed)*15f, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '#') - getSign(hSpeed)*15f;
+				cam.y = CamCollision.getMoveY(cam.x, cam.y + getSign(vSpeed)*15f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '#') - getSign(vSpeed)*15f;
+			}/* if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '_'){
+				cam.x = CamCollision.getMoveX(cam.x + getSign(hSpeed)*15f, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '_') - getSign(hSpeed)*15f;
+				cam.y = CamCollision.getMoveY(cam.x, cam.y + getSign(vSpeed)*15f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '_') - getSign(vSpeed)*15f;
+			}*/
 
 
 			LevelBase.levelProgram.enable();
