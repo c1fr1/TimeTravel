@@ -57,7 +57,7 @@ public class MainView extends EnigView {
 	
 	public int animationFrameCounter = 0;
 	
-	public float lastTime = System.nanoTime();
+	public long lastTime = System.nanoTime();
 
 	@Override
 	public void setup() {
@@ -146,7 +146,10 @@ public class MainView extends EnigView {
 			mainFBO.prepareForTexture();
 			long time = System.nanoTime();
 			float delta_time = ((float)(time - lastTime) / 1000000f);
+
+
 			lastTime = time;
+
 
 			//game here
 			level1.render(cam);
