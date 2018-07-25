@@ -70,9 +70,9 @@ public class MainView extends EnigView {
 		pauseGUI[0] = new Texture("res/timeTravelGUI.png");
 		pauseGUIVAO[0] = new VAO(-0.5f, -0.125f, 1f, 0.25f);
         pauseGUI[1] = new Texture("res/timeTravelGUI.png");
-        pauseGUIVAO[1] = new VAO(-0.5f, -0.125f, 1f, 0.25f);
+        pauseGUIVAO[1] = new VAO(-0.5f, -0.725f, 1f, 0.25f);
         pauseGUI[2] = new Texture("res/timeTravelGUI.png");
-        pauseGUIVAO[2] = new VAO(-0.5f, -0.125f, 1f, 0.25f);
+        pauseGUIVAO[2] = new VAO(-0.5f, 0.525f, 1f, 0.25f);
 
 
 		textureShader = new ShaderProgram("textureShaders");
