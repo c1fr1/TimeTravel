@@ -364,8 +364,12 @@ public class EnigWindow {
 		glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		if (Math.random() < 0.1) {
 			glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-		}else if (Math.random() < 0.05) {
-			glClearColor(1.0f, 0f, 1.0f, 1f);
+		}else if (Math.random() < 0.1) {
+			if (Math.random() < 0.5) {
+				glClearColor(1.0f, 0f, 1.0f, 1f);
+			}else {
+				glClearColor((float) Math.random(), (float) Math.random(), (float) Math.random(), 1f);
+			}
 		}else {
 			glClearColor(0.0f, 0.5f, 0.0f, 1f);
 		}
