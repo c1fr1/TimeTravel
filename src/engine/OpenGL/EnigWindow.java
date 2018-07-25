@@ -247,7 +247,7 @@ public class EnigWindow {
 		glEnable(GL_MULTISAMPLE);
 		glEnable(GL_CULL_FACE);
 		glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.0f, 0.5f, 0.0f, 1.0f);
 		initOpenAL();
 		
 		mainWindow = this;
@@ -362,7 +362,13 @@ public class EnigWindow {
 		glEnable(GL_MULTISAMPLE);
 		glEnable(GL_CULL_FACE);
 		glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		if (Math.random() < 0.1) {
+			glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+		}else if (Math.random() < 0.05) {
+			glClearColor(1.0f, 0f, 1.0f, 1f);
+		}else {
+			glClearColor(0.0f, 0.5f, 0.0f, 1f);
+		}
 		initOpenAL();
 		
 		mainWindow = this;
