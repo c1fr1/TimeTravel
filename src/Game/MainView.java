@@ -112,7 +112,9 @@ public class MainView extends EnigView {
 			mainFBO.getBoundTexture().bind();
 			screenVAO.fullRender();
 			guiShader.enable();
-			
+
+			lastTime = System.nanoTime();
+
 			++timeTravelFrames;
 			if (timeTravelFrames >= 50) {
 				timeTravelFrames = 0;
@@ -123,6 +125,10 @@ public class MainView extends EnigView {
 			if (scalar < 0.5f) {
 				scalar = 0.5f;
 			}
+
+
+			lastTime = System.nanoTime();
+
 			FBO.prepareDefaultRender();
 			pauseShader.enable();
 			pauseShader.shaders[2].uniforms[0].set(scalar);
@@ -148,16 +154,16 @@ public class MainView extends EnigView {
 			float hSpeed = 0;
 
 			if (UserControls.forward(window)) {
-				vSpeed -= (float) delta_time / 3f;
+				vSpeed -= delta_time / 3f;
 			}
 			if (UserControls.backward(window)) {
-				vSpeed += (float) delta_time / 3f;
+				vSpeed += delta_time / 3f;
 			}
 			if (UserControls.left(window)) {
-				hSpeed -= (float) delta_time / 3f;
+				hSpeed -= delta_time / 3f;
 			}
 			if (UserControls.right(window)) {
-				hSpeed += (float) delta_time / 3f;
+				hSpeed += delta_time / 3f;
 			}
 			if (hSpeed != 0) {
 				vSpeed *= Math.sqrt(2) / 2;
