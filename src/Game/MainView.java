@@ -158,13 +158,10 @@ public class MainView extends EnigView {
 		else {
 			mainFBO.prepareForTexture();
 
-
 			lastTime = time;
-
 
 			//game here
 			currentLevel.render(cam);
-
 
 			float vSpeed = 0;
 			float hSpeed = 0;
@@ -202,10 +199,15 @@ public class MainView extends EnigView {
 
             //CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't'
 			//render tto gui if the player is on the tto
-			if (CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
+			if (    CamCollision.checkCollision(cam.x-15, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x+15, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x, cam.y+15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x, cam.y-15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+
+                    CamCollision.checkCollision(cam.x-15, cam.y-15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x+15, cam.y-15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x-15, cam.y+15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x+15, cam.y+15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
 				ttoguiShader.enable();
 				ttoguiShader.shaders[0].uniforms[0].set(aspectRatio);
 				ttoguiShader.shaders[2].uniforms[0].set(-1f);
@@ -238,24 +240,34 @@ public class MainView extends EnigView {
 					}
 				}
 				//ttoguiShader.shaders[2].uniforms[0].set(0.2f);
-            if (timeTravelFrames == 0) {
-                ttoGUI.bind();
-                ttoGUIVAO.fullRender();
-            }
-				animationFrameCounter+=0.5*delta_time*0.03;
-			}else {
+                if (timeTravelFrames == 0) {
+                    ttoGUI.bind();
+                    ttoGUIVAO.fullRender();
+                }
+
+			}
+            if (    CamCollision.checkCollision(cam.x-35, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x+35, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x, cam.y+35, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x, cam.y-35, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+
+                    CamCollision.checkCollision(cam.x-35, cam.y-35, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x+35, cam.y-35, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x-35, cam.y+35, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x+35, cam.y+35, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+
+                    CamCollision.checkCollision(cam.x, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
+                animationFrameCounter+=0.5*delta_time*0.03;
+			} else {
 				animationFrameCounter-=delta_time*0.03;
 			}
-			/*
-			if() {
-                */
-                if (animationFrameCounter < 0) {
-                    animationFrameCounter = 0;
-                }
-                if (animationFrameCounter > 8) {
-                    animationFrameCounter = 8;
-                }
-                LevelBase.updateTTO(Math.round(animationFrameCounter));
+            if (animationFrameCounter < 0) {
+                animationFrameCounter = 0;
+            }
+            if (animationFrameCounter > 8) {
+                animationFrameCounter = 8;
+            }
+            LevelBase.updateTTO(Math.round(animationFrameCounter));
 
 
 			guiShader.enable();
