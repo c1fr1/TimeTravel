@@ -69,6 +69,15 @@ public class MainView extends EnigView {
 
 		//changing texture for tto
 		ttoTexture = new Texture[9];
+		ttoTexture[0] = new Texture("res/anims/tto-1");
+		ttoTexture[1] = new Texture("res/anims/tto-2");
+		ttoTexture[2] = new Texture("res/anims/tto-3");
+		ttoTexture[3] = new Texture("res/anims/tto-4");
+		ttoTexture[4] = new Texture("res/anims/tto-5");
+		ttoTexture[5] = new Texture("res/anims/tto-6");
+		ttoTexture[6] = new Texture("res/anims/tto-7");
+		ttoTexture[7] = new Texture("res/anims/tto-8");
+		ttoTexture[8] = new Texture("res/anims/tto-9");
 
 		pauseGUI = new Texture("res/timeTravelGUI.png");
 		pauseGUIVAO = new VAO(-0.5f, -0.125f, 1f, 0.25f);
