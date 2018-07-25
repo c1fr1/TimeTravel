@@ -46,6 +46,10 @@ public class MainView extends EnigView {
 	
 	public long lastTime = System.nanoTime();
 
+	SpriteButton cont;
+	SpriteButton restart;
+	SpriteButton menu;
+
 	@Override
 	public void setup() {
 		//set variables here
@@ -65,9 +69,9 @@ public class MainView extends EnigView {
 		spriteTexture[2] = new Texture("res/sprite-right.png");
 		spriteTexture[3] = new Texture("res/sprite-up.png");
 
-        SpriteButton cont = new SpriteButton(-0.5f,0.525f,1f,0.4f,"res/menu/continue.png");
-		SpriteButton restart = new SpriteButton(-0.39f, -0.125f, .78f, 0.55f,"res/menu/restart.png");
-		SpriteButton menu = new SpriteButton(-0.71f, -0.725f, 1.42f, 0.25f,"res/menu/menu.png");
+        cont = new SpriteButton(-0.5f,0.525f,1f,0.4f,"res/menu/continue.png");
+		restart = new SpriteButton(-0.39f, -0.125f, .78f, 0.55f,"res/menu/restart.png");
+		menu = new SpriteButton(-0.71f, -0.725f, 1.42f, 0.25f,"res/menu/menu.png");
 
 		textureShader = new ShaderProgram("textureShaders");
 		pauseShader = new ShaderProgram("pauseShaders");
@@ -114,13 +118,7 @@ public class MainView extends EnigView {
 			guiShader.enable();
 
 			guiShader.shaders[0].uniforms[0].set((float)window.getHeight()/(float)window.getWidth());
-			pauseGUI[0].bind();
-			pauseGUIVAO[0].fullRender();
-            pauseGUI[1].bind();
-            pauseGUIVAO[1].fullRender();
-            pauseGUI[2].bind();
-            pauseGUIVAO[2].fullRender();
-
+			cont.Re
             //window.cursorxfloat
 		}
 		//Time Travel animation
