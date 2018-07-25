@@ -22,7 +22,7 @@ public class LevelBase
     public static Texture floorTexture;
     public static Texture wallTexture;
     public static Texture newwallTexture;
-    public static Texture ttoTexture;
+    public static Texture[] ttoTexture;
     public static Texture controllerTexture;
     public static ShaderProgram levelProgram;
 //Render Crap
@@ -52,7 +52,18 @@ public class LevelBase
             floorTexture = new Texture("res/present-floor.png");
             wallTexture = new Texture("res/present-wall.png");
             newwallTexture = new Texture("res/future-wall.png");
-            ttoTexture = new Texture("res/present-tto.png");
+			//changing texture for tto
+			ttoTexture = new Texture[9];
+			ttoTexture[0] = new Texture("res/anims/tto-1");
+			ttoTexture[1] = new Texture("res/anims/tto-2");
+			ttoTexture[2] = new Texture("res/anims/tto-3");
+			ttoTexture[3] = new Texture("res/anims/tto-4");
+			ttoTexture[4] = new Texture("res/anims/tto-5");
+			ttoTexture[5] = new Texture("res/anims/tto-6");
+			ttoTexture[6] = new Texture("res/anims/tto-7");
+			ttoTexture[7] = new Texture("res/anims/tto-8");
+			ttoTexture[8] = new Texture("res/anims/tto-9");
+
             levelProgram = new ShaderProgram("levelShader");
             controllerTexture = new Texture("res/controller-tto.png");
         }
@@ -143,7 +154,7 @@ public class LevelBase
 					}else if (currentChar == '#') {
     					newwallTexture.bind();
 					}else if (currentChar == 't') {
-						controllerTexture.bind();
+						ttoTexture[0].bind();
 					}
 					float x = ((float) chr) * 50f;
 					float y = -((float) row) * 50f;
