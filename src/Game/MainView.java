@@ -5,6 +5,7 @@ import engine.Entities.Camera;
 import engine.OpenGL.*;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowAspectRatio;
 import static org.lwjgl.opengl.GL11.*;
 
 public class MainView extends EnigView {
@@ -126,6 +127,8 @@ public class MainView extends EnigView {
             pauseGUIVAO[1].fullRender();
             pauseGUI[2].bind();
             pauseGUIVAO[2].fullRender();
+
+            //window.cursorxfloat
 		}
 		//Time Travel animation
 		else if (timeTravelFrames > 0) {
