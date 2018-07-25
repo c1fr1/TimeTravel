@@ -53,6 +53,7 @@ public class MainView extends EnigView {
 		//set variables here
 		
 		glDisable(GL_DEPTH_TEST);
+		//needs to be generalized to use level selected - level path is a parameter
 		currentlevel = new LevelBase("res/Levels/Level1");
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
 		guiShader = new ShaderProgram("guiShader");
