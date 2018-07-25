@@ -199,15 +199,7 @@ public class MainView extends EnigView {
 
             //CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't'
 			//render tto gui if the player is on the tto
-			if (    CamCollision.checkCollision(cam.x-15, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x+15, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x, cam.y+15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x, cam.y-15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-
-                    CamCollision.checkCollision(cam.x-15, cam.y-15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x+15, cam.y-15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x-15, cam.y+15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x+15, cam.y+15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
+			if (CamCollision.checkCollision(cam.x, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
 				ttoguiShader.enable();
 				ttoguiShader.shaders[0].uniforms[0].set(aspectRatio);
 				ttoguiShader.shaders[2].uniforms[0].set(-1f);
@@ -246,15 +238,16 @@ public class MainView extends EnigView {
                 }
 
 			}
-            if (    CamCollision.checkCollision(cam.x-35, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x+35, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x, cam.y+35, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x, cam.y-35, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+            int spriteSize = 35;
+            if (    CamCollision.checkCollision(cam.x-spriteSize, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x+spriteSize, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x, cam.y+spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x, cam.y-spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
 
-                    CamCollision.checkCollision(cam.x-35, cam.y-35, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x+35, cam.y-35, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x-35, cam.y+35, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x+35, cam.y+35, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x-spriteSize, cam.y-spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x+spriteSize, cam.y-spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x-spriteSize, cam.y+spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                    CamCollision.checkCollision(cam.x+spriteSize, cam.y+spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
 
                     CamCollision.checkCollision(cam.x, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
                 animationFrameCounter+=0.5*delta_time*0.03;
