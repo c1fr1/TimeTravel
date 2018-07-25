@@ -15,6 +15,7 @@ import java.util.logging.Level;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_K;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_L;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.opengl.GL11.*;
 
 public class MainView extends EnigView {
@@ -28,7 +29,10 @@ public class MainView extends EnigView {
 	public LevelBase level1;
 	
 	public ShaderProgram guiShader;
+	public ShaderProgram ttoguiShader;
 	public ShaderProgram textureShader;
+	public ShaderProgram pauseShader;
+	public ShaderProgram travelShader;
 
 	public Texture ttoGUI;
 	public Texture[] spriteTexture;
@@ -47,8 +51,14 @@ public class MainView extends EnigView {
 
 	public boolean pause = false;
 	public boolean cooldown = false;
+	
+	public int framesPaused;
 
+	public int timeTravelFrames = 0;
+	
 	public int animationFrameCounter = 0;
+	
+	public float lastTime = System.nanoTime();
 
 	@Override
 	public void setup() {
@@ -59,8 +69,8 @@ public class MainView extends EnigView {
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
 		guiShader = new ShaderProgram("guiShader");
 		ttoGUI = new Texture("res/timeTravelGUI.png");
-		ttoGUIVAO = new VAO(-0.5f, -0.125f, 1f, 0.25f);
-		playerVAO = new VAO(-45, 0f, 30f, 30f);
+		ttoGUIVAO = new VAO(-0.5f, 0.125f, 1f, 0.25f);
+		playerVAO = new VAO(-15, -15f, 30f, 30f);
 		
 		spriteTexture = new Texture[4];//down left right up;
 		spriteTexture[0] = new Texture("res/future-wall.png");
@@ -70,11 +80,13 @@ public class MainView extends EnigView {
 
 		ttoTexture = new Texture[9];
 
-
 		pauseGUI = new Texture("res/timeTravelGUI.png");
 		pauseGUIVAO = new VAO(-0.5f, -0.125f, 1f, 0.25f);
 
 		textureShader = new ShaderProgram("textureShaders");
+		pauseShader = new ShaderProgram("pauseShaders");
+		ttoguiShader = new ShaderProgram("ttoGUIShader");
+		travelShader = new ShaderProgram("travelShaders");
 		mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));
 		screenVAO = new VAO(-1f, -1f, 2f, 2f);
 
@@ -84,8 +96,10 @@ public class MainView extends EnigView {
 	
 	@Override
 	public boolean loop() {
+		float aspectRatio = (float) window.getHeight() / (float) window.getWidth();
 		if(UserControls.pause(window)){
 			if(!cooldown){
+				framesPaused = 0;
 				pause = !pause;
 			}
 			cooldown = true;
@@ -93,17 +107,47 @@ public class MainView extends EnigView {
 		} else if(!UserControls.pause(window)){
 			cooldown = false;
 		}
-
-		mainFBO.prepareForTexture();
-		if(pause){
+		if (timeTravelFrames > 0) {
+			FBO.prepareDefaultRender();
+			
+			level1.render(cam, currentTZ);
+			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
+			spriteTexture[0].bind();
+			playerVAO.fullRender();
+			
+			travelShader.enable();
+			travelShader.shaders[2].uniforms[0].set(aspectRatio);
+			float dist = (float) timeTravelFrames / 5;
+			travelShader.shaders[2].uniforms[1].set(dist);
+			mainFBO.getBoundTexture().bind();
+			screenVAO.fullRender();
 			guiShader.enable();
+			
+			++timeTravelFrames;
+			if (timeTravelFrames >= 50) {
+				timeTravelFrames = 0;
+			}
+		}else if(pause){
+			++framesPaused;
+			float scalar = 1-((float)framesPaused/50f);
+			if (scalar < 0.5f) {
+				scalar = 0.5f;
+			}
+			FBO.prepareDefaultRender();
+			pauseShader.enable();
+			pauseShader.shaders[2].uniforms[0].set(scalar);
+			mainFBO.getBoundTexture().bind();
+			screenVAO.fullRender();
+			guiShader.enable();
+			
 			guiShader.shaders[0].uniforms[0].set((float)window.getHeight()/(float)window.getWidth());
 			pauseGUI.bind();
 			pauseGUIVAO.fullRender();
 		}else {
+			mainFBO.prepareForTexture();
 			long time = System.nanoTime();
-			int delta_time = (int) ((time - window.lastTime) / 1000000);
-			//window.lastTime = time;
+			float delta_time = ((float)(time - lastTime) / 1000000f);
+			lastTime = time;
 
 			//game here
 			level1.render(cam, currentTZ);
@@ -111,16 +155,16 @@ public class MainView extends EnigView {
 			float hSpeed = 0;
 
 			if (UserControls.forward(window)) {
-				vSpeed -= delta_time / 3;
+				vSpeed -= (float) delta_time / 3f;
 			}
 			if (UserControls.backward(window)) {
-				vSpeed += delta_time / 3;
+				vSpeed += (float) delta_time / 3f;
 			}
 			if (UserControls.left(window)) {
-				hSpeed -= delta_time / 3;
+				hSpeed -= (float) delta_time / 3f;
 			}
 			if (UserControls.right(window)) {
-				hSpeed += delta_time / 3;
+				hSpeed += (float) delta_time / 3f;
 			}
 			if (hSpeed != 0) {
 				vSpeed *= Math.sqrt(2) / 2;
@@ -129,8 +173,8 @@ public class MainView extends EnigView {
 				hSpeed *= Math.sqrt(2) / 2;
 			}
 			if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ)) != '#'){
-			    cam.x += CamCollision.getMoveX(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ));
-                cam.y += CamCollision.getMoveY(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ));
+			    cam.x = CamCollision.getMoveX(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ));
+                cam.y = CamCollision.getMoveY(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ));
             }
 
 
@@ -138,25 +182,52 @@ public class MainView extends EnigView {
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
 			spriteTexture[0].bind();
 			playerVAO.fullRender();
-
-			guiShader.enable();
-			guiShader.shaders[0].uniforms[0].set((float) window.getHeight() / (float) window.getWidth());
+			
 			//render tto gui if the player is on the tto
 			if (CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ)) == 't') {
-				ttoGUI.bind();
-				ttoGUIVAO.fullRender();
-				animationFrameCounter ++;
-				 //= new Texture("res/present-tto"+animationFrameCounter+".png");
+				ttoguiShader.enable();
+				ttoguiShader.shaders[0].uniforms[0].set(aspectRatio);
+				ttoguiShader.shaders[2].uniforms[0].set(-1f);
+				if (window.cursorXFloat * aspectRatio > -0.25 && window.cursorXFloat * aspectRatio < -0.2) {
+					if (window.cursorYFloat > 0.125 && window.cursorYFloat < 0.375) {
+						if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] > 0) {
+							if (timeTravelFrames == 0) {
+								--currentTZ;
+							}
+							++timeTravelFrames;
+							//time travel backward
+						}
+						ttoguiShader.shaders[2].uniforms[0].set(0.15f);
+					}
+				}
+				if (window.cursorXFloat * aspectRatio > 0.2 && window.cursorXFloat * aspectRatio < 0.25) {
+					if (window.cursorYFloat > 0.125 && window.cursorYFloat < 0.375) {
+						if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] > 0) {
+							if (timeTravelFrames == 0) {
+								++currentTZ;
+							}
+							++timeTravelFrames;
+							//time travel forward
+						}
+						ttoguiShader.shaders[2].uniforms[0].set(0.85f);
+					}
+				}
+				//ttoguiShader.shaders[2].uniforms[0].set(0.2f);
+				if (timeTravelFrames == 0) {
+					ttoGUI.bind();
+					ttoGUIVAO.fullRender();
+				}
+				++animationFrameCounter;
+			}else {
+				--animationFrameCounter;
 			}
-			else {
-				animationFrameCounter --;
-			}
+			guiShader.enable();
+			guiShader.shaders[0].uniforms[0].set(aspectRatio);
+			FBO.prepareDefaultRender();
+			textureShader.enable();
+			mainFBO.getBoundTexture().bind();
+			screenVAO.fullRender();
 		}
-
-		FBO.prepareDefaultRender();
-		textureShader.enable();
-		mainFBO.getBoundTexture().bind();
-		screenVAO.fullRender();
 		return false;
 	}
 	
