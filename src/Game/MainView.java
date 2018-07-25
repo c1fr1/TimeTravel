@@ -122,7 +122,6 @@ public class MainView extends EnigView {
             pauseGUIVAO[2].fullRender();
 
             //window.cursorxfloat
-			pu
 		}
 		//Time Travel animation
 		else if (timeTravelFrames > 0) {
