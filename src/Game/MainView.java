@@ -67,6 +67,7 @@ public class MainView extends EnigView {
 		spriteTexture[2] = new Texture("res/sprite-right.png");
 		spriteTexture[3] = new Texture("res/sprite-up.png");
 
+		//changing texture for tto
 		ttoTexture = new Texture[9];
 
 		pauseGUI = new Texture("res/timeTravelGUI.png");
