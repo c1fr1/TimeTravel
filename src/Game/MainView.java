@@ -40,8 +40,7 @@ public class MainView extends EnigView {
 	
 	public int framesPaused;
 
-	public int timeTravelFrames = 0;
-	
+	public float timeTravelFrames = 0;
 	public float animationFrameCounter = 0;
 	
 	public long lastTime = System.nanoTime();
@@ -81,6 +80,8 @@ public class MainView extends EnigView {
 	
 	@Override
 	public boolean loop() {
+		long time = System.nanoTime();
+		float delta_time = ((float)(time - lastTime) / 1000000f);
 		float aspectRatio = (float) window.getHeight() / (float) window.getWidth();
 		if(UserControls.pause(window)){
 			if(!cooldown){
@@ -133,7 +134,7 @@ public class MainView extends EnigView {
 
 			lastTime = System.nanoTime();
 
-			++timeTravelFrames;
+			timeTravelFrames+=delta_time*0.05;
 			if (timeTravelFrames >= 50) {
 				timeTravelFrames = 0;
 			}
@@ -141,8 +142,6 @@ public class MainView extends EnigView {
 		//run game
 		else {
 			mainFBO.prepareForTexture();
-			long time = System.nanoTime();
-			float delta_time = ((float)(time - lastTime) / 1000000f);
 
 
 			lastTime = time;
