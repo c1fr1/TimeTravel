@@ -121,7 +121,9 @@ public class MainView extends EnigView {
 			mainFBO.getBoundTexture().bind();
 			screenVAO.fullRender();
 			guiShader.enable();
-			
+
+			lastTime = System.nanoTime();
+
 			++timeTravelFrames;
 			if (timeTravelFrames >= 50) {
 				timeTravelFrames = 0;
@@ -132,6 +134,10 @@ public class MainView extends EnigView {
 			if (scalar < 0.5f) {
 				scalar = 0.5f;
 			}
+
+
+			lastTime = System.nanoTime();
+
 			FBO.prepareDefaultRender();
 			pauseShader.enable();
 			pauseShader.shaders[2].uniforms[0].set(scalar);
