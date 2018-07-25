@@ -14,7 +14,7 @@ public class MainView extends EnigView {
 	
 	//project variables
 
-	public LevelBase currentlevel;
+	public LevelBase currentLevel;
 	
 	public ShaderProgram guiShader;
 	public ShaderProgram ttoguiShader;
@@ -52,7 +52,7 @@ public class MainView extends EnigView {
 		
 		glDisable(GL_DEPTH_TEST);
 		//needs to be generalized to use level selected - level path is a parameter
-		currentlevel = new LevelBase("res/Levels/Level1");
+		currentLevel = new LevelBase("res/Levels/Level1");
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
 		guiShader = new ShaderProgram("guiShader");
 		ttoGUI = new Texture("res/timeTravelGUI.png");
@@ -75,8 +75,8 @@ public class MainView extends EnigView {
 		mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));
 		screenVAO = new VAO(-1f, -1f, 2f, 2f);
 
-		cam.x = currentlevel.ystart[currentlevel.currentTZ] * 50;
-		cam.y = currentlevel.xstart[currentlevel.currentTZ] * 50;
+		cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
+		cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
 	}
 	
 	@Override
@@ -118,7 +118,7 @@ public class MainView extends EnigView {
 		else if (timeTravelFrames > 0) {
 			FBO.prepareDefaultRender();
 			
-			currentlevel.render(cam);
+			currentLevel.render(cam);
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
 			spriteTexture[0].bind();
 			playerVAO.fullRender();
@@ -149,9 +149,9 @@ public class MainView extends EnigView {
 
 
 			//game here
-			currentlevel.render(cam);
-
-
+			currentLevel.render(cam);
+			
+			
 			float vSpeed = 0;
 			float hSpeed = 0;
 
@@ -173,10 +173,10 @@ public class MainView extends EnigView {
 			if (vSpeed != 0) {
 				hSpeed *= Math.sqrt(2) / 2;
 			}
-			//if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ)) != '#'){
-			cam.x = CamCollision.getMoveX(cam.x, cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ), '#');
-			cam.y = CamCollision.getMoveY(cam.x, cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ), '#');
-			//}
+			//if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '#'){
+			cam.x = CamCollision.getMoveX(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '#');
+			cam.y = CamCollision.getMoveY(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '#');
+            //}
 
 
 			LevelBase.levelProgram.enable();
@@ -185,17 +185,19 @@ public class MainView extends EnigView {
 			playerVAO.fullRender();
 
 			//render tto gui if the player is on the tto
-			if (CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ)) == 't') {
+			if (CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
 				ttoguiShader.enable();
 				ttoguiShader.shaders[0].uniforms[0].set(aspectRatio);
 				ttoguiShader.shaders[2].uniforms[0].set(-1f);
 				if (window.cursorXFloat * aspectRatio > -0.25 && window.cursorXFloat * aspectRatio < -0.2) {
 					if (window.cursorYFloat > 0.125 && window.cursorYFloat < 0.375) {
 						if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] > 0) {
-							if (timeTravelFrames == 0) {
-								--currentlevel.currentTZ;
+							if (currentLevel.currentTZ > 0) {
+								if (timeTravelFrames == 0) {
+									--currentLevel.currentTZ;
+								}
+								++timeTravelFrames;
 							}
-							++timeTravelFrames;
 							//time travel backward
 						}
 						ttoguiShader.shaders[2].uniforms[0].set(0.15f);
@@ -204,10 +206,12 @@ public class MainView extends EnigView {
 				if (window.cursorXFloat * aspectRatio > 0.2 && window.cursorXFloat * aspectRatio < 0.25) {
 					if (window.cursorYFloat > 0.125 && window.cursorYFloat < 0.375) {
 						if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] > 0) {
-							if (timeTravelFrames == 0) {
-								++currentlevel.currentTZ;
+							if (currentLevel.currentTZ + 1 < currentLevel.levelseries.size()) {
+								if (timeTravelFrames == 0) {
+									++currentLevel.currentTZ;
+								}
+								++timeTravelFrames;
 							}
-							++timeTravelFrames;
 							//time travel forward
 						}
 						ttoguiShader.shaders[2].uniforms[0].set(0.85f);
