@@ -15,6 +15,7 @@ public class LevelBase
 	ArrayList<ArrayList<Character[]>> levelseries;
 	float[] xstart;
 	float[] ystart;
+	int currentTZ;
     
     
     public static VAO tileObj;
@@ -104,6 +105,7 @@ public class LevelBase
 					{
 						xstart[i] = j;
 						ystart[i] = k;
+						currentTZ = i;
 					}
 				}
 				//adds the row char array to the level arraylist
@@ -129,12 +131,12 @@ public class LevelBase
 		*/
 	}
 
-    public void render(Camera cam, int timezone) {
+    public void render(Camera cam) {
     	levelProgram.enable();
     	tileObj.prepareRender();
-    	for (int row = 0; row < levelseries.get(timezone).size();++row) {
-    		for (int chr = 0; chr < levelseries.get(timezone).get(row).length; ++chr) {
-    			char currentChar = levelseries.get(timezone).get(row)[chr];
+    	for (int row = 0; row < levelseries.get(currentTZ).size();++row) {
+    		for (int chr = 0; chr < levelseries.get(currentTZ).get(row).length; ++chr) {
+    			char currentChar = levelseries.get(currentTZ).get(row)[chr];
 				if (currentChar != ' ') {
 					if (currentChar == '_' || currentChar == 's') {
     					floorTexture.bind();

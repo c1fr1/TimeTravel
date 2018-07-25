@@ -24,7 +24,6 @@ public class MainView extends EnigView {
 	public Camera cam;
 	
 	//project variables
-	int currentTZ = 0;
 
 	public LevelBase level1;
 	
@@ -90,8 +89,8 @@ public class MainView extends EnigView {
 		mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));
 		screenVAO = new VAO(-1f, -1f, 2f, 2f);
 
-		cam.x = level1.ystart[currentTZ] * 50;
-		cam.y = level1.xstart[currentTZ] * 50;
+		cam.x = level1.ystart[level1.currentTZ] * 50;
+		cam.y = level1.xstart[level1.currentTZ] * 50;
 	}
 	
 	@Override
@@ -110,7 +109,7 @@ public class MainView extends EnigView {
 		if (timeTravelFrames > 0) {
 			FBO.prepareDefaultRender();
 			
-			level1.render(cam, currentTZ);
+			level1.render(cam);
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
 			spriteTexture[0].bind();
 			playerVAO.fullRender();
@@ -150,7 +149,7 @@ public class MainView extends EnigView {
 			lastTime = time;
 
 			//game here
-			level1.render(cam, currentTZ);
+			level1.render(cam);
 			float vSpeed = 0;
 			float hSpeed = 0;
 
@@ -172,9 +171,9 @@ public class MainView extends EnigView {
 			if (vSpeed != 0) {
 				hSpeed *= Math.sqrt(2) / 2;
 			}
-			if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ)) != '#'){
-			    cam.x = CamCollision.getMoveX(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ));
-                cam.y = CamCollision.getMoveY(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ));
+			if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(level1.currentTZ)) != '#'){
+			    cam.x = CamCollision.getMoveX(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(level1.currentTZ));
+                cam.y = CamCollision.getMoveY(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(level1.currentTZ));
             }
 
 
@@ -184,7 +183,7 @@ public class MainView extends EnigView {
 			playerVAO.fullRender();
 			
 			//render tto gui if the player is on the tto
-			if (CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ)) == 't') {
+			if (CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, level1.levelseries.get(level1.currentTZ)) == 't') {
 				ttoguiShader.enable();
 				ttoguiShader.shaders[0].uniforms[0].set(aspectRatio);
 				ttoguiShader.shaders[2].uniforms[0].set(-1f);
@@ -192,7 +191,7 @@ public class MainView extends EnigView {
 					if (window.cursorYFloat > 0.125 && window.cursorYFloat < 0.375) {
 						if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] > 0) {
 							if (timeTravelFrames == 0) {
-								--currentTZ;
+								--level1.currentTZ;
 							}
 							++timeTravelFrames;
 							//time travel backward
@@ -204,7 +203,7 @@ public class MainView extends EnigView {
 					if (window.cursorYFloat > 0.125 && window.cursorYFloat < 0.375) {
 						if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] > 0) {
 							if (timeTravelFrames == 0) {
-								++currentTZ;
+								++level1.currentTZ;
 							}
 							++timeTravelFrames;
 							//time travel forward
