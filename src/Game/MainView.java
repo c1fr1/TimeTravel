@@ -153,16 +153,16 @@ public class MainView extends EnigView {
 			float hSpeed = 0;
 
 			if (UserControls.forward(window)) {
-				vSpeed -= (float) delta_time / 3f;
+				vSpeed -= delta_time / 3f;
 			}
 			if (UserControls.backward(window)) {
-				vSpeed += (float) delta_time / 3f;
+				vSpeed += delta_time / 3f;
 			}
 			if (UserControls.left(window)) {
-				hSpeed -= (float) delta_time / 3f;
+				hSpeed -= delta_time / 3f;
 			}
 			if (UserControls.right(window)) {
-				hSpeed += (float) delta_time / 3f;
+				hSpeed += delta_time / 3f;
 			}
 			if (hSpeed != 0) {
 				vSpeed *= Math.sqrt(2) / 2;
