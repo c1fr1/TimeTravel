@@ -58,7 +58,7 @@ public class MainView extends EnigView {
 	
 	public int animationFrameCounter = 0;
 	
-	public float lastTime = System.nanoTime();
+	public long lastTime = System.nanoTime();
 
 	@Override
 	public void setup() {
@@ -147,7 +147,12 @@ public class MainView extends EnigView {
 			mainFBO.prepareForTexture();
 			long time = System.nanoTime();
 			float delta_time = ((float)(time - lastTime) / 1000000f);
+
+			System.out.println(lastTime);
+			System.out.println(time);
+
 			lastTime = time;
+
 
 			//game here
 			level1.render(cam, currentTZ);
@@ -172,7 +177,8 @@ public class MainView extends EnigView {
 			if (vSpeed != 0) {
 				hSpeed *= Math.sqrt(2) / 2;
 			}
-			if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ)) != '#'){
+			//System.out.println(delta_time);
+			if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ)) != '#') {
 			    cam.x = CamCollision.getMoveX(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ));
                 cam.y = CamCollision.getMoveY(cam.x,cam.y, hSpeed, vSpeed, level1.levelseries.get(currentTZ));
             }
