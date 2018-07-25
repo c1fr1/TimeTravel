@@ -150,6 +150,8 @@ public class MainView extends EnigView {
 
 			//game here
 			currentlevel.render(cam);
+
+
 			float vSpeed = 0;
 			float hSpeed = 0;
 
@@ -171,10 +173,10 @@ public class MainView extends EnigView {
 			if (vSpeed != 0) {
 				hSpeed *= Math.sqrt(2) / 2;
 			}
-			if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ)) != '#'){
-				cam.x = CamCollision.getMoveX(cam.x,cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ));
-				cam.y = CamCollision.getMoveY(cam.x,cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ));
-			}
+			//if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ)) != '#'){
+			cam.x = CamCollision.getMoveX(cam.x, cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ), '#');
+			cam.y = CamCollision.getMoveY(cam.x, cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ), '#');
+			//}
 
 
 			LevelBase.levelProgram.enable();
