@@ -54,15 +54,15 @@ public class LevelBase
             newwallTexture = new Texture("res/future-wall.png");
 			//changing texture for tto
 			ttoTexture = new Texture[9];
-			ttoTexture[0] = new Texture("res/anims/tto-1");
-			ttoTexture[1] = new Texture("res/anims/tto-2");
-			ttoTexture[2] = new Texture("res/anims/tto-3");
-			ttoTexture[3] = new Texture("res/anims/tto-4");
-			ttoTexture[4] = new Texture("res/anims/tto-5");
-			ttoTexture[5] = new Texture("res/anims/tto-6");
-			ttoTexture[6] = new Texture("res/anims/tto-7");
-			ttoTexture[7] = new Texture("res/anims/tto-8");
-			ttoTexture[8] = new Texture("res/anims/tto-9");
+			ttoTexture[0] = new Texture("res/anims/tto-1.png");
+			ttoTexture[1] = new Texture("res/anims/tto-2.png");
+			ttoTexture[2] = new Texture("res/anims/tto-3.png");
+			ttoTexture[3] = new Texture("res/anims/tto-4.png");
+			ttoTexture[4] = new Texture("res/anims/tto-5.png");
+			ttoTexture[5] = new Texture("res/anims/tto-6.png");
+			ttoTexture[6] = new Texture("res/anims/tto-7.png");
+			ttoTexture[7] = new Texture("res/anims/tto-8.png");
+			ttoTexture[8] = new Texture("res/anims/tto-9.png");
 
             levelProgram = new ShaderProgram("levelShader");
             controllerTexture = new Texture("res/controller-tto.png");
