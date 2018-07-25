@@ -25,7 +25,10 @@ public class LevelBase
     public static Texture[] ttoTexture;
     public static Texture controllerTexture;
     public static ShaderProgram levelProgram;
-//Render Crap
+    public static int frameCounter;
+
+
+	//Render Crap
     /*public LevelBase(String level, int width, int height)
     {
     	if (tileObj == null) {
@@ -142,7 +145,11 @@ public class LevelBase
 		*/
 	}
 
-    public void render(Camera cam) {
+	public static void updateTTO(int locationInArray) {
+		frameCounter = locationInArray;
+	}
+
+	public void render(Camera cam) {
     	levelProgram.enable();
     	tileObj.prepareRender();
     	for (int row = 0; row < levelseries.get(currentTZ).size();++row) {
@@ -154,7 +161,7 @@ public class LevelBase
 					}else if (currentChar == '#') {
     					newwallTexture.bind();
 					}else if (currentChar == 't') {
-						ttoTexture[0].bind();
+						ttoTexture[frameCounter].bind();
 					}
 					float x = ((float) chr) * 50f;
 					float y = -((float) row) * 50f;

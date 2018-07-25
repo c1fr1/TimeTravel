@@ -42,7 +42,7 @@ public class MainView extends EnigView {
 
 	public int timeTravelFrames = 0;
 	
-	public int animationFrameCounter = 0;
+	public float animationFrameCounter = 0;
 	
 	public long lastTime = System.nanoTime();
 
@@ -223,10 +223,18 @@ public class MainView extends EnigView {
 					ttoGUI.bind();
 					ttoGUIVAO.fullRender();
 				}
-				++animationFrameCounter;
+				animationFrameCounter+=0.5*delta_time*0.03;
 			}else {
-				--animationFrameCounter;
+				animationFrameCounter-=delta_time*0.03;
 			}
+			if (animationFrameCounter < 0) {
+				animationFrameCounter = 0;
+			}
+			if (animationFrameCounter > 8) {
+				animationFrameCounter = 8;
+			}
+			LevelBase.updateTTO(Math.round(animationFrameCounter));
+
 			guiShader.enable();
 			guiShader.shaders[0].uniforms[0].set(aspectRatio);
 			FBO.prepareDefaultRender();
