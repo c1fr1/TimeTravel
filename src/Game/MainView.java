@@ -57,7 +57,7 @@ public class MainView extends EnigView {
 		guiShader = new ShaderProgram("guiShader");
 		ttoGUI = new Texture("res/timeTravelGUI.png");
 		ttoGUIVAO = new VAO(-0.5f, 0.125f, 1f, 0.25f);
-		playerVAO = new VAO(-15, -15f, 30f, 30f);
+		playerVAO = new VAO(-40f, 10f, 30f, 30f);
 		
 		spriteTexture = new Texture[4];//down left right up;
 		spriteTexture[0] = new Texture("res/future-wall.png");
