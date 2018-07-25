@@ -97,7 +97,27 @@ public class MainView extends EnigView {
 		} else if(!UserControls.pause(window)){
 			cooldown = false;
 		}
-		if (timeTravelFrames > 0) {
+		if(pause){
+			++framesPaused;
+			float scalar = 1-((float)framesPaused/50f);
+			if (scalar < 0.5f) {
+				scalar = 0.5f;
+			}
+
+
+			lastTime = System.nanoTime();
+
+			FBO.prepareDefaultRender();
+			pauseShader.enable();
+			pauseShader.shaders[2].uniforms[0].set(scalar);
+			mainFBO.getBoundTexture().bind();
+			screenVAO.fullRender();
+			guiShader.enable();
+
+			guiShader.shaders[0].uniforms[0].set((float)window.getHeight()/(float)window.getWidth());
+			pauseGUI.bind();
+			pauseGUIVAO.fullRender();
+		}  else if (timeTravelFrames > 0) {
 			FBO.prepareDefaultRender();
 			
 			currentlevel.render(cam);
@@ -119,27 +139,8 @@ public class MainView extends EnigView {
 			if (timeTravelFrames >= 50) {
 				timeTravelFrames = 0;
 			}
-		}else if(pause){
-			++framesPaused;
-			float scalar = 1-((float)framesPaused/50f);
-			if (scalar < 0.5f) {
-				scalar = 0.5f;
-			}
-
-
-			lastTime = System.nanoTime();
-
-			FBO.prepareDefaultRender();
-			pauseShader.enable();
-			pauseShader.shaders[2].uniforms[0].set(scalar);
-			mainFBO.getBoundTexture().bind();
-			screenVAO.fullRender();
-			guiShader.enable();
-			
-			guiShader.shaders[0].uniforms[0].set((float)window.getHeight()/(float)window.getWidth());
-			pauseGUI.bind();
-			pauseGUIVAO.fullRender();
-		}else {
+		}
+		else {
 			mainFBO.prepareForTexture();
 			long time = System.nanoTime();
 			float delta_time = ((float)(time - lastTime) / 1000000f);
@@ -172,16 +173,16 @@ public class MainView extends EnigView {
 				hSpeed *= Math.sqrt(2) / 2;
 			}
 			if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ)) != '#'){
-			    cam.x = CamCollision.getMoveX(cam.x,cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ));
-                cam.y = CamCollision.getMoveY(cam.x,cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ));
-            }
+				cam.x = CamCollision.getMoveX(cam.x,cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ));
+				cam.y = CamCollision.getMoveY(cam.x,cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ));
+			}
 
 
 			LevelBase.levelProgram.enable();
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
 			spriteTexture[0].bind();
 			playerVAO.fullRender();
-			
+
 			//render tto gui if the player is on the tto
 			if (CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, currentlevel.levelseries.get(currentlevel.currentTZ)) == 't') {
 				ttoguiShader.enable();
@@ -227,6 +228,7 @@ public class MainView extends EnigView {
 			mainFBO.getBoundTexture().bind();
 			screenVAO.fullRender();
 		}
+
 		return false;
 	}
 	
