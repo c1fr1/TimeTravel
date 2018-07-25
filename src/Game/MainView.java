@@ -68,12 +68,12 @@ public class MainView extends EnigView {
 
         pauseGUI = new Texture[3];
         pauseGUIVAO = new VAO[3];
-		pauseGUI[0] = new Texture("res/menu/continue.png");
-		pauseGUIVAO[0] = new VAO(-0.5f, 0.525f, 1f, 0.4f);
         pauseGUI[1] = new Texture("res/menu/restart.png");
         pauseGUIVAO[1] = new VAO(-0.39f, -0.125f, .78f, 0.55f);
         pauseGUI[2] = new Texture("res/menu/menu.png");
         pauseGUIVAO[2] = new VAO(-0.71f, -0.725f, 1.42f, 0.25f);
+
+        SpriteButton continue = new SpriteButton(-0.5f,0.525f,1f,0.4f,"res/menu/continue.png");
 
 
 		textureShader = new ShaderProgram("textureShaders");
@@ -129,6 +129,7 @@ public class MainView extends EnigView {
             pauseGUIVAO[2].fullRender();
 
             //window.cursorxfloat
+			pu
 		}
 		//Time Travel animation
 		else if (timeTravelFrames > 0) {
