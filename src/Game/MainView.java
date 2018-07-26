@@ -115,8 +115,9 @@ public class MainView extends EnigView {
 	public char replaceTile(float x, float y, char current, char replacement) {
 		int tempIntX = (int)(x/50f);
 		int tempIntY = (int)(y/50f);
-		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++)
-		currentLevel.levelseries.get(i).get(tempIntY)[tempIntX] = ' ';
+		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
+			currentLevel.levelseries.get(i).get(tempIntY)[tempIntX] = ' ';
+		}
 
 		//currentLevel.levelseries.get(tempIntY)
 		return current;
@@ -174,7 +175,7 @@ public class MainView extends EnigView {
 			//hover highlighting
 			if (menu.hoverCheck(window.cursorXFloat,window.cursorYFloat))
 			{
-				menu.setPath("res/menu/restart.png");
+				//menu.setPath("res/menu/restart.png");
                 if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1)
 				{
 					System.out.println("Menu Clicked");
@@ -188,7 +189,7 @@ public class MainView extends EnigView {
 			//restart highlighting
             if (restart.hoverCheck(window.cursorXFloat,window.cursorYFloat))
             {
-                restart.setPath("res/menu/menu.png");
+                //restart.setPath("res/menu/menu.png");
              	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1)
                 {
                     System.out.println("Restart Clicked");
@@ -199,12 +200,12 @@ public class MainView extends EnigView {
             }
             else
             {
-                restart.setPath("res/menu/restart.png");
+                //restart.setPath("res/menu/restart.png");
             }
 			//continue highlighting
             if (cont.hoverCheck(window.cursorXFloat,window.cursorYFloat))
             {
-                cont.setPath("res/menu/restart.png");
+                //cont.setPath("res/menu/restart.png");
             	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1)
             	{
             		System.out.println("Continue Clicked");
@@ -214,7 +215,7 @@ public class MainView extends EnigView {
             }
             else
             {
-            	cont.setPath("res/menu/continue.png");
+            	//cont.setPath("res/menu/continue.png");
             }
 		}
 		//Time Travel animation
