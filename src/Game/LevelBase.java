@@ -170,6 +170,119 @@ public class LevelBase
 		System.out.println(output);
 		*/
 	}
+	public LevelBase(String filename, ArrayList<Boolean[]> ttoAbilities) {
+		if (tileObj == null) {
+			tileObj = new VAO(-25f, -25f, 50f, 50f);
+			floorTexture = new Texture("res/present-floor.png");
+			wallTexture = new Texture("res/present-wall.png");
+			newwallTexture = new Texture("res/future-wall.png");
+			keyTexture = new Texture("res/key.png");
+			gateTexture = new Texture("res/gate.png");
+			
+			//changing texture for tto
+			ttoTexture = new Texture[9];
+			ttoTexture[0] = new Texture("res/anims/tto-1.png");
+			ttoTexture[1] = new Texture("res/anims/tto-2.png");
+			ttoTexture[2] = new Texture("res/anims/tto-3.png");
+			ttoTexture[3] = new Texture("res/anims/tto-4.png");
+			ttoTexture[4] = new Texture("res/anims/tto-5.png");
+			ttoTexture[5] = new Texture("res/anims/tto-6.png");
+			ttoTexture[6] = new Texture("res/anims/tto-7.png");
+			ttoTexture[7] = new Texture("res/anims/tto-8.png");
+			ttoTexture[8] = new Texture("res/anims/tto-9.png");
+			
+			levelProgram = new ShaderProgram("levelShader");
+			controllerTexture = new Texture("res/controller-tto.png");
+		}
+		
+		Scanner fileInput;
+		String roomlist = "";
+		//stores level rooms
+		levelseries = new ArrayList<ArrayList<Character[]>>();
+		//get the rooms
+		try
+		{
+			fileInput = new Scanner(new File(filename));
+			
+			while (fileInput.hasNextLine())
+			{
+				String nextline = fileInput.nextLine();
+				roomlist += nextline;
+			}
+		}
+		catch (FileNotFoundException ex)
+		{
+			ex.printStackTrace();
+			System.exit(0);
+		}
+		
+		//splits the main string into level strings
+		String[] rooms = roomlist.split(",");
+		//start position of avatar
+		xstart = new float[rooms.length];
+		ystart = new float[rooms.length];
+		
+		//goes through each room
+		for (int i = 0; i < rooms.length; i++)//level depth
+		{
+			//splits level string into rows
+			String[] levelslices = rooms[i].split("@");
+			ArrayList<Character[]> levelroom = new ArrayList<Character[]>();
+			//goes through each row
+			for (int j = 0; j < levelslices.length; j++)//character row number
+			{
+				//gets a row from the level string split
+				String lane = levelslices[j];
+				Character[] levelrow = new Character[levelslices[j].length()];
+				//goes through the row
+				for (int k = 0; k < lane.length(); k++)//character column number
+				{
+					//puts a character into the char array
+					levelrow[k] = lane.charAt(k);
+					if (lane.charAt(k) == 's')
+					{
+						xstart[i] = j;
+						ystart[i] = k;
+						currentTZ = i;
+					}else if (lane.charAt(k) == 't') {
+						if (levelseries.size() > 0) {
+							char prevLevel = levelseries.get(levelseries.size() - 1).get(j)[k];
+							if (MainView.isNumericValue(prevLevel)) {
+								levelrow[k] = prevLevel;
+							}else {
+								levelrow[k] = (char) (timeZonePossibilities.size() + '0');
+								timeZonePossibilities.add(new Boolean[0]);
+							}
+						}else {
+							levelrow[k] = (char) (timeZonePossibilities.size() + '0');
+							timeZonePossibilities.add(new Boolean[0]);
+						}
+					}
+				}
+				//adds the row char array to the level arraylist
+				levelroom.add(levelrow);
+			}
+			//adds the level arraylist to the levelseries arraylist
+			levelseries.add(levelroom);
+		}
+		timeZonePossibilities = ttoAbilities;
+		ttoFrameCounter = new float[timeZonePossibilities.size()];
+		
+		//LEVEL EXTRACTION
+		/*
+		String output = "";
+		int tense = 2;//time period - 0,1,2
+		for (int j = 0; j < levelseries.get(tense).size(); j++)
+		{
+			for (int k = 0; k < levelseries.get(tense).get(j).length; k++)
+			{
+				output += levelseries.get(tense).get(j)[k];
+			}
+			output += "\n";
+		}
+		System.out.println(output);
+		*/
+	}
 
 	public void updateTTO(int[] locationInArray, float deltaTime) {
 		for (int i = 0; i < ttoFrameCounter.length;++i) {
