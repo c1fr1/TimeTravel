@@ -213,6 +213,9 @@ public class LevelBase
 					else if (currentChar == 'k') {
 						keyTexture.bind();
 					}
+					else if (currentChar == 'l') {
+						gateTexture.bind();
+					}
 					float x = ((float) chr) * 50f;
 					float y = -((float) row) * 50f;
 					levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2*cam.y, 0));
