@@ -14,6 +14,8 @@ public class MainView extends EnigView {
 	public static MainView main;
 	
 	public Camera cam;
+
+	public static char[] solidBlocks = {'#', '_'};
 	
 	//project variables
 
@@ -64,6 +66,7 @@ public class MainView extends EnigView {
 		inventory = new char[9];
 		glDisable(GL_DEPTH_TEST);
 		//needs to be generalized to use level selected - level path is a parameter
+		float aspectRatio = (float) window.getHeight() / (float) window.getWidth();
         currentLevel = new LevelBase("res/Levels/Level"+currentLevelNum+".txt");
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
 		guiShader = new ShaderProgram("guiShader");
@@ -77,9 +80,9 @@ public class MainView extends EnigView {
 		spriteTexture[2] = new Texture("res/sprite-right.png");
 		spriteTexture[3] = new Texture("res/sprite-up.png");
 
-        cont = new SpriteButton(-0.5f,0.525f,1f,0.25f,"res/menu/continue.png");
-        restart = new SpriteButton(-0.5f, -0.125f, 1f, 0.25f,"res/menu/restart.png");
-        menu = new SpriteButton(-0.5f, -0.725f, 1f, 0.25f,"res/menu/menu.png");
+        cont = new SpriteButton(-0.5f,0.525f,1f,0.25f,"res/menu/continue.png", aspectRatio);
+        restart = new SpriteButton(-0.5f, -0.125f, 1f, 0.25f,"res/menu/restart.png", aspectRatio);
+        menu = new SpriteButton(-0.5f, -0.725f, 1f, 0.25f,"res/menu/menu.png", aspectRatio);
 
 		textureShader = new ShaderProgram("textureShaders");
 		pauseShader = new ShaderProgram("pauseShaders");
@@ -258,10 +261,9 @@ public class MainView extends EnigView {
 			if (vSpeed != 0) {
 				hSpeed *= 0.70710678118f;
 			}
-
 			//if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '#' || CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '_'){
-				cam.x = CamCollision.getMoveX(cam.x + getSign(hSpeed)*15f, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '#', '_') - getSign(hSpeed)*15f;
-				cam.y = CamCollision.getMoveY(cam.x, cam.y + getSign(vSpeed)*15f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '#', '_') - getSign(vSpeed)*15f;
+				cam.x = CamCollision.getMoveX(cam.x + getSign(hSpeed)*15f, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), solidBlocks) - getSign(hSpeed)*15f;
+				cam.y = CamCollision.getMoveY(cam.x, cam.y + getSign(vSpeed)*15f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), solidBlocks) - getSign(vSpeed)*15f;
 			//}
 
 

@@ -24,7 +24,17 @@ public class SpriteButton
         sprite = new Texture(path);
         vao = new VAO(x, y, width, height);
     }
-
+	
+	public SpriteButton(float x, float y, float width, float height, String path, float aspectRatio)
+	{
+		xpos = x * aspectRatio;
+		ypos = y;
+		this.width = width * aspectRatio;
+		this.height = height;
+		sprite = new Texture(path);
+		vao = new VAO(x, y, width, height);
+	}
+    
     public boolean hoverCheck(float xmouse, float ymouse)
     {
         if (xmouse <= xpos + width && xmouse >= xpos)

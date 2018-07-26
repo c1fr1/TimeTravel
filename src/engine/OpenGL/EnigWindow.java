@@ -201,9 +201,15 @@ public class EnigWindow {
 			}
 		});
 		
-		glfwSetMouseButtonCallback(id, (long window, int button, int action, int mods) -> {
-			mouseButtons[button] = action;
-		});
+		/*glfwSetMouseButtonCallback(id, (long window, int button, int action, int mods) -> {
+			if (action == 0) {
+				//mouseButtons[button] = 0;
+			}else {
+				if (mouseButtons[button] < 2) {
+					++mouseButtons[button];
+				}
+			}
+		});*/
 		
 		
 		// Get the thread stack and push a new frame
@@ -317,7 +323,13 @@ public class EnigWindow {
 		});
 		
 		glfwSetMouseButtonCallback(id, (long window, int button, int action, int mods) -> {
-			mouseButtons[button] = action;
+			if (action == 0) {
+				mouseButtons[button] = 0;
+			}else {
+				if (mouseButtons[button] < 2) {
+					++mouseButtons[button];
+				}
+			}
 		});
 		
 		
@@ -546,7 +558,7 @@ public class EnigWindow {
 		}
 		for (int i = 0; i < mouseButtons.length; ++i) {
 			if (mouseButtons[i] == 1) {
-				++keys[i];
+				++mouseButtons[i];
 			}
 		}
 	}
