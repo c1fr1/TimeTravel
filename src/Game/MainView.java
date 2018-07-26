@@ -403,6 +403,16 @@ public class MainView extends EnigView {
 				inventory[inventoryCounter] = replaceTile(cam.x, cam.y, ' ');
 				inventoryCounter ++;
 			}
+			if(CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'l'){
+                int xIndex = (int)((cam.x + getSign(hSpeed)*20f)/50f);
+                int yIndex = (int)((cam.y + getSign(vSpeed)*20f)/50f);
+                if(checkInventory('k')){
+                    replaceTile(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, ' ');
+                    getFromInventory('k');
+
+                }
+
+            }
 
 			guiShader.enable();
 			guiShader.shaders[0].uniforms[0].set(aspectRatio);
@@ -434,11 +444,13 @@ public class MainView extends EnigView {
 	}
 
 	public int getSign(float thing){
-		if(thing >= 0){
+		if(thing > 0){
 			return 1;
-		} else {
+		} else if(thing < 0){
 			return -1;
-		}
+		} else {
+		    return 0;
+        }
 	}
 
 	@Override
