@@ -132,11 +132,17 @@ public class MainView extends EnigView {
 			if (menu.hoverCheck(window.cursorXFloat,window.cursorYFloat))
 			{
 				menu.setPath("res/menu/restart.png");
+				if (UserControls.leftMB(window))
+				{
+					System.out.println("Menu Clicked");
+				}
 			}
 			else
 			{
 				menu.setPath("res/menu/menu.png");
 			}
+
+
 			//restart highlighting
 			//continue highlighting
 
