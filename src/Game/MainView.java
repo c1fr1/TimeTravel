@@ -180,6 +180,8 @@ public class MainView extends EnigView {
 				if (click == 1)
 				{
 					System.out.println("Continue Clicked");
+					framesPaused = 0;
+					pause = !pause;
 				}
 			}
 			else
