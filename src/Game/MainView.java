@@ -399,7 +399,7 @@ public class MainView extends EnigView {
                     nextLevel(1);
             }
 			if (CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'k') {
-				inventory[inventoryCounter] = replaceTile(cam.x, cam.y, 'k', ' ');
+				inventory[inventoryCounter] = replaceTile(cam.x, cam.y, ' ');
 				inventoryCounter ++;
 			}
 
