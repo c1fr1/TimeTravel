@@ -314,16 +314,16 @@ public class MainView extends EnigView {
 				//ttoGUIButtonVAO.fullRender();
 				
 			}
-			int spriteSize = 35;
-			if (    CamCollision.checkCollision(cam.x-spriteSize, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					CamCollision.checkCollision(cam.x+spriteSize, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					CamCollision.checkCollision(cam.x, cam.y+spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					CamCollision.checkCollision(cam.x, cam.y-spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+			int spriteSize = 45;
+			if (    CamCollision.checkCollision(cam.x-spriteSize, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					CamCollision.checkCollision(cam.x+spriteSize, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					CamCollision.checkCollision(cam.x, cam.y+spriteSize, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					CamCollision.checkCollision(cam.x, cam.y-spriteSize, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
 					
-					CamCollision.checkCollision(cam.x-spriteSize, cam.y-spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					CamCollision.checkCollision(cam.x+spriteSize, cam.y-spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					CamCollision.checkCollision(cam.x-spriteSize, cam.y+spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					CamCollision.checkCollision(cam.x+spriteSize, cam.y+spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					CamCollision.checkCollision(cam.x-spriteSize, cam.y-spriteSize, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					CamCollision.checkCollision(cam.x+spriteSize, cam.y-spriteSize, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					CamCollision.checkCollision(cam.x-spriteSize, cam.y+spriteSize, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					CamCollision.checkCollision(cam.x+spriteSize, cam.y+spriteSize, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
 					
 					CamCollision.checkCollision(cam.x, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
 				animationFrameCounter+=0.5*delta_time*0.03;
