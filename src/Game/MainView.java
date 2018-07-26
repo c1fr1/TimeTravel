@@ -16,6 +16,7 @@ public class MainView extends EnigView {
 	//project variables
 
 	public LevelBase currentLevel;
+	public static int currentLevelNum;
 	
 	public ShaderProgram guiShader;
 	public ShaderProgram ttoguiShader;
@@ -58,7 +59,7 @@ public class MainView extends EnigView {
 		
 		glDisable(GL_DEPTH_TEST);
 		//needs to be generalized to use level selected - level path is a parameter
-		currentLevel = new LevelBase("res/Levels/Level1");
+        currentLevel = new LevelBase("res/Levels/Level"+currentLevelNum+".txt");
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
 		guiShader = new ShaderProgram("guiShader");
 		ttoGUI = new Texture("res/timeTravelGUI.png");
@@ -287,6 +288,15 @@ public class MainView extends EnigView {
                 animationFrameCounter = 8;
             }
             LevelBase.updateTTO(Math.round(animationFrameCounter));
+
+            if (CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g' ||
+                    					CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g' ||
+                    					CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g' ||
+                    					CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g') {
+
+                    currentLevelNum++;
+                    setup();
+            }
 
 
 			guiShader.enable();
