@@ -6,17 +6,16 @@ import engine.OpenGL.*;
 
 import java.util.ArrayList;
 
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
-import static org.lwjgl.glfw.GLFW.glfwSetWindowAspectRatio;
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class MainView extends EnigView {
 	public static MainView main;
-	
+
 	public Camera cam;
 
 	public static char[] solidBlocks = {'#', '_'};
-	
+
 	//project variables
 
 	public LevelBase currentLevel;
@@ -24,18 +23,18 @@ public class MainView extends EnigView {
 
 	public char inventory[];
 	public int inventoryCounter = 0;
-	
+
 	public ShaderProgram guiShader;
 	public ShaderProgram ttoguiShader;
 	public ShaderProgram textureShader;
 	public ShaderProgram pauseShader;
 	public ShaderProgram travelShader;
-	
+
 	public SpriteButton ttoGUIButton;
 
 	public Texture ttoGUI;
 	public Texture[] spriteTexture;
-	
+
 	public VAO ttoGUIVAO;
 	public VAO playerVAO;
 
@@ -48,12 +47,12 @@ public class MainView extends EnigView {
 
 	public boolean pause = false;
 	public boolean cooldown = false;
-	
+
 	public int framesPaused;
 
 	public float timeTravelFrames = 0;
 	public float animationFrameCounter = 0;
-	
+
 	public long lastTime = System.nanoTime();
 
 	SpriteButton cont;
@@ -73,7 +72,7 @@ public class MainView extends EnigView {
 		ttoGUI = new Texture("res/timeTravelGUI.png");
 		ttoGUIVAO = new VAO(-0.5f, 0.125f, 1f, 0.25f);
 		playerVAO = new VAO(-40f, 10f, 30f, 30f);
-		
+
 		spriteTexture = new Texture[4];//down left right up;
 		spriteTexture[0] = new Texture("res/future-wall.png");
 		spriteTexture[1] = new Texture("res/sprite-left.png");
@@ -88,10 +87,10 @@ public class MainView extends EnigView {
 		pauseShader = new ShaderProgram("pauseShaders");
 		ttoguiShader = new ShaderProgram("ttoGUIShader");
 		travelShader = new ShaderProgram("travelShaders");
-		
+
 		ttoGUIButton = new SpriteButton(-0.06f, 0.4f, 0.12f, 0.12f, "res/ttoguiButton.png");
 		ttoGUIButton.shader = new ShaderProgram("ttoGUIButtonShader");
-		
+
 		mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));
 		screenVAO = new VAO(-1f, -1f, 2f, 2f);
 
@@ -138,6 +137,16 @@ public class MainView extends EnigView {
 		} else if(!UserControls.pause(window)){
 			cooldown = false;
 		}
+        //dev buttons
+        if (window.keys[GLFW_KEY_N] == 1)
+        {
+            nextLevel(1);
+        }
+        if (window.keys[GLFW_KEY_B] == 1)
+        {
+            nextLevel(-1);
+        }
+
 		//Pause menu
 		if(pause){
 			++framesPaused;
@@ -210,12 +219,12 @@ public class MainView extends EnigView {
 		//Time Travel animation
 		else if (timeTravelFrames > 0) {
 			FBO.prepareDefaultRender();
-			
+
 			currentLevel.render(cam);
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
 			spriteTexture[0].bind();
 			playerVAO.fullRender();
-			
+
 			travelShader.enable();
 			travelShader.shaders[2].uniforms[0].set(aspectRatio);
 			float dist = (float) timeTravelFrames / 5;
@@ -293,7 +302,7 @@ public class MainView extends EnigView {
 			if (ttoOnInd >= 0) {
 				ttoguiShader.enable();
 				ttoguiShader.shaders[0].uniforms[0].set(aspectRatio);
-				
+
 				ttoGUIButton.shader.enable();
 				ttoGUIButton.shader.shaders[0].uniforms[0].set(aspectRatio);
 				ttoGUIButton.sprite.bind();
@@ -322,7 +331,7 @@ public class MainView extends EnigView {
 				/*if (ttoGUIButton.hoverCheck(window.cursorXFloat * aspectRatio, window.cursorYFloat)) {
 					ttoGUIButton.shader.enable();
 					ttoGUIButton.shader.shaders[0].uniforms[0].set(aspectRatio);
-					
+
 				}*/
 				ttoguiShader.enable();
 				ttoGUIButton.shader.shaders[0].uniforms[0].set(aspectRatio);
@@ -332,7 +341,7 @@ public class MainView extends EnigView {
 				}
 				//ttoGUIButtonTexture.bind();
 				//ttoGUIButtonVAO.fullRender();
-				
+
 			}
 			int spriteSize = 35;
 			int[] arrpossibilities = new int[12];
@@ -378,7 +387,7 @@ public class MainView extends EnigView {
 		}
 		return false;
 	}
-	
+
 	public ArrayList<Character[]> getCurrentZone() {
 		return currentLevel.levelseries.get(currentLevel.currentTZ);
 	}

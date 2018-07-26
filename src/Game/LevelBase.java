@@ -59,6 +59,7 @@ public class LevelBase
             wallTexture = new Texture("res/present-wall.png");
             newwallTexture = new Texture("res/future-wall.png");
 			keyTexture = new Texture("res/key.png");
+			gateTexture = new Texture("res/gate.png");
 
 			//changing texture for tto
 			ttoTexture = new Texture[9];
