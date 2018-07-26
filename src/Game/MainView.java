@@ -19,6 +19,9 @@ public class MainView extends EnigView {
 
 	public LevelBase currentLevel;
 	public static int currentLevelNum = 2;
+
+	public char inventory[];
+	public int inventoryCounter = 0;
 	
 	public ShaderProgram guiShader;
 	public ShaderProgram ttoguiShader;
@@ -58,7 +61,7 @@ public class MainView extends EnigView {
 	@Override
 	public void setup() {
 		//set variables here
-		
+		inventory = new char[9];
 		glDisable(GL_DEPTH_TEST);
 		//needs to be generalized to use level selected - level path is a parameter
         currentLevel = new LevelBase("res/Levels/Level"+currentLevelNum+".txt");
@@ -99,7 +102,24 @@ public class MainView extends EnigView {
         cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
         cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
     }
-	
+
+	/**
+	 *
+	 * @param x location of character
+	 * @param y location of character
+	 * @param current tile you want replaced
+	 * @param replacement tile you are replacing it with
+	 */
+	public char replaceTile(float x, float y, char current, char replacement) {
+		int tempIntX = (int)(x/50f);
+		int tempIntY = (int)(y/50f);
+
+		currentLevel.levelseries.get(currentLevel.currentTZ).get(tempIntY)[tempIntX] = ' ';
+		//currentLevel.levelseries.get(tempIntY)
+		return current;
+	}
+
+
 	@Override
 	public boolean loop() {
 		long time = System.nanoTime();
@@ -342,14 +362,10 @@ public class MainView extends EnigView {
 
                     nextLevel(1);
             }
-            if (CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'k' ||
-                    CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'k' ||
-                    CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'k' ||
-                    CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'k') {
-
-
-            }
-
+			if (CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'k') {
+				inventory[inventoryCounter] = replaceTile(cam.x, cam.y, 'k', ' ');
+				inventoryCounter ++;
+			}
 
 			guiShader.enable();
 			guiShader.shaders[0].uniforms[0].set(aspectRatio);
