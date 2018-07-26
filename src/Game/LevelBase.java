@@ -21,7 +21,8 @@ public class LevelBase
     public static Texture floorTexture;
     public static Texture wallTexture;
 	public static Texture gateTexture;
-    public static Texture newwallTexture;
+    public static Texture lockTexture;
+	public static Texture newwallTexture;
 	public static Texture keyTexture;
 	public static Texture[] ttoTexture;
     public static Texture controllerTexture;
@@ -60,6 +61,7 @@ public class LevelBase
             newwallTexture = new Texture("res/future-wall.png");
 			keyTexture = new Texture("res/key.png");
 			gateTexture = new Texture("res/gate.png");
+			lockTexture = new Texture("res/locked-gate.png");
 
 			//changing texture for tto
 			ttoTexture = new Texture[9];
@@ -327,7 +329,7 @@ public class LevelBase
 						keyTexture.bind();
 					}
 					else if (currentChar == 'l') {
-						gateTexture.bind();
+						lockTexture.bind();
 					}
 					float x = ((float) chr) * 50f;
 					float y = -((float) row) * 50f;
