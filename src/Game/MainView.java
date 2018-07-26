@@ -16,7 +16,7 @@ public class MainView extends EnigView {
 	//project variables
 
 	public LevelBase currentLevel;
-	public static int currentLevelNum;
+	public static int currentLevelNum = 2;
 	
 	public ShaderProgram guiShader;
 	public ShaderProgram ttoguiShader;
@@ -347,6 +347,13 @@ public class MainView extends EnigView {
                     					CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g') {
 
                     nextLevel(1);
+            }
+            if (CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'k' ||
+                    CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'k' ||
+                    CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'k' ||
+                    CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'k') {
+
+
             }
 
 
