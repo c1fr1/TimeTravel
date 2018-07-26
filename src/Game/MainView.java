@@ -112,14 +112,16 @@ public class MainView extends EnigView {
      * @return character replaced
 	 * @param x location of replace
 	 * @param y location of replace
+	 * @param current tile you are replacing
 	 * @param replacement tile you are replacing it with
 	 */
-	public char replaceTile(float x, float y, char replacement) {
+	public char replaceTile(float x, float y, char current, char replacement) {
 		int tempIntX = (int)(x/50f);
 		int tempIntY = (int)(y/50f);
-        char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(tempIntY)[tempIntX];
 		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
-			currentLevel.levelseries.get(i).get(tempIntY)[tempIntX] = replacement;
+			if (current == currentLevel.levelseries.get(i).get(tempIntY)[tempIntX]) {
+				currentLevel.levelseries.get(i).get(tempIntY)[tempIntX] = replacement;
+			}
 		}
 
 		//currentLevel.levelseries.get(tempIntY)
@@ -404,14 +406,14 @@ public class MainView extends EnigView {
                     nextLevel(1);
             }
 			if (CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'k') {
-				inventory[inventoryCounter] = replaceTile(cam.x, cam.y, ' ');
+				inventory[inventoryCounter] = replaceTile(cam.x, cam.y, 'k', ' ');
 				inventoryCounter ++;
 			}
 			if(CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'l'){
                 int xIndex = (int)((cam.x + getSign(hSpeed)*20f)/50f);
                 int yIndex = (int)((cam.y + getSign(vSpeed)*20f)/50f);
                 if(checkInventory('k')){
-                    replaceTile(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, ' ');
+                    replaceTile(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, 'l', ' ');
                     getFromInventory('k');
 
                 }
