@@ -4,14 +4,14 @@ import engine.OpenGL.Texture;
 
 public class SpriteButton
 {
-    int xpos;
-    int ypos;
-    int width;
-    int height;
+    float xpos;
+    float ypos;
+    float width;
+    float height;
     Texture sprite;
 
 
-    public SpriteButton(int x, int y, int width, int height, String path)
+    public SpriteButton(float x, float y, float width, float height, String path)
     {
         xpos = x;
         ypos = y;
@@ -32,7 +32,7 @@ public class SpriteButton
         return false;
     }
 
-    public int getXpos()
+    public float getXpos()
     {
         return xpos;
     }
@@ -42,7 +42,7 @@ public class SpriteButton
         this.xpos = xpos;
     }
 
-    public int getYpos() {
+    public float getYpos() {
         return ypos;
     }
 
@@ -50,7 +50,7 @@ public class SpriteButton
         this.ypos = ypos;
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
@@ -58,7 +58,7 @@ public class SpriteButton
         this.width = width;
     }
 
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
