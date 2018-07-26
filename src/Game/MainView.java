@@ -127,11 +127,12 @@ public class MainView extends EnigView {
 	}
 
 	public boolean getFromInventory(char item){
-	    for(char i: inventory){
+	    for(int i = 0; i < inventory.length; i++){
 	        if(i == item){
 	            for(int j = i; j < inventory.length-1; j++){
-	                inventory[i] = inventory[i+1];
+	                inventory[j] = inventory[j+1];
                 }
+                inventoryCounter--;
                 return true;
             }
         }
