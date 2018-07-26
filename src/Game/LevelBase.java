@@ -344,6 +344,9 @@ public class LevelBase
 	public char charAtPos(float x, float y) {
 		return levelseries.get(currentTZ).get((int)(y/50f))[(int)(x/50f)];
 	}
+	public char charAtPos(int x, int y) {
+		return levelseries.get(currentTZ).get(y)[x];
+	}
 	public char charAtPosSafe(float x, float y) {
 		int xi = (int)(x/50f);
 		int yi = (int)(y/50f);

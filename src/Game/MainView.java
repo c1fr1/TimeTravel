@@ -112,25 +112,33 @@ public class MainView extends EnigView {
      * @return character replaced
 	 * @param x location of replace
 	 * @param y location of replace
-	 * @param current tile you are replacing
 	 * @param replacement tile you are replacing it with
 	 */
-	public char replaceTile(float x, float y, char current, char replacement) {
+	public char replaceTile(float x, float y, char replacement) {
 		int tempIntX = (int)(x/50f);
 		int tempIntY = (int)(y/50f);
+        char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(tempIntY)[tempIntX];
 		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
-			if (current == currentLevel.levelseries.get(i).get(tempIntY)[tempIntX]) {
-				currentLevel.levelseries.get(i).get(tempIntY)[tempIntX] = replacement;
-			}
+			currentLevel.levelseries.get(i).get(tempIntY)[tempIntX] = replacement;
 		}
 
 		//currentLevel.levelseries.get(tempIntY)
 		return current;
 	}
-
+	
+	public char replaceTile(int x, int y, char replacement) {
+		char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(y)[x];
+		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
+			currentLevel.levelseries.get(i).get(y)[x] = replacement;
+		}
+		
+		//currentLevel.levelseries.get(tempIntY)
+		return current;
+	}
+	
 	public boolean getFromInventory(char item){
 	    for(int i = 0; i < inventory.length; i++){
-	        if(i == item){
+	        if(inventory[i] == item){
 	            for(int j = i; j < inventory.length-1; j++){
 	                inventory[j] = inventory[j+1];
                 }
@@ -406,14 +414,15 @@ public class MainView extends EnigView {
                     nextLevel(1);
             }
 			if (CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'k') {
-				inventory[inventoryCounter] = replaceTile(cam.x, cam.y, 'k', ' ');
+				inventory[inventoryCounter] = replaceTile(cam.x, cam.y, ' ');
 				inventoryCounter ++;
 			}
-			if(CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'l'){
-                int xIndex = (int)((cam.x + getSign(hSpeed)*20f)/50f);
-                int yIndex = (int)((cam.y + getSign(vSpeed)*20f)/50f);
+			int gateCheckXIndex = (int)((cam.x + getSign(hSpeed)*20f)/50f);
+			int gateCheckYIndex = (int)((cam.y + getSign(vSpeed)*20f)/50f);
+			if(currentLevel.charAtPos(gateCheckXIndex, gateCheckYIndex) == 'l'){
+				
                 if(checkInventory('k')){
-                    replaceTile(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, 'l', ' ');
+                    replaceTile(gateCheckXIndex, gateCheckYIndex, ' ');
                     getFromInventory('k');
 
                 }
