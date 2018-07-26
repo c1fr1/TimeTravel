@@ -98,7 +98,9 @@ public class MainView extends EnigView {
 		cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
 	}
 	public void nextLevel(int increment) {
-	    currentLevelNum+=increment;
+		inventoryCounter = 0;
+		inventory = new char[9];
+		currentLevelNum+=increment;
         currentLevel = new LevelBase("res/Levels/Level"+currentLevelNum+".txt");
 
         cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
