@@ -128,6 +128,18 @@ public class MainView extends EnigView {
 			restart.render();
 			menu.render();
 
+			//hover highlighting
+			if (menu.hoverCheck(window.cursorXFloat,window.cursorYFloat))
+			{
+				menu.setPath("res/menu/restart.png");
+			}
+			else
+			{
+				menu.setPath("res/menu/menu.png");
+			}
+			//restart highlighting
+			//continue highlighting
+
             //window.cursorxfloat
 		}
 		//Time Travel animation

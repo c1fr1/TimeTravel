@@ -58,4 +58,9 @@ public class SpriteButton
     	sprite.bind();
     	vao.fullRender();
 	}
+
+	public void setPath(String path)
+    {
+        sprite = new Texture(path);
+    }
 }
