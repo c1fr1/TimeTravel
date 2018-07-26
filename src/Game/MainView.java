@@ -14,7 +14,7 @@ public class MainView extends EnigView {
 
 	public Camera cam;
 
-	public static char[] solidBlocks = {'#', '_'};
+	public static char[] solidBlocks = {'#', '_', 'l'};
 
 	//project variables
 
@@ -118,9 +118,8 @@ public class MainView extends EnigView {
 		int tempIntX = (int)(x/50f);
 		int tempIntY = (int)(y/50f);
         char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(tempIntY)[tempIntX];
-		currentLevel.levelseries.get(currentLevel.currentTZ).get(tempIntY)[tempIntX] = replacement;
 		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
-			currentLevel.levelseries.get(i).get(tempIntY)[tempIntX] = ' ';
+			currentLevel.levelseries.get(i).get(tempIntY)[tempIntX] = replacement;
 		}
 
 		//currentLevel.levelseries.get(tempIntY)
