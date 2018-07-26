@@ -40,9 +40,9 @@ public class MainView extends EnigView {
 
 	public boolean pause = false;
 	public boolean cooldown = false;
-	public boolean click = true;
 	
 	public int framesPaused;
+	public int click = 0;
 
 	public float timeTravelFrames = 0;
 	public float animationFrameCounter = 0;
@@ -130,19 +130,33 @@ public class MainView extends EnigView {
 			restart.render();
 			menu.render();
 
+			//click register
+			if (UserControls.leftMB(window))
+			{
+				if (click == 1 || click == 2)
+				{
+					click = 2;
+				}
+				else if (click == 0)
+				{
+					click = 1;
+				}
+			}
+			else
+			{
+				click = 0;
+			}
 			//hover highlighting
 			if (menu.hoverCheck(window.cursorXFloat,window.cursorYFloat))
 			{
 				menu.setPath("res/menu/restart.png");
-				if (UserControls.leftMB(window) && click == true)
+				if (click == 1)
 				{
-					click = false;
 					System.out.println("Menu Clicked");
 				}
 			}
 			else
 			{
-				click = true;
 				menu.setPath("res/menu/menu.png");
 			}
 
@@ -150,33 +164,28 @@ public class MainView extends EnigView {
 			if (restart.hoverCheck(window.cursorXFloat,window.cursorYFloat))
 			{
 				restart.setPath("res/menu/menu.png");
-				if (UserControls.leftMB(window) && click == true)
+				if (click == 1)
 				{
-					click = false;
 					System.out.println("Restart Clicked");
 				}
 			}
 			else
 			{
-				click = true;
 				restart.setPath("res/menu/restart.png");
 			}
 			//continue highlighting
 			if (cont.hoverCheck(window.cursorXFloat,window.cursorYFloat))
 			{
 				cont.setPath("res/menu/restart.png");
-				if (UserControls.leftMB(window) && click == true)
+				if (click == 1)
 				{
-					click = false;
 					System.out.println("Continue Clicked");
 				}
 			}
 			else
 			{
-				click = true;
 				cont.setPath("res/menu/continue.png");
 			}
-            //window.cursorxfloat
 		}
 		//Time Travel animation
 		else if (timeTravelFrames > 0) {
