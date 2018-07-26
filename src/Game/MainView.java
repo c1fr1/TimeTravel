@@ -4,6 +4,8 @@ import engine.*;
 import engine.Entities.Camera;
 import engine.OpenGL.*;
 
+import java.util.ArrayList;
+
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowAspectRatio;
 import static org.lwjgl.opengl.GL11.*;
@@ -43,7 +45,6 @@ public class MainView extends EnigView {
 	public boolean cooldown = false;
 	
 	public int framesPaused;
-    public int click = 0;
 
 	public float timeTravelFrames = 0;
 	public float animationFrameCounter = 0;
@@ -137,29 +138,11 @@ public class MainView extends EnigView {
 			restart.render();
 			menu.render();
 
-
-			//click register
-        	if (UserControls.leftMB(window))
-    		{
-            	if (click == 1 || click == 2)
-    			{
-            		click = 2;
-				}
-			    else if (click == 0)
-    		    {
-            	    click = 1;
-			    }
-			}
-			else
-			{
-        		click = 0;
-			}
-
 			//hover highlighting
 			if (menu.hoverCheck(window.cursorXFloat,window.cursorYFloat))
 			{
 				menu.setPath("res/menu/restart.png");
-                if (click == 1)
+                if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1)
 				{
 					System.out.println("Menu Clicked");
 				}
@@ -173,7 +156,7 @@ public class MainView extends EnigView {
             if (restart.hoverCheck(window.cursorXFloat,window.cursorYFloat))
             {
                 restart.setPath("res/menu/menu.png");
-             	if (click == 1)
+             	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1)
                 {
                     System.out.println("Restart Clicked");
 					framesPaused = 0;
@@ -189,7 +172,7 @@ public class MainView extends EnigView {
             if (cont.hoverCheck(window.cursorXFloat,window.cursorYFloat))
             {
                 cont.setPath("res/menu/restart.png");
-            	if (click == 1)
+            	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1)
             	{
             		System.out.println("Continue Clicked");
                     framesPaused = 0;
@@ -256,9 +239,9 @@ public class MainView extends EnigView {
 				hSpeed *= 0.70710678118f;
 			}
 
-			//if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '#' || CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '_'){
-				cam.x = CamCollision.getMoveX(cam.x + getSign(hSpeed)*15f, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '#', '_') - getSign(hSpeed)*15f;
-				cam.y = CamCollision.getMoveY(cam.x, cam.y + getSign(vSpeed)*15f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '#', '_') - getSign(vSpeed)*15f;
+			//if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, getCurrentZone()) != '#' || CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, getCurrentZone()) != '_'){
+				cam.x = CamCollision.getMoveX(cam.x + getSign(hSpeed)*15f, cam.y, hSpeed, vSpeed, getCurrentZone(), '#', '_') - getSign(hSpeed)*15f;
+				cam.y = CamCollision.getMoveY(cam.x, cam.y + getSign(vSpeed)*15f, hSpeed, vSpeed, getCurrentZone(), '#', '_') - getSign(vSpeed)*15f;
 			//}
 
 
@@ -268,12 +251,24 @@ public class MainView extends EnigView {
 			playerVAO.fullRender();
 
 
-            //CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't'
+            //CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, getCurrentZone()) == 't'
 			//render tto gui if the player is on the tto
-			if (CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                	CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                	CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                	CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
+			/*if (CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, getCurrentZone()) == 't' ||
+                	CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, getCurrentZone()) == 't' ||
+                	CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, getCurrentZone()) == 't' ||
+                	CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, getCurrentZone()) == 't') {*/
+			int[] nearesTTOCheck = new int[4];
+			nearesTTOCheck[0] = numVal(currentLevel.charAtPos(cam.x + 15f, cam.y - 15f));
+			nearesTTOCheck[1] = numVal(currentLevel.charAtPos(cam.x + 15f, cam.y + 15f));
+			nearesTTOCheck[2] = numVal(currentLevel.charAtPos(cam.x - 15f, cam.y - 15f));
+			nearesTTOCheck[3] = numVal(currentLevel.charAtPos(cam.x - 15f, cam.y + 15f));
+			int ttoOnInd = -1;
+			for (int i:nearesTTOCheck) {
+				if (i >= 0) {
+					ttoOnInd = i;
+				}
+			}
+			if (ttoOnInd >= 0) {
 				ttoguiShader.enable();
 				ttoguiShader.shaders[0].uniforms[0].set(aspectRatio);
 				
@@ -285,12 +280,12 @@ public class MainView extends EnigView {
 				for (int i = 0; i < currentLevel.levelseries.size(); ++i) {
 					float floati = (float) i;
 					//float x = floati * 0.2f + window.cursorXFloat * aspectRatio;
-					ttoGUIButton.shader.shaders[0].uniforms[1].set(-leftOffset + 0.1f * floati);
-					if (false) {
+					ttoGUIButton.shader.shaders[0].uniforms[1].set(-leftOffset + 0.1f * floati - ttoGUIButton.width/2);
+					if (!currentLevel.timeZonePossibilities.get(ttoOnInd)[i]) {
 						ttoGUIButton.shader.shaders[2].uniforms[0].set(0f);
 					} else if (currentLevel.currentTZ == i) {
 						ttoGUIButton.shader.shaders[2].uniforms[0].set(2f);
-					} else if (ttoGUIButton.hoverCheck(window.cursorXFloat - floati * 0.1f + leftOffset, window.cursorYFloat)) {
+					} else if (ttoGUIButton.hoverCheck((window.cursorXFloat - floati * 0.1f + leftOffset + ttoGUIButton.width/2)/aspectRatio, window.cursorYFloat)) {
 						if (UserControls.leftMB(window)) {
 							currentLevel.currentTZ = i;
 							++timeTravelFrames;
@@ -317,29 +312,28 @@ public class MainView extends EnigView {
 				//ttoGUIButtonVAO.fullRender();
 				
 			}
-			int spriteSize = 45;
-			if (    CamCollision.checkCollision(cam.x-spriteSize, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					CamCollision.checkCollision(cam.x+spriteSize, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					CamCollision.checkCollision(cam.x, cam.y+spriteSize, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					CamCollision.checkCollision(cam.x, cam.y-spriteSize, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					
-					CamCollision.checkCollision(cam.x-spriteSize, cam.y-spriteSize, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					CamCollision.checkCollision(cam.x+spriteSize, cam.y-spriteSize, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					CamCollision.checkCollision(cam.x-spriteSize, cam.y+spriteSize, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					CamCollision.checkCollision(cam.x+spriteSize, cam.y+spriteSize, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-					
-					CamCollision.checkCollision(cam.x, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
-				animationFrameCounter+=0.5*delta_time*0.03;
-			} else {
-				animationFrameCounter-=delta_time*0.03;
+			int spriteSize = 35;
+			int[] arrpossibilities = new int[12];
+			arrpossibilities[0] = numVal(currentLevel.charAtPos(cam.x - spriteSize, cam.y));
+			arrpossibilities[1] = numVal(currentLevel.charAtPos(cam.x + spriteSize, cam.y));
+			arrpossibilities[2] = numVal(currentLevel.charAtPos(cam.x, cam.y + spriteSize));
+			arrpossibilities[3] = numVal(currentLevel.charAtPos(cam.x, cam.y - spriteSize));
+			arrpossibilities[4] = numVal(currentLevel.charAtPos(cam.x-spriteSize, cam.y-spriteSize));
+			arrpossibilities[5] = numVal(currentLevel.charAtPos(cam.x+spriteSize, cam.y-spriteSize));
+			arrpossibilities[6] = numVal(currentLevel.charAtPos(cam.x-spriteSize, cam.y+spriteSize));
+			arrpossibilities[7] = numVal(currentLevel.charAtPos(cam.x+spriteSize, cam.y+spriteSize));
+			arrpossibilities[8] = nearesTTOCheck[0];
+			arrpossibilities[9] = nearesTTOCheck[1];
+			arrpossibilities[10] = nearesTTOCheck[2];
+			arrpossibilities[11] = nearesTTOCheck[3];
+			int ttotouchingindex = -1;
+			for (int i:arrpossibilities) {
+				if (i > ttotouchingindex) {
+					ttotouchingindex = i;
+				}
 			}
-            if (animationFrameCounter < 0) {
-                animationFrameCounter = 0;
-            }
-            if (animationFrameCounter > 8) {
-                animationFrameCounter = 8;
-            }
-            LevelBase.updateTTO(Math.round(animationFrameCounter));
+            
+            currentLevel.updateTTO(arrpossibilities, delta_time);
 
             if (CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g' ||
                     					CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g' ||
@@ -357,8 +351,22 @@ public class MainView extends EnigView {
 			mainFBO.getBoundTexture().bind();
 			screenVAO.fullRender();
 		}
-
 		return false;
+	}
+	
+	public ArrayList<Character[]> getCurrentZone() {
+		return currentLevel.levelseries.get(currentLevel.currentTZ);
+	}
+	public static boolean isNumericValue(char character) {
+		int val = Character.getNumericValue(character);
+		return val >= 0 && val < 10;
+	}
+	public static int numVal(char character) {
+		int val = Character.getNumericValue(character);
+		if (val >= 10) {
+			return -1;
+		}
+		return val;
 	}
 	
 	public static void main(String[] args) {

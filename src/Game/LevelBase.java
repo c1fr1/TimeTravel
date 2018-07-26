@@ -17,7 +17,6 @@ public class LevelBase
 	float[] ystart;
 	int currentTZ;
     
-    
     public static VAO tileObj;
     public static Texture floorTexture;
     public static Texture wallTexture;
@@ -26,7 +25,9 @@ public class LevelBase
     public static Texture[] ttoTexture;
     public static Texture controllerTexture;
     public static ShaderProgram levelProgram;
-    public static int frameCounter;
+    
+    public ArrayList<Boolean[]> timeZonePossibilities = new ArrayList<>();
+    public float[] ttoFrameCounter;
 
 
 	//Render Crap
@@ -122,6 +123,19 @@ public class LevelBase
 						xstart[i] = j;
 						ystart[i] = k;
 						currentTZ = i;
+					}else if (lane.charAt(k) == 't') {
+						if (levelseries.size() > 0) {
+							char prevLevel = levelseries.get(levelseries.size() - 1).get(j)[k];
+							if (MainView.isNumericValue(prevLevel)) {
+								levelrow[k] = prevLevel;
+							}else {
+								levelrow[k] = (char) (timeZonePossibilities.size() + '0');
+								timeZonePossibilities.add(new Boolean[0]);
+							}
+						}else {
+							levelrow[k] = (char) (timeZonePossibilities.size() + '0');
+							timeZonePossibilities.add(new Boolean[0]);
+						}
 					}
 				}
 				//adds the row char array to the level arraylist
@@ -130,6 +144,13 @@ public class LevelBase
 			//adds the level arraylist to the levelseries arraylist
 			levelseries.add(levelroom);
 		}
+		for (int i = 0; i < timeZonePossibilities.size();++i) {
+			timeZonePossibilities.set(i, new Boolean[levelseries.size()]);
+			for (int j = 0;j < timeZonePossibilities.get(i).length;++j) {
+				timeZonePossibilities.get(i)[j] = true;
+			}
+		}
+		ttoFrameCounter = new float[timeZonePossibilities.size()];
 
 		//LEVEL EXTRACTION
 		/*
@@ -147,8 +168,27 @@ public class LevelBase
 		*/
 	}
 
-	public static void updateTTO(int locationInArray) {
-		frameCounter = locationInArray;
+	public void updateTTO(int[] locationInArray, float deltaTime) {
+		for (int i = 0; i < ttoFrameCounter.length;++i) {
+			boolean exists = false;
+			for (int j: locationInArray) {
+				if (j == i) {
+					exists = true;
+					break;
+				}
+			}
+			if (exists) {
+				ttoFrameCounter[i] += 0.5*deltaTime*0.03;
+			}else {
+				ttoFrameCounter[i] -= deltaTime*0.03;
+			}
+			if (ttoFrameCounter[i] < 0) {
+				ttoFrameCounter[i] = 0;
+			}
+			if (ttoFrameCounter[i] > 8) {
+				ttoFrameCounter[i] = 8;
+			}
+		}
 	}
 
 	public void render(Camera cam) {
@@ -162,8 +202,8 @@ public class LevelBase
     					floorTexture.bind();
 					}else if (currentChar == '#') {
     					newwallTexture.bind();
-					}else if (currentChar == 't') {
-						ttoTexture[frameCounter].bind();
+					}else if (MainView.isNumericValue(currentChar)) {
+						ttoTexture[(int) ttoFrameCounter[Character.getNumericValue(currentChar)]].bind();
 					}else if (currentChar == 'g') {
 						gateTexture.bind();
 					}
@@ -175,5 +215,26 @@ public class LevelBase
 			}
 		}
 		tileObj.unbind();
+	}
+	
+	public char charAtPos(float x, float y) {
+		return levelseries.get(currentTZ).get((int)(y/50f))[(int)(x/50f)];
+	}
+	public char charAtPosSafe(float x, float y) {
+		int xi = (int)(x/50f);
+		int yi = (int)(y/50f);
+		if (xi < 0) {
+			return '\n';
+		}
+		if (yi < 0) {
+			return '\n';
+		}
+		if (yi >= levelseries.get(currentTZ).size()) {
+			return '\n';
+		}
+		if (xi >= levelseries.get(currentTZ).get(yi).length) {
+			return '\n';
+		}
+		return levelseries.get(currentTZ).get(yi)[xi];
 	}
 }
