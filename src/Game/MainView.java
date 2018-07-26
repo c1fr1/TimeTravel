@@ -115,8 +115,9 @@ public class MainView extends EnigView {
 	public char replaceTile(float x, float y, char current, char replacement) {
 		int tempIntX = (int)(x/50f);
 		int tempIntY = (int)(y/50f);
+		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++)
+		currentLevel.levelseries.get(i).get(tempIntY)[tempIntX] = ' ';
 
-		currentLevel.levelseries.get(currentLevel.currentTZ).get(tempIntY)[tempIntX] = ' ';
 		//currentLevel.levelseries.get(tempIntY)
 		return current;
 	}
