@@ -40,6 +40,7 @@ public class MainView extends EnigView {
 
 	public boolean pause = false;
 	public boolean cooldown = false;
+	public boolean click = true;
 	
 	public int framesPaused;
 
@@ -71,9 +72,9 @@ public class MainView extends EnigView {
 		spriteTexture[2] = new Texture("res/sprite-right.png");
 		spriteTexture[3] = new Texture("res/sprite-up.png");
 
-        cont = new SpriteButton(-0.5f,0.525f,1f,0.4f,"res/menu/continue.png");
-		restart = new SpriteButton(-0.39f, -0.125f, .78f, 0.55f,"res/menu/restart.png");
-		menu = new SpriteButton(-0.71f, -0.725f, 1.42f, 0.25f,"res/menu/menu.png");
+        cont = new SpriteButton(-0.5f,0.525f,1f,0.25f,"res/menu/continue.png");
+		restart = new SpriteButton(-0.5f, -0.125f, 1f, 0.25f,"res/menu/restart.png");
+		menu = new SpriteButton(-0.5f, -0.725f, 1f, 0.25f,"res/menu/menu.png");
 
 		textureShader = new ShaderProgram("textureShaders");
 		pauseShader = new ShaderProgram("pauseShaders");
@@ -105,6 +106,7 @@ public class MainView extends EnigView {
 		} else if(!UserControls.pause(window)){
 			cooldown = false;
 		}
+
 		//Pause menu
 		if(pause){
 			++framesPaused;
@@ -132,20 +134,48 @@ public class MainView extends EnigView {
 			if (menu.hoverCheck(window.cursorXFloat,window.cursorYFloat))
 			{
 				menu.setPath("res/menu/restart.png");
-				if (UserControls.leftMB(window))
+				if (UserControls.leftMB(window) && click == true)
 				{
+					click = false;
 					System.out.println("Menu Clicked");
 				}
 			}
 			else
 			{
+				click = true;
 				menu.setPath("res/menu/menu.png");
 			}
 
-
 			//restart highlighting
+			if (restart.hoverCheck(window.cursorXFloat,window.cursorYFloat))
+			{
+				restart.setPath("res/menu/menu.png");
+				if (UserControls.leftMB(window) && click == true)
+				{
+					click = false;
+					System.out.println("Restart Clicked");
+				}
+			}
+			else
+			{
+				click = true;
+				restart.setPath("res/menu/restart.png");
+			}
 			//continue highlighting
-
+			if (cont.hoverCheck(window.cursorXFloat,window.cursorYFloat))
+			{
+				cont.setPath("res/menu/restart.png");
+				if (UserControls.leftMB(window) && click == true)
+				{
+					click = false;
+					System.out.println("Continue Clicked");
+				}
+			}
+			else
+			{
+				click = true;
+				cont.setPath("res/menu/continue.png");
+			}
             //window.cursorxfloat
 		}
 		//Time Travel animation
