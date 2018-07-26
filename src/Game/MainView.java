@@ -162,7 +162,6 @@ public class MainView extends EnigView {
                 if (click == 1)
 				{
 					System.out.println("Menu Clicked");
-					nextLevel(0);
 				}
 			}
 			else
@@ -177,6 +176,9 @@ public class MainView extends EnigView {
              	if (click == 1)
                 {
                     System.out.println("Restart Clicked");
+					framesPaused = 0;
+					pause = !pause;
+					nextLevel(0);
             	}
             }
             else
