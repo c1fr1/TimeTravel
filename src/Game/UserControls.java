@@ -14,6 +14,9 @@ public class UserControls {
 	public static int[] pause = new int[] {GLFW_KEY_ESCAPE};
 	public static int[] rightMB = new int[] {GLFW_MOUSE_BUTTON_RIGHT};
 	public static int[] leftMB = new int[] {GLFW_MOUSE_BUTTON_LEFT};
+	public static int[] levelAdvance = new int[] {GLFW_KEY_N};
+	public static int[] levelBack = new int[] {GLFW_KEY_B};
+
 	public static float sensitivity = 1f/500f;
 	
 	public static boolean forward(EnigWindow window) {
@@ -83,6 +86,22 @@ public class UserControls {
 	public static boolean leftMB(EnigWindow window) {
 		for (int i:leftMB) {
 			if (window.mouseButtons[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean levelAdvance(EnigWindow window) {
+		for (int i:levelAdvance) {
+			if (window.keys[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean levelBack(EnigWindow window) {
+		for (int i:levelBack) {
+			if (window.keys[i] > 0) {
 				return true;
 			}
 		}

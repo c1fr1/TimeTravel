@@ -239,9 +239,9 @@ public class MainView extends EnigView {
 				hSpeed *= 0.70710678118f;
 			}
 
-			//if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, getCurrentZone()) != '#' || CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, getCurrentZone()) != '_'){
-				cam.x = CamCollision.getMoveX(cam.x + getSign(hSpeed)*15f, cam.y, hSpeed, vSpeed, getCurrentZone(), '#', '_') - getSign(hSpeed)*15f;
-				cam.y = CamCollision.getMoveY(cam.x, cam.y + getSign(vSpeed)*15f, hSpeed, vSpeed, getCurrentZone(), '#', '_') - getSign(vSpeed)*15f;
+			//if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '#' || CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '_'){
+				cam.x = CamCollision.getMoveX(cam.x + getSign(hSpeed)*15f, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '#', '_') - getSign(hSpeed)*15f;
+				cam.y = CamCollision.getMoveY(cam.x, cam.y + getSign(vSpeed)*15f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), '#', '_') - getSign(vSpeed)*15f;
 			//}
 
 
@@ -332,7 +332,7 @@ public class MainView extends EnigView {
 					ttotouchingindex = i;
 				}
 			}
-            
+
             currentLevel.updateTTO(arrpossibilities, delta_time);
 
             if (CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g' ||
@@ -375,7 +375,7 @@ public class MainView extends EnigView {
 		}
 		return val;
 	}
-	
+
 	public static void main(String[] args) {
 		main = new MainView();
 	}

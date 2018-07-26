@@ -20,23 +20,25 @@ public class CamCollision {
     public static float getMoveX(float x, float y, float hSpeed, float vSpeed, ArrayList<Character[]> room, char jumpChar){
         Vector2f speedVector = new Vector2f(hSpeed, vSpeed);
         Vector2f positionVector = new Vector2f(x,y);
-        Vector2f totalVector = speedVector.add(positionVector, new Vector2f());
-        while(room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] == jumpChar){
-            totalVector.sub(new Vector2f(speedVector.x/16f, speedVector.y/16f));
-            //totalVector.set((float)Math.floor(totalVector.x-(hSpeed/16f)), totalVector.y);
+        Vector2f totalVector = positionVector;
+        int count = 16;
+
+        while(room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] != jumpChar && count > 1){
+            totalVector.add(new Vector2f(speedVector.x/16f, speedVector.y/16f));
+            count--;
         }
         return totalVector.x;
-
     }
 
     public static float getMoveY(float x, float y, float hSpeed, float vSpeed, ArrayList<Character[]> room, char jumpChar){
         Vector2f speedVector = new Vector2f(hSpeed, vSpeed);
         Vector2f positionVector = new Vector2f(x,y);
-        Vector2f totalVector = speedVector.add(positionVector, new Vector2f());
+        Vector2f totalVector = positionVector;
+        int count = 16;
 
-        while(room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] == jumpChar){
-            totalVector.sub(new Vector2f(speedVector.x/16f, speedVector.y/16f));
-            //totalVector.set(totalVector.x, (float)Math.floor(totalVector.y-(vSpeed/16f)));
+        while(room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] != jumpChar && count > 1){
+            totalVector.add(new Vector2f(speedVector.x/16f, speedVector.y/16f));
+            count--;
         }
         return totalVector.y;
 
@@ -47,11 +49,12 @@ public class CamCollision {
     public static float getMoveX(float x, float y, float hSpeed, float vSpeed, ArrayList<Character[]> room, char jumpChar, char jumpChar2){
         Vector2f speedVector = new Vector2f(hSpeed, vSpeed);
         Vector2f positionVector = new Vector2f(x,y);
-        Vector2f totalVector = speedVector.add(positionVector, new Vector2f());
+        Vector2f totalVector = positionVector;
+        int count = 16;
 
-        while(room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] == jumpChar || room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] == jumpChar2){
-            totalVector.sub(new Vector2f(speedVector.x/16f, speedVector.y/16f));
-            //totalVector.set((float)Math.floor(totalVector.x-(hSpeed/16f)), totalVector.y);
+        while((room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] != jumpChar && count > 1) && (room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] != jumpChar2 && count > 1)){
+            totalVector.add(new Vector2f(speedVector.x/16f, speedVector.y/16f));
+            count--;
         }
         return totalVector.x;
 
@@ -60,11 +63,41 @@ public class CamCollision {
     public static float getMoveY(float x, float y, float hSpeed, float vSpeed, ArrayList<Character[]> room, char jumpChar, char jumpChar2){
         Vector2f speedVector = new Vector2f(hSpeed, vSpeed);
         Vector2f positionVector = new Vector2f(x,y);
-        Vector2f totalVector = speedVector.add(positionVector, new Vector2f());
+        Vector2f totalVector = positionVector;
+        int count = 16;
 
-        while(room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] == jumpChar || room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] == jumpChar2){
-            totalVector.sub(new Vector2f(speedVector.x/16f, speedVector.y/16f));
-            //totalVector.set(totalVector.x, (float)Math.floor(totalVector.y-(vSpeed/16f)));
+        while((room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] != jumpChar && count > 1) && (room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] != jumpChar2 && count > 1)){
+            totalVector.add(new Vector2f(speedVector.x/16f, speedVector.y/16f));
+            count--;
+        }
+        return totalVector.y;
+
+
+    }
+
+    public static float getMoveX(float x, float y, float hSpeed, float vSpeed, ArrayList<Character[]> room, char jumpChar, char jumpChar2, char jumpChar3){
+        Vector2f speedVector = new Vector2f(hSpeed, vSpeed);
+        Vector2f positionVector = new Vector2f(x,y);
+        Vector2f totalVector = positionVector;
+        int count = 16;
+
+        while((room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] != jumpChar && count > 1) && (room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] != jumpChar2 && count > 1) && (room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] != jumpChar3 && count > 1)){
+            totalVector.add(new Vector2f(speedVector.x/16f, speedVector.y/16f));
+            count--;
+        }
+        return totalVector.x;
+
+    }
+
+    public static float getMoveY(float x, float y, float hSpeed, float vSpeed, ArrayList<Character[]> room, char jumpChar, char jumpChar2, char jumpChar3){
+        Vector2f speedVector = new Vector2f(hSpeed, vSpeed);
+        Vector2f positionVector = new Vector2f(x,y);
+        Vector2f totalVector = positionVector;
+        int count = 16;
+
+        while((room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] != jumpChar && count > 1) && (room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] != jumpChar2 && count > 1) && (room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] != jumpChar3 && count > 1)){
+            totalVector.add(new Vector2f(speedVector.x/16f, speedVector.y/16f));
+            count--;
         }
         return totalVector.y;
 
