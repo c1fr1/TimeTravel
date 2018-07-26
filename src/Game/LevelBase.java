@@ -21,6 +21,7 @@ public class LevelBase
     public static VAO tileObj;
     public static Texture floorTexture;
     public static Texture wallTexture;
+	public static Texture gateTexture;
     public static Texture newwallTexture;
     public static Texture[] ttoTexture;
     public static Texture controllerTexture;
@@ -55,6 +56,7 @@ public class LevelBase
             floorTexture = new Texture("res/present-floor.png");
             wallTexture = new Texture("res/present-wall.png");
             newwallTexture = new Texture("res/future-wall.png");
+			gateTexture = new Texture("res/gate.png");
 			//changing texture for tto
 			ttoTexture = new Texture[9];
 			ttoTexture[0] = new Texture("res/anims/tto-1.png");
@@ -162,6 +164,8 @@ public class LevelBase
     					newwallTexture.bind();
 					}else if (currentChar == 't') {
 						ttoTexture[frameCounter].bind();
+					}else if (currentChar == 'g') {
+						gateTexture.bind();
 					}
 					float x = ((float) chr) * 50f;
 					float y = -((float) row) * 50f;

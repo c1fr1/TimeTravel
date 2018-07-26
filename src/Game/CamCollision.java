@@ -10,15 +10,6 @@ import java.util.logging.Level;
 public class CamCollision {
 
     public static char checkCollision(float x, float y, float hSpeed, float vSpeed, ArrayList<Character[]> room){
-        /*CamCollision.checkCollision(cam.x-15, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                CamCollision.checkCollision(cam.x+15, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                CamCollision.checkCollision(cam.x, cam.y+15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                CamCollision.checkCollision(cam.x, cam.y-15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-
-                CamCollision.checkCollision(cam.x-15, cam.y-15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                CamCollision.checkCollision(cam.x+15, cam.y-15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                CamCollision.checkCollision(cam.x-15, cam.y+15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                CamCollision.checkCollision(cam.x+15, cam.y+15, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't')*/
         Vector2f speedVector = new Vector2f(hSpeed, vSpeed);
         Vector2f positionVector = new Vector2f(x,y);
         Vector2f totalVector = speedVector.add(positionVector);
@@ -30,7 +21,6 @@ public class CamCollision {
         Vector2f speedVector = new Vector2f(hSpeed, vSpeed);
         Vector2f positionVector = new Vector2f(x,y);
         Vector2f totalVector = speedVector.add(positionVector, new Vector2f());
-
         while(room.get((int)(totalVector.y/50f))[(int)(totalVector.x/50f)] == jumpChar){
             totalVector.sub(new Vector2f(speedVector.x/16f, speedVector.y/16f));
             //totalVector.set((float)Math.floor(totalVector.x-(hSpeed/16f)), totalVector.y);
