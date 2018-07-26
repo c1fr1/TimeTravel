@@ -63,6 +63,7 @@ public class MainView extends EnigView {
 		
 		glDisable(GL_DEPTH_TEST);
 		//needs to be generalized to use level selected - level path is a parameter
+		float aspectRatio = (float) window.getHeight() / (float) window.getWidth();
         currentLevel = new LevelBase("res/Levels/Level"+currentLevelNum+".txt");
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
 		guiShader = new ShaderProgram("guiShader");
@@ -76,9 +77,9 @@ public class MainView extends EnigView {
 		spriteTexture[2] = new Texture("res/sprite-right.png");
 		spriteTexture[3] = new Texture("res/sprite-up.png");
 
-        cont = new SpriteButton(-0.5f,0.525f,1f,0.25f,"res/menu/continue.png");
-        restart = new SpriteButton(-0.5f, -0.125f, 1f, 0.25f,"res/menu/restart.png");
-        menu = new SpriteButton(-0.5f, -0.725f, 1f, 0.25f,"res/menu/menu.png");
+        cont = new SpriteButton(-0.5f,0.525f,1f,0.25f,"res/menu/continue.png", aspectRatio);
+        restart = new SpriteButton(-0.5f, -0.125f, 1f, 0.25f,"res/menu/restart.png", aspectRatio);
+        menu = new SpriteButton(-0.5f, -0.725f, 1f, 0.25f,"res/menu/menu.png", aspectRatio);
 
 		textureShader = new ShaderProgram("textureShaders");
 		pauseShader = new ShaderProgram("pauseShaders");
