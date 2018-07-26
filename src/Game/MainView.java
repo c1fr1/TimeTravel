@@ -127,11 +127,12 @@ public class MainView extends EnigView {
 	}
 
 	public boolean getFromInventory(char item){
-	    for(char i: inventory){
+	    for(int i = 0; i < inventory.length; i++){
 	        if(i == item){
 	            for(int j = i; j < inventory.length-1; j++){
-	                inventory[i] = inventory[i+1];
+	                inventory[j] = inventory[j+1];
                 }
+                inventoryCounter--;
                 return true;
             }
         }
@@ -296,11 +297,14 @@ public class MainView extends EnigView {
 			if (vSpeed != 0) {
 				hSpeed *= 0.70710678118f;
 			}
-			//if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '#' || CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '_'){
-				cam.x = CamCollision.getMoveX(cam.x + getSign(hSpeed)*15f, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), solidBlocks) - getSign(hSpeed)*15f;
-				cam.y = CamCollision.getMoveY(cam.x, cam.y + getSign(vSpeed)*15f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), solidBlocks) - getSign(vSpeed)*15f;
-			//}
 
+
+			//if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '#' || CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '_'){
+            cam.x = CamCollision.getMoveX(cam.x + getSign(hSpeed)*15f, cam.y, hSpeed, vSpeed,
+                    currentLevel.levelseries.get(currentLevel.currentTZ), solidBlocks) - getSign(hSpeed)*15f;
+			cam.y = CamCollision.getMoveY(cam.x, cam.y + getSign(vSpeed)*15f, hSpeed, vSpeed,
+                    currentLevel.levelseries.get(currentLevel.currentTZ), solidBlocks) - getSign(vSpeed)*15f;
+			//}
 
 			LevelBase.levelProgram.enable();
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
