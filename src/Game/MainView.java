@@ -90,6 +90,13 @@ public class MainView extends EnigView {
 		cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
 		cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
 	}
+	public void nextLevel(int increment) {
+	    currentLevelNum+=increment;
+        currentLevel = new LevelBase("res/Levels/Level"+currentLevelNum+".txt");
+
+        cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
+        cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
+    }
 	
 	@Override
 	public boolean loop() {
@@ -294,8 +301,7 @@ public class MainView extends EnigView {
                     					CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g' ||
                     					CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g') {
 
-                    currentLevelNum++;
-                    setup();
+                    nextLevel(1);
             }
 
 
