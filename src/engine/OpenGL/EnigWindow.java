@@ -544,6 +544,11 @@ public class EnigWindow {
 				++keys[i];
 			}
 		}
+		for (int i = 0; i < mouseButtons.length; ++i) {
+			if (mouseButtons[i] == 1) {
+				++keys[i];
+			}
+		}
 	}
 	
 	/**
