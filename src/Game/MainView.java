@@ -176,6 +176,9 @@ public class MainView extends EnigView {
              	if (click == 1)
                 {
                     System.out.println("Restart Clicked");
+					framesPaused = 0;
+					pause = !pause;
+					nextLevel(0);
             	}
             }
             else
