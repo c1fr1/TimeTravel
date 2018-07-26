@@ -22,6 +22,8 @@ public class MainView extends EnigView {
 	public ShaderProgram textureShader;
 	public ShaderProgram pauseShader;
 	public ShaderProgram travelShader;
+	
+	public SpriteButton ttoGUIButton;
 
 	public Texture ttoGUI;
 	public Texture[] spriteTexture;
@@ -77,6 +79,10 @@ public class MainView extends EnigView {
 		pauseShader = new ShaderProgram("pauseShaders");
 		ttoguiShader = new ShaderProgram("ttoGUIShader");
 		travelShader = new ShaderProgram("travelShaders");
+		
+		ttoGUIButton = new SpriteButton(-0.06f, 0.4f, 0.12f, 0.12f, "res/ttoguiButton.png");
+		ttoGUIButton.shader = new ShaderProgram("ttoGUIButtonShader");
+		
 		mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));
 		screenVAO = new VAO(-1f, -1f, 2f, 2f);
 
@@ -118,7 +124,10 @@ public class MainView extends EnigView {
 			guiShader.enable();
 
 			guiShader.shaders[0].uniforms[0].set((float)window.getHeight()/(float)window.getWidth());
-			cont.Re
+			cont.render();
+			restart.render();
+			menu.render();
+
             //window.cursorxfloat
 		}
 		//Time Travel animation
@@ -170,10 +179,10 @@ public class MainView extends EnigView {
 				hSpeed += delta_time / 3f;
 			}
 			if (hSpeed != 0) {
-				vSpeed *= Math.sqrt(2) / 2;
+				vSpeed *= 0.70710678118f;
 			}
 			if (vSpeed != 0) {
-				hSpeed *= Math.sqrt(2) / 2;
+				hSpeed *= 0.70710678118f;
 			}
 
 			//if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '#' || CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '_'){
@@ -190,58 +199,66 @@ public class MainView extends EnigView {
 
             //CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't'
 			//render tto gui if the player is on the tto
-			if (CamCollision.checkCollision(cam.x, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
+			if (CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                	CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                	CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+                	CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
 				ttoguiShader.enable();
 				ttoguiShader.shaders[0].uniforms[0].set(aspectRatio);
-				ttoguiShader.shaders[2].uniforms[0].set(-1f);
-				if (window.cursorXFloat * aspectRatio > -0.25 && window.cursorXFloat * aspectRatio < -0.2) {
-					if (window.cursorYFloat > 0.125 && window.cursorYFloat < 0.375) {
+				
+				ttoGUIButton.shader.enable();
+				ttoGUIButton.shader.shaders[0].uniforms[0].set(aspectRatio);
+				ttoGUIButton.sprite.bind();
+				ttoGUIButton.vao.prepareRender();
+				float leftOffset = 0.025f * (float) currentLevel.levelseries.size();
+				for (int i = 0; i < currentLevel.levelseries.size(); ++i) {
+					float floati = (float) i;
+					//float x = floati * 0.2f + window.cursorXFloat * aspectRatio;
+					ttoGUIButton.shader.shaders[0].uniforms[1].set(-leftOffset + 0.1f * floati);
+					if (false) {
+						ttoGUIButton.shader.shaders[2].uniforms[0].set(0f);
+					} else if (currentLevel.currentTZ == i) {
+						ttoGUIButton.shader.shaders[2].uniforms[0].set(2f);
+					} else if (ttoGUIButton.hoverCheck(window.cursorXFloat - floati * 0.1f + leftOffset, window.cursorYFloat)) {
 						if (UserControls.leftMB(window)) {
-							if (currentLevel.currentTZ > 0) {
-								if (timeTravelFrames == 0) {
-									--currentLevel.currentTZ;
-								}
-								++timeTravelFrames;
-							}
-							//time travel backward
+							currentLevel.currentTZ = i;
+							++timeTravelFrames;
 						}
-						ttoguiShader.shaders[2].uniforms[0].set(0.15f);
+						ttoGUIButton.shader.shaders[2].uniforms[0].set(3f);
+					} else {
+						ttoGUIButton.shader.shaders[2].uniforms[0].set(1f);
 					}
+					ttoGUIButton.vao.draw();
 				}
-				if (window.cursorXFloat * aspectRatio > 0.2 && window.cursorXFloat * aspectRatio < 0.25) {
-					if (window.cursorYFloat > 0.125 && window.cursorYFloat < 0.375) {
-						if (UserControls.leftMB(window)) {
-							if (currentLevel.currentTZ + 1 < currentLevel.levelseries.size()) {
-								if (timeTravelFrames == 0) {
-									++currentLevel.currentTZ;
-								}
-								++timeTravelFrames;
-							}
-							//time travel forward
-						}
-						ttoguiShader.shaders[2].uniforms[0].set(0.85f);
-					}
+				ttoGUIButton.vao.unbind();
+				/*if (ttoGUIButton.hoverCheck(window.cursorXFloat * aspectRatio, window.cursorYFloat)) {
+					ttoGUIButton.shader.enable();
+					ttoGUIButton.shader.shaders[0].uniforms[0].set(aspectRatio);
+					
+				}*/
+				ttoguiShader.enable();
+				ttoGUIButton.shader.shaders[0].uniforms[0].set(aspectRatio);
+				if (timeTravelFrames == 0) {
+					ttoGUI.bind();
+					ttoGUIVAO.fullRender();
 				}
-				//ttoguiShader.shaders[2].uniforms[0].set(0.2f);
-                if (timeTravelFrames == 0) {
-                    ttoGUI.bind();
-                    ttoGUIVAO.fullRender();
-                }
-
+				//ttoGUIButtonTexture.bind();
+				//ttoGUIButtonVAO.fullRender();
+				
 			}
-            int spriteSize = 35;
-            if (    CamCollision.checkCollision(cam.x-spriteSize, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x+spriteSize, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x, cam.y+spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x, cam.y-spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-
-                    CamCollision.checkCollision(cam.x-spriteSize, cam.y-spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x+spriteSize, cam.y-spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x-spriteSize, cam.y+spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-                    CamCollision.checkCollision(cam.x+spriteSize, cam.y+spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
-
-                    CamCollision.checkCollision(cam.x, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
-                animationFrameCounter+=0.5*delta_time*0.03;
+			int spriteSize = 35;
+			if (    CamCollision.checkCollision(cam.x-spriteSize, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					CamCollision.checkCollision(cam.x+spriteSize, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					CamCollision.checkCollision(cam.x, cam.y+spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					CamCollision.checkCollision(cam.x, cam.y-spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					
+					CamCollision.checkCollision(cam.x-spriteSize, cam.y-spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					CamCollision.checkCollision(cam.x+spriteSize, cam.y-spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					CamCollision.checkCollision(cam.x-spriteSize, cam.y+spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					CamCollision.checkCollision(cam.x+spriteSize, cam.y+spriteSize, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't' ||
+					
+					CamCollision.checkCollision(cam.x, cam.y, 0, 0, currentLevel.levelseries.get(currentLevel.currentTZ)) == 't') {
+				animationFrameCounter+=0.5*delta_time*0.03;
 			} else {
 				animationFrameCounter-=delta_time*0.03;
 			}

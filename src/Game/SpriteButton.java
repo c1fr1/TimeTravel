@@ -1,14 +1,18 @@
 package Game;
 
+import engine.OpenGL.ShaderProgram;
 import engine.OpenGL.Texture;
+import engine.OpenGL.VAO;
 
 public class SpriteButton
 {
-    float xpos;
-    float ypos;
-    float width;
-    float height;
-    Texture sprite;
+    public float xpos;
+    public float ypos;
+    public float width;
+    public float height;
+    public Texture sprite;
+    public VAO vao;
+    public ShaderProgram shader;
 
 
     public SpriteButton(float x, float y, float width, float height, String path)
@@ -18,13 +22,14 @@ public class SpriteButton
         this.width = width;
         this.height = height;
         sprite = new Texture(path);
+        vao = new VAO(x, y, width, height);
     }
 
     public boolean hoverCheck(float xmouse, float ymouse)
     {
         if (xmouse <= xpos + width && xmouse >= xpos)
         {
-            if (ymouse <= ypos && ymouse >= ypos - height)
+            if (ymouse >= ypos && ymouse <= ypos + height)
             {
                 return true;
             }
@@ -37,40 +42,20 @@ public class SpriteButton
         return xpos;
     }
 
-    public void setXpos(int xpos)
-    {
-        this.xpos = xpos;
-    }
-
     public float getYpos() {
         return ypos;
-    }
-
-    public void setYpos(int ypos) {
-        this.ypos = ypos;
     }
 
     public float getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
     public float getHeight() {
         return height;
     }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public Texture getSprite() {
-        return sprite;
-    }
-
-    public void setSprite(Texture sprite) {
-        this.sprite = sprite;
-    }
+    
+    public void render() {
+    	sprite.bind();
+    	vao.fullRender();
+	}
 }
