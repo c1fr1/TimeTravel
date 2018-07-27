@@ -16,7 +16,7 @@ public class MainView extends EnigView {
 
 	public Camera cam;
 
-	public static char[] solidBlocks = {'#', '_', 'l','^'};
+	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v'};
 
 	//project variables
 
@@ -119,6 +119,7 @@ public class MainView extends EnigView {
 		cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
 		cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
 	}
+
 	public boolean nextLevel(int increment) {
 
 		File test = new File("res/Levels");

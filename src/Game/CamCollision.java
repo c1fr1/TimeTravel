@@ -60,7 +60,10 @@ public class CamCollision
         x += hspeed;
         //tests if you are going to collide with a solid
         char blocking = checkAllCollision(x,y,15,room,obstacles);
-        if (blocking == '^' && vspeed <= 0)
+        if ((blocking == '^' && vspeed <= 0) ||
+                (blocking == 'v' && vspeed >= 0) ||
+                (blocking == '>' && hspeed >= 0) ||
+                (blocking == '<' && hspeed <= 0))
         {
             blocking = '`';
         }
@@ -87,7 +90,10 @@ public class CamCollision
         y += vspeed;
         char blocking = checkAllCollision(x,y,15,room,obstacles);
         //tests if you are going to collide with a solid
-        if (blocking == '^' && vspeed <= 0)
+        if ((blocking == '^' && vspeed <= 0) ||
+                (blocking == 'v' && vspeed >= 0) ||
+                (blocking == '>' && hspeed >= 0) ||
+                (blocking == '<' && hspeed <= 0))
         {
             blocking = '`';
         }
