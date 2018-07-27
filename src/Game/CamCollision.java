@@ -57,8 +57,14 @@ public class CamCollision
     {
         float xsave = x;
         x += hspeed;
-        char blocking = checkAllCollision(x,y,border,room,obstacles);
-        if (blocking != '`')
+        char block = checkAllCollision(x,y,border,room,obstacles);
+        //pass doors
+        if (block == '^')
+        {
+            block = '`';
+        }
+        //snap to collision contact
+        if (block != '`')
         {
             x = 50 * Math.round(xsave/50);
             x += 15.001 * Util.getSign(-hspeed);
@@ -71,8 +77,14 @@ public class CamCollision
     {
         float ysave = y;
         y += vspeed;
-        char blocking = checkAllCollision(x,y,border,room,obstacles);
-        if (blocking != '`')
+        char block = checkAllCollision(x,y,border,room,obstacles);
+        //pass doors
+        if (block == '^')
+        {
+            block = '`';
+        }
+        //snap to collision contact
+        if (block != '`')
         {
             y = 50 * Math.round(ysave/50);
             y += 15.001 * Util.getSign(-vspeed);
