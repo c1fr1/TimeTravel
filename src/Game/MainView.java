@@ -40,6 +40,7 @@ public class MainView extends EnigView {
 
 	public SpriteButton ttoGUIButton;
 
+	public Texture frontStars;
 	public Texture ttoGUI;
 	public Texture keyTexture;
 	public Texture[] spriteTexture;
@@ -102,6 +103,11 @@ public class MainView extends EnigView {
 		inventoryShader = new ShaderProgram("inventoryShaders");
 		backgroundShader = new ShaderProgram("backgroundShader");
 		
+		frontStars = new Texture("res/frontstars.png");
+		frontStars.bind();
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		Texture.unbind();
 		starBackground = new Texture("res/stars.png");
 		starBackground.bind();
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -291,9 +297,17 @@ public class MainView extends EnigView {
 			FBO.prepareDefaultRender();
 			
 			backgroundShader.enable();
-			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
+			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.5f, new Vector2f()));
 			starBackground.bind();
-			screenVAO.fullRender();
+			screenVAO.prepareRender();
+			screenVAO.drawTriangles();
+			frontStars.bind();
+			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
+			screenVAO.drawTriangles();
+			screenVAO.unbind();
+			
+			
+			
 			currentLevel.render(cam);
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
 			spriteTexture[0].bind();
@@ -321,7 +335,12 @@ public class MainView extends EnigView {
 			backgroundShader.enable();
 			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
 			starBackground.bind();
-			screenVAO.fullRender();
+			screenVAO.prepareRender();
+			screenVAO.drawTriangles();
+			frontStars.bind();
+			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.5f, new Vector2f()));
+			screenVAO.drawTriangles();
+			screenVAO.unbind();
 			
 			backgroundVelocity.mul(0.99f);
 			backgroundVelocity.add((float) (delta_time * 0.000007f * (Math.random() - 0.5)), (float) (delta_time * 0.000007f * (Math.random() - 0.5)));
