@@ -23,7 +23,8 @@ public class LevelBase
 	public static Texture gateTexture;
     public static Texture lockTexture;
 	public static Texture newwallTexture;
-	public static Texture keyTexture;
+    public static Texture upGateTexture;
+    public static Texture keyTexture;
 	public static Texture[] ttoTexture;
     public static Texture controllerTexture;
     public static ShaderProgram levelProgram;
@@ -43,6 +44,7 @@ public class LevelBase
 			keyTexture = new Texture("res/key.png");
 			gateTexture = new Texture("res/gate.png");
 			lockTexture = new Texture("res/locked-gate.png");
+            upGateTexture = new Texture("res/upGate.png");
 
 			//changing texture for tto
 			ttoTexture = new Texture[9];
@@ -147,6 +149,7 @@ public class LevelBase
 			newwallTexture = new Texture("res/future-wall.png");
 			keyTexture = new Texture("res/key.png");
 			gateTexture = new Texture("res/gate.png");
+            upGateTexture = new Texture("res/upGate.png");
 			
 			//changing texture for tto
 			ttoTexture = new Texture[9];
@@ -283,6 +286,9 @@ public class LevelBase
 					else if (currentChar == 'l') {
 						lockTexture.bind();
 					}
+					else if (currentChar == '^') {
+					    upGateTexture.bind();
+                    }
 					float x = ((float) chr) * 50f;
 					float y = -((float) row) * 50f;
 					levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2*cam.y, 0));
