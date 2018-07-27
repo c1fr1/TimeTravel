@@ -468,10 +468,12 @@ public class MainView extends EnigView {
 	public ArrayList<Character[]> getCurrentZone() {
 		return currentLevel.levelseries.get(currentLevel.currentTZ);
 	}
+
 	public static boolean isNumericValue(char character) {
 		int val = Character.getNumericValue(character);
 		return val >= 0 && val < 10;
 	}
+
 	public static int numVal(char character) {
 		int val = Character.getNumericValue(character);
 		if (val >= 10) {
