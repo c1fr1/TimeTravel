@@ -73,7 +73,7 @@ public class CamCollision
             x -= xstep;
         }
         //if you will collide, move to contact
-        return x;
+        return x - xsave;
     }
 
     public static float verticalMovement(float x, float y,
@@ -96,6 +96,6 @@ public class CamCollision
             y -= ystep;
         }
         //if you will collide, move to contact
-        return y;
+        return y - ysave;
     }
 }

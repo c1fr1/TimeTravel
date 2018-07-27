@@ -3,6 +3,7 @@ package Game;
 import engine.*;
 import engine.Entities.Camera;
 import engine.OpenGL.*;
+import org.joml.Vector2f;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,14 +31,22 @@ public class MainView extends EnigView {
 	public ShaderProgram textureShader;
 	public ShaderProgram pauseShader;
 	public ShaderProgram travelShader;
+	public ShaderProgram inventoryShader;
+	public ShaderProgram backgroundShader;
+	
+	public Texture starBackground;
+	public Vector2f backgroundOffset = new Vector2f();
+	public Vector2f backgroundVelocity = new Vector2f();
 
 	public SpriteButton ttoGUIButton;
 
 	public Texture ttoGUI;
+	public Texture keyTexture;
 	public Texture[] spriteTexture;
 
 	public VAO ttoGUIVAO;
 	public VAO playerVAO;
+	public VAO inventoryObjectVAO;
 
 	public Texture[] pauseGUI;
 	public VAO[] pauseGUIVAO;
@@ -71,6 +80,8 @@ public class MainView extends EnigView {
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
 		guiShader = new ShaderProgram("guiShader");
 		ttoGUI = new Texture("res/timeTravelGUI.png");
+		keyTexture = new Texture("res/inventoryKey.png");
+		inventoryObjectVAO = new VAO(-1f, -0.9f, 0.1f, 0.1f);
 		ttoGUIVAO = new VAO(-0.5f, 0.125f, 1f, 0.25f);
 		playerVAO = new VAO(-40f, 10f, 30f, 30f);
 
@@ -88,6 +99,16 @@ public class MainView extends EnigView {
 		pauseShader = new ShaderProgram("pauseShaders");
 		ttoguiShader = new ShaderProgram("ttoGUIShader");
 		travelShader = new ShaderProgram("travelShaders");
+		inventoryShader = new ShaderProgram("inventoryShaders");
+		backgroundShader = new ShaderProgram("backgroundShader");
+		
+		starBackground = new Texture("res/stars.png");
+		starBackground.bind();
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		Texture.unbind();
+		backgroundOffset = new Vector2f(0f, 0f);
+		backgroundVelocity = new Vector2f(0f, 0f);
 
 		ttoGUIButton = new SpriteButton(-0.06f, 0.4f, 0.12f, 0.12f, "res/ttoguiButton.png");
 		ttoGUIButton.shader = new ShaderProgram("ttoGUIButtonShader");
@@ -168,6 +189,9 @@ public class MainView extends EnigView {
 	public boolean loop() {
 		long time = System.nanoTime();
 		float delta_time = ((float)(time - lastTime) / 1000000f);
+		if (delta_time > 60f) {
+			delta_time = 60f;
+		}
 		float aspectRatio = (float) window.getHeight() / (float) window.getWidth();
 		if(UserControls.pause(window)){
 			if(!cooldown){
@@ -261,12 +285,16 @@ public class MainView extends EnigView {
 		//Time Travel animation
 		else if (timeTravelFrames > 0) {
 			FBO.prepareDefaultRender();
-
+			
+			backgroundShader.enable();
+			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
+			starBackground.bind();
+			screenVAO.fullRender();
 			currentLevel.render(cam);
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
 			spriteTexture[0].bind();
 			playerVAO.fullRender();
-
+			
 			travelShader.enable();
 			travelShader.shaders[2].uniforms[0].set(aspectRatio);
 			float dist = (float) timeTravelFrames / 5;
@@ -285,6 +313,15 @@ public class MainView extends EnigView {
 		//run game
 		else {
 			mainFBO.prepareForTexture();
+			
+			backgroundShader.enable();
+			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
+			starBackground.bind();
+			screenVAO.fullRender();
+			
+			backgroundVelocity.mul(0.99f);
+			backgroundVelocity.add((float) (delta_time * 0.00001f * (Math.random() - 0.5)), (float) (delta_time * 0.00001f * (Math.random() - 0.5)));
+			backgroundOffset.add(backgroundVelocity);
 
 			lastTime = time;
 
@@ -314,10 +351,13 @@ public class MainView extends EnigView {
 				hSpeed *= 0.70710678118f;
 			}
 			//dictates avatar movement
-			cam.x = CamCollision.horizontalMovement(cam.x,cam.y,hSpeed,vSpeed,
-                    currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
-			cam.y = CamCollision.verticalMovement(cam.x,cam.y,hSpeed,vSpeed,
-                    currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
+			float xOffset = CamCollision.horizontalMovement(cam.x,cam.y,hSpeed,vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
+			cam.x += xOffset;
+			float yOffset = CamCollision.verticalMovement(cam.x,cam.y,hSpeed,vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
+			cam.y += yOffset;
+			backgroundOffset.x += xOffset * 0.0005;
+			backgroundOffset.y += yOffset * 0.0005;
+			
 
 			LevelBase.levelProgram.enable();
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
@@ -421,6 +461,16 @@ public class MainView extends EnigView {
                     getFromInventory('k');
                 }
             }
+            inventoryShader.enable();
+			inventoryShader.shaders[0].uniforms[0].set(aspectRatio);
+            inventoryObjectVAO.prepareRender();
+            for (int i = 0; i < inventory.length; ++i) {
+				inventoryShader.shaders[0].uniforms[1].set((float) i * 0.1f);
+				if (inventory[i] == 'k') {
+					keyTexture.bind();
+					inventoryObjectVAO.draw();
+				}
+			}
 
 			guiShader.enable();
 			guiShader.shaders[0].uniforms[0].set(aspectRatio);
