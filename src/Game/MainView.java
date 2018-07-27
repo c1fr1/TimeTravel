@@ -333,11 +333,10 @@ public class MainView extends EnigView {
 
 			//MOVEMENT
 			Movement m = new Movement(delta_time, window, cam, currentLevel, solidBlocks);
-
 			cam.x += m.getXOffset();
-			cam.y += m.getyOffset();
+			cam.y += m.getYOffset();
 			backgroundOffset.x += m.getXOffset() * 0.0005;
-			backgroundOffset.y += m.getyOffset() * 0.0005;
+			backgroundOffset.y += m.getYOffset() * 0.0005;
 			
 
 			LevelBase.levelProgram.enable();

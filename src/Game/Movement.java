@@ -58,7 +58,7 @@ public class Movement {
      *
      * @return gets X offset/move for the player
      */
-    public float getyOffset(){
+    public float getYOffset(){
         return yOffset;
     }
 
