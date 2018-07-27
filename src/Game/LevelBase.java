@@ -32,25 +32,6 @@ public class LevelBase
     public float[] ttoFrameCounter;
 
 
-	//Render Crap
-    /*public LevelBase(String level, int width, int height)
-    {
-    	if (tileObj == null) {
-			tileObj = new VAO(-25f, -25f, 50f, 50f);
-    		floorTexture = new Texture("res/present-floor.png");
-    		wallTexture = new Texture("res/present-wall.png");
-    		levelProgram = new ShaderProgram("levelShader");
-		}
-		//creates a room from a string
-		layout = new char[width][height];
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                layout[i][j] =  level.charAt(i+j*width);
-            }
-        }
-    }*/
     //gets the map
 	public LevelBase(String filename)
 	{
@@ -157,20 +138,6 @@ public class LevelBase
 		}
 		ttoFrameCounter = new float[timeZonePossibilities.size()];
 
-		//LEVEL EXTRACTION
-		/*
-		String output = "";
-		int tense = 2;//time period - 0,1,2
-		for (int j = 0; j < levelseries.get(tense).size(); j++)
-		{
-			for (int k = 0; k < levelseries.get(tense).get(j).length; k++)
-			{
-				output += levelseries.get(tense).get(j)[k];
-			}
-			output += "\n";
-		}
-		System.out.println(output);
-		*/
 	}
 	public LevelBase(String filename, ArrayList<Boolean[]> ttoAbilities) {
 		if (tileObj == null) {
@@ -269,21 +236,6 @@ public class LevelBase
 		}
 		timeZonePossibilities = ttoAbilities;
 		ttoFrameCounter = new float[timeZonePossibilities.size()];
-		
-		//LEVEL EXTRACTION
-		/*
-		String output = "";
-		int tense = 2;//time period - 0,1,2
-		for (int j = 0; j < levelseries.get(tense).size(); j++)
-		{
-			for (int k = 0; k < levelseries.get(tense).get(j).length; k++)
-			{
-				output += levelseries.get(tense).get(j)[k];
-			}
-			output += "\n";
-		}
-		System.out.println(output);
-		*/
 	}
 
 	public void updateTTO(int[] locationInArray, float deltaTime) {

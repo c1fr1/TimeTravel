@@ -291,6 +291,7 @@ public class MainView extends EnigView {
 			//game here
 			currentLevel.render(cam);
 
+			//sets the speed of the avatar
 			float vSpeed = 0;
 			float hSpeed = 0;
 
@@ -312,27 +313,17 @@ public class MainView extends EnigView {
 			if (vSpeed != 0) {
 				hSpeed *= 0.70710678118f;
 			}
-
-
-			//if(CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '#' || CamCollision.checkCollision(cam.x,cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) != '_'){
-            cam.x = CamCollision.getMoveX(cam.x + getSign(hSpeed)*15f, cam.y, hSpeed, vSpeed,
-                    currentLevel.levelseries.get(currentLevel.currentTZ), solidBlocks) - getSign(hSpeed)*15f;
-			cam.y = CamCollision.getMoveY(cam.x, cam.y + getSign(vSpeed)*15f, hSpeed, vSpeed,
-                    currentLevel.levelseries.get(currentLevel.currentTZ), solidBlocks) - getSign(vSpeed)*15f;
-			//}
+			//dictates avatar movement
+			cam.x = CamCollision.horizontalMovement(cam.x,cam.y,hSpeed,vSpeed,
+                    currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
+			cam.y = CamCollision.verticalMovement(cam.x,cam.y,hSpeed,vSpeed,
+                    currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
 
 			LevelBase.levelProgram.enable();
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
 			spriteTexture[0].bind();
 			playerVAO.fullRender();
 
-
-            //CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, getCurrentZone()) == 't'
-			//render tto gui if the player is on the tto
-			/*if (CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, getCurrentZone()) == 't' ||
-                	CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, getCurrentZone()) == 't' ||
-                	CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, getCurrentZone()) == 't' ||
-                	CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, getCurrentZone()) == 't') {*/
 			int[] nearesTTOCheck = new int[4];
 			nearesTTOCheck[0] = numVal(currentLevel.charAtPos(cam.x + 15f, cam.y - 15f));
 			nearesTTOCheck[1] = numVal(currentLevel.charAtPos(cam.x + 15f, cam.y + 15f));
@@ -411,17 +402,16 @@ public class MainView extends EnigView {
 
             currentLevel.updateTTO(arrpossibilities, delta_time);
 
-            if (CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g' ||
-                    					CamCollision.checkCollision(cam.x - getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g' ||
-                    					CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y + getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g' ||
-                    					CamCollision.checkCollision(cam.x + getSign(hSpeed)*20f, cam.y - getSign(vSpeed)*20f, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'g') {
-
-                    nextLevel(1);
+            if (CamCollision.isColliding(cam.x,cam.y,1,currentLevel.levelseries.get(currentLevel.currentTZ),'g'))
+            {
+                nextLevel(1);
             }
-			if (CamCollision.checkCollision(cam.x, cam.y, hSpeed, vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ)) == 'k') {
-				inventory[inventoryCounter] = replaceTile(cam.x, cam.y, ' ');
-				inventoryCounter ++;
-			}
+            if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'k'))
+            {
+                inventory[inventoryCounter] = replaceTile(cam.x, cam.y, ' ');
+                inventoryCounter ++;
+            }
+
 			int gateCheckXIndex = (int)((cam.x + getSign(hSpeed)*20f)/50f);
 			int gateCheckYIndex = (int)((cam.y + getSign(vSpeed)*20f)/50f);
 			if(currentLevel.charAtPos(gateCheckXIndex, gateCheckYIndex) == 'l'){
@@ -429,9 +419,7 @@ public class MainView extends EnigView {
                 if(checkInventory('k')){
                     replaceTile(gateCheckXIndex, gateCheckYIndex, ' ');
                     getFromInventory('k');
-
                 }
-
             }
 
 			guiShader.enable();

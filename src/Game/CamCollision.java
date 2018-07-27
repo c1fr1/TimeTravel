@@ -7,60 +7,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-public class CamCollision {
-
-    public static char checkCollision(float x, float y, float hSpeed, float vSpeed, ArrayList<Character[]> room){
-        Vector2f speedVector = new Vector2f(hSpeed, vSpeed);
-        Vector2f positionVector = new Vector2f(x,y);
-        Vector2f totalVector = speedVector.add(positionVector);
-        totalVector.set(totalVector.x/50f, totalVector.y/50f);
-        return room.get((int)totalVector.y)[(int)totalVector.x];
-    }
-
-    public static float getMoveX(float x, float y, float hSpeed, float vSpeed, ArrayList<Character[]> room, char[] jumpChar){
-        Vector2f speedVector = new Vector2f(hSpeed, vSpeed);
-        Vector2f positionVector = new Vector2f(x,y);
-        Vector2f totalVector = positionVector;
-
-        boolean go = true;
-        int count = 16;
-        while (go && count > 1) {
-            for(char i: jumpChar) {
-                if(room.get((int) (totalVector.y / 50f))[(int) (totalVector.x / 50f)] == i){
-                    go = false;
-                    break;
-                }
-            }
-            if(go) {
-                totalVector.add(new Vector2f(speedVector.x / 16f, speedVector.y / 16f));
-                count--;
-            }
-        }
-        return totalVector.x;
-    }
-
-    public static float getMoveY(float x, float y, float hSpeed, float vSpeed, ArrayList<Character[]> room, char[] jumpChar){
-        Vector2f speedVector = new Vector2f(hSpeed, vSpeed);
-        Vector2f positionVector = new Vector2f(x,y);
-        Vector2f totalVector = positionVector;
-
-        boolean go = true;
-        int count = 16;
-        while (go && count > 1) {
-            for(char i: jumpChar) {
-                if(room.get((int) (totalVector.y / 50f))[(int) (totalVector.x / 50f)] == i){
-                    go = false;
-                    break;
-                }
-            }
-            if(go) {
-                totalVector.add(new Vector2f(speedVector.x / 16f, speedVector.y / 16f));
-                count--;
-            }
-        }
-        return totalVector.y;
-    }
-
+public class CamCollision
+{
     //tests if you are colliding with the obstacle in your current position
     public static boolean isColliding(float x, float y, int border, ArrayList<Character[]> room, char obstacle)
     {
@@ -87,5 +35,65 @@ public class CamCollision {
             }
         }
         return colliding;
+    }
+
+    public static boolean checkAllCollision(float x, float y, int border, ArrayList<Character[]> room, char[] obstacles)
+    {
+        boolean colliding = false;
+        for (int i = 0; i < obstacles.length; i++)
+        {
+            //revert to last position before colliding - touching the wall
+            if (isColliding(x,y,border,room,obstacles[i]))
+            {
+                colliding = true;
+                break;
+            }
+        }
+        return colliding;
+    }
+
+    //moves you in the direction until you hit a wall and then moves you to touching the wall
+    public static float horizontalMovement(float x, float y,
+                                           float hspeed, float vspeed, ArrayList<Character[]> room, char[] obstacles)
+    {
+        float xsave = x;
+        x += hspeed;
+        //tests if you are going to collide with a solid
+        if (checkAllCollision(x,y,15,room,obstacles))
+        {
+            x = xsave;
+            float speed = (float)Math.sqrt(vspeed * vspeed + hspeed * hspeed);
+            float xstep = hspeed/speed;
+            while (!checkAllCollision(x,y,15,room,obstacles))
+            {
+                //increment x until you reach the obstacle and then stop
+                x += xstep;
+            }
+            x -= xstep;
+        }
+        //if you will collide, move to contact
+        return x;
+    }
+
+    public static float verticalMovement(float x, float y,
+                                           float hspeed, float vspeed, ArrayList<Character[]> room, char[] obstacles)
+    {
+        float ysave = y;
+        y += vspeed;
+        //tests if you are going to collide with a solid
+        if (checkAllCollision(x,y,15,room,obstacles))
+        {
+            y = ysave;
+            float speed = (float)Math.sqrt(vspeed * vspeed + hspeed * hspeed);
+            float ystep = vspeed/speed;
+            while (!checkAllCollision(x,y,15,room,obstacles))
+            {
+                //increment y until you reach the obstacle and then stop
+                y += ystep;
+            }
+            y -= ystep;
+        }
+        //if you will collide, move to contact
+        return y;
     }
 }
