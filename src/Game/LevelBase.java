@@ -298,6 +298,15 @@ public class LevelBase
 					else if (currentChar == '^') {
 					    upGateTexture.bind();
                     }
+					else if (currentChar == 'v') {
+						downGateTexture.bind();
+					}
+					else if (currentChar == '>') {
+						rightGateTexture.bind();
+					}
+					else if (currentChar == '<') {
+						leftGateTexture.bind();
+					}
 					float x = ((float) chr) * 50f;
 					float y = -((float) row) * 50f;
 					levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2*cam.y, 0));
