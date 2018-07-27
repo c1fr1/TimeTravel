@@ -42,8 +42,8 @@ public class Movement {
             hSpeed *= 0.70710678118f;
         }
 
-        xOffset = CamCollision.horizontalMovement(cam.x,cam.y,hSpeed,vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
-        yOffset = CamCollision.verticalMovement(cam.x,cam.y,hSpeed,vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
+        xOffset = CamCollision.horizontalMove(cam.x,cam.y,15,hSpeed, currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
+        yOffset = CamCollision.verticalMove(cam.x,cam.y,15,vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
     }
 
     /**

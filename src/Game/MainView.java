@@ -16,7 +16,7 @@ public class MainView extends EnigView {
 
 	public Camera cam;
 
-	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v'};
+	public static char[] solidBlocks = {'#', '_', 'l'};
 
 	//project variables
 
@@ -506,7 +506,7 @@ public class MainView extends EnigView {
 		main = new MainView();
 	}
 
-	public int getSign(float thing){
+	public static int getSign(float thing){
 		if(thing > 0){
 			return 1;
 		} else if(thing < 0){

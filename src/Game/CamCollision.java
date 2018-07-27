@@ -51,66 +51,32 @@ public class CamCollision
         }
         return solid;
     }
-
     //moves you in the direction until you hit a wall and then moves you to touching the wall
-    public static float horizontalMovement(float x, float y,
-                                           float hspeed, float vspeed, ArrayList<Character[]> room, char[] obstacles)
+    public static float horizontalMove(float x, float y, int border,
+                                       float hspeed, ArrayList<Character[]> room, char[] obstacles)
     {
         float xsave = x;
         x += hspeed;
-        //tests if you are going to collide with a solid
-        char blocking = checkAllCollision(x,y,15,room,obstacles);
-        if ((blocking == '^' && vspeed <= 0) ||
-                (blocking == 'v' && vspeed >= 0) ||
-                (blocking == '>' && hspeed >= 0) ||
-                (blocking == '<' && hspeed <= 0))
-        {
-            blocking = '`';
-        }
+        char blocking = checkAllCollision(x,y,border,room,obstacles);
         if (blocking != '`')
         {
-            x = xsave;
-            float speed = (float)Math.sqrt(vspeed * vspeed + hspeed * hspeed);
-            float xstep = hspeed/speed;
-            while (!isColliding(x,y,15,room,blocking))
-            {
-                //increment x until you reach the obstacle and then stop
-                x += xstep;
-            }
-            x -= xstep;
+            x = 50 * Math.round(xsave/50);
+            x += 15.001 * MainView.getSign(-hspeed);
         }
-        //if you will collide, move to contact
         return x - xsave;
     }
 
-    public static float verticalMovement(float x, float y,
-                                           float hspeed, float vspeed, ArrayList<Character[]> room, char[] obstacles)
+    public static float verticalMove(float x, float y, int border,
+                                     float vspeed, ArrayList<Character[]> room, char[] obstacles)
     {
         float ysave = y;
         y += vspeed;
-        char blocking = checkAllCollision(x,y,15,room,obstacles);
-        //tests if you are going to collide with a solid
-        if ((blocking == '^' && vspeed <= 0) ||
-                (blocking == 'v' && vspeed >= 0) ||
-                (blocking == '>' && hspeed >= 0) ||
-                (blocking == '<' && hspeed <= 0))
+        char block = checkAllCollision(x,y,border,room,obstacles);
+        if (block != '`')
         {
-            blocking = '`';
+            y = 50 * Math.round(ysave/50);
+            y += 15.001 * MainView.getSign(-vspeed);
         }
-
-        if (blocking != '`')
-        {
-            y = ysave;
-            float speed = (float)Math.sqrt(vspeed * vspeed + hspeed * hspeed);
-            float ystep = vspeed/speed;
-            while (!isColliding(x,y,15,room,blocking))
-            {
-                //increment y until you reach the obstacle and then stop
-                y += ystep;
-            }
-            y -= ystep;
-        }
-        //if you will collide, move to contact
         return y - ysave;
     }
 }
