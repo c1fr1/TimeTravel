@@ -24,6 +24,9 @@ public class LevelBase
     public static Texture lockTexture;
 	public static Texture newwallTexture;
     public static Texture upGateTexture;
+    public static Texture downGateTexture;
+    public static Texture leftGateTexture;
+    public static Texture rightGateTexture;
     public static Texture keyTexture;
 	public static Texture[] ttoTexture;
     public static Texture controllerTexture;
@@ -45,6 +48,9 @@ public class LevelBase
 			gateTexture = new Texture("res/gate.png");
 			lockTexture = new Texture("res/locked-gate.png");
             upGateTexture = new Texture("res/upGate.png");
+            downGateTexture = new Texture("res/downGate.png");
+            leftGateTexture = new Texture("res/leftGate.png");
+            rightGateTexture = new Texture("res/rightGate.png");
 
 			//changing texture for tto
 			ttoTexture = new Texture[9];
@@ -150,6 +156,9 @@ public class LevelBase
 			keyTexture = new Texture("res/key.png");
 			gateTexture = new Texture("res/gate.png");
             upGateTexture = new Texture("res/upGate.png");
+            downGateTexture = new Texture("res/downGate.png");
+            leftGateTexture = new Texture("res/leftGate.png");
+            rightGateTexture = new Texture("res/rightGate.png");
 			
 			//changing texture for tto
 			ttoTexture = new Texture[9];
