@@ -158,7 +158,14 @@ public class MainView extends EnigView {
 		//currentLevel.levelseries.get(tempIntY)
 		return current;
 	}
-	
+
+	/**
+	 *
+	 * @param x index of replace
+	 * @param y index of replace
+	 * @param replacement tile you are replacing it with
+	 * @return
+	 */
 	public char replaceTile(int x, int y, char replacement) {
 		char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(y)[x];
 		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
@@ -340,10 +347,10 @@ public class MainView extends EnigView {
 			playerVAO.fullRender();
 
 			int[] nearesTTOCheck = new int[4];
-			nearesTTOCheck[0] = numVal(currentLevel.charAtPos(cam.x + 15f, cam.y - 15f));
-			nearesTTOCheck[1] = numVal(currentLevel.charAtPos(cam.x + 15f, cam.y + 15f));
-			nearesTTOCheck[2] = numVal(currentLevel.charAtPos(cam.x - 15f, cam.y - 15f));
-			nearesTTOCheck[3] = numVal(currentLevel.charAtPos(cam.x - 15f, cam.y + 15f));
+			nearesTTOCheck[0] = Util.numVal(currentLevel.charAtPos(cam.x + 15f, cam.y - 15f));
+			nearesTTOCheck[1] = Util.numVal(currentLevel.charAtPos(cam.x + 15f, cam.y + 15f));
+			nearesTTOCheck[2] = Util.numVal(currentLevel.charAtPos(cam.x - 15f, cam.y - 15f));
+			nearesTTOCheck[3] = Util.numVal(currentLevel.charAtPos(cam.x - 15f, cam.y + 15f));
 			int ttoOnInd = -1;
 			for (int i:nearesTTOCheck) {
 				if (i >= 0) {
@@ -396,14 +403,14 @@ public class MainView extends EnigView {
 			}
 			int spriteSize = 35;
 			int[] arrpossibilities = new int[12];
-			arrpossibilities[0] = numVal(currentLevel.charAtPos(cam.x - spriteSize, cam.y));
-			arrpossibilities[1] = numVal(currentLevel.charAtPos(cam.x + spriteSize, cam.y));
-			arrpossibilities[2] = numVal(currentLevel.charAtPos(cam.x, cam.y + spriteSize));
-			arrpossibilities[3] = numVal(currentLevel.charAtPos(cam.x, cam.y - spriteSize));
-			arrpossibilities[4] = numVal(currentLevel.charAtPos(cam.x-spriteSize, cam.y-spriteSize));
-			arrpossibilities[5] = numVal(currentLevel.charAtPos(cam.x+spriteSize, cam.y-spriteSize));
-			arrpossibilities[6] = numVal(currentLevel.charAtPos(cam.x-spriteSize, cam.y+spriteSize));
-			arrpossibilities[7] = numVal(currentLevel.charAtPos(cam.x+spriteSize, cam.y+spriteSize));
+			arrpossibilities[0] = Util.numVal(currentLevel.charAtPos(cam.x - spriteSize, cam.y));
+			arrpossibilities[1] = Util.numVal(currentLevel.charAtPos(cam.x + spriteSize, cam.y));
+			arrpossibilities[2] = Util.numVal(currentLevel.charAtPos(cam.x, cam.y + spriteSize));
+			arrpossibilities[3] = Util.numVal(currentLevel.charAtPos(cam.x, cam.y - spriteSize));
+			arrpossibilities[4] = Util.numVal(currentLevel.charAtPos(cam.x-spriteSize, cam.y-spriteSize));
+			arrpossibilities[5] = Util.numVal(currentLevel.charAtPos(cam.x+spriteSize, cam.y-spriteSize));
+			arrpossibilities[6] = Util.numVal(currentLevel.charAtPos(cam.x-spriteSize, cam.y+spriteSize));
+			arrpossibilities[7] = Util.numVal(currentLevel.charAtPos(cam.x+spriteSize, cam.y+spriteSize));
 			arrpossibilities[8] = nearesTTOCheck[0];
 			arrpossibilities[9] = nearesTTOCheck[1];
 			arrpossibilities[10] = nearesTTOCheck[2];
@@ -429,8 +436,8 @@ public class MainView extends EnigView {
             }
 
 
-			int gateCheckXIndex = (int)((cam.x + getSign(m.getHSpeed())*20f)/50f);
-			int gateCheckYIndex = (int)((cam.y + getSign(m.getVSpeed())*20f)/50f);
+			int gateCheckXIndex = (int)((cam.x + Util.getSign(m.getHSpeed())*20f)/50f);
+			int gateCheckYIndex = (int)((cam.y + Util.getSign(m.getVSpeed())*20f)/50f);
 			if(currentLevel.charAtPos(gateCheckXIndex, gateCheckYIndex) == 'l'){
 				
                 if(inv.check('k')){
@@ -463,31 +470,9 @@ public class MainView extends EnigView {
 		return currentLevel.levelseries.get(currentLevel.currentTZ);
 	}
 
-	public static boolean isNumericValue(char character) {
-		int val = Character.getNumericValue(character);
-		return val >= 0 && val < 10;
-	}
-
-	public static int numVal(char character) {
-		int val = Character.getNumericValue(character);
-		if (val >= 10) {
-			return -1;
-		}
-		return val;
-	}
 
 	public static void main(String[] args) {
 		main = new MainView();
-	}
-
-	public static int getSign(float thing){
-		if(thing > 0){
-			return 1;
-		} else if(thing < 0){
-			return -1;
-		} else {
-		    return 0;
-        }
 	}
 
 	@Override
