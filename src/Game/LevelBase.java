@@ -120,7 +120,7 @@ public class LevelBase
 					}else if (lane.charAt(k) == 't') {
 						if (levelseries.size() > 0) {
 							char prevLevel = levelseries.get(levelseries.size() - 1).get(j)[k];
-							if (MainView.isNumericValue(prevLevel)) {
+							if (Util.isNumericValue(prevLevel)) {
 								levelrow[k] = prevLevel;
 							}else {
 								levelrow[k] = (char) (timeZonePossibilities.size() + '0');
@@ -228,7 +228,7 @@ public class LevelBase
 					}else if (lane.charAt(k) == 't') {
 						if (levelseries.size() > 0) {
 							char prevLevel = levelseries.get(levelseries.size() - 1).get(j)[k];
-							if (MainView.isNumericValue(prevLevel)) {
+							if (Util.isNumericValue(prevLevel)) {
 								levelrow[k] = prevLevel;
 							}else {
 								levelrow[k] = (char) (timeZonePossibilities.size() + '0');
@@ -284,7 +284,7 @@ public class LevelBase
     					floorTexture.bind();
 					}else if (currentChar == '#') {
     					newwallTexture.bind();
-					}else if (MainView.isNumericValue(currentChar)) {
+					}else if (Util.isNumericValue(currentChar)) {
 						ttoTexture[(int) ttoFrameCounter[Character.getNumericValue(currentChar)]].bind();
 					}else if (currentChar == 'g') {
 						gateTexture.bind();
