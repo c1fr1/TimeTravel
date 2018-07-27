@@ -83,6 +83,16 @@ public class CamCollision
         y += vspeed;
         char blocking = checkAllCollision(x,y,15,room,obstacles);
         //tests if you are going to collide with a solid
+        if (blocking == '^')
+        {
+            if (vspeed <= 0)
+            {
+                vspeed = 0;
+                blocking = '`';
+            }
+
+        }
+
         if (blocking != '`')
         {
             y = ysave;
