@@ -95,8 +95,8 @@ public class MainView extends EnigView {
 		mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));
 		screenVAO = new VAO(-1f, -1f, 2f, 2f);
 
-		cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
-		cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
+		cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
+		cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
 	}
 	public void nextLevel(int increment) {
 
@@ -107,8 +107,8 @@ public class MainView extends EnigView {
             inventory = new char[9];
             currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt");
 
-            cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
-            cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
+            cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
+            cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
         }
     }
 
