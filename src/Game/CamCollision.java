@@ -61,7 +61,7 @@ public class CamCollision
         if (blocking != '`')
         {
             x = 50 * Math.round(xsave/50);
-            x += 15.001 * MainView.getSign(-hspeed);
+            x += 15.001 * Util.getSign(-hspeed);
         }
         return x - xsave;
     }
@@ -75,7 +75,7 @@ public class CamCollision
         if (blocking != '`')
         {
             y = 50 * Math.round(ysave/50);
-            y += 15.001 * MainView.getSign(-vspeed);
+            y += 15.001 * Util.getSign(-vspeed);
         }
         return y - ysave;
     }
