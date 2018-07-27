@@ -331,35 +331,13 @@ public class MainView extends EnigView {
 			//game here
 			currentLevel.render(cam);
 
-			//sets the speed of the avatar
-			float vSpeed = 0;
-			float hSpeed = 0;
+			//MOVEMENT
+			Movement m = new Movement(delta_time, window, cam, currentLevel, solidBlocks);
 
-			if (UserControls.forward(window)) {
-				vSpeed -= delta_time / 3f;
-			}
-			if (UserControls.backward(window)) {
-				vSpeed += delta_time / 3f;
-			}
-			if (UserControls.left(window)) {
-				hSpeed -= delta_time / 3f;
-			}
-			if (UserControls.right(window)) {
-				hSpeed += delta_time / 3f;
-			}
-			if (hSpeed != 0) {
-				vSpeed *= 0.70710678118f;
-			}
-			if (vSpeed != 0) {
-				hSpeed *= 0.70710678118f;
-			}
-			//dictates avatar movement
-			float xOffset = CamCollision.horizontalMovement(cam.x,cam.y,hSpeed,vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
-			cam.x += xOffset;
-			float yOffset = CamCollision.verticalMovement(cam.x,cam.y,hSpeed,vSpeed, currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
-			cam.y += yOffset;
-			backgroundOffset.x += xOffset * 0.0005;
-			backgroundOffset.y += yOffset * 0.0005;
+			cam.x += m.getXOffset();
+			cam.y += m.getyOffset();
+			backgroundOffset.x += m.getXOffset() * 0.0005;
+			backgroundOffset.y += m.getyOffset() * 0.0005;
 			
 
 			LevelBase.levelProgram.enable();
@@ -458,8 +436,8 @@ public class MainView extends EnigView {
             }
 
 
-			int gateCheckXIndex = (int)((cam.x + getSign(hSpeed)*20f)/50f);
-			int gateCheckYIndex = (int)((cam.y + getSign(vSpeed)*20f)/50f);
+			int gateCheckXIndex = (int)((cam.x + getSign(m.getHSpeed())*20f)/50f);
+			int gateCheckYIndex = (int)((cam.y + getSign(m.getVSpeed())*20f)/50f);
 			if(currentLevel.charAtPos(gateCheckXIndex, gateCheckYIndex) == 'l'){
 				
                 if(checkInventory('k')){
