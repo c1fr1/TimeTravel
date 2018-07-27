@@ -32,6 +32,7 @@ public class MainView extends EnigView {
 	public ShaderProgram travelShader;
 	public ShaderProgram inventoryShader;
 	public ShaderProgram backgroundShader;
+	public ShaderProgram ttoGUIButtonShader;
 	
 	public Texture starBackground;
 	public Vector2f backgroundOffset = new Vector2f();
@@ -74,6 +75,7 @@ public class MainView extends EnigView {
 		//set variables here
 		glDisable(GL_DEPTH_TEST);
 		//needs to be generalized to use level selected - level path is a parameter
+		SpriteButton.shader = new ShaderProgram("buttonShader");
 		float aspectRatio = (float) window.getHeight() / (float) window.getWidth();
         currentLevel = new LevelBase("res/Levels/Level"+currentLevelNum+".txt");
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
@@ -91,9 +93,9 @@ public class MainView extends EnigView {
 		spriteTexture[2] = new Texture("res/sprite-right.png");
 		spriteTexture[3] = new Texture("res/sprite-up.png");
 
-        cont = new SpriteButton(-0.5f,0.525f,1f,0.25f,"res/menu/continue.png", aspectRatio);
+        cont = new SpriteButton(-0.5f,0.525f,1f,0.25f,"res/continueButton.png", aspectRatio);
         restart = new SpriteButton(-0.5f, -0.125f, 1f, 0.25f,"res/menu/restart.png", aspectRatio);
-        menu = new SpriteButton(-0.5f, -0.725f, 1f, 0.25f,"res/menu/menu.png", aspectRatio);
+        menu = new SpriteButton(-0.5f, -0.725f, 1f, 0.25f,"res/mainMenu.png", aspectRatio);
 
 		textureShader = new ShaderProgram("textureShaders");
 		pauseShader = new ShaderProgram("pauseShaders");
@@ -116,7 +118,7 @@ public class MainView extends EnigView {
 		backgroundVelocity = new Vector2f(0f, 0f);
 
 		ttoGUIButton = new SpriteButton(-0.06f, 0.4f, 0.12f, 0.12f, "res/ttoguiButton.png");
-		ttoGUIButton.shader = new ShaderProgram("ttoGUIButtonShader");
+		ttoGUIButtonShader = new ShaderProgram("ttoGUIButtonShader");
 
 		mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));
 		screenVAO = new VAO(-1f, -1f, 2f, 2f);
@@ -221,57 +223,30 @@ public class MainView extends EnigView {
 			pauseShader.shaders[2].uniforms[0].set(scalar);
 			mainFBO.getBoundTexture().bind();
 			screenVAO.fullRender();
-			guiShader.enable();
+			
+			SpriteButton.shader.enable();
 
-			guiShader.shaders[0].uniforms[0].set((float)window.getHeight()/(float)window.getWidth());
-			cont.render();
-			restart.render();
-			menu.render();
-
-			//hover highlighting
-			if (menu.hoverCheck(window.cursorXFloat,window.cursorYFloat))
-			{
-				menu.setPath("res/menu/restart.png");
-                if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1)
-				{
+			SpriteButton.shader.shaders[0].uniforms[0].set(aspectRatio);
+			
+			if (menu.render(window.cursorXFloat,window.cursorYFloat)) {
+                if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
 					System.out.println("Menu Clicked");
 				}
 			}
-			else
-			{
-				menu.setPath("res/menu/menu.png");
-			}
-
-			//restart highlighting
-            if (restart.hoverCheck(window.cursorXFloat,window.cursorYFloat))
-            {
-                restart.setPath("res/menu/menu.png");
-             	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1)
-                {
-                    System.out.println("Restart Clicked");
+			
+            if (restart.render(window.cursorXFloat,window.cursorYFloat)) {
+             	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
 					framesPaused = 0;
 					pause = !pause;
 					nextLevel(0);
             	}
             }
-            else
-            {
-                restart.setPath("res/menu/restart.png");
-            }
-			//continue highlighting
-            if (cont.hoverCheck(window.cursorXFloat,window.cursorYFloat))
-            {
-                cont.setPath("res/menu/restart.png");
-            	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1)
-            	{
-            		System.out.println("Continue Clicked");
+            
+            if (cont.render(window.cursorXFloat, window.cursorYFloat)) {
+            	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
                     framesPaused = 0;
                     pause = !pause;
             	}
-            }
-            else
-            {
-            	cont.setPath("res/menu/continue.png");
             }
 		}
 		//Time Travel animation
@@ -361,27 +336,27 @@ public class MainView extends EnigView {
 				ttoguiShader.enable();
 				ttoguiShader.shaders[0].uniforms[0].set(aspectRatio);
 
-				ttoGUIButton.shader.enable();
-				ttoGUIButton.shader.shaders[0].uniforms[0].set(aspectRatio);
+				ttoGUIButtonShader.enable();
+				ttoGUIButtonShader.shaders[0].uniforms[0].set(aspectRatio);
 				ttoGUIButton.sprite.bind();
 				ttoGUIButton.vao.prepareRender();
 				float leftOffset = 0.025f * (float) currentLevel.levelseries.size();
 				for (int i = 0; i < currentLevel.levelseries.size(); ++i) {
 					float floati = (float) i;
 					//float x = floati * 0.2f + window.cursorXFloat * aspectRatio;
-					ttoGUIButton.shader.shaders[0].uniforms[1].set(-leftOffset + 0.1f * floati - ttoGUIButton.width/2);
+					ttoGUIButtonShader.shaders[0].uniforms[1].set(-leftOffset + 0.1f * floati - ttoGUIButton.width/2);
 					if (!currentLevel.timeZonePossibilities.get(ttoOnInd)[i]) {
-						ttoGUIButton.shader.shaders[2].uniforms[0].set(0f);
+						ttoGUIButtonShader.shaders[2].uniforms[0].set(0f);
 					} else if (currentLevel.currentTZ == i) {
-						ttoGUIButton.shader.shaders[2].uniforms[0].set(2f);
+						ttoGUIButtonShader.shaders[2].uniforms[0].set(2f);
 					} else if (ttoGUIButton.hoverCheck((window.cursorXFloat - floati * 0.1f + leftOffset + ttoGUIButton.width/2)/aspectRatio, window.cursorYFloat)) {
 						if (UserControls.leftMB(window)) {
 							currentLevel.currentTZ = i;
 							++timeTravelFrames;
 						}
-						ttoGUIButton.shader.shaders[2].uniforms[0].set(3f);
+						ttoGUIButtonShader.shaders[2].uniforms[0].set(3f);
 					} else {
-						ttoGUIButton.shader.shaders[2].uniforms[0].set(1f);
+						ttoGUIButtonShader.shaders[2].uniforms[0].set(1f);
 					}
 					ttoGUIButton.vao.draw();
 				}
