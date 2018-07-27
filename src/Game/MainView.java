@@ -451,10 +451,6 @@ public class MainView extends EnigView {
                 inventory[inventoryCounter] = replaceTile(cam.x, cam.y, ' ');
                 inventoryCounter ++;
             }
-            if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'^'))
-            {
-
-            }
 
 
 			int gateCheckXIndex = (int)((cam.x + getSign(hSpeed)*20f)/50f);
