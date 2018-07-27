@@ -7,3 +7,5 @@ out/
 .idea/**/shelf
 
 bin/
+
+.DS_Store

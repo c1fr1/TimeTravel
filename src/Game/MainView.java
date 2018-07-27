@@ -119,7 +119,7 @@ public class MainView extends EnigView {
 		cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
 		cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
 	}
-	public void nextLevel(int increment) {
+	public boolean nextLevel(int increment) {
 
 		File test = new File("res/Levels");
 		if(test.listFiles().length > currentLevelNum+increment && !(currentLevelNum+increment < 0)) {
@@ -130,7 +130,10 @@ public class MainView extends EnigView {
 
             cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
             cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
-        }
+            return false;
+        }else {
+			return true;
+		}
     }
 
 	/**
@@ -320,7 +323,7 @@ public class MainView extends EnigView {
 			screenVAO.fullRender();
 			
 			backgroundVelocity.mul(0.99f);
-			backgroundVelocity.add((float) (delta_time * 0.00001f * (Math.random() - 0.5)), (float) (delta_time * 0.00001f * (Math.random() - 0.5)));
+			backgroundVelocity.add((float) (delta_time * 0.000007f * (Math.random() - 0.5)), (float) (delta_time * 0.000007f * (Math.random() - 0.5)));
 			backgroundOffset.add(backgroundVelocity);
 
 			lastTime = time;
@@ -444,7 +447,9 @@ public class MainView extends EnigView {
 
             if (CamCollision.isColliding(cam.x,cam.y,1,currentLevel.levelseries.get(currentLevel.currentTZ),'g'))
             {
-                nextLevel(1);
+            	if (nextLevel(1)) {
+            		return true;
+				}
             }
             if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'k'))
             {
