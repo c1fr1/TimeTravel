@@ -4,6 +4,7 @@ import engine.*;
 import engine.Entities.Camera;
 import engine.OpenGL.*;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -98,13 +99,17 @@ public class MainView extends EnigView {
 		cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
 	}
 	public void nextLevel(int increment) {
-		inventoryCounter = 0;
-		inventory = new char[9];
-		currentLevelNum+=increment;
-        currentLevel = new LevelBase("res/Levels/Level"+currentLevelNum+".txt");
 
-        cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
-        cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
+		File test = new File("res/Levels");
+		if(test.listFiles().length > currentLevelNum+increment && !(currentLevelNum+increment < 0)) {
+            currentLevelNum+=increment;
+            inventoryCounter = 0;
+            inventory = new char[9];
+            currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt");
+
+            cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
+            cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
+        }
     }
 
 	/**
