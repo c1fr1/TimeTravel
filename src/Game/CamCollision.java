@@ -71,8 +71,8 @@ public class CamCollision
     {
         float ysave = y;
         y += vspeed;
-        char block = checkAllCollision(x,y,border,room,obstacles);
-        if (block != '`')
+        char blocking = checkAllCollision(x,y,border,room,obstacles);
+        if (blocking != '`')
         {
             y = 50 * Math.round(ysave/50);
             y += 15.001 * MainView.getSign(-vspeed);
