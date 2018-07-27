@@ -23,8 +23,7 @@ public class MainView extends EnigView {
 	public LevelBase currentLevel;
 	public static int currentLevelNum = 0;
 
-	public char inventory[];
-	public int inventoryCounter = 0;
+	public Inventory inv;
 
 	public ShaderProgram guiShader;
 	public ShaderProgram ttoguiShader;
@@ -73,7 +72,6 @@ public class MainView extends EnigView {
 	@Override
 	public void setup() {
 		//set variables here
-		inventory = new char[9];
 		glDisable(GL_DEPTH_TEST);
 		//needs to be generalized to use level selected - level path is a parameter
 		float aspectRatio = (float) window.getHeight() / (float) window.getWidth();
@@ -131,8 +129,6 @@ public class MainView extends EnigView {
 		File test = new File("res/Levels");
 		if(test.listFiles().length > currentLevelNum+increment && !(currentLevelNum+increment < 0)) {
             currentLevelNum+=increment;
-            inventoryCounter = 0;
-            inventory = new char[9];
             currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt");
 
             cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
@@ -171,28 +167,6 @@ public class MainView extends EnigView {
 		//currentLevel.levelseries.get(tempIntY)
 		return current;
 	}
-	
-	public boolean getFromInventory(char item){
-	    for(int i = 0; i < inventory.length; i++){
-	        if(inventory[i] == item){
-	            for(int j = i; j < inventory.length-1; j++){
-	                inventory[j] = inventory[j+1];
-                }
-                inventoryCounter--;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean checkInventory(char item){
-        for(char i: inventory){
-            if(i == item){
-                return true;
-            }
-        }
-        return false;
-    }
 
 
 	@Override
@@ -450,8 +424,7 @@ public class MainView extends EnigView {
             }
             if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'k'))
             {
-                inventory[inventoryCounter] = replaceTile(cam.x, cam.y, ' ');
-                inventoryCounter ++;
+                inv.add(replaceTile(cam.x, cam.y, ' '));
             }
 
 
@@ -459,17 +432,17 @@ public class MainView extends EnigView {
 			int gateCheckYIndex = (int)((cam.y + getSign(m.getVSpeed())*20f)/50f);
 			if(currentLevel.charAtPos(gateCheckXIndex, gateCheckYIndex) == 'l'){
 				
-                if(checkInventory('k')){
+                if(inv.check('k')){
                     replaceTile(gateCheckXIndex, gateCheckYIndex, ' ');
-                    getFromInventory('k');
+                    inv.getAndRemove('k');
                 }
             }
             inventoryShader.enable();
 			inventoryShader.shaders[0].uniforms[0].set(aspectRatio);
             inventoryObjectVAO.prepareRender();
-            for (int i = 0; i < inventory.length; ++i) {
+            for (int i = 0; i < inv.getSize(); ++i) {
 				inventoryShader.shaders[0].uniforms[1].set((float) i * 0.1f);
-				if (inventory[i] == 'k') {
+				if (inv.get(i) == 'k') {
 					keyTexture.bind();
 					inventoryObjectVAO.draw();
 				}
