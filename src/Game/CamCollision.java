@@ -37,19 +37,19 @@ public class CamCollision
         return colliding;
     }
 
-    public static boolean checkAllCollision(float x, float y, int border, ArrayList<Character[]> room, char[] obstacles)
+    public static char checkAllCollision(float x, float y, int border, ArrayList<Character[]> room, char[] obstacles)
     {
-        boolean colliding = false;
+        char solid = '`';
         for (int i = 0; i < obstacles.length; i++)
         {
             //revert to last position before colliding - touching the wall
             if (isColliding(x,y,border,room,obstacles[i]))
             {
-                colliding = true;
+                solid = obstacles[i];
                 break;
             }
         }
-        return colliding;
+        return solid;
     }
 
     //moves you in the direction until you hit a wall and then moves you to touching the wall
@@ -59,12 +59,13 @@ public class CamCollision
         float xsave = x;
         x += hspeed;
         //tests if you are going to collide with a solid
-        if (checkAllCollision(x,y,15,room,obstacles))
+        char blocking = checkAllCollision(x,y,15,room,obstacles);
+        if (blocking != '`')
         {
             x = xsave;
             float speed = (float)Math.sqrt(vspeed * vspeed + hspeed * hspeed);
             float xstep = hspeed/speed;
-            while (!checkAllCollision(x,y,15,room,obstacles))
+            while (!isColliding(x,y,15,room,blocking))
             {
                 //increment x until you reach the obstacle and then stop
                 x += xstep;
@@ -80,13 +81,14 @@ public class CamCollision
     {
         float ysave = y;
         y += vspeed;
+        char blocking = checkAllCollision(x,y,15,room,obstacles);
         //tests if you are going to collide with a solid
-        if (checkAllCollision(x,y,15,room,obstacles))
+        if (blocking != '`')
         {
             y = ysave;
             float speed = (float)Math.sqrt(vspeed * vspeed + hspeed * hspeed);
             float ystep = vspeed/speed;
-            while (!checkAllCollision(x,y,15,room,obstacles))
+            while (!isColliding(x,y,15,room,blocking))
             {
                 //increment y until you reach the obstacle and then stop
                 y += ystep;
