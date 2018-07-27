@@ -83,6 +83,7 @@ public class MainView extends EnigView {
 		inventoryObjectVAO = new VAO(-1f, -0.9f, 0.1f, 0.1f);
 		ttoGUIVAO = new VAO(-0.5f, 0.125f, 1f, 0.25f);
 		playerVAO = new VAO(-40f, 10f, 30f, 30f);
+		inv = new Inventory();
 
 		spriteTexture = new Texture[4];//down left right up;
 		spriteTexture[0] = new Texture("res/future-wall.png");
