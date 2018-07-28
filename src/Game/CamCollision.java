@@ -51,17 +51,40 @@ public class CamCollision
         }
         return solid;
     }
+
     //moves you in the direction until you hit a wall and then moves you to touching the wall
-    public static float horizontalMove(float x, float y, int border,
-                                       float hspeed, ArrayList<Character[]> room, char[] obstacles)
+    public static float horizontalMove(float x, float y, int border, float hspeed,
+                                       ArrayList<Character[]> room, char[] obstacles)
     {
         float xsave = x;
         x += hspeed;
         char block = checkAllCollision(x,y,border,room,obstacles);
         //pass doors
-        if (block == '^')
-        {
-            block = '`';
+        if (block == '^' || block == 'v' || block == '<' || block == '>') {
+            if (block == '>') {
+                block = '`';
+                if (hspeed < 0 && quadrantCheck(x, y, border, room, 1) == ' ') {
+                    if (quadrantCheck(xsave, y, border, room, 3) == ' ') {
+                        block = '#';
+                    } else {
+                        x -= hspeed;
+                    }
+                }
+            }
+            else if (block == '<') {
+                block = '`';
+                if (hspeed > 0 && quadrantCheck(x, y, border, room, 3) == ' ') {
+                    if (quadrantCheck(xsave, y, border, room, 1) == ' ') {
+                        block = '#';
+                    } else {
+                        x += hspeed;
+                    }
+                }
+            }
+            else
+            {
+                block = '`';
+            }
         }
         //snap to collision contact
         if (block != '`')
@@ -72,17 +95,66 @@ public class CamCollision
         return x - xsave;
     }
 
-    public static float verticalMove(float x, float y, int border,
-                                     float vspeed, ArrayList<Character[]> room, char[] obstacles)
+    public static float verticalMove(float x, float y, int border, float vspeed,
+                                     ArrayList<Character[]> room, char[] obstacles)
     {
         float ysave = y;
         y += vspeed;
         char block = checkAllCollision(x,y,border,room,obstacles);
-        //pass doors
+        //pass one way doors
+        if (block == '^' || block == 'v' || block == '<' || block == '>')
+        {
+            if (block == '^')
+            {
+                //set block to open
+                block = '`';
+                //check for moving in wrong direction and placement to see where avatar is in relation to block
+                if (vspeed > 0 && quadrantCheck(x, y, border, room, 2) == ' ')
+                {
+                    if (quadrantCheck(x, ysave, border, room, 0) == ' ')
+                    {
+                        //if on outside use wall
+                        block = '#';
+                    }
+                    else
+                    {
+                        //if on inside stop backwards movement once past threshhold
+                        y -= vspeed;
+                    }
+                }
+            }
+            else if (block == 'v')
+            {
+                block = '`';
+                if (vspeed < 0 && quadrantCheck(x, y, border, room, 0) == ' ') {
+                    if (quadrantCheck(x, ysave, border, room, 2) == ' ') {
+                        block = '#';
+                    } else {
+                        y += vspeed;
+                    }
+                }
+            }
+            else
+            {
+                block = '`';
+            }
+        }
+        /*
         if (block == '^')
         {
             block = '`';
+            if (vspeed > 0 && quadrantCheck(x,y,border,room,2) == ' ')
+            {
+                if (quadrantCheck(x,ysave,border,room,0) == ' ')
+                {
+                    block = '#';
+                }
+                else {
+                    y -= vspeed;
+                }
+            }
         }
+        */
         //snap to collision contact
         if (block != '`')
         {
@@ -91,4 +163,56 @@ public class CamCollision
         }
         return y - ysave;
     }
+
+    //returns the object in the specified quadrant
+    public static char quadrantCheck(float x, float y, int border, ArrayList<Character[]> room, int quadrant)
+    {
+        int xpos = 0;
+        int ypos = 0;
+        switch (quadrant)
+        {
+            case 0:
+                xpos = (int)((x - border)/50);
+                ypos = (int)((y + border)/50);
+                break;
+            case 1:
+                xpos = (int)((x + border) / 50);
+                ypos = (int)((y + border) / 50);
+                break;
+            case 2:
+                xpos = (int)((x + border) / 50);
+                ypos = (int)((y - border) / 50);
+                break;
+            case 3:
+                xpos = (int)((x - border) / 50);
+                ypos = (int)((y - border) / 50);
+                break;
+        }
+        return room.get(ypos)[xpos];
+    }
 }
+/*
+        if (block == '^' || block == 'v' || block == '<' || block == '>')
+        {
+            block = '`';
+            if (block == '^') {
+                if (vspeed > 0 && quadrantCheck(x, y, border, room, 2) == ' ') {
+                    if (quadrantCheck(x, ysave, border, room, 0) == ' ') {
+                        block = '#';
+                    } else {
+                        y -= vspeed;
+                    }
+                }
+            }
+            else if (block == 'v')
+            {
+                if (vspeed < 0 && quadrantCheck(x, y, border, room, 0) == ' ') {
+                    if (quadrantCheck(x, ysave, border, room, 2) == ' ') {
+                        block = '#';
+                    } else {
+                        y += vspeed;
+                    }
+                }
+            }
+        }
+         */
