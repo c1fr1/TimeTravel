@@ -60,31 +60,30 @@ public class CamCollision
         x += hspeed;
         char block = checkAllCollision(x,y,border,room,obstacles);
         //pass doors
-        if (block == '^' || block == 'v' || block == '<' || block == '>') {
-            if (block == '>') {
-                block = '`';
-                if (hspeed < 0 && quadrantCheck(x, y, border, room, 1) == ' ') {
-                    if (quadrantCheck(xsave, y, border, room, 3) == ' ') {
-                        block = '#';
-                    } else {
-                        x -= hspeed;
-                    }
-                }
-            }
-            else if (block == '<') {
-                block = '`';
-                if (hspeed > 0 && quadrantCheck(x, y, border, room, 3) == ' ') {
-                    if (quadrantCheck(xsave, y, border, room, 1) == ' ') {
-                        block = '#';
-                    } else {
-                        x += hspeed;
-                    }
-                }
-            }
-            else
+        if (block == '>')
+        {
+            //set block to open
+            block = '`';
+            //check for moving in wrong direction and wrong side of door
+            if (hspeed < 0 && quadrantCheck(x, y, border, room, 1) == ' ' &&
+                    quadrantCheck(xsave, y, border, room, 3) == ' ')
             {
-                block = '`';
+                //if on outside of door, parse as wall
+                block = '#';
             }
+        }
+        else if (block == '<')
+        {
+            block = '`';
+            if (hspeed > 0 && quadrantCheck(x, y, border, room, 3) == ' ' &&
+                    quadrantCheck(xsave, y, border, room, 1) == ' ')
+            {
+                block = '#';
+            }
+        }
+        else if (block == '^' || block == 'v')
+        {
+            block = '`';
         }
         //snap to collision contact
         if (block != '`')
@@ -102,59 +101,31 @@ public class CamCollision
         y += vspeed;
         char block = checkAllCollision(x,y,border,room,obstacles);
         //pass one way doors
-        if (block == '^' || block == 'v' || block == '<' || block == '>')
-        {
-            if (block == '^')
-            {
-                //set block to open
-                block = '`';
-                //check for moving in wrong direction and placement to see where avatar is in relation to block
-                if (vspeed > 0 && quadrantCheck(x, y, border, room, 2) == ' ')
-                {
-                    if (quadrantCheck(x, ysave, border, room, 0) == ' ')
-                    {
-                        //if on outside use wall
-                        block = '#';
-                    }
-                    else
-                    {
-                        //if on inside stop backwards movement once past threshhold
-                        y -= vspeed;
-                    }
-                }
-            }
-            else if (block == 'v')
-            {
-                block = '`';
-                if (vspeed < 0 && quadrantCheck(x, y, border, room, 0) == ' ') {
-                    if (quadrantCheck(x, ysave, border, room, 2) == ' ') {
-                        block = '#';
-                    } else {
-                        y += vspeed;
-                    }
-                }
-            }
-            else
-            {
-                block = '`';
-            }
-        }
-        /*
         if (block == '^')
         {
+            //set block to open
             block = '`';
-            if (vspeed > 0 && quadrantCheck(x,y,border,room,2) == ' ')
+            //check for moving in wrong direction and wrong side of door
+            if (vspeed > 0 && quadrantCheck(x, y, border, room, 2) == ' ' &&
+                    quadrantCheck(x, ysave, border, room, 0) == ' ')
             {
-                if (quadrantCheck(x,ysave,border,room,0) == ' ')
-                {
-                    block = '#';
-                }
-                else {
-                    y -= vspeed;
-                }
+                //if on outside of door, parse as wall
+                block = '#';
             }
         }
-        */
+        else if (block == 'v')
+        {
+            block = '`';
+            if (vspeed < 0 && quadrantCheck(x, y, border, room, 0) == ' ' &&
+                    quadrantCheck(x, ysave, border, room, 2) == ' ')
+            {
+                block = '#';
+            }
+        }
+        else if (block == '<' || block == '>')
+        {
+            block = '`';
+        }
         //snap to collision contact
         if (block != '`')
         {
@@ -191,28 +162,3 @@ public class CamCollision
         return room.get(ypos)[xpos];
     }
 }
-/*
-        if (block == '^' || block == 'v' || block == '<' || block == '>')
-        {
-            block = '`';
-            if (block == '^') {
-                if (vspeed > 0 && quadrantCheck(x, y, border, room, 2) == ' ') {
-                    if (quadrantCheck(x, ysave, border, room, 0) == ' ') {
-                        block = '#';
-                    } else {
-                        y -= vspeed;
-                    }
-                }
-            }
-            else if (block == 'v')
-            {
-                if (vspeed < 0 && quadrantCheck(x, y, border, room, 0) == ' ') {
-                    if (quadrantCheck(x, ysave, border, room, 2) == ' ') {
-                        block = '#';
-                    } else {
-                        y += vspeed;
-                    }
-                }
-            }
-        }
-         */
