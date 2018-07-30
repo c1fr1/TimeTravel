@@ -341,6 +341,19 @@ public class MainView extends EnigView {
 				ttoGUIButton.sprite.bind();
 				ttoGUIButton.vao.prepareRender();
 				float leftOffset = 0.025f * (float) currentLevel.levelseries.size();
+				//Arrow key switching in the tto
+				if(UserControls.leftArrow(window)){
+					if(currentLevel.currentTZ-1 >= 0) {
+						currentLevel.currentTZ--;
+						++timeTravelFrames;
+					}
+				} else if(UserControls.rightArrow(window)){
+					if(currentLevel.currentTZ+1 < currentLevel.levelseries.size()) {
+						currentLevel.currentTZ++;
+						++timeTravelFrames;
+					}
+				}
+				//regular switching
 				for (int i = 0; i < currentLevel.levelseries.size(); ++i) {
 					float floati = (float) i;
 					//float x = floati * 0.2f + window.cursorXFloat * aspectRatio;
