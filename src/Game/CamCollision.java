@@ -65,8 +65,7 @@ public class CamCollision
             //set block to open
             block = '`';
             //check for moving in wrong direction and wrong side of door
-            if (hspeed < 0 && quadrantCheck(x, y, border, room, 1) == ' ' &&
-                    quadrantCheck(xsave, y, border, room, 3) == ' ')
+            if (hspeed < 0 && !isColliding(xsave,y,border,room,'>'))
             {
                 //if on outside of door, parse as wall
                 block = '#';
@@ -75,8 +74,7 @@ public class CamCollision
         else if (block == '<')
         {
             block = '`';
-            if (hspeed > 0 && quadrantCheck(x, y, border, room, 3) == ' ' &&
-                    quadrantCheck(xsave, y, border, room, 1) == ' ')
+            if (hspeed > 0 && !isColliding(xsave,y,border,room,'<'))
             {
                 block = '#';
             }
@@ -106,8 +104,7 @@ public class CamCollision
             //set block to open
             block = '`';
             //check for moving in wrong direction and wrong side of door
-            if (vspeed > 0 && quadrantCheck(x, y, border, room, 2) == ' ' &&
-                    quadrantCheck(x, ysave, border, room, 0) == ' ')
+            if (vspeed > 0 && !isColliding(x,ysave,border,room,'^'))
             {
                 //if on outside of door, parse as wall
                 block = '#';
@@ -116,8 +113,7 @@ public class CamCollision
         else if (block == 'v')
         {
             block = '`';
-            if (vspeed < 0 && quadrantCheck(x, y, border, room, 0) == ' ' &&
-                    quadrantCheck(x, ysave, border, room, 2) == ' ')
+            if (vspeed < 0 && !isColliding(x,ysave,border,room,'v'))
             {
                 block = '#';
             }
@@ -133,32 +129,5 @@ public class CamCollision
             y += 15.001 * Util.getSign(-vspeed);
         }
         return y - ysave;
-    }
-
-    //returns the object in the specified quadrant
-    public static char quadrantCheck(float x, float y, int border, ArrayList<Character[]> room, int quadrant)
-    {
-        int xpos = 0;
-        int ypos = 0;
-        switch (quadrant)
-        {
-            case 0:
-                xpos = (int)((x - border)/50);
-                ypos = (int)((y + border)/50);
-                break;
-            case 1:
-                xpos = (int)((x + border) / 50);
-                ypos = (int)((y + border) / 50);
-                break;
-            case 2:
-                xpos = (int)((x + border) / 50);
-                ypos = (int)((y - border) / 50);
-                break;
-            case 3:
-                xpos = (int)((x - border) / 50);
-                ypos = (int)((y - border) / 50);
-                break;
-        }
-        return room.get(ypos)[xpos];
     }
 }
