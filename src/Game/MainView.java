@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class MainView extends EnigView {
 	public static MainView main;
 
-	public Camera cam;
+	public static Camera cam;
 
 	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v'};
 
