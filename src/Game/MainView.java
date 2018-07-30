@@ -16,7 +16,7 @@ public class MainView extends EnigView {
 
 	public static Camera cam;
 
-	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v'};
+	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v', 'X', 'Y', 'Z'};
 	public static ArrayList<Entity> entities = new ArrayList<Entity>();
 
 	//project variables
@@ -73,6 +73,10 @@ public class MainView extends EnigView {
 
 	int ttoSelector;
 	boolean ttoSelectorBool;
+
+	boolean xDoor = true;
+	boolean yDoor = true;
+	boolean zDoor = true;
 
 	@Override
 	public void setup() {
@@ -459,14 +463,67 @@ public class MainView extends EnigView {
                 inv.add(replaceTile(cam.x, cam.y, ' '));
             }
 
+            //X button
             if(CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'x')){
 				int[] location = findCharacter('X');
 				if (location[0] != -1) {
 					if (location[1] != -1) {
-						replaceTile(location[0], location[1], ' ');
+						replaceTile(location[0], location[1], 'i');
+						xDoor = false;
 					}
 				}
-			}
+			} else if(!CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'x') && !xDoor){
+                int[] location = findCharacter('i');
+                if (location[0] != -1) {
+                    if (location[1] != -1) {
+                        replaceTile(location[0], location[1], 'X');
+                        xDoor = true;
+                    }
+                }
+            }
+
+            //Y button
+            if(CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'y')){
+                int[] location = findCharacter('Y');
+                if (location[0] != -1) {
+                    if (location[1] != -1) {
+                        replaceTile(location[0], location[1], 'o');
+                        yDoor = false;
+                    }
+                }
+            } else if(!CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'y') && !yDoor){
+                int[] location = findCharacter('o');
+                if (location[0] != -1) {
+                    if (location[1] != -1) {
+                        replaceTile(location[0], location[1], 'Y');
+                        yDoor = true;
+                    }
+                }
+            }
+
+            //Z button
+            if(CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'z')){
+                int[] location = findCharacter('Z');
+                if (location[0] != -1) {
+                    if (location[1] != -1) {
+                        replaceTile(location[0], location[1], 'p');
+                        zDoor = false;
+                    }
+                }
+            } else if(!CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'z') && !zDoor){
+                int[] location = findCharacter('p');
+                if (location[0] != -1) {
+                    if (location[1] != -1) {
+                        replaceTile(location[0], location[1], 'Z');
+                        zDoor = true;
+                    }
+                }
+            }
+
+
+
+
+
 
 
 
