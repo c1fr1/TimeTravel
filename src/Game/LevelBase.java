@@ -4,6 +4,7 @@ import engine.Entities.Camera;
 import engine.OpenGL.ShaderProgram;
 import engine.OpenGL.Texture;
 import engine.OpenGL.VAO;
+import org.joml.Matrix4f;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,132 +41,31 @@ public class LevelBase
 
     //gets the map
 	public LevelBase(String filename) {
-        if (tileObj == null) {
-			tileObj = new VAO(-25f, -25f, 50f, 50f);
-            floorTexture = new Texture("res/sprites/present-floor.png");
-            wallTexture = new Texture("res/sprites/present-wall.png");
-            newwallTexture = new Texture("res/sprites/future-wall.png");
-			keyTexture = new Texture("res/sprites/key.png");
-			gateTexture = new Texture("res/sprites/gate.png");
-			lockTexture = new Texture("res/sprites/locked-gate.png");
-            upGateTexture = new Texture("res/sprites/upGate.png");
-            downGateTexture = new Texture("res/sprites/downGate.png");
-            leftGateTexture = new Texture("res/sprites/leftGate.png");
-            rightGateTexture = new Texture("res/sprites/rightGate.png");
-
-			//changing texture for tto
-			ttoTexture = new Texture[9];
-			ttoTexture[0] = new Texture("res/anims/tto-1.png");
-			ttoTexture[1] = new Texture("res/anims/tto-2.png");
-			ttoTexture[2] = new Texture("res/anims/tto-3.png");
-			ttoTexture[3] = new Texture("res/anims/tto-4.png");
-			ttoTexture[4] = new Texture("res/anims/tto-5.png");
-			ttoTexture[5] = new Texture("res/anims/tto-6.png");
-			ttoTexture[6] = new Texture("res/anims/tto-7.png");
-			ttoTexture[7] = new Texture("res/anims/tto-8.png");
-			ttoTexture[8] = new Texture("res/anims/tto-9.png");
-
-            levelProgram = new ShaderProgram("levelShader");
-            controllerTexture = new Texture("res/sprites/controller-tto.png");
-        }
-
-		Scanner fileInput;
-		String roomlist = "";
-		//stores level rooms
-		levelseries = new ArrayList<ArrayList<Character[]>>();
-		//get the rooms
-		try
-		{
-			fileInput = new Scanner(new File(filename));
-
-			while (fileInput.hasNextLine())
-			{
-				String nextline = fileInput.nextLine();
-				if (!nextline.endsWith(",")) {
-					roomlist += nextline + "\n";
-				}else {
-					roomlist += nextline;
-				}
-			}
-		}
-		catch (FileNotFoundException ex)
-		{
-			ex.printStackTrace();
-			System.exit(0);
-		}
-
-		//splits the main string into level strings
-		String[] rooms = roomlist.split(",");
-		//start position of avatar
-		xstart = new float[rooms.length];
-		ystart = new float[rooms.length];
-
-		//goes through each room
-		for (int i = 0; i < rooms.length; i++)//level depth
-		{
-			//splits level string into rows
-			String[] levelslices = rooms[i].split("\n");
-			ArrayList<Character[]> levelroom = new ArrayList<Character[]>();
-			//goes through each row
-			for (int j = 0; j < levelslices.length; j++)//character row number
-			{
-				//gets a row from the level string split
-				String lane = levelslices[j];
-				Character[] levelrow = new Character[levelslices[j].length()];
-				//goes through the row
-				for (int k = 0; k < lane.length(); k++)//character column number
-				{
-					//puts a character into the char array
-					levelrow[k] = lane.charAt(k);
-					if (lane.charAt(k) == 's') {
-						xstart[i] = j;
-						ystart[i] = k;
-						currentTZ = i;
-					} else if (lane.charAt(k) == 'b') {
-						Entity tempEnt = new Entity(xstart[i], ystart[i], levelseries.size());
-						MainView.entities.add(tempEnt);
-					} else if (lane.charAt(k) == 't') {
-						if (levelseries.size() > 0) {
-							char prevLevel = levelseries.get(levelseries.size() - 1).get(j)[k];
-							if (Util.isNumericValue(prevLevel)) {
-								levelrow[k] = prevLevel;
-							}else {
-								levelrow[k] = (char) (timeZonePossibilities.size() + '0');
-								timeZonePossibilities.add(new Boolean[0]);
-							}
-						}else {
-							levelrow[k] = (char) (timeZonePossibilities.size() + '0');
-							timeZonePossibilities.add(new Boolean[0]);
-						}
-					}
-				}
-				//adds the row char array to the level arraylist
-				levelroom.add(levelrow);
-			}
-			//adds the level arraylist to the levelseries arraylist
-			levelseries.add(levelroom);
-		}
+        init(filename);
 		for (int i = 0; i < timeZonePossibilities.size();++i) {
 			timeZonePossibilities.set(i, new Boolean[levelseries.size()]);
 			for (int j = 0;j < timeZonePossibilities.get(i).length;++j) {
 				timeZonePossibilities.get(i)[j] = true;
 			}
 		}
-		ttoFrameCounter = new float[timeZonePossibilities.size()];
-
 	}
 	public LevelBase(String filename, ArrayList<Boolean[]> ttoAbilities) {
+		init(filename);
+		timeZonePossibilities = ttoAbilities;
+	}
+	public void init(String filename) {
 		if (tileObj == null) {
 			tileObj = new VAO(-25f, -25f, 50f, 50f);
-			floorTexture = new Texture("res/present-floor.png");
-			wallTexture = new Texture("res/present-wall.png");
-			newwallTexture = new Texture("res/future-wall.png");
-			keyTexture = new Texture("res/key.png");
-			gateTexture = new Texture("res/gate.png");
-            upGateTexture = new Texture("res/upGate.png");
-            downGateTexture = new Texture("res/downGate.png");
-            leftGateTexture = new Texture("res/leftGate.png");
-            rightGateTexture = new Texture("res/rightGate.png");
+			floorTexture = new Texture("res/sprites/present-floor.png");
+			wallTexture = new Texture("res/sprites/present-wall.png");
+			newwallTexture = new Texture("res/sprites/future-wall.png");
+			keyTexture = new Texture("res/sprites/key.png");
+			gateTexture = new Texture("res/sprites/gate.png");
+			upGateTexture = new Texture("res/sprites/upGate.png");
+			downGateTexture = new Texture("res/sprites/downGate.png");
+			leftGateTexture = new Texture("res/sprites/leftGate.png");
+			rightGateTexture = new Texture("res/sprites/rightGate.png");
+			lockTexture = new Texture("res/sprites/locked-gate.png");
 			
 			//changing texture for tto
 			ttoTexture = new Texture[9];
@@ -180,7 +80,7 @@ public class LevelBase
 			ttoTexture[8] = new Texture("res/anims/tto-9.png");
 			
 			levelProgram = new ShaderProgram("levelShader");
-			controllerTexture = new Texture("res/controller-tto.png");
+			controllerTexture = new Texture("res/sprites/controller-tto.png");
 		}
 		
 		Scanner fileInput;
@@ -188,12 +88,9 @@ public class LevelBase
 		//stores level rooms
 		levelseries = new ArrayList<ArrayList<Character[]>>();
 		//get the rooms
-		try
-		{
+		try {
 			fileInput = new Scanner(new File(filename));
-			
-			while (fileInput.hasNextLine())
-			{
+			while (fileInput.hasNextLine()) {
 				String nextline = fileInput.nextLine();
 				if (!nextline.endsWith(",")) {
 					roomlist += nextline + "\n";
@@ -201,9 +98,7 @@ public class LevelBase
 					roomlist += nextline;
 				}
 			}
-		}
-		catch (FileNotFoundException ex)
-		{
+		}catch (FileNotFoundException ex) {
 			ex.printStackTrace();
 			System.exit(0);
 		}
@@ -215,30 +110,27 @@ public class LevelBase
 		ystart = new float[rooms.length];
 		
 		//goes through each room
-		for (int i = 0; i < rooms.length; i++)//level depth
-		{
+		for (int i = 0; i < rooms.length; i++) {//level depth
 			//splits level string into rows
 			String[] levelslices = rooms[i].split("\n");
 			ArrayList<Character[]> levelroom = new ArrayList<Character[]>();
 			//goes through each row
-			for (int j = 0; j < levelslices.length; j++)//character row number
-			{
+			for (int j = 0; j < levelslices.length; j++) {//character row number
 				//gets a row from the level string split
 				String lane = levelslices[j];
 				Character[] levelrow = new Character[levelslices[j].length()];
 				//goes through the row
-				for (int k = 0; k < lane.length(); k++)//character column number
-				{
+				for (int k = 0; k < lane.length(); k++) {//character column number
 					//puts a character into the char array
 					levelrow[k] = lane.charAt(k);
-					if (lane.charAt(k) == 's')
-					{
+					if (lane.charAt(k) == 's') {
 						xstart[i] = j;
 						ystart[i] = k;
 						currentTZ = i;
 					}else if (lane.charAt(k) == 'b') {
 						Entity tempEnt = new Entity(xstart[i], ystart[i], levelseries.size());
 						MainView.entities.add(tempEnt);
+						levelrow[k] = ' ';
 					}else if (lane.charAt(k) == 't') {
 						if (levelseries.size() > 0) {
 							char prevLevel = levelseries.get(levelseries.size() - 1).get(j)[k];
@@ -260,11 +152,7 @@ public class LevelBase
 			//adds the level arraylist to the levelseries arraylist
 			levelseries.add(levelroom);
 		}
-		timeZonePossibilities = ttoAbilities;
 		ttoFrameCounter = new float[timeZonePossibilities.size()];
-	}
-	public void init(String filename) {
-	
 	}
 
 	public void updateTTO(int[] locationInArray, float deltaTime) {
@@ -289,16 +177,18 @@ public class LevelBase
 			}
 		}
 	}
-
 	public void render(Camera cam) {
     	levelProgram.enable();
     	tileObj.prepareRender();
     	for (int row = 0; row < levelseries.get(currentTZ).size();++row) {
     		for (int chr = 0; chr < levelseries.get(currentTZ).get(row).length; ++chr) {
+				float x = ((float) chr) * 50f;
+				float y = -((float) row) * 50f;
     			char currentChar = levelseries.get(currentTZ).get(row)[chr];
 				if (currentChar != '_') {
-					if (currentChar == 'w' || currentChar == 'G' || currentChar == 'K' || currentChar == 'C' || currentChar == '-' || currentChar == 'S' || currentChar == 'T' || currentChar == '/' || currentChar == '8' || currentChar == '6' || currentChar == '2' || currentChar == '4') {
-					
+					levelProgram.shaders[0].uniforms[1].set(new Matrix4f());
+					if (currentChar == 'w' || currentChar == 'G' || currentChar == 'K' || currentChar == 'C' || currentChar == '-' || currentChar == 'S' || currentChar == 'T' || currentChar == '/' || currentChar == '*' || currentChar == '.' || currentChar == ',' || currentChar == 'V') {
+						levelProgram.shaders[0].uniforms[1].set(new Matrix4f().translate(x, y, 0f).scale(0.001f));
 					}
 					if (currentChar == ' ' || currentChar == 's' || currentChar == 'b') {
     					floorTexture.bind();
@@ -327,8 +217,6 @@ public class LevelBase
 					else if (currentChar == '<') {
 						leftGateTexture.bind();
 					}
-					float x = ((float) chr) * 50f;
-					float y = -((float) row) * 50f;
 					levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2*cam.y, 0));
 					tileObj.drawTriangles();
 				}
