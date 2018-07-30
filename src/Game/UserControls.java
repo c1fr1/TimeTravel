@@ -9,12 +9,12 @@ public class UserControls {
 	public static int[] backward = new int[] {GLFW_KEY_S};
 	public static int[] left = new int[] {GLFW_KEY_A};
 	public static int[] right = new int[] {GLFW_KEY_D};
-	public static int[] leftArrow = new int[] {GLFW_KEY_LEFT};
-	public static int[] rightArrow = new int[] {GLFW_KEY_RIGHT};
+	public static int[] leftArrow = new int[] {GLFW_KEY_LEFT, GLFW_KEY_Q};
+	public static int[] rightArrow = new int[] {GLFW_KEY_RIGHT, GLFW_KEY_E};
 	public static int[] down = new int[] {GLFW_KEY_LEFT_SHIFT};
 	public static int[] up = new int[] {GLFW_KEY_SPACE};
 	public static int[] pause = new int[] {GLFW_KEY_ESCAPE};
-	public static int[] enter = new int[] {GLFW_KEY_ENTER};
+	public static int[] enter = new int[] {GLFW_KEY_ENTER, GLFW_KEY_R};
 	public static int[] rightMB = new int[] {GLFW_MOUSE_BUTTON_RIGHT};
 	public static int[] leftMB = new int[] {GLFW_MOUSE_BUTTON_LEFT};
 	public static int[] levelAdvance = new int[] {GLFW_KEY_N};
