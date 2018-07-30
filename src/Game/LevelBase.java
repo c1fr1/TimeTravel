@@ -29,6 +29,7 @@ public class LevelBase
     public static Texture leftGateTexture;
     public static Texture rightGateTexture;
     public static Texture keyTexture;
+	public static Texture boxTexture;
 	public static Texture[] ttoTexture;
     public static Texture controllerTexture;
     public static ShaderProgram levelProgram;
@@ -294,7 +295,7 @@ public class LevelBase
 					if (currentChar == 'w' || currentChar == 'G' || currentChar == 'K' || currentChar == 'C' || currentChar == '-' || currentChar == 'S' || currentChar == 'T' || currentChar == '/' || currentChar == '8' || currentChar == '6' || currentChar == '2' || currentChar == '4') {
 					
 					}
-					if (currentChar == ' ' || currentChar == 's') {
+					if (currentChar == ' ' || currentChar == 's' || currentChar == 'b') {
     					floorTexture.bind();
 					}else if (currentChar == '#') {
     					newwallTexture.bind();
