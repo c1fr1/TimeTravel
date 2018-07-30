@@ -24,15 +24,13 @@ public class Entity
         }
     }
 
-    public static boolean entityCollision(float xSelf, float ySelf, int borderSelf, float xOther, float yOther, int borderOther)
+    public static boolean entityCollision(Entity a, Entity b)
     {
         boolean overlap = false;
 
-        if ((xSelf + borderSelf >= xOther - borderOther && xSelf - borderSelf <= xOther - borderOther) ||
-                (xSelf - borderSelf <= xOther + borderOther && xSelf + borderSelf >= xOther + borderOther))
+        if ((a.positions[MainView.currentLevel.currentTZ*2-2] + 15 >= b.positions[MainView.currentLevel.currentTZ*2-2] - 15 && a.positions[MainView.currentLevel.currentTZ*2-2] - 15 <= b.positions[MainView.currentLevel.currentTZ*2-2] + 15)
         {
-            if ((ySelf + borderSelf >= yOther - borderOther && ySelf - borderSelf <= yOther - borderOther) ||
-                    (ySelf - borderSelf <= yOther + borderOther && ySelf + borderSelf >= yOther + borderOther))
+            if ((a.positions[MainView.currentLevel.currentTZ*2-1] + 15 >= b.positions[MainView.currentLevel.currentTZ*2-1] - 15 && a.positions[MainView.currentLevel.currentTZ*2-1] - 15 <= b.positions[MainView.currentLevel.currentTZ*2-1] + 15)
             {
                 overlap = true;
             }

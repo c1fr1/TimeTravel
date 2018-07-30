@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-
 public class MainView extends EnigView {
 	public static MainView main;
 
@@ -446,6 +445,8 @@ public class MainView extends EnigView {
             {
                 inv.add(replaceTile(cam.x, cam.y, ' '));
             }
+
+            if (Entity.entityCollision())
 
 
 			int gateCheckXIndex = (int)((cam.x + Util.getSign(m.getHSpeed())*20f)/50f);
