@@ -5,10 +5,10 @@ import engine.OpenGL.EnigWindow;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class UserControls {
-	public static int[] forward = new int[] {GLFW_KEY_W,GLFW_KEY_UP};
-	public static int[] backward = new int[] {GLFW_KEY_S,GLFW_KEY_DOWN};
-	public static int[] left = new int[] {GLFW_KEY_A,GLFW_KEY_LEFT};
-	public static int[] right = new int[] {GLFW_KEY_D,GLFW_KEY_RIGHT};
+	public static int[] forward = new int[] {GLFW_KEY_W};
+	public static int[] backward = new int[] {GLFW_KEY_S};
+	public static int[] left = new int[] {GLFW_KEY_A};
+	public static int[] right = new int[] {GLFW_KEY_D};
 	public static int[] down = new int[] {GLFW_KEY_LEFT_SHIFT};
 	public static int[] up = new int[] {GLFW_KEY_SPACE};
 	public static int[] pause = new int[] {GLFW_KEY_ESCAPE};
