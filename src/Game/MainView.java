@@ -89,9 +89,9 @@ public class MainView extends EnigView {
 
 		spriteTexture = new Texture[4];//down left right up;
 		spriteTexture[0] = new Texture("res/future-wall.png");
-		spriteTexture[1] = new Texture("res/sprite-left.png");
-		spriteTexture[2] = new Texture("res/sprite-right.png");
-		spriteTexture[3] = new Texture("res/sprite-up.png");
+		//spriteTexture[1] = new Texture("res/sprite-left.png");
+		//spriteTexture[2] = new Texture("res/sprite-right.png");
+		//spriteTexture[3] = new Texture("res/sprite-up.png");
 
         cont = new SpriteButton(-0.5f,0.525f,1f,0.25f,"res/continueButton.png", aspectRatio);
         restart = new SpriteButton(-0.5f, -0.125f, 1f, 0.25f,"res/menu/restart.png", aspectRatio);
