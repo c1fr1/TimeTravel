@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class LevelBase
 {
 	ArrayList<ArrayList<Character[]>> levelseries;
+	Texture[] BackgroundTextures;
 	float[] xstart;
 	float[] ystart;
 	int currentTZ;
@@ -37,8 +38,7 @@ public class LevelBase
 
 
     //gets the map
-	public LevelBase(String filename)
-	{
+	public LevelBase(String filename) {
         if (tileObj == null) {
 			tileObj = new VAO(-25f, -25f, 50f, 50f);
             floorTexture = new Texture("res/sprites/present-floor.png");
@@ -80,7 +80,11 @@ public class LevelBase
 			while (fileInput.hasNextLine())
 			{
 				String nextline = fileInput.nextLine();
-				roomlist += nextline;
+				if (!nextline.endsWith(",")) {
+					roomlist += nextline + "\n";
+				}else {
+					roomlist += nextline;
+				}
 			}
 		}
 		catch (FileNotFoundException ex)
@@ -99,7 +103,7 @@ public class LevelBase
 		for (int i = 0; i < rooms.length; i++)//level depth
 		{
 			//splits level string into rows
-			String[] levelslices = rooms[i].split("@");
+			String[] levelslices = rooms[i].split("\n");
 			ArrayList<Character[]> levelroom = new ArrayList<Character[]>();
 			//goes through each row
 			for (int j = 0; j < levelslices.length; j++)//character row number
@@ -188,7 +192,11 @@ public class LevelBase
 			while (fileInput.hasNextLine())
 			{
 				String nextline = fileInput.nextLine();
-				roomlist += nextline;
+				if (!nextline.endsWith(",")) {
+					roomlist += nextline + "\n";
+				}else {
+					roomlist += nextline;
+				}
 			}
 		}
 		catch (FileNotFoundException ex)
@@ -207,7 +215,7 @@ public class LevelBase
 		for (int i = 0; i < rooms.length; i++)//level depth
 		{
 			//splits level string into rows
-			String[] levelslices = rooms[i].split("@");
+			String[] levelslices = rooms[i].split("\n");
 			ArrayList<Character[]> levelroom = new ArrayList<Character[]>();
 			//goes through each row
 			for (int j = 0; j < levelslices.length; j++)//character row number
@@ -249,6 +257,9 @@ public class LevelBase
 		timeZonePossibilities = ttoAbilities;
 		ttoFrameCounter = new float[timeZonePossibilities.size()];
 	}
+	public void init(String filename) {
+	
+	}
 
 	public void updateTTO(int[] locationInArray, float deltaTime) {
 		for (int i = 0; i < ttoFrameCounter.length;++i) {
@@ -280,6 +291,9 @@ public class LevelBase
     		for (int chr = 0; chr < levelseries.get(currentTZ).get(row).length; ++chr) {
     			char currentChar = levelseries.get(currentTZ).get(row)[chr];
 				if (currentChar != '_') {
+					if (currentChar == 'w' || currentChar == 'G' || currentChar == 'K' || currentChar == 'C' || currentChar == '-' || currentChar == 'S' || currentChar == 'T' || currentChar == '/' || currentChar == '8' || currentChar == '6' || currentChar == '2' || currentChar == '4') {
+					
+					}
 					if (currentChar == ' ' || currentChar == 's') {
     					floorTexture.bind();
 					}else if (currentChar == '#') {
