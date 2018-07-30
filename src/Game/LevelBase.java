@@ -116,12 +116,14 @@ public class LevelBase
 				{
 					//puts a character into the char array
 					levelrow[k] = lane.charAt(k);
-					if (lane.charAt(k) == 's')
-					{
+					if (lane.charAt(k) == 's') {
 						xstart[i] = j;
 						ystart[i] = k;
 						currentTZ = i;
-					}else if (lane.charAt(k) == 't') {
+					} else if (lane.charAt(k) == 'b') {
+						Entity tempEnt = new Entity(xstart[i], ystart[i], levelseries.size());
+						MainView.entities.add(tempEnt);
+					} else if (lane.charAt(k) == 't') {
 						if (levelseries.size() > 0) {
 							char prevLevel = levelseries.get(levelseries.size() - 1).get(j)[k];
 							if (Util.isNumericValue(prevLevel)) {
@@ -233,6 +235,9 @@ public class LevelBase
 						xstart[i] = j;
 						ystart[i] = k;
 						currentTZ = i;
+					}else if (lane.charAt(k) == 'b') {
+						Entity tempEnt = new Entity(xstart[i], ystart[i], levelseries.size());
+						MainView.entities.add(tempEnt);
 					}else if (lane.charAt(k) == 't') {
 						if (levelseries.size() > 0) {
 							char prevLevel = levelseries.get(levelseries.size() - 1).get(j)[k];
@@ -294,7 +299,7 @@ public class LevelBase
 					if (currentChar == 'w' || currentChar == 'G' || currentChar == 'K' || currentChar == 'C' || currentChar == '-' || currentChar == 'S' || currentChar == 'T' || currentChar == '/' || currentChar == '8' || currentChar == '6' || currentChar == '2' || currentChar == '4') {
 					
 					}
-					if (currentChar == ' ' || currentChar == 's') {
+					if (currentChar == ' ' || currentChar == 's' || currentChar == 'b') {
     					floorTexture.bind();
 					}else if (currentChar == '#') {
     					newwallTexture.bind();

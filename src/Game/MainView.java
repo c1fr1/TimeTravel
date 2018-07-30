@@ -17,6 +17,7 @@ public class MainView extends EnigView {
 	public static Camera cam;
 
 	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v'};
+	public static ArrayList<Entity> entities = new ArrayList<Entity>();
 
 	//project variables
 
@@ -132,6 +133,9 @@ public class MainView extends EnigView {
 
 		ttoSelector = currentLevel.currentTZ;
 		ttoSelectorBool = false;
+
+		//System.out.println(entities.get(0));
+
 	}
 
 	public boolean nextLevel(int increment) {

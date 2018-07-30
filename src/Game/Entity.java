@@ -13,7 +13,7 @@ public class Entity
     public float hspeed;
     public float vspeed;
 
-    public static void init(float startX, float startY, int amountOfTimezones) {
+    public Entity(float startX, float startY, int amountOfTimezones) {
         positions = new float[amountOfTimezones];
         //Fill array with starting positions
         for (int i = 0; i < amountOfTimezones*2; i +=2) {
