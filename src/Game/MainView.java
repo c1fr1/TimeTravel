@@ -461,7 +461,11 @@ public class MainView extends EnigView {
 
             if(CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'x')){
 				int[] location = findCharacter('X');
-				replaceTile(location[0], location[1], '_');
+				if (location[0] != -1) {
+					if (location[1] != -1) {
+						replaceTile(location[0], location[1], ' ');
+					}
+				}
 			}
 
 
