@@ -70,10 +70,14 @@ public class MainView extends EnigView {
 	SpriteButton restart;
 	SpriteButton menu;
 
+	int ttoSelector;
+	boolean ttoSelectorBool;
+
 	@Override
 	public void setup() {
 		//set variables here
 		glDisable(GL_DEPTH_TEST);
+
 		//needs to be generalized to use level selected - level path is a parameter
 		SpriteButton.shader = new ShaderProgram("buttonShader");
 		float aspectRatio = (float) window.getHeight() / (float) window.getWidth();
@@ -125,6 +129,9 @@ public class MainView extends EnigView {
 
 		cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
 		cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
+
+		ttoSelector = currentLevel.currentTZ;
+		ttoSelectorBool = false;
 	}
 
 	public boolean nextLevel(int increment) {
@@ -181,6 +188,7 @@ public class MainView extends EnigView {
 
 	@Override
 	public boolean loop() {
+		//System.out.println(ttoSelector);
 		long time = System.nanoTime();
 		float delta_time = ((float)(time - lastTime) / 1000000f);
 		if (delta_time > 60f) {
@@ -252,7 +260,10 @@ public class MainView extends EnigView {
 		//Time Travel animation
 		else if (timeTravelFrames > 0) {
 			FBO.prepareDefaultRender();
-			
+
+			ttoSelector = currentLevel.currentTZ;
+			ttoSelectorBool = false;
+
 			backgroundShader.enable();
 			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.5f, new Vector2f()));
 			starBackground.bind();
@@ -329,6 +340,7 @@ public class MainView extends EnigView {
 			int ttoOnInd = -1;
 			for (int i:nearesTTOCheck) {
 				if (i >= 0) {
+
 					ttoOnInd = i;
 				}
 			}
@@ -342,15 +354,14 @@ public class MainView extends EnigView {
 				ttoGUIButton.vao.prepareRender();
 				float leftOffset = 0.025f * (float) currentLevel.levelseries.size();
 				//Arrow key switching in the tto
-				if(UserControls.leftArrow(window)){
-					if(currentLevel.currentTZ-1 >= 0) {
-						currentLevel.currentTZ--;
-						++timeTravelFrames;
+				if(UserControls.leftArrowPress(window)){
+					if(ttoSelector-1 >= 0) {
+						ttoSelector--;
 					}
-				} else if(UserControls.rightArrow(window)){
-					if(currentLevel.currentTZ+1 < currentLevel.levelseries.size()) {
-						currentLevel.currentTZ++;
-						++timeTravelFrames;
+				}
+				if(UserControls.rightArrowPress(window)){
+					if(ttoSelector+1 < currentLevel.levelseries.size()) {
+						ttoSelector++;
 					}
 				}
 				//regular switching
@@ -362,12 +373,21 @@ public class MainView extends EnigView {
 						ttoGUIButtonShader.shaders[2].uniforms[0].set(0f);
 					} else if (currentLevel.currentTZ == i) {
 						ttoGUIButtonShader.shaders[2].uniforms[0].set(2f);
-					} else if (ttoGUIButton.hoverCheck((window.cursorXFloat - floati * 0.1f + leftOffset + ttoGUIButton.width/2)/aspectRatio, window.cursorYFloat)) {
-						if (UserControls.leftMB(window)) {
-							currentLevel.currentTZ = i;
-							++timeTravelFrames;
+					} else if (ttoGUIButton.hoverCheck((window.cursorXFloat - floati * 0.1f + leftOffset + ttoGUIButton.width/2)/aspectRatio, window.cursorYFloat) || ttoSelector == i) {
+						if(ttoGUIButton.hoverCheck((window.cursorXFloat - floati * 0.1f + leftOffset + ttoGUIButton.width/2)/aspectRatio, window.cursorYFloat)) {
+							ttoSelector = i;
+							if (UserControls.leftMB(window)) {
+								currentLevel.currentTZ = i;
+								++timeTravelFrames;
+							}
 						}
-						ttoGUIButtonShader.shaders[2].uniforms[0].set(3f);
+						if(ttoSelector == i){
+							if(UserControls.enter(window)){
+								currentLevel.currentTZ = i;
+								++timeTravelFrames;
+							}
+							ttoGUIButtonShader.shaders[2].uniforms[0].set(3f);
+						}
 					} else {
 						ttoGUIButtonShader.shaders[2].uniforms[0].set(1f);
 					}
