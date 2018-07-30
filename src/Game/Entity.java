@@ -24,15 +24,13 @@ public class Entity
         }
     }
 
-    public static boolean entityCollision(float xSelf, float ySelf, int borderSelf, float xOther, float yOther, int borderOther)
+    public static boolean entityCollision(Entity a, Entity b)
     {
         boolean overlap = false;
 
-        if ((xSelf + borderSelf >= xOther - borderOther && xSelf - borderSelf <= xOther - borderOther) ||
-                (xSelf - borderSelf <= xOther + borderOther && xSelf + borderSelf >= xOther + borderOther))
+        if ((a.positions[MainView.currentLevel.currentTZ*2-2] + 15 >= b.positions[MainView.currentLevel.currentTZ*2-2] - 15 && a.positions[MainView.currentLevel.currentTZ*2-2] - 15 <= b.positions[MainView.currentLevel.currentTZ*2-2] + 15))
         {
-            if ((ySelf + borderSelf >= yOther - borderOther && ySelf - borderSelf <= yOther - borderOther) ||
-                    (ySelf - borderSelf <= yOther + borderOther && ySelf + borderSelf >= yOther + borderOther))
+            if ((a.positions[MainView.currentLevel.currentTZ*2-1] + 15 >= b.positions[MainView.currentLevel.currentTZ*2-1] - 15 && a.positions[MainView.currentLevel.currentTZ*2-1] - 15 <= b.positions[MainView.currentLevel.currentTZ*2-1] + 15))
             {
                 overlap = true;
             }
@@ -40,23 +38,9 @@ public class Entity
         return overlap;
     }
 
-    public static void getEntityX(float vspeed, float hspeed, float xOther, float yOther)
-    {
-        if (entityCollision(positions[MainView.currentLevel.currentTZ*2-2],positions[MainView.currentLevel.currentTZ*2-1],border,xOther,yOther,15))
-        {
-            if ((positions[MainView.currentLevel.currentTZ*2-2] + border >= xOther - 15 && positions[MainView.currentLevel.currentTZ*2-2]- border <= xOther - 15))
-            {
-                if (hspeed < 0)
-                {
-                    float xstep = (float)Math.sqrt(vspeed*vspeed + hspeed*hspeed);
-                    while (entityCollision(positions[MainView.currentLevel.currentTZ*2-2],positions[MainView.currentLevel.currentTZ*2-1],border,xOther,yOther,15))
-                    {
-                        positions[MainView.currentLevel.currentTZ*2-2] -= xstep;
-                    }
-                    positions[MainView.currentLevel.currentTZ*2-2] += hspeed;
-                }
-            }
-        }
-    }
-
 }
+/*for (int i = 0; i < MainView.entities.size(); i ++) {
+            CamCollision.verticalMove(MainView.entities.get(i).positions[MainView.currentLevel.currentTZ*2],cam.y,15,vSpeed,
+                    currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
+        }
+        */
