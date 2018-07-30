@@ -51,14 +51,40 @@ public class CamCollision
         }
         return solid;
     }
+
     //moves you in the direction until you hit a wall and then moves you to touching the wall
-    public static float horizontalMove(float x, float y, int border,
-                                       float hspeed, ArrayList<Character[]> room, char[] obstacles)
+    public static float horizontalMove(float x, float y, int border, float hspeed,
+                                       ArrayList<Character[]> room, char[] obstacles)
     {
         float xsave = x;
         x += hspeed;
-        char blocking = checkAllCollision(x,y,border,room,obstacles);
-        if (blocking != '`')
+        char block = checkAllCollision(x,y,border,room,obstacles);
+        //pass doors
+        if (block == '>')
+        {
+            //set block to open
+            block = '`';
+            //check for moving in wrong direction and wrong side of door
+            if (hspeed < 0 && !isColliding(xsave,y,border,room,'>'))
+            {
+                //if on outside of door, parse as wall
+                block = '#';
+            }
+        }
+        else if (block == '<')
+        {
+            block = '`';
+            if (hspeed > 0 && !isColliding(xsave,y,border,room,'<'))
+            {
+                block = '#';
+            }
+        }
+        else if (block == '^' || block == 'v')
+        {
+            block = '`';
+        }
+        //snap to collision contact
+        if (block != '`')
         {
             x = 50 * Math.round(xsave/50);
             x += 15.001 * Util.getSign(-hspeed);
@@ -66,13 +92,38 @@ public class CamCollision
         return x - xsave;
     }
 
-    public static float verticalMove(float x, float y, int border,
-                                     float vspeed, ArrayList<Character[]> room, char[] obstacles)
+    public static float verticalMove(float x, float y, int border, float vspeed,
+                                     ArrayList<Character[]> room, char[] obstacles)
     {
         float ysave = y;
         y += vspeed;
-        char blocking = checkAllCollision(x,y,border,room,obstacles);
-        if (blocking != '`')
+        char block = checkAllCollision(x,y,border,room,obstacles);
+        //pass one way doors
+        if (block == '^')
+        {
+            //set block to open
+            block = '`';
+            //check for moving in wrong direction and wrong side of door
+            if (vspeed > 0 && !isColliding(x,ysave,border,room,'^'))
+            {
+                //if on outside of door, parse as wall
+                block = '#';
+            }
+        }
+        else if (block == 'v')
+        {
+            block = '`';
+            if (vspeed < 0 && !isColliding(x,ysave,border,room,'v'))
+            {
+                block = '#';
+            }
+        }
+        else if (block == '<' || block == '>')
+        {
+            block = '`';
+        }
+        //snap to collision contact
+        if (block != '`')
         {
             y = 50 * Math.round(ysave/50);
             y += 15.001 * Util.getSign(-vspeed);

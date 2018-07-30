@@ -3,6 +3,8 @@ package Game;
 import engine.OpenGL.ShaderProgram;
 import engine.OpenGL.Texture;
 import engine.OpenGL.VAO;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public class SpriteButton
 {
@@ -12,7 +14,7 @@ public class SpriteButton
     public float height;
     public Texture sprite;
     public VAO vao;
-    public ShaderProgram shader;
+    public static ShaderProgram shader;
 
 
     public SpriteButton(float x, float y, float width, float height, String path)
@@ -64,13 +66,17 @@ public class SpriteButton
         return height;
     }
     
-    public void render() {
+    public boolean render(float cursorX, float cursorY) {
+    	boolean ret = false;
+    	shader.enable();
+    	if (hoverCheck(cursorX, cursorY)) {
+    		ret = true;
+    		shader.shaders[2].uniforms[0].set(new Vector4f(1f, 1f, 0f, 1f));
+		}else {
+			shader.shaders[2].uniforms[0].set(new Vector4f(0f, 0f, 0f, 0f));
+		}
     	sprite.bind();
     	vao.fullRender();
+    	return ret;
 	}
-
-	public void setPath(String path)
-    {
-        sprite = new Texture(path);
-    }
 }
