@@ -115,4 +115,8 @@ public class Inventory {
         }
         return intIndexes;
     }
+
+    public void reset(){
+        inventory = new ArrayList();
+    }
 }
