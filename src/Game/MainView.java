@@ -459,6 +459,16 @@ public class MainView extends EnigView {
                 inv.add(replaceTile(cam.x, cam.y, ' '));
             }
 
+            if(CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'x')){
+				int[] location = findCharacter('X');
+				if (location[0] != -1) {
+					if (location[1] != -1) {
+						replaceTile(location[0], location[1], ' ');
+					}
+				}
+			}
+
+
 
 			int gateCheckXIndex = (int)((cam.x + Util.getSign(m.getHSpeed())*20f)/50f);
 			int gateCheckYIndex = (int)((cam.y + Util.getSign(m.getVSpeed())*20f)/50f);

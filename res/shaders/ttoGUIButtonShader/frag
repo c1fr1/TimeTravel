@@ -18,7 +18,7 @@ void main() {
         }else if (state < 2.5) {//current
             color = tempColor;
         }else {//hover
-            color = vec4(0.6, 0.6, 1, 1);
+            color = vec4(0.3, 0.3, 1, 1);
         }
     }else {
         color = tempColor;
