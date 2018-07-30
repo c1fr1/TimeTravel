@@ -1,6 +1,8 @@
 package Game;
 
 public class Entity {
-    public float x;
-    public float y;
+    public static float x;
+    public static float y;
+    public float xSpeed;
+    public float ySpeed;
 }
