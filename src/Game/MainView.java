@@ -21,7 +21,7 @@ public class MainView extends EnigView {
 
 	//project variables
 
-	public LevelBase currentLevel;
+	public static LevelBase currentLevel;
 	public static int currentLevelNum = 0;
 
 	public Inventory inv;

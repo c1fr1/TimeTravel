@@ -2,6 +2,8 @@ package Game;
 
 import sun.applet.Main;
 
+import java.util.logging.Level;
+
 public class Entity
 {
     //This array holds a whole bunch of x and y coordinates regarding the entity's position. To get the position in the nth timezone,
@@ -9,8 +11,6 @@ public class Entity
     //positions[0], positions[1] is the location of the entity in the first timezone.
     // In the 4th timezone, positions[6] and positions[7] are the relevant indexes.
     public static float[] positions;
-    public static float x;
-    public static float y;
     public static int border;
     public float hspeed;
     public float vspeed;
@@ -42,18 +42,18 @@ public class Entity
 
     public static void getEntityX(float vspeed, float hspeed, float xOther, float yOther)
     {
-        if (entityCollision(x,y,border,xOther,yOther,15))
+        if (entityCollision(positions[MainView.currentLevel.currentTZ*2-2],positions[MainView.currentLevel.currentTZ*2-1],border,xOther,yOther,15))
         {
-            if ((x + border >= xOther - 15 && x - border <= xOther - 15))
+            if ((positions[MainView.currentLevel.currentTZ*2-2] + border >= xOther - 15 && positions[MainView.currentLevel.currentTZ*2-2]- border <= xOther - 15))
             {
                 if (hspeed < 0)
                 {
                     float xstep = (float)Math.sqrt(vspeed*vspeed + hspeed*hspeed);
-                    while (entityCollision(x,y,border,xOther,yOther,15))
+                    while (entityCollision(positions[MainView.currentLevel.currentTZ*2-2],positions[MainView.currentLevel.currentTZ*2-1],border,xOther,yOther,15))
                     {
-                        x -= xstep;
+                        positions[MainView.currentLevel.currentTZ*2-2] -= xstep;
                     }
-                    x += hspeed;
+                    positions[MainView.currentLevel.currentTZ*2-2] += hspeed;
                 }
             }
         }
