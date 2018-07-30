@@ -80,22 +80,22 @@ public class MainView extends EnigView {
         currentLevel = new LevelBase("res/Levels/Level"+currentLevelNum+".txt");
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
 		guiShader = new ShaderProgram("guiShader");
-		ttoGUI = new Texture("res/timeTravelGUI.png");
-		keyTexture = new Texture("res/inventoryKey.png");
+		ttoGUI = new Texture("res/sprites/timeTravelGUI.png");
+		keyTexture = new Texture("res/sprites/inventoryKey.png");
 		inventoryObjectVAO = new VAO(-1f, -0.9f, 0.1f, 0.1f);
 		ttoGUIVAO = new VAO(-0.5f, 0.125f, 1f, 0.25f);
 		playerVAO = new VAO(-40f, 10f, 30f, 30f);
 		inv = new Inventory();
 
 		spriteTexture = new Texture[4];//down left right up;
-		spriteTexture[0] = new Texture("res/future-wall.png");
-		//spriteTexture[1] = new Texture("res/sprite-left.png");
-		//spriteTexture[2] = new Texture("res/sprite-right.png");
-		//spriteTexture[3] = new Texture("res/sprite-up.png");
+		spriteTexture[0] = new Texture("res/sprites/future-wall.png");
+		//spriteTexture[1] = new Texture("res/sprites/sprite-left.png");
+		//spriteTexture[2] = new Texture("res/sprites/sprite-right.png");
+		//spriteTexture[3] = new Texture("res/sprites/sprite-up.png");
 
-        cont = new SpriteButton(-0.5f,0.525f,1f,0.25f,"res/continueButton.png", aspectRatio);
-        restart = new SpriteButton(-0.5f, -0.125f, 1f, 0.25f,"res/menu/restart.png", aspectRatio);
-        menu = new SpriteButton(-0.5f, -0.725f, 1f, 0.25f,"res/mainMenu.png", aspectRatio);
+        cont = new SpriteButton(-0.5f,0.525f,1f,0.25f,"res/sprites/continueButton.png", aspectRatio);
+        restart = new SpriteButton(-0.5f, -0.125f, 1f, 0.25f,"res/sprites/restart.png", aspectRatio);
+        menu = new SpriteButton(-0.5f, -0.725f, 1f, 0.25f,"res/sprites/mainMenu.png", aspectRatio);
 
 		textureShader = new ShaderProgram("textureShaders");
 		pauseShader = new ShaderProgram("pauseShaders");
@@ -104,12 +104,12 @@ public class MainView extends EnigView {
 		inventoryShader = new ShaderProgram("inventoryShaders");
 		backgroundShader = new ShaderProgram("backgroundShader");
 		
-		frontStars = new Texture("res/frontstars.png");
+		frontStars = new Texture("res/sprites/frontstars.png");
 		frontStars.bind();
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		Texture.unbind();
-		starBackground = new Texture("res/stars.png");
+		starBackground = new Texture("res/sprites/stars.png");
 		starBackground.bind();
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -117,7 +117,7 @@ public class MainView extends EnigView {
 		backgroundOffset = new Vector2f(0f, 0f);
 		backgroundVelocity = new Vector2f(0f, 0f);
 
-		ttoGUIButton = new SpriteButton(-0.06f, 0.4f, 0.12f, 0.12f, "res/ttoguiButton.png");
+		ttoGUIButton = new SpriteButton(-0.06f, 0.4f, 0.12f, 0.12f, "res/sprites/ttoguiButton.png");
 		ttoGUIButtonShader = new ShaderProgram("ttoGUIButtonShader");
 
 		mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));

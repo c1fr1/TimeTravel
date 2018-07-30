@@ -41,16 +41,16 @@ public class LevelBase
 	{
         if (tileObj == null) {
 			tileObj = new VAO(-25f, -25f, 50f, 50f);
-            floorTexture = new Texture("res/present-floor.png");
-            wallTexture = new Texture("res/present-wall.png");
-            newwallTexture = new Texture("res/future-wall.png");
-			keyTexture = new Texture("res/key.png");
-			gateTexture = new Texture("res/gate.png");
-			lockTexture = new Texture("res/locked-gate.png");
-            upGateTexture = new Texture("res/upGate.png");
-            downGateTexture = new Texture("res/downGate.png");
-            leftGateTexture = new Texture("res/leftGate.png");
-            rightGateTexture = new Texture("res/rightGate.png");
+            floorTexture = new Texture("res/sprites/present-floor.png");
+            wallTexture = new Texture("res/sprites/present-wall.png");
+            newwallTexture = new Texture("res/sprites/future-wall.png");
+			keyTexture = new Texture("res/sprites/key.png");
+			gateTexture = new Texture("res/sprites/gate.png");
+			lockTexture = new Texture("res/sprites/locked-gate.png");
+            upGateTexture = new Texture("res/sprites/upGate.png");
+            downGateTexture = new Texture("res/sprites/downGate.png");
+            leftGateTexture = new Texture("res/sprites/leftGate.png");
+            rightGateTexture = new Texture("res/sprites/rightGate.png");
 
 			//changing texture for tto
 			ttoTexture = new Texture[9];
@@ -65,7 +65,7 @@ public class LevelBase
 			ttoTexture[8] = new Texture("res/anims/tto-9.png");
 
             levelProgram = new ShaderProgram("levelShader");
-            controllerTexture = new Texture("res/controller-tto.png");
+            controllerTexture = new Texture("res/sprites/controller-tto.png");
         }
 
 		Scanner fileInput;
