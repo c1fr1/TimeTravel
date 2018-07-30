@@ -9,6 +9,8 @@ public class UserControls {
 	public static int[] backward = new int[] {GLFW_KEY_S};
 	public static int[] left = new int[] {GLFW_KEY_A};
 	public static int[] right = new int[] {GLFW_KEY_D};
+	public static int[] leftArrow = new int[] {GLFW_KEY_LEFT};
+	public static int[] rightArrow = new int[] {GLFW_KEY_RIGHT};
 	public static int[] down = new int[] {GLFW_KEY_LEFT_SHIFT};
 	public static int[] up = new int[] {GLFW_KEY_SPACE};
 	public static int[] pause = new int[] {GLFW_KEY_ESCAPE};
@@ -45,6 +47,22 @@ public class UserControls {
 	}
 	public static boolean right(EnigWindow window) {
 		for (int i:right) {
+			if (window.keys[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean leftArrow(EnigWindow window){
+		for (int i:leftArrow) {
+			if (window.keys[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean rightArrow(EnigWindow window){
+		for (int i:rightArrow) {
 			if (window.keys[i] > 0) {
 				return true;
 			}
