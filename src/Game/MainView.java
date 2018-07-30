@@ -144,7 +144,7 @@ public class MainView extends EnigView {
 		if(test.listFiles().length > currentLevelNum+increment && !(currentLevelNum+increment < 0)) {
             currentLevelNum+=increment;
             currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt");
-
+			ttoSelector =  currentLevel.currentTZ;
             cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
             cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
             return false;
@@ -152,6 +152,18 @@ public class MainView extends EnigView {
 			return true;
 		}
     }
+
+    public int[] findCharacter(char ch){
+		ArrayList<Character[]> level = currentLevel.levelseries.get(currentLevel.currentTZ);
+		for(int i = 0; i < level.size(); i++){
+			for(int j = 0; j < level.get(i).length; j++){
+				if(level.get(i)[j].equals(ch)){
+					return new int[] {j,i};
+				}
+			}
+		}
+		return new int[] {-1,-1};
+	}
 
 	/**
 	 *
@@ -446,6 +458,12 @@ public class MainView extends EnigView {
             {
                 inv.add(replaceTile(cam.x, cam.y, ' '));
             }
+
+            if(CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'x')){
+				int[] location = findCharacter('X');
+				replaceTile(location[0], location[1], '_');
+			}
+
 
 
 			int gateCheckXIndex = (int)((cam.x + Util.getSign(m.getHSpeed())*20f)/50f);

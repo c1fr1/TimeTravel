@@ -33,6 +33,8 @@ public class LevelBase
 	public static Texture boxTexture;
 	public static Texture[] ttoTexture;
     public static Texture controllerTexture;
+    public static Texture buttonTexture;
+    public static Texture buttonDoorTexture;
     public static ShaderProgram levelProgram;
     
     public ArrayList<Boolean[]> timeZonePossibilities = new ArrayList<>();
@@ -66,7 +68,9 @@ public class LevelBase
 			leftGateTexture = new Texture("res/sprites/leftGate.png");
 			rightGateTexture = new Texture("res/sprites/rightGate.png");
 			lockTexture = new Texture("res/sprites/locked-gate.png");
-			
+            buttonTexture = new Texture("res/sprites/Button.png");
+            buttonDoorTexture = new Texture("res/sprites/ButtonDoor.png");
+
 			//changing texture for tto
 			ttoTexture = new Texture[9];
 			ttoTexture[0] = new Texture("res/anims/tto-1.png");
@@ -78,11 +82,11 @@ public class LevelBase
 			ttoTexture[6] = new Texture("res/anims/tto-7.png");
 			ttoTexture[7] = new Texture("res/anims/tto-8.png");
 			ttoTexture[8] = new Texture("res/anims/tto-9.png");
-			
+
 			levelProgram = new ShaderProgram("levelShader");
 			controllerTexture = new Texture("res/sprites/controller-tto.png");
 		}
-		
+
 		Scanner fileInput;
 		String roomlist = "";
 		//stores level rooms
@@ -217,6 +221,26 @@ public class LevelBase
 					else if (currentChar == '<') {
 						leftGateTexture.bind();
 					}
+					else if (currentChar == 'x') {
+						buttonTexture.bind();
+					}
+					else if (currentChar == 'y') {
+						buttonTexture.bind();
+					}
+					else if (currentChar == 'z') {
+						buttonTexture.bind();
+					}
+					else if (currentChar == 'X') {
+						buttonDoorTexture.bind();
+					}
+					else if (currentChar == 'Y') {
+						buttonDoorTexture.bind();
+					}
+					else if (currentChar == 'Z') {
+						buttonDoorTexture.bind();
+					}
+					//float x = ((float) chr) * 50f;
+					//float y = -((float) row) * 50f;
 					levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2*cam.y, 0));
 					tileObj.drawTriangles();
 				}
