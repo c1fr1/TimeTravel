@@ -269,12 +269,12 @@ public class MainView extends EnigView {
 			ttoSelectorBool = false;
 
 			backgroundShader.enable();
-			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.5f, new Vector2f()));
+			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
 			starBackground.bind();
 			screenVAO.prepareRender();
 			screenVAO.drawTriangles();
 			frontStars.bind();
-			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
+			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.5f, new Vector2f()));
 			screenVAO.drawTriangles();
 			screenVAO.unbind();
 			
