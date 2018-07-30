@@ -128,7 +128,7 @@ public class MainView extends EnigView {
 	}
 
 	public boolean nextLevel(int increment) {
-
+		inv.reset();
 		File test = new File("res/Levels");
 		if(test.listFiles().length > currentLevelNum+increment && !(currentLevelNum+increment < 0)) {
             currentLevelNum+=increment;
