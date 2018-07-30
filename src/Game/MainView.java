@@ -188,7 +188,7 @@ public class MainView extends EnigView {
 
 	@Override
 	public boolean loop() {
-		System.out.println(ttoSelector);
+		//System.out.println(ttoSelector);
 		long time = System.nanoTime();
 		float delta_time = ((float)(time - lastTime) / 1000000f);
 		if (delta_time > 60f) {
@@ -354,7 +354,6 @@ public class MainView extends EnigView {
 				ttoGUIButton.vao.prepareRender();
 				float leftOffset = 0.025f * (float) currentLevel.levelseries.size();
 				//Arrow key switching in the tto
-
 				if(UserControls.leftArrowPress(window)){
 					if(ttoSelector-1 >= 0) {
 						ttoSelector--;
@@ -365,9 +364,6 @@ public class MainView extends EnigView {
 						ttoSelector++;
 					}
 				}
-
-
-				//System.out.print("i broke it");
 				//regular switching
 				for (int i = 0; i < currentLevel.levelseries.size(); ++i) {
 					float floati = (float) i;
