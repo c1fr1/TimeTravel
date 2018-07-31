@@ -377,10 +377,17 @@ public class MainView extends EnigView {
 
 			//MOVEMENT
 			Movement m = new Movement(delta_time, window, cam, currentLevel, solidBlocks);
+
 			cam.x += m.getXOffset();
 			cam.y += m.getYOffset();
 			backgroundOffset.x += m.getXOffset() * 0.0005;
 			backgroundOffset.y += m.getYOffset() * 0.0005;
+
+			//Crate Movement
+			for (int i = 0; i < currentLevel.entities.size(); i++)
+			{
+				currentLevel.entities.get(i).getBoxX(currentLevel,m.getHSpeed(),currentLevel.currentTZ);
+			}
 			
 
 			LevelBase.levelProgram.enable();

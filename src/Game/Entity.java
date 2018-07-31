@@ -81,8 +81,22 @@ public class Entity
         return overlap;
     }
 
-    /*
-    public static Entity entityCheck(LevelBase currentLevel, int timeZone)
+    public void getBoxX(LevelBase currentLevel, float camhspeed, int timeZone)
+    {
+        if (camEntityCollision(currentLevel.entities.get(arrayIndex),timeZone))
+        {
+            if (camhspeed > 0)
+            {
+                if (MainView.cam.y - 15 <= ypos[timeZone] + 15 ||
+                    MainView.cam.y + 15 <= ypos[timeZone] - 15)
+                {
+                    xpos[timeZone] += camhspeed;
+                }
+            }
+        }
+    }
+
+    public Entity entityCheck(LevelBase currentLevel, int timeZone)
     {
         if (currentLevel.entities.get(arrayIndex).xpos[timeZone] > -1) {
             for (int i = 0; i < currentLevel.entities.size(); i++) {
@@ -97,9 +111,8 @@ public class Entity
         return null;
     }
 
-    public static Entity cameraCheck(LevelBase currentLevel, int timeZone)
+    public Entity cameraCheck(LevelBase currentLevel, int timeZone)
     {
-
         if (currentLevel.entities.get(arrayIndex).xpos[timeZone] > -1) {
             for (int i = 0; i < currentLevel.entities.size(); i++) {
                 //you are not looking at your own index and are colliding with another entity in the given timezone
@@ -112,7 +125,6 @@ public class Entity
         }
         return null;
     }
-    */
 
     public void render(Camera cam, int timeZone){
         if(xpos[timeZone] >= 0) {
