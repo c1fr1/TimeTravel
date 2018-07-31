@@ -50,6 +50,22 @@ public class Entity
         return overlap;
     }
 
+    public static boolean cameEntityCollision(Entity a, int timeZone)
+    {
+        boolean overlap = false;
+
+        if (a.xpos[timeZone] + a.border >= MainView.cam.x - 15 &&
+                a.xpos[timeZone] - a.border <= MainView.cam.x + 15)
+        {
+            if (a.ypos[timeZone] + a.border >= MainView.cam.y - 15 &&
+                    a.ypos[timeZone] - a.border <= MainView.cam.y + 15)
+            {
+                overlap = true;
+            }
+        }
+        return overlap;
+    }
+
     public static Entity entityCheck(int timeZone)
     {
         for (int i = 0; i < LevelBase.entities.size(); i++)
@@ -59,8 +75,8 @@ public class Entity
             {
                 if (entityCollision(LevelBase.entities.get(arrayIndex), LevelBase.entities.get(i), timeZone))
                 {
-                    return LevelBase.entities.get(i);
-                }
+                return LevelBase.entities.get(i);
+            }
             }
         }
         return null;
