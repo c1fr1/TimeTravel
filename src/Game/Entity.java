@@ -37,11 +37,14 @@ public class Entity
     public static boolean entityCollision(Entity a, Entity b, int timeZone)
     {
         boolean overlap = false;
-        if (a.xpos[timeZone] > -1 && b.xpos[timeZone] > -1) {
+        if (a.xpos[timeZone] > -1 && b.xpos[timeZone] > -1)
+        {
             if (a.xpos[timeZone] + a.border >= b.xpos[timeZone] - b.border &&
-                    a.xpos[timeZone] - a.border <= b.xpos[timeZone] + b.border) {
+                    a.xpos[timeZone] - a.border <= b.xpos[timeZone] + b.border)
+            {
                 if (a.ypos[timeZone] + a.border >= b.ypos[timeZone] - b.border &&
-                        a.ypos[timeZone] - a.border <= b.ypos[timeZone] + b.border) {
+                        a.ypos[timeZone] - a.border <= b.ypos[timeZone] + b.border)
+                {
                     overlap = true;
                 }
             }
@@ -49,7 +52,7 @@ public class Entity
         return overlap;
     }
 
-    public static boolean cameEntityCollision(Entity a, int timeZone)
+    public static boolean camEntityCollision(Entity a, int timeZone)
     {
         boolean overlap = false;
 
@@ -74,8 +77,24 @@ public class Entity
             {
                 if (entityCollision(LevelBase.entities.get(arrayIndex), LevelBase.entities.get(i), timeZone))
                 {
-                return LevelBase.entities.get(i);
+                    return LevelBase.entities.get(i);
+                }
             }
+        }
+        return null;
+    }
+
+    public static Entity cameraCheck(int timeZone)
+    {
+        for (int i = 0; i < LevelBase.entities.size(); i++)
+        {
+            //you are not looking at your own index and are colliding with another entity in the given timezone
+            if (i != arrayIndex)
+            {
+                if (camEntityCollision(LevelBase.entities.get(i), timeZone))
+                {
+                    return LevelBase.entities.get(i);
+                }
             }
         }
         return null;
