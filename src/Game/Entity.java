@@ -52,7 +52,6 @@ public class Entity
 
     public static Entity entityCheck(int timeZone)
     {
-        Entity e;
         for (int i = 0; i < LevelBase.entities.size(); i++)
         {
             //you are not looking at your own index and are colliding with another entity in the given timezone
