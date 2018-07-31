@@ -59,8 +59,8 @@ public class Entity
                 if (a.ypos[timeZone] + a.border >= b.ypos[timeZone] - b.border &&
                         a.ypos[timeZone] - a.border <= b.ypos[timeZone] + b.border)
                 {
-                overlap = true;
-            }
+                    overlap = true;
+                }
             }
         }
         return overlap;
