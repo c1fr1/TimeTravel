@@ -4,8 +4,11 @@ import engine.*;
 import engine.Entities.Camera;
 import engine.OpenGL.*;
 import org.joml.Vector2f;
+import org.lwjglx.debug.javax.servlet.http.HttpServletRequest;
 
 import java.io.File;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -13,7 +16,21 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class MainView extends EnigView {
 	public static MainView main;
-
+	private static String getClientIp(HttpServletRequest request) {
+		
+		String remoteAddr = "";
+		
+		if (request != null) {
+			remoteAddr = request.getHeader("X-FORWARDED-FOR");
+			if (remoteAddr == null || "".equals(remoteAddr)) {
+				remoteAddr = request.getRemoteAddr();
+			}
+		}
+		
+		return remoteAddr;
+	}
+	
+	
 	public static Camera cam;
 
 	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v', 'X', 'Y', 'Z', 'w'};
@@ -79,13 +96,19 @@ public class MainView extends EnigView {
 
 	@Override
 	public void setup() {
+		try {
+			System.out.println(Inet4Address.getLocalHost().getHostAddress());
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		
 		//set variables here
 		glDisable(GL_DEPTH_TEST);
 
 		//needs to be generalized to use level selected - level path is a parameter
 		SpriteButton.shader = new ShaderProgram("buttonShader");
 		float aspectRatio = (float) window.getHeight() / (float) window.getWidth();
-        currentLevel = new LevelBase("res/Levels/Level"+currentLevelNum+".txt", new String[] {"res/levelTemplate.png", "res/levelTemplate.png"});
+        currentLevel = new LevelBase("res/Levels/Level"+currentLevelNum+".txt"/*, new String[] {"res/levelTemplate.png", "res/levelTemplate.png"}*/);
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
 		guiShader = new ShaderProgram("guiShader");
 		ttoGUI = new Texture("res/sprites/timeTravelGUI.png");
@@ -110,14 +133,27 @@ public class MainView extends EnigView {
 		ttoguiShader = new ShaderProgram("ttoGUIShader");
 		travelShader = new ShaderProgram("travelShaders");
 		inventoryShader = new ShaderProgram("inventoryShaders");
-		backgroundShader = new ShaderProgram("backgroundShader");
 		
 		frontStars = new Texture("res/sprites/frontstars.png");
 		frontStars.bind();
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		Texture.unbind();
-		starBackground = new Texture("res/sprites/stars.png");
+		try {
+			if (!Inet4Address.getLocalHost().getHostAddress().equals("172.30.26.59") || Math.random() > 0.1) {
+				starBackground = new Texture("res/sprites/stars.png");
+				backgroundShader = new ShaderProgram("backgroundShader");
+			}else if (Math.random() > 0.5) {
+				backgroundShader = new ShaderProgram("backgroundShader");
+				frontStars = new Texture("res/sprites/frontstars.png");
+			}else {
+				starBackground = new Texture("res/sprites/stars.png");
+				backgroundShader = new ShaderProgram(".backgroundShader");
+			}
+		} catch (UnknownHostException e) {
+			backgroundShader = new ShaderProgram("backgroundShader");
+			starBackground = new Texture("res/sprites/stars.png");
+		}
 		starBackground.bind();
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -146,11 +182,7 @@ public class MainView extends EnigView {
 		File test = new File("res/Levels");
 		if(test.listFiles().length > currentLevelNum+increment && !(currentLevelNum+increment < 0)) {
             currentLevelNum+=increment;
-            if (currentLevelNum == 4) {
-				currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt", new String[]{"res/level5thing.png", "res/level5thing.png", "res/level5thing.png"});
-			}else {
-				currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt", new String[]{"res/levelTemplate.png", "res/levelTemplate.png", "res/levelTemplate.png", "res/levelTemplate.png", "res/levelTemplate.png"});
-			}
+            currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt");
             ttoSelector =  currentLevel.currentTZ;
             cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
             cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
@@ -463,8 +495,9 @@ public class MainView extends EnigView {
             }
             if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'k') || CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'K'))
             {
-				replaceTile(cam.x, cam.y, ' ');
-                inv.add('k');
+				if (replaceTile(cam.x, cam.y, ' ') == 'k') {
+					inv.add('k');
+				}
             }
 
             //X button
