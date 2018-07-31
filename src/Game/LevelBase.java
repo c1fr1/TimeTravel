@@ -271,7 +271,7 @@ public class LevelBase
 					}
 					//float x = ((float) chr) * 50f;
 					//float y = -((float) row) * 50f;
-					levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2*cam.y, 0));
+					levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y, 0));
 					tileObj.drawTriangles();
 				}
 			}
