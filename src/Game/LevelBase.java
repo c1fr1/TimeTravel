@@ -136,14 +136,14 @@ public class LevelBase
 					}
 					else if (lane.charAt(k) == 'b')
 					{
-						float startX = (float)(j * 50);
-						float startY = (float)(k * 50);
+						float startX = (float)(k * 50);
+						float startY = (float)(j * 50);
 						boolean taken = false;
 						//Entity tempEnt = new Entity(startX, startY);
 						for (int l = 0; l < entities.size(); l++)
 						{
-							if (entities.get(l).xpos[0] == startX &&
-									entities.get(l).ypos[0] == startY)
+							if (Math.abs(entities.get(l).xpos[entities.get(l).startZone] - startX) < 1 &&
+									Math.abs(entities.get(l).ypos[entities.get(l).startZone] - startY) < 1)
 							{
 								entities.get(l).xpos[i] = startX;
 								entities.get(l).ypos[i] = startY;

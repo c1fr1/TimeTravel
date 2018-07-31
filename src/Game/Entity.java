@@ -17,7 +17,7 @@ public class Entity
     // In the 4th timezone, positions[6] and positions[7] are the relevant indexes.
     public float[] xpos;
     public float[] ypos;
-    public int border;
+    public static int border;
     public int arrayIndex;
     public float hspeed;
     public float vspeed;
@@ -33,7 +33,7 @@ public class Entity
         xpos = new float[amountOfTimezones];
         ypos = new float[amountOfTimezones];
         xpos[startZone] = startX;
-        xpos[startZone] = startY;
+        ypos[startZone] = startY;
         for (int i = 0; i < amountOfTimezones; i++)
         {
             if (i != startZone)
@@ -42,7 +42,6 @@ public class Entity
                 ypos[i] = -1;
             }
         }
-
 
         sprite = new Texture("res/sprites/crateEntity.png");
         spriteVAO = new VAO(-border, -border, 30f, 30f);
@@ -127,7 +126,6 @@ public class Entity
             }
         }
     }
-
 }
 /*for (int i = 0; i < MainView.entities.size(); i ++) {
             CamCollision.verticalMove(MainView.entities.get(i).positions[MainView.currentLevel.currentTZ*2],cam.y,15,vSpeed,
