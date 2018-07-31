@@ -38,6 +38,7 @@ public class LevelBase
     public static ShaderProgram levelProgram;
     
     public ArrayList<Boolean[]> timeZonePossibilities = new ArrayList<>();
+	public static ArrayList<Entity> entities = new ArrayList<>();
     public float[] ttoFrameCounter;
 
 
@@ -127,24 +128,53 @@ public class LevelBase
 				for (int k = 0; k < lane.length(); k++) {//character column number
 					//puts a character into the char array
 					levelrow[k] = lane.charAt(k);
-					if (lane.charAt(k) == 's') {
+					if (lane.charAt(k) == 's')
+					{
 						xstart[i] = j;
 						ystart[i] = k;
 						currentTZ = i;
-					}else if (lane.charAt(k) == 'b') {
-						Entity tempEnt = new Entity(xstart[i], ystart[i], levelseries.size());
-						MainView.entities.add(tempEnt);
+					}
+					else if (lane.charAt(k) == 'b')
+					{
+						float startX = (float)(j * 50);
+						float startY = (float)(k * 50);
+						boolean taken = false;
+						//Entity tempEnt = new Entity(startX, startY);
+						for (int l = 0; l < entities.size(); l++)
+						{
+							if (entities.get(l).xpos[0] == startX &&
+									entities.get(l).ypos[0] == startY)
+							{
+								entities.get(l).xpos[i] = startX;
+								entities.get(l).ypos[i] = startY;
+								taken = true;
+								break;
+							}
+						}
+						if (!taken)
+						{
+							Entity tempEnt = new Entity(startX, startY, rooms.length, i,entities.size());
+							entities.add(tempEnt);
+						}
 						levelrow[k] = ' ';
-					}else if (lane.charAt(k) == 't') {
-						if (levelseries.size() > 0) {
+					}
+					else if (lane.charAt(k) == 't')
+					{
+						if (levelseries.size() > 0)
+						{
 							char prevLevel = levelseries.get(levelseries.size() - 1).get(j)[k];
-							if (Util.isNumericValue(prevLevel)) {
+							if (Util.isNumericValue(prevLevel))
+							{
 								levelrow[k] = prevLevel;
-							}else {
+							}
+							else
+							{
 								levelrow[k] = (char) (timeZonePossibilities.size() + '0');
 								timeZonePossibilities.add(new Boolean[0]);
 							}
-						}else {
+						}
+						else
+						{
 							levelrow[k] = (char) (timeZonePossibilities.size() + '0');
 							timeZonePossibilities.add(new Boolean[0]);
 						}

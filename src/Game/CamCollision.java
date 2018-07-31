@@ -71,7 +71,7 @@ public class CamCollision
                 block = '#';
             }
         }
-        if (block == '<')
+        else if (block == '<')
         {
             block = '`';
             if (hspeed > 0 && !isColliding(xsave,y,border,room,'<'))
@@ -79,7 +79,7 @@ public class CamCollision
                 block = '#';
             }
         }
-        if (block == '^' || block == 'v')
+        else if (block == '^' || block == 'v')
         {
             block = '`';
         }
@@ -110,7 +110,7 @@ public class CamCollision
                 block = '#';
             }
         }
-        if (block == 'v')
+        else if (block == 'v')
         {
             block = '`';
             if (vspeed < 0 && !isColliding(x,ysave,border,room,'v'))
@@ -118,7 +118,7 @@ public class CamCollision
                 block = '#';
             }
         }
-        if (block == '<' || block == '>')
+        else if (block == '<' || block == '>')
         {
             block = '`';
         }

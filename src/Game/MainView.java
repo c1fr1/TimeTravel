@@ -17,7 +17,6 @@ public class MainView extends EnigView {
 	public static Camera cam;
 
 	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v', 'X', 'Y', 'Z'};
-	public static ArrayList<Entity> entities = new ArrayList<Entity>();
 
 	//project variables
 

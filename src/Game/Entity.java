@@ -10,32 +10,61 @@ public class Entity
     //the indexes are n*2-2 and n*2-1
     //positions[0], positions[1] is the location of the entity in the first timezone.
     // In the 4th timezone, positions[6] and positions[7] are the relevant indexes.
-    public static float[] positions;
+    public static float[] xpos;
+    public static float[] ypos;
     public static int border;
+    public static int arrayIndex;
     public float hspeed;
     public float vspeed;
 
-    public Entity(float startX, float startY, int amountOfTimezones) {
-        positions = new float[amountOfTimezones];
-        //Fill array with starting positions
-        for (int i = 0; i < amountOfTimezones*2; i += 2) {
-            positions[i] = startX;
-            positions[i+1] = startY;
+    public Entity(float startX, float startY, int amountOfTimezones, int startZone, int arrayLocation)
+    {
+        arrayIndex = arrayLocation;
+        xpos = new float[amountOfTimezones];
+        ypos = new float[amountOfTimezones];
+        xpos[startZone] = startX;
+        xpos[startZone] = startY;
+        for (int i = 0; i < amountOfTimezones; i++)
+        {
+            if (i != startZone)
+            {
+                xpos[i] = -1;
+                ypos[i] = -1;
+            }
         }
     }
 
-    public static boolean entityCollision(Entity a, Entity b)
+    public static boolean entityCollision(Entity a, Entity b, int timeZone)
     {
         boolean overlap = false;
 
-        if ((a.positions[MainView.currentLevel.currentTZ*2-2] + 15 >= b.positions[MainView.currentLevel.currentTZ*2-2] - 15 && a.positions[MainView.currentLevel.currentTZ*2-2] - 15 <= b.positions[MainView.currentLevel.currentTZ*2-2] + 15))
+        if (a.xpos[timeZone] + a.border >= b.xpos[timeZone] - b.border &&
+                a.xpos[timeZone] - a.border <= b.xpos[timeZone] + b.border)
         {
-            if ((a.positions[MainView.currentLevel.currentTZ*2-1] + 15 >= b.positions[MainView.currentLevel.currentTZ*2-1] - 15 && a.positions[MainView.currentLevel.currentTZ*2-1] - 15 <= b.positions[MainView.currentLevel.currentTZ*2-1] + 15))
+            if (a.ypos[timeZone] + a.border >= b.ypos[timeZone] - b.border &&
+                    a.ypos[timeZone] - a.border <= b.ypos[timeZone] + b.border)
             {
                 overlap = true;
             }
         }
         return overlap;
+    }
+
+    public static Entity entityCheck(int timeZone)
+    {
+        Entity e;
+        for (int i = 0; i < LevelBase.entities.size(); i++)
+        {
+            //you are not looking at your own index and are colliding with another entity in the given timezone
+            if (i != arrayIndex)
+            {
+                if (entityCollision(LevelBase.entities.get(arrayIndex), LevelBase.entities.get(i), timeZone))
+                {
+                    return LevelBase.entities.get(i);
+                }
+            }
+        }
+        return null;
     }
 
 }
