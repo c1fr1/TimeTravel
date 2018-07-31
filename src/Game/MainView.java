@@ -380,7 +380,10 @@ public class MainView extends EnigView {
 			//Crate Movement
 			for (int i = 0; i < currentLevel.entities.size(); i++)
 			{
-				currentLevel.entities.get(i).getBoxX(currentLevel,m.getHSpeed(),currentLevel.currentTZ);
+				currentLevel.entities.get(i).getBoxMovement(currentLevel,m.getHSpeed(),m.getVSpeed(),currentLevel.currentTZ);
+				System.out.println("Coords");
+				System.out.println(currentLevel.entities.get(i).xpos[currentLevel.currentTZ]);
+				System.out.println(currentLevel.entities.get(i).ypos[currentLevel.currentTZ]);
 			}
 			
 

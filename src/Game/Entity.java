@@ -71,26 +71,45 @@ public class Entity
     public static boolean camEntityCollision(Entity a, int timeZone)
     {
         boolean overlap = false;
-        if (a.xpos[timeZone] + a.border >= MainView.cam.x - 15 &&
-                a.xpos[timeZone] - a.border <= MainView.cam.x + 15) {
-            if (a.ypos[timeZone] + a.border >= MainView.cam.y - 15 &&
-                    a.ypos[timeZone] - a.border <= MainView.cam.y + 15) {
+        if (MainView.cam.x - 15 <= a.xpos[timeZone] + a.border ||
+                MainView.cam.x + 15 <= a.xpos[timeZone] - a.border)
+        {
+            if (MainView.cam.y - 15 <= a.ypos[timeZone] + a.border ||
+                    MainView.cam.y + 15 <= a.ypos[timeZone] - a.border)
+            {
                 overlap = true;
             }
         }
         return overlap;
     }
 
-    public void getBoxX(LevelBase currentLevel, float camhspeed, int timeZone)
+    public void getBoxMovement(LevelBase currentLevel, float camHSpeed, float camVSpeed, int timeZone)
     {
         if (camEntityCollision(currentLevel.entities.get(arrayIndex),timeZone))
         {
-            if (camhspeed > 0)
-            {
-                if (MainView.cam.y - 15 <= ypos[timeZone] + 15 ||
+            if (MainView.cam.y - 15 <= ypos[timeZone] + 15 ||
                     MainView.cam.y + 15 <= ypos[timeZone] - 15)
+            {
+                if (camHSpeed > 0)
                 {
-                    xpos[timeZone] += camhspeed;
+                    xpos[timeZone] += camHSpeed;
+                }
+                else if (camHSpeed < 0)
+                {
+                    xpos[timeZone] += camHSpeed;
+                }
+            }
+
+            if (MainView.cam.x - 15 <= xpos[timeZone] + 15 ||
+                    MainView.cam.x + 15 <= xpos[timeZone] - 15)
+            {
+                if (camVSpeed > 0)
+                {
+                    ypos[timeZone] += camVSpeed;
+                }
+                else if (camVSpeed < 0)
+                {
+                    ypos[timeZone] += camVSpeed;
                 }
             }
         }
