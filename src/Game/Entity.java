@@ -79,14 +79,14 @@ public class Entity
         return overlap;
     }
 
-    public static Entity entityCheck(int timeZone)
+    public static Entity entityCheck(LevelBase currentLevel, int timeZone)
     {
-        if (LevelBase.entities.get(arrayIndex).xpos[timeZone] > -1) {
-            for (int i = 0; i < LevelBase.entities.size(); i++) {
+        if (currentLevel.entities.get(arrayIndex).xpos[timeZone] > -1) {
+            for (int i = 0; i < currentLevel.entities.size(); i++) {
                 //you are not looking at your own index and are colliding with another entity in the given timezone
                 if (i != arrayIndex) {
-                    if (entityCollision(LevelBase.entities.get(arrayIndex), LevelBase.entities.get(i), timeZone)) {
-                        return LevelBase.entities.get(i);
+                    if (entityCollision(currentLevel.entities.get(arrayIndex), currentLevel.entities.get(i), timeZone)) {
+                        return currentLevel.entities.get(i);
                     }
                 }
             }
@@ -94,15 +94,15 @@ public class Entity
         return null;
     }
 
-    public static Entity cameraCheck(int timeZone)
+    public static Entity cameraCheck(LevelBase currentLevel, int timeZone)
     {
 
-        if (LevelBase.entities.get(arrayIndex).xpos[timeZone] > -1) {
-            for (int i = 0; i < LevelBase.entities.size(); i++) {
+        if (currentLevel.entities.get(arrayIndex).xpos[timeZone] > -1) {
+            for (int i = 0; i < currentLevel.entities.size(); i++) {
                 //you are not looking at your own index and are colliding with another entity in the given timezone
                 if (i != arrayIndex) {
-                    if (camEntityCollision(LevelBase.entities.get(i), timeZone)) {
-                        return LevelBase.entities.get(i);
+                    if (camEntityCollision(currentLevel.entities.get(i), timeZone)) {
+                        return currentLevel.entities.get(i);
                     }
                 }
             }
@@ -116,7 +116,7 @@ public class Entity
                 levelProgram.enable();
                 spriteVAO.prepareRender();
                 float x = xpos[timeZone];
-                float y = -200/*-ypos[timeZone]*/;
+                float y = -ypos[timeZone];
                 sprite.bind();
                 levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2 * cam.y, 0));
                 levelProgram.shaders[0].uniforms[1].set(new Matrix4f());

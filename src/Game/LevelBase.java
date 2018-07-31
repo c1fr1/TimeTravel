@@ -38,7 +38,7 @@ public class LevelBase
     public static ShaderProgram levelProgram;
     
     public ArrayList<Boolean[]> timeZonePossibilities = new ArrayList<>();
-	public static ArrayList<Entity> entities = new ArrayList<>();
+	public ArrayList<Entity> entities = new ArrayList<>();
     public float[] ttoFrameCounter;
 
 
@@ -277,6 +277,7 @@ public class LevelBase
 			}
 		}
 		tileObj.unbind();
+    	System.out.println(entities.size());
     	for(Entity i: entities){
     		i.render(cam, currentTZ);
 		}
