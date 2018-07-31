@@ -1,27 +1,27 @@
-##################
-#     #   #      #
-#  t  # g #   t  #
-#     #   #   s  #
-#     #####      #####
-#     #   #      #   #
-#     l   l      l k #
-#     #   #      #   #
-######################,
-##################
-#     #   #      #
-#  t  # g #   t  #
-#     #   #      #
-#     #####      #####
-#     #   #      #   #
-#         l      l k #
-#     #   #      #   #
-######################,
-##################
-#     #   #      #
-#  t  l g #   t  #
-#     #   #      #
-#     #####      #####
-#     #   #      #   #
-#         #        k #
-#     #   #      #   #
-######################,
+wwwwwwwwwwwwwwwwww
+w     w   w      w
+w  t  w g w   t  w
+w     w   w   s  w
+w     wwwww      wwwww
+w     w   w      w---w
+w     l   l      l-K-w
+w     w   w      w---w
+wwwwwwwwwwwwwwwwwwwwww,
+wwwwwwwwwwwwwwwwww
+w     w   w      w
+w  t  w g w   t  w
+w     w   w      w
+w     wwwww      wwwww
+w     w   w      w---w
+w     l          l-K-w
+w     w   w      w---w
+wwwwwwwwwwwwwwwwwwwwww,
+wwwwwwwwwwwwwwwwww
+w     w   w      w
+w  t  l g w   t  w
+w     w   w      w
+w     wwwww      wwwww
+w     w   w      w---w
+w     w           -K-w
+w     w   w      w---w
+wwwwwwwwwwwwwwwwwwwwww,

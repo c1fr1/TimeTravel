@@ -37,6 +37,8 @@ public class LevelBase
     public static Texture buttonDoorTexture;
     public static ShaderProgram levelProgram;
     
+    public Texture[] background;
+    
     public ArrayList<Boolean[]> timeZonePossibilities = new ArrayList<>();
 	public ArrayList<Entity> entities = new ArrayList<>();
     public float[] ttoFrameCounter;
@@ -44,7 +46,7 @@ public class LevelBase
 
     //gets the map
 	public LevelBase(String filename) {
-        init(filename);
+        init(filename, new String[0]);
 		for (int i = 0; i < timeZonePossibilities.size();++i) {
 			timeZonePossibilities.set(i, new Boolean[levelseries.size()]);
 			for (int j = 0;j < timeZonePossibilities.get(i).length;++j) {
@@ -53,10 +55,23 @@ public class LevelBase
 		}
 	}
 	public LevelBase(String filename, ArrayList<Boolean[]> ttoAbilities) {
-		init(filename);
+		init(filename, new String[0]);
 		timeZonePossibilities = ttoAbilities;
 	}
-	public void init(String filename) {
+	public LevelBase(String filename, String[] textures) {
+		init(filename, textures);
+		for (int i = 0; i < timeZonePossibilities.size();++i) {
+			timeZonePossibilities.set(i, new Boolean[levelseries.size()]);
+			for (int j = 0;j < timeZonePossibilities.get(i).length;++j) {
+				timeZonePossibilities.get(i)[j] = true;
+			}
+		}
+	}
+	public LevelBase(String filename, ArrayList<Boolean[]> ttoAbilities, String[] textures) {
+		init(filename, textures);
+		timeZonePossibilities = ttoAbilities;
+	}
+	public void init(String filename, String[] textures) {
 		if (tileObj == null) {
 			tileObj = new VAO(-25f, -25f, 50f, 50f);
 			floorTexture = new Texture("res/sprites/present-floor.png");
@@ -187,6 +202,10 @@ public class LevelBase
 			levelseries.add(levelroom);
 		}
 		ttoFrameCounter = new float[timeZonePossibilities.size()];
+		background = new Texture[textures.length];
+		for (int i = 0;i < textures.length;++i) {
+			background[i] = new Texture(textures[i]);
+		}
 	}
 
 	public void updateTTO(int[] locationInArray, float deltaTime) {
@@ -222,9 +241,9 @@ public class LevelBase
 				if (currentChar != '_') {
 					levelProgram.shaders[0].uniforms[1].set(new Matrix4f());
 					if (currentChar == 'w' || currentChar == 'G' || currentChar == 'K' || currentChar == 'C' || currentChar == '-' || currentChar == 'S' || currentChar == 'T' || currentChar == '/' || currentChar == '*' || currentChar == '.' || currentChar == ',' || currentChar == 'V') {
-						levelProgram.shaders[0].uniforms[1].set(new Matrix4f().translate(x, y, 0f).scale(0.001f));
-					}
-					if (currentChar == ' ' || currentChar == 's' || currentChar == 'b' || currentChar == 'i' || currentChar == 'o' || currentChar == 'p') {
+						background[currentTZ].bind();
+						levelProgram.shaders[0].uniforms[1].set(new Matrix4f().scale(0.02f).translate((float)chr, (float)row, 0f));
+					}else if (currentChar == ' ' || currentChar == 's' || currentChar == 'b' || currentChar == 'i' || currentChar == 'o' || currentChar == 'p') {
     					floorTexture.bind();
 					}else if (currentChar == '#') {
     					newwallTexture.bind();
@@ -268,6 +287,8 @@ public class LevelBase
 					}
 					else if (currentChar == 'Z') {
 						buttonDoorTexture.bind();
+					}else {
+						//floorTexture.bind();
 					}
 					//float x = ((float) chr) * 50f;
 					//float y = -((float) row) * 50f;

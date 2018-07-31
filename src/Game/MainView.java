@@ -16,7 +16,7 @@ public class MainView extends EnigView {
 
 	public static Camera cam;
 
-	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v', 'X', 'Y', 'Z'};
+	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v', 'X', 'Y', 'Z', 'w'};
 
 	//project variables
 
@@ -85,7 +85,7 @@ public class MainView extends EnigView {
 		//needs to be generalized to use level selected - level path is a parameter
 		SpriteButton.shader = new ShaderProgram("buttonShader");
 		float aspectRatio = (float) window.getHeight() / (float) window.getWidth();
-        currentLevel = new LevelBase("res/Levels/Level"+currentLevelNum+".txt");
+        currentLevel = new LevelBase("res/Levels/Level"+currentLevelNum+".txt", new String[] {"res/levelTemplate.png", "res/levelTemplate.png"});
 		cam = new Camera((float)window.getWidth(), (float)window.getHeight());
 		guiShader = new ShaderProgram("guiShader");
 		ttoGUI = new Texture("res/sprites/timeTravelGUI.png");
@@ -146,8 +146,12 @@ public class MainView extends EnigView {
 		File test = new File("res/Levels");
 		if(test.listFiles().length > currentLevelNum+increment && !(currentLevelNum+increment < 0)) {
             currentLevelNum+=increment;
-            currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt");
-			ttoSelector =  currentLevel.currentTZ;
+            if (currentLevelNum == 4) {
+				currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt", new String[]{"res/level5thing.png", "res/level5thing.png", "res/level5thing.png"});
+			}else {
+				currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt", new String[]{"res/levelTemplate.png", "res/levelTemplate.png", "res/levelTemplate.png", "res/levelTemplate.png", "res/levelTemplate.png"});
+			}
+            ttoSelector =  currentLevel.currentTZ;
             cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
             cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
             return false;
@@ -457,9 +461,10 @@ public class MainView extends EnigView {
             		return true;
 				}
             }
-            if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'k'))
+            if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'k') || CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'K'))
             {
-                inv.add(replaceTile(cam.x, cam.y, ' '));
+				replaceTile(cam.x, cam.y, ' ');
+                inv.add('k');
             }
 
             //X button
