@@ -19,6 +19,7 @@ public class UserControls {
 	public static int[] leftMB = new int[] {GLFW_MOUSE_BUTTON_LEFT};
 	public static int[] levelAdvance = new int[] {GLFW_KEY_N};
 	public static int[] levelBack = new int[] {GLFW_KEY_B};
+	public static int[] ohYknow = new int[] {GLFW_KEY_RIGHT_SHIFT};
 
 	public static float sensitivity = 1f/500f;
 	
@@ -144,6 +145,14 @@ public class UserControls {
 	}
 	public static boolean levelBack(EnigWindow window) {
 		for (int i:levelBack) {
+			if (window.keys[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean ohYknow(EnigWindow window) {
+		for (int i:ohYknow) {
 			if (window.keys[i] > 0) {
 				return true;
 			}

@@ -87,6 +87,9 @@ public class MainView extends EnigView {
 	SpriteButton restart;
 	SpriteButton menu;
 
+	Texture ohYknow;
+	VAO ohYknowVAO;
+
 	int ttoSelector;
 	boolean ttoSelectorBool;
 
@@ -159,6 +162,9 @@ public class MainView extends EnigView {
 		ttoSelector = currentLevel.currentTZ;
 		ttoSelectorBool = false;
 
+		ohYknow = new Texture("lib/ohYknow.jpg");
+		ohYknowVAO = new VAO(-window.getWidth()/2f, -window.getHeight()/2, window.getWidth(), window.getHeight());
+
 		//System.out.println(entities.get(0));
 
 	}
@@ -188,6 +194,15 @@ public class MainView extends EnigView {
 			}
 		}
 		return new int[] {-1,-1};
+	}
+
+	public boolean checkBoxPosition(ArrayList<Entity> boxes, char obs){
+		for (Entity i: boxes){
+			if(CamCollision.isColliding(i.xpos[currentLevel.currentTZ], i.ypos[currentLevel.currentTZ], i.border, currentLevel.levelseries.get(currentLevel.currentTZ), obs)){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -487,7 +502,8 @@ public class MainView extends EnigView {
             }
 
             //X button
-            if(CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'x')){
+            if(CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'x') ||
+					checkBoxPosition(currentLevel.entities, 'x')){
 				int[] location = findCharacter('X');
 				if (location[0] != -1) {
 					if (location[1] != -1) {
@@ -495,7 +511,8 @@ public class MainView extends EnigView {
 						xDoor = false;
 					}
 				}
-			} else if(!CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'x') && !xDoor){
+			} else if((!CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'x') && !xDoor) ||
+					(!checkBoxPosition(currentLevel.entities, 'x') && !xDoor)){
                 int[] location = findCharacter('i');
                 if (location[0] != -1) {
                     if (location[1] != -1) {
@@ -506,7 +523,8 @@ public class MainView extends EnigView {
             }
 
             //Y button
-            if(CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'y')){
+            if(CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'y') ||
+					checkBoxPosition(currentLevel.entities, 'x')){
                 int[] location = findCharacter('Y');
                 if (location[0] != -1) {
                     if (location[1] != -1) {
@@ -514,7 +532,8 @@ public class MainView extends EnigView {
                         yDoor = false;
                     }
                 }
-            } else if(!CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'y') && !yDoor){
+            } else if((!CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'y') && !yDoor) ||
+					(!checkBoxPosition(currentLevel.entities, 'x') && !xDoor)){
                 int[] location = findCharacter('o');
                 if (location[0] != -1) {
                     if (location[1] != -1) {
@@ -525,7 +544,8 @@ public class MainView extends EnigView {
             }
 
             //Z button
-            if(CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'z')){
+            if(CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'z') ||
+					checkBoxPosition(currentLevel.entities, 'x')){
                 int[] location = findCharacter('Z');
                 if (location[0] != -1) {
                     if (location[1] != -1) {
@@ -533,7 +553,8 @@ public class MainView extends EnigView {
                         zDoor = false;
                     }
                 }
-            } else if(!CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'z') && !zDoor){
+            } else if((!CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'z') && !zDoor) ||
+					(!checkBoxPosition(currentLevel.entities, 'x') && !xDoor)){
                 int[] location = findCharacter('p');
                 if (location[0] != -1) {
                     if (location[1] != -1) {
@@ -543,7 +564,11 @@ public class MainView extends EnigView {
                 }
             }
 
-
+			if(UserControls.ohYknow(window)){
+				//LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
+				ohYknow.bind();
+				ohYknowVAO.fullRender();
+			}
 
 
 
