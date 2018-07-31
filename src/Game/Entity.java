@@ -70,14 +70,13 @@ public class Entity
 
     public static Entity entityCheck(int timeZone)
     {
-        for (int i = 0; i < LevelBase.entities.size(); i++)
-        {
-            //you are not looking at your own index and are colliding with another entity in the given timezone
-            if (i != arrayIndex)
-            {
-                if (entityCollision(LevelBase.entities.get(arrayIndex), LevelBase.entities.get(i), timeZone))
-                {
-                    return LevelBase.entities.get(i);
+        if (LevelBase.entities.get(arrayIndex).xpos[timeZone] > -1) {
+            for (int i = 0; i < LevelBase.entities.size(); i++) {
+                //you are not looking at your own index and are colliding with another entity in the given timezone
+                if (i != arrayIndex) {
+                    if (entityCollision(LevelBase.entities.get(arrayIndex), LevelBase.entities.get(i), timeZone)) {
+                        return LevelBase.entities.get(i);
+                    }
                 }
             }
         }
@@ -86,14 +85,14 @@ public class Entity
 
     public static Entity cameraCheck(int timeZone)
     {
-        for (int i = 0; i < LevelBase.entities.size(); i++)
-        {
-            //you are not looking at your own index and are colliding with another entity in the given timezone
-            if (i != arrayIndex)
-            {
-                if (camEntityCollision(LevelBase.entities.get(i), timeZone))
-                {
-                    return LevelBase.entities.get(i);
+
+        if (LevelBase.entities.get(arrayIndex).xpos[timeZone] > -1) {
+            for (int i = 0; i < LevelBase.entities.size(); i++) {
+                //you are not looking at your own index and are colliding with another entity in the given timezone
+                if (i != arrayIndex) {
+                    if (camEntityCollision(LevelBase.entities.get(i), timeZone)) {
+                        return LevelBase.entities.get(i);
+                    }
                 }
             }
         }
