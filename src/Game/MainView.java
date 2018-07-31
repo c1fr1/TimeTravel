@@ -192,9 +192,12 @@ public class MainView extends EnigView {
 
 	public boolean checkBoxPosition(ArrayList<Entity> boxes, char obs){
 		for (Entity i: boxes){
-			if(CamCollision.isColliding(i.xpos[currentLevel.currentTZ], i.ypos[currentLevel.currentTZ], i.border, currentLevel.levelseries.get(currentLevel.currentTZ), obs)){
+			/*
+			if(CamCollision.isColliding(i.xpos[currentLevel.currentTZ],
+					i.ypos[currentLevel.currentTZ], i.border, currentLevel.levelseries.get(currentLevel.currentTZ), obs)){
 				return true;
 			}
+			*/
 		}
 		return false;
 	}
@@ -372,19 +375,16 @@ public class MainView extends EnigView {
 			//MOVEMENT
 			Movement m = new Movement(delta_time, window, cam, currentLevel, solidBlocks);
 
-			cam.x += m.getXOffset();
-			cam.y += m.getYOffset();
-			backgroundOffset.x += m.getXOffset() * 0.0005;
-			backgroundOffset.y += m.getYOffset() * 0.0005;
-
 			//Crate Movement
 			for (int i = 0; i < currentLevel.entities.size(); i++)
 			{
 				currentLevel.entities.get(i).getBoxMovement(currentLevel,m.getHSpeed(),m.getVSpeed(),currentLevel.currentTZ);
-				System.out.println("Coords");
-				System.out.println(currentLevel.entities.get(i).xpos[currentLevel.currentTZ]);
-				System.out.println(currentLevel.entities.get(i).ypos[currentLevel.currentTZ]);
 			}
+
+			cam.x += m.getXOffset();
+			cam.y += m.getYOffset();
+			backgroundOffset.x += m.getXOffset() * 0.0005;
+			backgroundOffset.y += m.getYOffset() * 0.0005;
 			
 
 			LevelBase.levelProgram.enable();

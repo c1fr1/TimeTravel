@@ -44,7 +44,6 @@ public class Entity
             }
         }
 
-
         sprite = new Texture("res/sprites/crateEntity.png");
         spriteVAO = new VAO(-border, -border, 30f, 30f);
         levelProgram = new ShaderProgram("levelShader");
@@ -55,11 +54,15 @@ public class Entity
         boolean overlap = false;
         if (b.xpos[timeZone] > -1)
         {
-            if (a.xpos[timeZone] + a.border >= b.xpos[timeZone] - b.border &&
-                    a.xpos[timeZone] - a.border <= b.xpos[timeZone] + b.border)
+            if ((a.xpos[timeZone] + a.border >= b.xpos[timeZone] - b.border &&
+                 a.xpos[timeZone] + a.border <= b.xpos[timeZone] + b.border) ||
+                (a.xpos[timeZone] - a.border >= b.xpos[timeZone] - b.border &&
+                 a.xpos[timeZone] - a.border <= b.xpos[timeZone] + b.border))
             {
-                if (a.ypos[timeZone] + a.border >= b.ypos[timeZone] - b.border &&
-                        a.ypos[timeZone] - a.border <= b.ypos[timeZone] + b.border)
+                if ((a.ypos[timeZone] + a.border >= b.ypos[timeZone] - b.border &&
+                     a.ypos[timeZone] + a.border <= b.ypos[timeZone] + b.border) ||
+                    (a.ypos[timeZone] - a.border >= b.ypos[timeZone] - b.border &&
+                     a.ypos[timeZone] - a.border <= b.ypos[timeZone] + b.border))
                 {
                     overlap = true;
                 }
