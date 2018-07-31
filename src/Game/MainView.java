@@ -197,12 +197,10 @@ public class MainView extends EnigView {
 
 	public boolean checkBoxPosition(ArrayList<Entity> boxes, char obs){
 		for (Entity i: boxes){
-			/*
 			if(CamCollision.isColliding(i.xpos[currentLevel.currentTZ],
 					i.ypos[currentLevel.currentTZ], i.border, currentLevel.levelseries.get(currentLevel.currentTZ), obs)){
 				return true;
 			}
-			*/
 		}
 		return false;
 	}
