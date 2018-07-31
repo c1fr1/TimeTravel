@@ -386,7 +386,7 @@ public class MainView extends EnigView {
 			//Crate Movement
 			for (int i = 0; i < currentLevel.entities.size(); i++)
 			{
-				currentLevel.entities.get(i).getBoxMovement(currentLevel,m.getHSpeed(),m.getVSpeed(),currentLevel.currentTZ);
+				currentLevel.entities.get(i).getBoxMovement(currentLevel,currentLevel.currentTZ,m.getHSpeed(),m.getVSpeed());
 			}
 
 			cam.x += m.getXOffset();
@@ -581,8 +581,6 @@ public class MainView extends EnigView {
 				ohYknow.bind();
 				ohYknowVAO.fullRender();
 			}
-
-
 
 
 

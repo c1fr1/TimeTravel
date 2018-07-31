@@ -7,6 +7,7 @@ import engine.OpenGL.VAO;
 import org.joml.Matrix4f;
 import sun.applet.Main;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 public class Entity
@@ -45,7 +46,7 @@ public class Entity
         }
 
         sprite = new Texture("res/sprites/crateEntity.png");
-        spriteVAO = new VAO(-border, -border, 30f, 30f);
+        spriteVAO = new VAO(-40, 10, 30f, 30f);
         levelProgram = new ShaderProgram("levelShader");
     }
 
@@ -74,47 +75,44 @@ public class Entity
     public static boolean camEntityCollision(Entity a, int timeZone)
     {
         boolean overlap = false;
-        if ((a.xpos[timeZone] + a.border >= MainView.cam.x - 15 &&
-                a.xpos[timeZone] + a.border <= MainView.cam.x + 15) ||
-                (a.xpos[timeZone] - a.border >= MainView.cam.x - 15 &&
-                        a.xpos[timeZone] - a.border <= MainView.cam.x + 15))
+        if (a.xpos[timeZone] + a.border >= MainView.cam.x - 15 &&
+                a.xpos[timeZone] - a.border <= MainView.cam.x + 15)
         {
-            if ((a.ypos[timeZone] + a.border >= MainView.cam.y - 15 &&
-                    a.ypos[timeZone] + a.border <= MainView.cam.y + 15) ||
-                    (a.ypos[timeZone] - a.border >= MainView.cam.y - 15 &&
-                            a.ypos[timeZone] - a.border <= MainView.cam.y + 15))
+            if (a.ypos[timeZone] + a.border >= MainView.cam.y - 15 &&
+                    a.ypos[timeZone] - a.border <= MainView.cam.y + 15)
             {
                 overlap = true;
             }
         }
+        System.out.println(overlap);
         return overlap;
     }
 
-    public void getBoxMovement(LevelBase currentLevel, float camHSpeed, float camVSpeed, int timeZone)
+    public void getBoxMovement(LevelBase currentLevel, int timeZone, float camHSpeed, float camVSpeed)
     {
         if (camEntityCollision(currentLevel.entities.get(arrayIndex),timeZone))
         {
-            if (MainView.cam.y - 15 <= ypos[timeZone] + 15 ||
-                    MainView.cam.y + 15 <= ypos[timeZone] - 15)
+            if (MainView.cam.y + 15 >= ypos[timeZone] - 15 &&
+                    MainView.cam.y - 15 <= ypos[timeZone] + 15)
             {
-                if (camHSpeed > 0)
+                if (camHSpeed > 0 && MainView.cam.x < xpos[timeZone])
                 {
                     xpos[timeZone] += camHSpeed;
                 }
-                else if (camHSpeed < 0)
+                else if (camHSpeed < 0 && MainView.cam.x > xpos[timeZone])
                 {
                     xpos[timeZone] += camHSpeed;
                 }
             }
 
-            if (MainView.cam.x - 15 <= xpos[timeZone] + 15 ||
-                    MainView.cam.x + 15 <= xpos[timeZone] - 15)
+            if (MainView.cam.x + 15 >= xpos[timeZone] - 15 &&
+                    MainView.cam.x - 15 <= xpos[timeZone] + 15)
             {
-                if (camVSpeed > 0)
+                if (camVSpeed > 0 && MainView.cam.y < ypos[timeZone])
                 {
                     ypos[timeZone] += camVSpeed;
                 }
-                else if (camVSpeed < 0)
+                else if (camVSpeed < 0 && MainView.cam.y > ypos[timeZone])
                 {
                     ypos[timeZone] += camVSpeed;
                 }
