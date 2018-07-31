@@ -53,13 +53,13 @@ public class Entity
     {
         boolean overlap = false;
 
-        if (a.xpos[timeZone] + a.border >= MainView.cam.x - 15 &&
-                a.xpos[timeZone] - a.border <= MainView.cam.x + 15)
-        {
-            if (a.ypos[timeZone] + a.border >= MainView.cam.y - 15 &&
-                    a.ypos[timeZone] - a.border <= MainView.cam.y + 15)
-            {
-                overlap = true;
+        if (a.xpos[timeZone] > -1 && MainView.cam.x > -1) {
+            if (a.xpos[timeZone] + a.border >= MainView.cam.x - 15 &&
+                    a.xpos[timeZone] - a.border <= MainView.cam.x + 15) {
+                if (a.ypos[timeZone] + a.border >= MainView.cam.y - 15 &&
+                        a.ypos[timeZone] - a.border <= MainView.cam.y + 15) {
+                    overlap = true;
+                }
             }
         }
         return overlap;
