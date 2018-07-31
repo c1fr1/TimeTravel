@@ -40,8 +40,8 @@ public class Entity
         {
             if (i != startZone)
             {
-                xpos[i] = -1;
-                ypos[i] = -1;
+                xpos[i] = xpos[startZone];
+                ypos[i] = ypos[startZone];
             }
         }
 
@@ -65,7 +65,7 @@ public class Entity
                     (a.ypos[timeZone] - a.border >= b.ypos[timeZone] - b.border &&
                      a.ypos[timeZone] - a.border <= b.ypos[timeZone] + b.border))
                 {
-                    //overlap = true;
+                    overlap = true;
                 }
             }
         }
@@ -88,33 +88,23 @@ public class Entity
         return overlap;
     }
 
-    public void getBoxMovement(LevelBase currentLevel, int timeZone, float camHSpeed, float camVSpeed)
-    {
-        if (camEntityCollision(currentLevel.entities.get(arrayIndex),timeZone))
-        {
-            if (MainView.cam.y + 15 >= ypos[timeZone] - 15 &&
-                    MainView.cam.y - 15 <= ypos[timeZone] + 15)
-            {
-                if (camHSpeed > 0 && MainView.cam.x < xpos[timeZone])
-                {
+    public void getBoxMovement(LevelBase currentLevel, int timeZone, float camHSpeed, float camVSpeed) {
+        if (camEntityCollision(currentLevel.entities.get(arrayIndex),timeZone)) {
+            if (MainView.cam.y + 15 >= ypos[timeZone] - 15 && MainView.cam.y - 15 <= ypos[timeZone] + 15) {
+                if (camHSpeed > 0 && MainView.cam.x < xpos[timeZone] || camHSpeed < 0 && MainView.cam.x > xpos[timeZone]) {
                     xpos[timeZone] += camHSpeed;
+                    for (int i = timeZone + 1; i < MainView.currentLevel.levelseries.size(); i++) {
+                        xpos[i] = xpos[timeZone];
+                    }
                 }
-                else if (camHSpeed < 0 && MainView.cam.x > xpos[timeZone])
-                {
-                    xpos[timeZone] += camHSpeed;
-                }
-            }
 
-            if (MainView.cam.x + 15 >= xpos[timeZone] - 15 &&
-                    MainView.cam.x - 15 <= xpos[timeZone] + 15)
-            {
-                if (camVSpeed > 0 && MainView.cam.y < ypos[timeZone])
-                {
-                    ypos[timeZone] += camVSpeed;
-                }
-                else if (camVSpeed < 0 && MainView.cam.y > ypos[timeZone])
-                {
-                    ypos[timeZone] += camVSpeed;
+                if (MainView.cam.x + 15 >= xpos[timeZone] - 15 && MainView.cam.x - 15 <= xpos[timeZone] + 15) {
+                    if (camVSpeed > 0 && MainView.cam.y < ypos[timeZone] || camVSpeed < 0 && MainView.cam.y > ypos[timeZone]) {
+                        ypos[timeZone] += camHSpeed;
+                        for (int i = timeZone + 1; i < MainView.currentLevel.levelseries.size(); i++) {
+                            ypos[i] = ypos[timeZone];
+                        }
+                    }
                 }
             }
         }
