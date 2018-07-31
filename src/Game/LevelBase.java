@@ -224,7 +224,7 @@ public class LevelBase
 					if (currentChar == 'w' || currentChar == 'G' || currentChar == 'K' || currentChar == 'C' || currentChar == '-' || currentChar == 'S' || currentChar == 'T' || currentChar == '/' || currentChar == '*' || currentChar == '.' || currentChar == ',' || currentChar == 'V') {
 						levelProgram.shaders[0].uniforms[1].set(new Matrix4f().translate(x, y, 0f).scale(0.001f));
 					}
-					if (currentChar == ' ' || currentChar == 's' || currentChar == 'b') {
+					if (currentChar == ' ' || currentChar == 's' || currentChar == 'b' || currentChar == 'i' || currentChar == 'o' || currentChar == 'p') {
     					floorTexture.bind();
 					}else if (currentChar == '#') {
     					newwallTexture.bind();
@@ -277,6 +277,10 @@ public class LevelBase
 			}
 		}
 		tileObj.unbind();
+    	for(Entity i: entities){
+    		i.render(cam, currentTZ);
+		}
+
 	}
 	
 	public char charAtPos(float x, float y) {

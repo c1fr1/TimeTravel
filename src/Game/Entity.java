@@ -1,5 +1,10 @@
 package Game;
 
+import engine.Entities.Camera;
+import engine.OpenGL.ShaderProgram;
+import engine.OpenGL.Texture;
+import engine.OpenGL.VAO;
+import org.joml.Matrix4f;
 import sun.applet.Main;
 
 import java.util.logging.Level;
@@ -17,6 +22,10 @@ public class Entity
     public float hspeed;
     public float vspeed;
 
+    Texture sprite;
+    VAO spriteVAO;
+    public static ShaderProgram levelProgram;
+
     public Entity(float startX, float startY, int amountOfTimezones, int startZone, int arrayLocation)
     {
         arrayIndex = arrayLocation;
@@ -32,6 +41,11 @@ public class Entity
                 ypos[i] = -1;
             }
         }
+
+
+        sprite = new Texture("res/sprites/crateEntity.png");
+        spriteVAO = new VAO(-15f, -15f, 30f, 30f);
+        levelProgram = new ShaderProgram("levelShader");
     }
 
     public static boolean entityCollision(Entity a, Entity b, int timeZone)
@@ -94,6 +108,21 @@ public class Entity
             }
         }
         return null;
+    }
+
+    public void render(Camera cam, int timeZone){
+        if(xpos[timeZone] >= 0) {
+            if(ypos[timeZone] >= 0) {
+                levelProgram.enable();
+                spriteVAO.prepareRender();
+                float x = xpos[timeZone];
+                float y = -200/*-ypos[timeZone]*/;
+                sprite.bind();
+                levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2 * cam.y, 0));
+                levelProgram.shaders[0].uniforms[1].set(new Matrix4f());
+                spriteVAO.fullRender();
+            }
+        }
     }
 
 }
