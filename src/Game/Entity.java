@@ -19,6 +19,7 @@ public class Entity
     public float[] ypos;
     public static int border;
     public int arrayIndex;
+    public int startZone;
     public float hspeed;
     public float vspeed;
 
@@ -26,10 +27,11 @@ public class Entity
     VAO spriteVAO;
     public static ShaderProgram levelProgram;
 
-    public Entity(float startX, float startY, int amountOfTimezones, int startZone, int arrayLocation)
+    public Entity(float startX, float startY, int amountOfTimezones, int currentZone, int arrayLocation)
     {
         border = 15;
         arrayIndex = arrayLocation;
+        startZone = currentZone;
         xpos = new float[amountOfTimezones];
         ypos = new float[amountOfTimezones];
         xpos[startZone] = startX;
