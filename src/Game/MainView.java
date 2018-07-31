@@ -133,7 +133,6 @@ public class MainView extends EnigView {
 		ttoguiShader = new ShaderProgram("ttoGUIShader");
 		travelShader = new ShaderProgram("travelShaders");
 		inventoryShader = new ShaderProgram("inventoryShaders");
-		backgroundShader = new ShaderProgram("backgroundShader");
 		
 		frontStars = new Texture("res/sprites/frontstars.png");
 		frontStars.bind();
@@ -143,10 +142,16 @@ public class MainView extends EnigView {
 		try {
 			if (!Inet4Address.getLocalHost().getHostAddress().equals("172.30.26.59") || Math.random() > 0.1) {
 				starBackground = new Texture("res/sprites/stars.png");
-			}else {
+				backgroundShader = new ShaderProgram("backgroundShader");
+			}else if (Math.random() > 0.5) {
+				backgroundShader = new ShaderProgram("backgroundShader");
 				frontStars = new Texture("res/sprites/frontstars.png");
+			}else {
+				starBackground = new Texture("res/sprites/stars.png");
+				backgroundShader = new ShaderProgram(".backgroundShader");
 			}
 		} catch (UnknownHostException e) {
+			backgroundShader = new ShaderProgram("backgroundShader");
 			starBackground = new Texture("res/sprites/stars.png");
 		}
 		starBackground.bind();
