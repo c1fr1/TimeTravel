@@ -463,7 +463,7 @@ public class MainView extends EnigView {
             }
 
             //X button
-            if(CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'x')){
+            if(CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'x')){
 				int[] location = findCharacter('X');
 				if (location[0] != -1) {
 					if (location[1] != -1) {
@@ -471,7 +471,7 @@ public class MainView extends EnigView {
 						xDoor = false;
 					}
 				}
-			} else if(!CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'x') && !xDoor){
+			} else if(!CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'x') && !xDoor){
                 int[] location = findCharacter('i');
                 if (location[0] != -1) {
                     if (location[1] != -1) {
@@ -482,7 +482,7 @@ public class MainView extends EnigView {
             }
 
             //Y button
-            if(CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'y')){
+            if(CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'y')){
                 int[] location = findCharacter('Y');
                 if (location[0] != -1) {
                     if (location[1] != -1) {
@@ -490,7 +490,7 @@ public class MainView extends EnigView {
                         yDoor = false;
                     }
                 }
-            } else if(!CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'y') && !yDoor){
+            } else if(!CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'y') && !yDoor){
                 int[] location = findCharacter('o');
                 if (location[0] != -1) {
                     if (location[1] != -1) {
@@ -501,7 +501,7 @@ public class MainView extends EnigView {
             }
 
             //Z button
-            if(CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'z')){
+            if(CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'z')){
                 int[] location = findCharacter('Z');
                 if (location[0] != -1) {
                     if (location[1] != -1) {
@@ -509,7 +509,7 @@ public class MainView extends EnigView {
                         zDoor = false;
                     }
                 }
-            } else if(!CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ), 'z') && !zDoor){
+            } else if(!CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'z') && !zDoor){
                 int[] location = findCharacter('p');
                 if (location[0] != -1) {
                     if (location[1] != -1) {
