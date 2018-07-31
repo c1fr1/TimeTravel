@@ -9,5 +9,6 @@ out vec4 color;
 uniform vec2 offset;
 
 void main() {
-    color = texture(textureSampler, texCoords.xy + offset);
+    vec4 ret = texture(textureSampler, texCoords.xy + offset);
+    color = vec4(ret.x, 0f, 0f, ret.w);
 }

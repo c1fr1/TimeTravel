@@ -99,12 +99,6 @@ public class MainView extends EnigView {
 
 	@Override
 	public void setup() {
-		try {
-			System.out.println(Inet4Address.getLocalHost().getHostAddress());
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		
 		//set variables here
 		glDisable(GL_DEPTH_TEST);
 
