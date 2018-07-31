@@ -37,7 +37,7 @@ public class Entity
     public static boolean entityCollision(Entity a, Entity b, int timeZone)
     {
         boolean overlap = false;
-        if (a.xpos[timeZone] > -1 && b.xpos[timeZone] > -1)
+        if (b.xpos[timeZone] > -1)
         {
             if (a.xpos[timeZone] + a.border >= b.xpos[timeZone] - b.border &&
                     a.xpos[timeZone] - a.border <= b.xpos[timeZone] + b.border)
@@ -55,14 +55,11 @@ public class Entity
     public static boolean camEntityCollision(Entity a, int timeZone)
     {
         boolean overlap = false;
-
-        if (a.xpos[timeZone] > -1 && MainView.cam.x > -1) {
-            if (a.xpos[timeZone] + a.border >= MainView.cam.x - 15 &&
-                    a.xpos[timeZone] - a.border <= MainView.cam.x + 15) {
-                if (a.ypos[timeZone] + a.border >= MainView.cam.y - 15 &&
-                        a.ypos[timeZone] - a.border <= MainView.cam.y + 15) {
-                    overlap = true;
-                }
+        if (a.xpos[timeZone] + a.border >= MainView.cam.x - 15 &&
+                a.xpos[timeZone] - a.border <= MainView.cam.x + 15) {
+            if (a.ypos[timeZone] + a.border >= MainView.cam.y - 15 &&
+                    a.ypos[timeZone] - a.border <= MainView.cam.y + 15) {
+                overlap = true;
             }
         }
         return overlap;
