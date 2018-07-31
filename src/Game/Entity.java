@@ -17,7 +17,7 @@ public class Entity
     // In the 4th timezone, positions[6] and positions[7] are the relevant indexes.
     public float[] xpos;
     public float[] ypos;
-    public static int border;
+    public int border;
     public int arrayIndex;
     public int startZone;
     public float hspeed;
@@ -27,11 +27,10 @@ public class Entity
     VAO spriteVAO;
     public static ShaderProgram levelProgram;
 
-    public Entity(float startX, float startY, int amountOfTimezones, int currentZone, int arrayLocation)
+    public Entity(float startX, float startY, int amountOfTimezones, int startZone, int arrayLocation)
     {
         border = 15;
         arrayIndex = arrayLocation;
-        startZone = currentZone;
         xpos = new float[amountOfTimezones];
         ypos = new float[amountOfTimezones];
         xpos[startZone] = startX;
@@ -44,6 +43,7 @@ public class Entity
                 ypos[i] = -1;
             }
         }
+
 
         sprite = new Texture("res/sprites/crateEntity.png");
         spriteVAO = new VAO(-border, -border, 30f, 30f);
@@ -122,12 +122,13 @@ public class Entity
                 float x = xpos[timeZone];
                 float y = -ypos[timeZone];
                 sprite.bind();
-                levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y , 0));
+                levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2 * cam.y, 0));
                 levelProgram.shaders[0].uniforms[1].set(new Matrix4f());
                 spriteVAO.fullRender();
             }
         }
     }
+
 }
 /*for (int i = 0; i < MainView.entities.size(); i ++) {
             CamCollision.verticalMove(MainView.entities.get(i).positions[MainView.currentLevel.currentTZ*2],cam.y,15,vSpeed,
