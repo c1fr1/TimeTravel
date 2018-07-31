@@ -37,14 +37,13 @@ public class Entity
     public static boolean entityCollision(Entity a, Entity b, int timeZone)
     {
         boolean overlap = false;
-
-        if (a.xpos[timeZone] + a.border >= b.xpos[timeZone] - b.border &&
-                a.xpos[timeZone] - a.border <= b.xpos[timeZone] + b.border)
-        {
-            if (a.ypos[timeZone] + a.border >= b.ypos[timeZone] - b.border &&
-                    a.ypos[timeZone] - a.border <= b.ypos[timeZone] + b.border)
-            {
-                overlap = true;
+        if (a.xpos[timeZone] > -1 && b.xpos[timeZone] > -1) {
+            if (a.xpos[timeZone] + a.border >= b.xpos[timeZone] - b.border &&
+                    a.xpos[timeZone] - a.border <= b.xpos[timeZone] + b.border) {
+                if (a.ypos[timeZone] + a.border >= b.ypos[timeZone] - b.border &&
+                        a.ypos[timeZone] - a.border <= b.ypos[timeZone] + b.border) {
+                    overlap = true;
+                }
             }
         }
         return overlap;

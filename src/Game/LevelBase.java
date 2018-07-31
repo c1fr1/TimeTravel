@@ -153,7 +153,7 @@ public class LevelBase
 						}
 						if (!taken)
 						{
-							Entity tempEnt = new Entity(startX, startY, rooms.length, i,entities.size());
+							Entity tempEnt = new Entity(startX, startY, rooms.length, i, entities.size());
 							entities.add(tempEnt);
 						}
 						levelrow[k] = ' ';
