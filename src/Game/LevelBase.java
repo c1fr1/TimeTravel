@@ -151,8 +151,8 @@ public class LevelBase
 					}
 					else if (lane.charAt(k) == 'b')
 					{
-						float startX = (float)(k * 50);
-						float startY = (float)(j * 50);
+						float startX = (float)(k * 50 + 25);
+						float startY = (float)(j * 50 + 25);
 						boolean taken = false;
 						//Entity tempEnt = new Entity(startX, startY);
 						for (int l = 0; l < entities.size(); l++)
