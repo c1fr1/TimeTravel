@@ -103,6 +103,7 @@ public class MainView extends EnigView {
 		new MainMenu(window);
 		if(!quit) {
             new LoadingScreen(window);
+
             //set variables here
             glDisable(GL_DEPTH_TEST);
 

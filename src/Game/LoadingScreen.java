@@ -6,7 +6,7 @@ import org.joml.Vector4f;
 
 public class LoadingScreen extends EnigView {
     SpriteButton load;
-
+    float aspectRatio;
 
     public LoadingScreen(EnigWindow window){
         super(window, false);
@@ -17,19 +17,20 @@ public class LoadingScreen extends EnigView {
         FBO.prepareDefaultRender();
         SpriteButton.shader.enable();
 
-        SpriteButton.shader.shaders[0].uniforms[0].set((float)window.getHeight()/(float)window.getWidth());
+        SpriteButton.shader.shaders[0].uniforms[0].set(aspectRatio);
         load.render(window.cursorXFloat, window.cursorYFloat);
         return true;
     }
 
     @Override
     public void setup() {
-        load = new SpriteButton(-1,-1,2f,1f,"lib/ohYknow.jpg", (float)window.getHeight()/(float)window.getWidth());
+        aspectRatio = (float)window.getHeight()/(float)window.getWidth();
+        load = new SpriteButton(-1f / aspectRatio,-1f,2f / aspectRatio,2f,"res/sprites/Loading.png");
         SpriteButton.shader = new ShaderProgram("buttonShader");
     }
 
     @Override
     public String getName() {
-        return null;
+        return "Loading...";
     }
 }

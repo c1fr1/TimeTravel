@@ -55,6 +55,6 @@ public class MainMenu extends EnigView {
 
     @Override
     public String getName() {
-        return "OhYknow";
+        return "Paradox Pulverizer";
     }
 }
