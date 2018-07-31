@@ -277,7 +277,7 @@ public class LevelBase
 			}
 		}
 		tileObj.unbind();
-    	System.out.println(entities.size());
+
     	for(Entity i: entities){
     		i.render(cam, currentTZ);
 		}

@@ -15,10 +15,10 @@ public class Entity
     //the indexes are n*2-2 and n*2-1
     //positions[0], positions[1] is the location of the entity in the first timezone.
     // In the 4th timezone, positions[6] and positions[7] are the relevant indexes.
-    public static float[] xpos;
-    public static float[] ypos;
-    public static int border;
-    public static int arrayIndex;
+    public float[] xpos;
+    public float[] ypos;
+    public int border;
+    public int arrayIndex;
     public float hspeed;
     public float vspeed;
 
@@ -28,6 +28,7 @@ public class Entity
 
     public Entity(float startX, float startY, int amountOfTimezones, int startZone, int arrayLocation)
     {
+        border = 15;
         arrayIndex = arrayLocation;
         xpos = new float[amountOfTimezones];
         ypos = new float[amountOfTimezones];
@@ -44,7 +45,7 @@ public class Entity
 
 
         sprite = new Texture("res/sprites/crateEntity.png");
-        spriteVAO = new VAO(-15f, -15f, 30f, 30f);
+        spriteVAO = new VAO(-border, -border, 30f, 30f);
         levelProgram = new ShaderProgram("levelShader");
     }
 
@@ -79,6 +80,7 @@ public class Entity
         return overlap;
     }
 
+    /*
     public static Entity entityCheck(LevelBase currentLevel, int timeZone)
     {
         if (currentLevel.entities.get(arrayIndex).xpos[timeZone] > -1) {
@@ -109,6 +111,7 @@ public class Entity
         }
         return null;
     }
+    */
 
     public void render(Camera cam, int timeZone){
         if(xpos[timeZone] >= 0) {
