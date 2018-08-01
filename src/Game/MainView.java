@@ -129,7 +129,7 @@ public class MainView extends EnigView {
 
             cont = new SpriteButton(-0.5f, 0.525f, 1f, 0.25f, "res/sprites/continueButton.png", aspectRatio);
             WinScreen.continueButton = cont;
-            
+
             restart = new SpriteButton(-0.5f, -0.125f, 1f, 0.25f, "res/sprites/restart.png", aspectRatio);
             menu = new SpriteButton(-0.5f, -0.725f, 1f, 0.25f, "res/sprites/mainMenu.png", aspectRatio);
 
@@ -158,7 +158,7 @@ public class MainView extends EnigView {
 
             mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));
             screenVAO = new VAO(-1f, -1f, 2f, 2f);
-		
+
             WinScreen.fullScreen = screenVAO;
 
             cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
@@ -202,11 +202,10 @@ public class MainView extends EnigView {
 		return new int[] {-1,-1};
 	}
 
-	public boolean checkBoxPosition(ArrayList<Entity> boxes, char obs)
-	{
+	public boolean checkBoxPosition(ArrayList<Entity> boxes, char obs){
+		int tz = currentLevel.currentTZ;
 		for (Entity i: boxes){
-			if(CamCollision.isColliding(i.xpos[currentLevel.currentTZ],
-					i.ypos[currentLevel.currentTZ], i.border, currentLevel.levelseries.get(currentLevel.currentTZ), obs)){
+			if(CamCollision.isColliding(i.xpos[tz], i.ypos[tz], 15, currentLevel.levelseries.get(tz), obs)){
 				return true;
 			}
 		}
@@ -416,6 +415,8 @@ public class MainView extends EnigView {
 			screenVAO.drawTriangles();
 			screenVAO.unbind();
 			
+			
+			
 			currentLevel.render(cam);
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
 			spriteTexture[0].bind();
@@ -583,7 +584,7 @@ public class MainView extends EnigView {
 			}
 
             currentLevel.updateTTO(arrpossibilities, delta_time);
-			
+
 			if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'k') || CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'K'))
             {
 				if (replaceTile(cam.x, cam.y, ' ') == 'k') {
@@ -632,7 +633,7 @@ public class MainView extends EnigView {
 					return true;
 				}
 			}
-			
+
 			FBO.prepareDefaultRender();
 			textureShader.enable();
 			mainFBO.getBoundTexture().bind();

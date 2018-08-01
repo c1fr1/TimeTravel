@@ -42,7 +42,7 @@ public class MainMenu extends EnigView {
         controls.render(window.cursorXFloat, window.cursorYFloat);
         quit.render(window.cursorXFloat, window.cursorYFloat);
         if(start.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)){
-            System.out.println("yeah");
+            //System.out.println("yeah");
             return true;
         }
         if(quit.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)){
