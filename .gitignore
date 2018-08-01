@@ -6,6 +6,8 @@ out/
 .idea/**/dictionaries
 .idea/**/shelf
 
+res/levelComplete.txt
+
 bin/
 
 .DS_Store
