@@ -101,16 +101,17 @@ public class MainView extends EnigView {
 
 	@Override
 	public void setup() {
+		LevelSelect.createTextFolder();
 		new MainMenu(window);
 		if(!quit) {
+			float aspectRatio = (float)window.getHeight()/(float)window.getWidth();
+			LoadingScreen.texturePath = new SpriteButton(-1f/aspectRatio, -1f, 2f/aspectRatio, 2f, "res/sprites/Loading.png");
             new LoadingScreen(window);
 
             //set variables here
             glDisable(GL_DEPTH_TEST);
-
             //needs to be generalized to use level selected - level path is a parameter
             SpriteButton.shader = new ShaderProgram("buttonShader");
-            float aspectRatio = (float) window.getHeight() / (float) window.getWidth();
             currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt"/*, new String[] {"res/levelTemplate.png", "res/levelTemplate.png"}*/);
             cam = new Camera((float) window.getWidth(), (float) window.getHeight());
             guiShader = new ShaderProgram("guiShader");
@@ -380,7 +381,10 @@ public class MainView extends EnigView {
 			
 			if (menu.render(window.cursorXFloat,window.cursorYFloat)) {
                 if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
-					System.out.println("Menu Clicked");
+					new MainMenu(window);
+					pause = false;
+					nextLevel(0);
+
 				}
 			}
 			
@@ -629,6 +633,8 @@ public class MainView extends EnigView {
 			guiShader.shaders[0].uniforms[0].set(aspectRatio);
 			if (CamCollision.isColliding(cam.x,cam.y,1,currentLevel.levelseries.get(currentLevel.currentTZ),'g'))
 			{
+				LevelSelect.levelState[currentLevelNum] = 1;
+				LevelSelect.updateLevelTextDoc();
 				new WinScreen(mainFBO.getBoundTexture(), aspectRatio);
 				if (nextLevel(1)) {
 					return true;

@@ -7,8 +7,10 @@ import org.joml.Vector4f;
 public class LoadingScreen extends EnigView {
     SpriteButton load;
     float aspectRatio;
+    public static SpriteButton texturePath;
 
     public LoadingScreen(EnigWindow window){
+
         super(window, false);
     }
 
@@ -25,7 +27,7 @@ public class LoadingScreen extends EnigView {
     @Override
     public void setup() {
         aspectRatio = (float)window.getHeight()/(float)window.getWidth();
-        load = new SpriteButton(-1f / aspectRatio,-1f,2f / aspectRatio,2f,"res/sprites/Loading.png");
+        load = texturePath;
         SpriteButton.shader = new ShaderProgram("buttonShader");
     }
 
