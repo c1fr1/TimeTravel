@@ -23,8 +23,8 @@ public class MainMenu extends EnigView {
         aspectRatio =  (float)window.getHeight()/(float)window.getWidth();
         title = new SpriteButton(-0.5f,.5f,1f,0.25f,"res/sprites/Button.png", aspectRatio);
         start = new SpriteButton(-0.5f,0f,1f,0.125f,"res/sprites/playButton-1.png", aspectRatio);
-        controls = new SpriteButton(-0.5f,-.5f,1f,0.25f,"res/sprites/continueButton.png", aspectRatio);
-        quit = new SpriteButton(-0.5f,-1f,1f,0.25f,"res/sprites/ButtonDoor.png", aspectRatio);
+        controls = new SpriteButton(-0.5f,-.5f,1f,0.125f,"res/sprites/optionsButton-1.png", aspectRatio);
+        quit = new SpriteButton(-0.5f,-1f,1f,0.125f,"res/sprites/quitButton-1.png", aspectRatio);
         SpriteButton.shader = new ShaderProgram("buttonShader");
 
 
