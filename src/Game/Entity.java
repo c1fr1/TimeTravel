@@ -50,6 +50,64 @@ public class Entity
         levelProgram = new ShaderProgram("levelShader");
     }
 
+    public static boolean camEntityCollision(Entity a, int timeZone)
+    {
+        boolean overlap = false;
+        if (a.xpos[timeZone] + a.border >= MainView.cam.x - 15 &&
+                a.xpos[timeZone] - a.border <= MainView.cam.x + 15)
+        {
+            if (a.ypos[timeZone] + a.border >= MainView.cam.y - 15 &&
+                    a.ypos[timeZone] - a.border <= MainView.cam.y + 15)
+            {
+                overlap = true;
+            }
+        }
+        return overlap;
+    }
+
+    //sets box movement
+    public void getBoxMovement(LevelBase currentLevel, int timeZone, float camHSpeed, float camVSpeed)
+    {
+        //if you are colliding with the camera
+        if (camEntityCollision(currentLevel.entities.get(arrayIndex),timeZone))
+        {
+            if (MainView.cam.y + 15 >= ypos[timeZone] - 15 &&
+                    MainView.cam.y - 15 <= ypos[timeZone] + 15)
+            {
+                if ((camHSpeed > 0 && MainView.cam.x < xpos[timeZone]) || (camHSpeed < 0 && MainView.cam.x > xpos[timeZone]))
+                {
+                    xpos[timeZone] += camHSpeed;
+                            /*CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, camHSpeed,
+                    currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks); FOR FUTURE STUFF*/
+                }
+            }
+
+            if (MainView.cam.x + 15 >= xpos[timeZone] - 15 &&
+                    MainView.cam.x - 15 <= xpos[timeZone] + 15)
+            {
+                if ((camVSpeed > 0 && MainView.cam.y < ypos[timeZone]) || (camVSpeed < 0 && MainView.cam.y > ypos[timeZone]))
+                {
+                    ypos[timeZone] += camVSpeed;
+                }
+            }
+        }
+    }
+
+    public void render(Camera cam, int timeZone){
+        if(xpos[timeZone] >= 0) {
+            if(ypos[timeZone] >= 0) {
+                levelProgram.enable();
+                spriteVAO.prepareRender();
+                float x = xpos[timeZone];
+                float y = -ypos[timeZone];
+                sprite.bind();
+                levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2 * cam.y, 0));
+                levelProgram.shaders[0].uniforms[1].set(new Matrix4f());
+                spriteVAO.fullRender();
+            }
+        }
+    }
+    /* DO NOT REMOVE
     public static boolean entityCollision(Entity a, Entity b, int timeZone)
     {
         boolean overlap = false;
@@ -70,47 +128,6 @@ public class Entity
             }
         }
         return overlap;
-    }
-
-    public static boolean camEntityCollision(Entity a, int timeZone)
-    {
-        boolean overlap = false;
-        if (a.xpos[timeZone] + a.border >= MainView.cam.x - 15 &&
-                a.xpos[timeZone] - a.border <= MainView.cam.x + 15)
-        {
-            if (a.ypos[timeZone] + a.border >= MainView.cam.y - 15 &&
-                    a.ypos[timeZone] - a.border <= MainView.cam.y + 15)
-            {
-                overlap = true;
-            }
-        }
-        return overlap;
-    }
-
-    public void getBoxMovement(LevelBase currentLevel, int timeZone, float camHSpeed, float camVSpeed)
-    {
-        if (camEntityCollision(currentLevel.entities.get(arrayIndex),timeZone))
-        {
-            if (MainView.cam.y + 15 >= ypos[timeZone] - 15 &&
-                    MainView.cam.y - 15 <= ypos[timeZone] + 15)
-            {
-                if ((camHSpeed > 0 && MainView.cam.x < xpos[timeZone]) || (camHSpeed < 0 && MainView.cam.x > xpos[timeZone]))
-                {
-                    xpos[timeZone] += camHSpeed;
-                            /*CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, camHSpeed,
-                    currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);*/
-                }
-            }
-
-            if (MainView.cam.x + 15 >= xpos[timeZone] - 15 &&
-                    MainView.cam.x - 15 <= xpos[timeZone] + 15)
-            {
-                if ((camVSpeed > 0 && MainView.cam.y < ypos[timeZone]) || (camVSpeed < 0 && MainView.cam.y > ypos[timeZone]))
-                {
-                    ypos[timeZone] += camVSpeed;
-                }
-            }
-        }
     }
 
     public Entity entityCheck(LevelBase currentLevel, int timeZone)
@@ -142,25 +159,6 @@ public class Entity
         }
         return null;
     }
-
-    public void render(Camera cam, int timeZone){
-        if(xpos[timeZone] >= 0) {
-            if(ypos[timeZone] >= 0) {
-                levelProgram.enable();
-                spriteVAO.prepareRender();
-                float x = xpos[timeZone];
-                float y = -ypos[timeZone];
-                sprite.bind();
-                levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2 * cam.y, 0));
-                levelProgram.shaders[0].uniforms[1].set(new Matrix4f());
-                spriteVAO.fullRender();
-            }
-        }
-    }
+*/
 
 }
-/*for (int i = 0; i < MainView.entities.size(); i ++) {
-            CamCollision.verticalMove(MainView.entities.get(i).positions[MainView.currentLevel.currentTZ*2],cam.y,15,vSpeed,
-                    currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
-        }
-        */

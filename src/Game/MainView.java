@@ -458,7 +458,7 @@ public class MainView extends EnigView {
 			//MOVEMENT
 			Movement m = new Movement(delta_time, window, cam, currentLevel, solidBlocks);
 
-			//Crate Movement
+			//Crate Movement - sets the box x and y from entity
 			for (int i = 0; i < currentLevel.entities.size(); i++)
 			{
 				currentLevel.entities.get(i).getBoxMovement(currentLevel,currentLevel.currentTZ,m.getHSpeed(),m.getVSpeed());
@@ -588,74 +588,11 @@ public class MainView extends EnigView {
 				}
             }
 
-
+			//checks to open button doors
 			checkButtonPress('x','X');
 			checkButtonPress('y','Y');
             checkButtonPress('z','Z');
-            //X button
-			/*
-            if(CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'x') ||
-					checkBoxPosition(currentLevel.entities, 'x')){
-				int[] location = findCharacter('X');
-				if (location[0] != -1) {
-					if (location[1] != -1) {
-						replaceTile(location[0], location[1], 'i');
-						xDoor = false;
-					}
-				}
-			} else if((!CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'x') && !xDoor) ||
-					(!checkBoxPosition(currentLevel.entities, 'x') && !xDoor)){
-                int[] location = findCharacter('i');
-                if (location[0] != -1) {
-                    if (location[1] != -1) {
-                        replaceTile(location[0], location[1], 'X');
-                        xDoor = true;
-                    }
-                }
-            }
 
-            //Y button
-            if(CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'y') ||
-					checkBoxPosition(currentLevel.entities, 'x')){
-                int[] location = findCharacter('Y');
-                if (location[0] != -1) {
-                    if (location[1] != -1) {
-                        replaceTile(location[0], location[1], 'o');
-                        yDoor = false;
-                    }
-                }
-            } else if((!CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'y') && !yDoor) ||
-					(!checkBoxPosition(currentLevel.entities, 'x') && !xDoor)){
-                int[] location = findCharacter('o');
-                if (location[0] != -1) {
-                    if (location[1] != -1) {
-                        replaceTile(location[0], location[1], 'Y');
-                        yDoor = true;
-                    }
-                }
-            }
-
-            //Z button
-            if(CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'z') ||
-					checkBoxPosition(currentLevel.entities, 'x')){
-                int[] location = findCharacter('Z');
-                if (location[0] != -1) {
-                    if (location[1] != -1) {
-                        replaceTile(location[0], location[1], 'p');
-                        zDoor = false;
-                    }
-                }
-            } else if((!CamCollision.isColliding(cam.x, cam.y, 15, currentLevel.levelseries.get(currentLevel.currentTZ), 'z') && !zDoor) ||
-					(!checkBoxPosition(currentLevel.entities, 'x') && !xDoor)){
-                int[] location = findCharacter('p');
-                if (location[0] != -1) {
-                    if (location[1] != -1) {
-                        replaceTile(location[0], location[1], 'Z');
-                        zDoor = true;
-                    }
-                }
-            }
-			*/
 			if(UserControls.ohYknow(window)){
 				//LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
 				ohYknow.bind();
