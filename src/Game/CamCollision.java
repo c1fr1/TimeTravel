@@ -91,6 +91,8 @@ public class CamCollision
         return x - xsave;
     }
 
+
+
     public static float verticalMove(float x, float y, int border, float vspeed,
                                      ArrayList<Character[]> room, char[] obstacles)
     {

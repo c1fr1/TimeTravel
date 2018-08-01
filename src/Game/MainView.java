@@ -125,7 +125,7 @@ public class MainView extends EnigView {
             inv = new Inventory();
 
             spriteTexture = new Texture[4];//down left right up;
-            spriteTexture[0] = new Texture("res/sprites/future-wall.png");
+            spriteTexture[0] = new Texture("res/sprites/avatar-0.png");
             //spriteTexture[1] = new Texture("res/sprites/sprite-left.png");
             //spriteTexture[2] = new Texture("res/sprites/sprite-right.png");
             //spriteTexture[3] = new Texture("res/sprites/sprite-up.png");

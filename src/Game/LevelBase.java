@@ -22,7 +22,7 @@ public class LevelBase
     public static VAO tileObj;
     public static Texture floorTexture;
     public static Texture wallTexture;
-	public static Texture gateTexture;
+	public static Texture endLevelTexture;
     public static Texture lockTexture;
 	public static Texture newwallTexture;
     public static Texture upGateTexture;
@@ -38,7 +38,7 @@ public class LevelBase
     public static Texture[] xElectricTextures;
 	public static Texture[] yElectricTextures;
 	public static Texture[] zElectricTextures;
-    
+
     public Texture[] background;
     
     public ArrayList<Boolean[]> timeZonePossibilities = new ArrayList<>();
@@ -80,7 +80,7 @@ public class LevelBase
 			wallTexture = new Texture("res/sprites/present-wall.png");
 			newwallTexture = new Texture("res/sprites/future-wall.png");
 			keyTexture = new Texture("res/sprites/inventoryKey.png");
-			gateTexture = new Texture("res/sprites/gate.png");
+			endLevelTexture = new Texture("res/sprites/endLevel.png");
 			upGateTexture = new Texture("res/sprites/upGate.png");
 			downGateTexture = new Texture("res/sprites/downGate.png");
 			leftGateTexture = new Texture("res/sprites/leftGate.png");
@@ -101,7 +101,7 @@ public class LevelBase
 
 			levelProgram = new ShaderProgram("levelShader");
 			controllerTexture = new Texture("res/sprites/controller-tto.png");
-			
+
 			//button, gate closed, gate open
 			xElectricTextures = new Texture[3];
 			yElectricTextures = new Texture[3];
@@ -265,7 +265,7 @@ public class LevelBase
 					}else if (Util.isNumericValue(currentChar)) {
 						ttoTexture[(int) ttoFrameCounter[Character.getNumericValue(currentChar)]].bind();
 					}else if (currentChar == 'g') {
-						gateTexture.bind();
+                        endLevelTexture.bind();
 					}else if (currentChar == 'k') {
 						floorTexture.bind();
 						tileObj.drawTriangles();
