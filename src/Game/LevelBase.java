@@ -33,9 +33,11 @@ public class LevelBase
 	public static Texture boxTexture;
 	public static Texture[] ttoTexture;
     public static Texture controllerTexture;
-    public static Texture buttonTexture;
-    public static Texture buttonDoorTexture;
     public static ShaderProgram levelProgram;
+    
+    public static Texture[] xElectricTextures;
+	public static Texture[] yElectricTextures;
+	public static Texture[] zElectricTextures;
     
     public Texture[] background;
     
@@ -77,15 +79,13 @@ public class LevelBase
 			floorTexture = new Texture("res/sprites/present-floor.png");
 			wallTexture = new Texture("res/sprites/present-wall.png");
 			newwallTexture = new Texture("res/sprites/future-wall.png");
-			keyTexture = new Texture("res/sprites/key.png");
+			keyTexture = new Texture("res/sprites/inventoryKey.png");
 			gateTexture = new Texture("res/sprites/gate.png");
 			upGateTexture = new Texture("res/sprites/upGate.png");
 			downGateTexture = new Texture("res/sprites/downGate.png");
 			leftGateTexture = new Texture("res/sprites/leftGate.png");
 			rightGateTexture = new Texture("res/sprites/rightGate.png");
 			lockTexture = new Texture("res/sprites/locked-gate.png");
-            buttonTexture = new Texture("res/sprites/Button.png");
-            buttonDoorTexture = new Texture("res/sprites/ButtonDoor.png");
 
 			//changing texture for tto
 			ttoTexture = new Texture[9];
@@ -101,6 +101,20 @@ public class LevelBase
 
 			levelProgram = new ShaderProgram("levelShader");
 			controllerTexture = new Texture("res/sprites/controller-tto.png");
+			
+			//button, gate closed, gate open
+			xElectricTextures = new Texture[3];
+			yElectricTextures = new Texture[3];
+			zElectricTextures = new Texture[3];
+			xElectricTextures[0] = new Texture("res/sprites/xbutton.png");
+			xElectricTextures[1] = new Texture("res/sprites/xgate.png");
+			xElectricTextures[2] = new Texture("res/sprites/xgateopen.png");
+			yElectricTextures[0] = new Texture("res/sprites/ybutton.png");
+			yElectricTextures[1] = new Texture("res/sprites/ygate.png");
+			yElectricTextures[2] = new Texture("res/sprites/ygateopen.png");
+			zElectricTextures[0] = new Texture("res/sprites/zbutton.png");
+			zElectricTextures[1] = new Texture("res/sprites/zgate.png");
+			zElectricTextures[2] = new Texture("res/sprites/zgateopen.png");
 		}
 
 		Scanner fileInput;
@@ -240,10 +254,11 @@ public class LevelBase
     			char currentChar = levelseries.get(currentTZ).get(row)[chr];
 				if (currentChar != '_') {
 					levelProgram.shaders[0].uniforms[1].set(new Matrix4f());
+					levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2*cam.y, 0));
 					if (currentChar == 'w' || currentChar == 'G' || currentChar == 'K' || currentChar == 'C' || currentChar == '-' || currentChar == 'S' || currentChar == 'T' || currentChar == '/' || currentChar == '*' || currentChar == '.' || currentChar == ',' || currentChar == 'V') {
 						background[currentTZ].bind();
 						levelProgram.shaders[0].uniforms[1].set(new Matrix4f().scale(0.02f).translate((float)chr, (float)row, 0f));
-					}else if (currentChar == ' ' || currentChar == 's' || currentChar == 'b' || currentChar == 'i' || currentChar == 'o' || currentChar == 'p') {
+					}else if (currentChar == ' ') {//sbiop
     					floorTexture.bind();
 					}else if (currentChar == '#') {
     					newwallTexture.bind();
@@ -251,48 +266,59 @@ public class LevelBase
 						ttoTexture[(int) ttoFrameCounter[Character.getNumericValue(currentChar)]].bind();
 					}else if (currentChar == 'g') {
 						gateTexture.bind();
-					}
-					else if (currentChar == 'k') {
+					}else if (currentChar == 'k') {
+						floorTexture.bind();
+						tileObj.drawTriangles();
 						keyTexture.bind();
-					}
-					else if (currentChar == 'l') {
+					}else if (currentChar == 'l') {
 						lockTexture.bind();
-					}
-					else if (currentChar == '^') {
+					}else if (currentChar == '^') {
 					    upGateTexture.bind();
-                    }
-					else if (currentChar == 'v') {
+                    }else if (currentChar == 'v') {
 						downGateTexture.bind();
-					}
-					else if (currentChar == '>') {
+					}else if (currentChar == '>') {
 						rightGateTexture.bind();
-					}
-					else if (currentChar == '<') {
+					}else if (currentChar == '<') {
 						leftGateTexture.bind();
-					}
-					else if (currentChar == 'x') {
-						buttonTexture.bind();
-					}
-					else if (currentChar == 'y') {
-						buttonTexture.bind();
-					}
-					else if (currentChar == 'z') {
-						buttonTexture.bind();
-					}
-					else if (currentChar == 'X') {
-						buttonDoorTexture.bind();
-					}
-					else if (currentChar == 'Y') {
-						buttonDoorTexture.bind();
-					}
-					else if (currentChar == 'Z') {
-						buttonDoorTexture.bind();
+					}else if (currentChar == 'x') {
+						floorTexture.bind();
+						tileObj.drawTriangles();
+						xElectricTextures[0].bind();
+					}else if (currentChar == 'y') {
+						floorTexture.bind();
+						tileObj.drawTriangles();
+						yElectricTextures[0].bind();
+					}else if (currentChar == 'z') {
+						floorTexture.bind();
+						tileObj.drawTriangles();
+						zElectricTextures[0].bind();
+					}else if (currentChar == 'X') {
+						floorTexture.bind();
+						tileObj.drawTriangles();
+						xElectricTextures[1].bind();
+					}else if (currentChar == 'Y') {
+						floorTexture.bind();
+						tileObj.drawTriangles();
+						yElectricTextures[1].bind();
+					}else if (currentChar == 'Z') {
+						floorTexture.bind();
+						tileObj.drawTriangles();
+						zElectricTextures[1].bind();
+					}else if (currentChar == 'i') {
+						floorTexture.bind();
+						tileObj.drawTriangles();
+						xElectricTextures[2].bind();
+					}else if (currentChar == 'o') {
+						floorTexture.bind();
+						tileObj.drawTriangles();
+						yElectricTextures[2].bind();
+					}else if (currentChar == 'p') {
+						floorTexture.bind();
+						tileObj.drawTriangles();
+						zElectricTextures[2].bind();
 					}else {
 						//floorTexture.bind();
 					}
-					//float x = ((float) chr) * 50f;
-					//float y = -((float) row) * 50f;
-					levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2*cam.y, 0));
 					tileObj.drawTriangles();
 				}
 			}

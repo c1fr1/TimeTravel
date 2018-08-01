@@ -214,74 +214,69 @@ public class MainView extends EnigView {
 		return false;
 	}
 
-	public void checkButtonPress (char button, char door)
-	{
-		if (checkBoxPosition(currentLevel.entities,button) || CamCollision.isColliding(cam.x,cam.y,15,
-				currentLevel.levelseries.get(currentLevel.currentTZ),button))
-		{
-			//open
+	public void checkButtonPress (char button, char door) {
+		if (checkBoxPosition(currentLevel.entities, button) || CamCollision.isColliding(cam.x, cam.y,15, currentLevel.levelseries.get(currentLevel.currentTZ), button)) {
 			int[] location = findCharacter(door);
-			if (button == 'x')
-			{
-				if (location[0] != -1 && xDoor)
-				{
-					replaceTile(location[0], location[1], 'i');
+			if (button == 'x') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size();++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0;i < currentRow.length; ++i) {
+						if (currentRow[i].equals('X')) {
+							replaceTile(i, row, 'i');
+						}
+					}
 				}
-				xDoor = false;
-			}
-			else if (button == 'y')
-			{
-				if (location[0] != -1 && xDoor)
-				{
-					replaceTile(location[0], location[1], 'o');
+			}else if (button == 'y') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size();++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0;i < currentRow.length; ++i) {
+						if (currentRow[i].equals('Y')) {
+							replaceTile(i, row, 'o');
+						}
+					}
 				}
-				yDoor = false;
-			}
-			else if (button == 'z')
-			{
-				if (location[0] != -1 && xDoor)
-				{
-					replaceTile(location[0], location[1], 'p');
-				}
-				zDoor = false;
-			}
-		}
-		else
-		{
-			//close
-			if (button == 'x')
-			{
-				if (!xDoor)
-				{
-					xDoor = true;
-					int[] location = findCharacter('i');
-					if (location[0] != -1)
-					{
-						replaceTile(location[0], location[1], door);
+			}else if (button == 'z') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size();++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0;i < currentRow.length; ++i) {
+						if (currentRow[i].equals('Z')) {
+							replaceTile(i, row, 'p');
+						}
 					}
 				}
 			}
-			else if (button == 'y')
-			{
-				if (!yDoor)
-				{
-					yDoor = true;
-					int[] location = findCharacter('o');
-					if (location[0] != -1)
-					{
-						replaceTile(location[0], location[1], door);
+		}else {
+			if (button == 'x') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size();++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0;i < currentRow.length; ++i) {
+						if (currentRow[i].equals('i')) {
+							replaceTile(i, row, 'X');
+						}
 					}
 				}
-			}
-			else if (button == 'z')
-			{
-				if (!zDoor)
-				{
-					zDoor = true;
-					int[] location = findCharacter('p');
-					if (location[0] != -1)
-					{
-						replaceTile(location[0], location[1], door);
+			}else if (button == 'y') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size();++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0;i < currentRow.length; ++i) {
+						if (currentRow[i].equals('o')) {
+							replaceTile(i, row, 'Y');
+						}
+					}
+				}
+			}else if (button == 'z') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size();++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0;i < currentRow.length; ++i) {
+						if (currentRow[i].equals('p')) {
+							replaceTile(i, row, 'Z');
+						}
 					}
 				}
 			}
