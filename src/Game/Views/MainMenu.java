@@ -1,8 +1,11 @@
-package Game;
+package Game.Views;
 
+import Game.MainView;
+import Game.SpriteButton;
+import Game.UserControls;
+import Game.Views.LevelSelect;
 import engine.EnigView;
 import engine.OpenGL.*;
-import org.lwjglx.debug.org.eclipse.jetty.server.Authentication;
 
 public class MainMenu extends EnigView {
 

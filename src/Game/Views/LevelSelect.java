@@ -1,5 +1,6 @@
-package Game;
+package Game.Views;
 
+import Game.SpriteButton;
 import engine.EnigView;
 import engine.OpenGL.*;
 
@@ -10,7 +11,7 @@ public class LevelSelect extends EnigView {
 
     public SpriteButton[] levels;
 
-    static int[] levelState = new int[new File("res/Levels").listFiles().length];
+    public static int[] levelState = new int[new File("res/Levels").listFiles().length];
     //0 = not cleared
     //1 = clear
     //2 = locked
