@@ -416,8 +416,6 @@ public class MainView extends EnigView {
 			screenVAO.drawTriangles();
 			screenVAO.unbind();
 			
-			
-			
 			currentLevel.render(cam);
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
 			spriteTexture[0].bind();
@@ -478,8 +476,8 @@ public class MainView extends EnigView {
 			cam.x += crateOffsetX;
 			cam.y += crateOffsetY;
 			//background shifting
-			backgroundOffset.x += (m.getXOffset()) * 0.0005;
-			backgroundOffset.y += (m.getYOffset()) * 0.0005;
+			backgroundOffset.x += (m.getXOffset() + crateOffsetX) * 0.0005;
+			backgroundOffset.y += (m.getYOffset() + crateOffsetY) * 0.0005;
 
 			LevelBase.levelProgram.enable();
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
@@ -585,14 +583,8 @@ public class MainView extends EnigView {
 			}
 
             currentLevel.updateTTO(arrpossibilities, delta_time);
-
-            if (CamCollision.isColliding(cam.x,cam.y,1,currentLevel.levelseries.get(currentLevel.currentTZ),'g'))
-            {
-            	if (nextLevel(1)) {
-            		return true;
-				}
-            }
-            if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'k') || CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'K'))
+			
+			if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'k') || CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'K'))
             {
 				if (replaceTile(cam.x, cam.y, ' ') == 'k') {
 					inv.add('k');

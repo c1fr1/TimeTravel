@@ -4,6 +4,7 @@ import engine.EnigView;
 import engine.OpenGL.*;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
 public class WinScreen extends EnigView {
@@ -38,8 +39,8 @@ public class WinScreen extends EnigView {
 		wonScreenTaxture.bind();
 		wonSreamVEO.fullRender();
 		SpriteButton.shader.enable();
-		continueButton.render(EnigWindow.mainWindow.cursorXFloat, EnigWindow.mainWindow.cursorYFloat);
-		if (EnigWindow.mainWindow.keys[GLFW_KEY_ENTER] > 0) {
+		SpriteButton.shader.shaders[0].uniforms[0].set((float) EnigWindow.mainWindow.getHeight() / (float) EnigWindow.mainWindow.getWidth());
+		if (EnigWindow.mainWindow.keys[GLFW_KEY_ENTER] > 0 || (continueButton.render(EnigWindow.mainWindow.cursorXFloat, EnigWindow.mainWindow.cursorYFloat) && EnigWindow.mainWindow.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] > 0)) {
 			return true;
 		}
 		return false;
