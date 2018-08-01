@@ -49,7 +49,7 @@ public class Entity
         spriteVAO = new VAO(-40, 10, 30f, 30f);
         levelProgram = new ShaderProgram("levelShader");
     }
-    
+    //Check for collision between player and crate
 	public boolean playerAABB(float xvel, float yvel) {
 		if (xpos[MainView.currentLevel.currentTZ] + border > MainView.cam.x - 15 + xvel) {
 			if (xpos[MainView.currentLevel.currentTZ] - border < MainView.cam.x + 15 + xvel) {
@@ -62,6 +62,21 @@ public class Entity
 		}
 		return false;
 	}
+    public static boolean entityCollision(Entity a, Entity b, int timeZone, float xvel, float yvel) {
+        boolean overlap = false;
+        if (b.xpos[timeZone] > -1) {
+            if (a.xpos[MainView.currentLevel.currentTZ] + 15 + xvel > b.ypos[MainView.currentLevel.currentTZ] - 15) {
+                if (a.xpos[MainView.currentLevel.currentTZ] - 15 + xvel< b.xpos[MainView.currentLevel.currentTZ] + 15) {
+                    if (a.ypos[MainView.currentLevel.currentTZ] + 15 + yvel> b.ypos[MainView.currentLevel.currentTZ] - 15) {
+                        if (a.ypos[MainView.currentLevel.currentTZ] - 15 + yvel < b.ypos[MainView.currentLevel.currentTZ] + 15) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return overlap;
+    }
 
     //sets box movement
     public void getBoxMovement(LevelBase currentLevel, int timeZone, float camHSpeed, float camVSpeed)
@@ -146,58 +161,5 @@ public class Entity
             }
         }
     }
-    /* DO NOT REMOVE
-    public static boolean entityCollision(Entity a, Entity b, int timeZone)
-    {
-        boolean overlap = false;
-        if (b.xpos[timeZone] > -1)
-        {
-            if ((a.xpos[timeZone] + a.border >= b.xpos[timeZone] - b.border &&
-                 a.xpos[timeZone] + a.border <= b.xpos[timeZone] + b.border) ||
-                (a.xpos[timeZone] - a.border >= b.xpos[timeZone] - b.border &&
-                 a.xpos[timeZone] - a.border <= b.xpos[timeZone] + b.border))
-            {
-                if ((a.ypos[timeZone] + a.border >= b.ypos[timeZone] - b.border &&
-                     a.ypos[timeZone] + a.border <= b.ypos[timeZone] + b.border) ||
-                    (a.ypos[timeZone] - a.border >= b.ypos[timeZone] - b.border &&
-                     a.ypos[timeZone] - a.border <= b.ypos[timeZone] + b.border))
-                {
-                    overlap = true;
-                }
-            }
-        }
-        return overlap;
-    }
-
-    public Entity entityCheck(LevelBase currentLevel, int timeZone)
-    {
-        if (currentLevel.entities.get(arrayIndex).xpos[timeZone] > -1) {
-            for (int i = 0; i < currentLevel.entities.size(); i++) {
-                //you are not looking at your own index and are colliding with another entity in the given timezone
-                if (i != arrayIndex) {
-                    if (entityCollision(currentLevel.entities.get(arrayIndex), currentLevel.entities.get(i), timeZone)) {
-                        return currentLevel.entities.get(i);
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    public Entity cameraCheck(LevelBase currentLevel, int timeZone)
-    {
-        if (currentLevel.entities.get(arrayIndex).xpos[timeZone] > -1) {
-            for (int i = 0; i < currentLevel.entities.size(); i++) {
-                //you are not looking at your own index and are colliding with another entity in the given timezone
-                if (i != arrayIndex) {
-                    if (camEntityCollision(currentLevel.entities.get(i), timeZone)) {
-                        return currentLevel.entities.get(i);
-                    }
-                }
-            }
-        }
-        return null;
-    }
-*/
 
 }
