@@ -464,18 +464,22 @@ public class MainView extends EnigView {
 			//MOVEMENT
 			Movement m = new Movement(delta_time, window, cam, currentLevel, solidBlocks);
 
-			//Crate Movement - sets the box x and y from entity
-			boolean xWallCollide = false;
-			boolean yWallCollide = false;
-			for (int i = 0; i < currentLevel.entities.size(); i++) {
-				currentLevel.entities.get(i).getBoxMovement(currentLevel, currentLevel.currentTZ, m.getXOffset(), m.getYOffset());
+			//crate movement - sets the box x and y from entity
+			for (int i = 0; i < currentLevel.entities.size(); i++)
+			{
+				currentLevel.entities.get(i).getBoxMovement(currentLevel,currentLevel.currentTZ,m.getHSpeed(),m.getVSpeed());
 			}
-
+			//avatar movement
 			cam.x += m.getXOffset();
 			cam.y += m.getYOffset();
-			backgroundOffset.x += m.getXOffset() * 0.0005;
-			backgroundOffset.y += m.getYOffset() * 0.0005;
-			
+			//snap to box movement
+			float crateOffsetX = CamCollision.entitySnapCollisionX(currentLevel,currentLevel.currentTZ,cam.x,cam.y,m.getHSpeed());
+			float crateOffsetY = CamCollision.entitySnapCollisionY(currentLevel,currentLevel.currentTZ,cam.x,cam.y,m.getVSpeed());
+			cam.x += crateOffsetX;
+			cam.y += crateOffsetY;
+			//background shifting
+			backgroundOffset.x += (m.getXOffset()) * 0.0005;
+			backgroundOffset.y += (m.getYOffset()) * 0.0005;
 
 			LevelBase.levelProgram.enable();
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
@@ -582,7 +586,12 @@ public class MainView extends EnigView {
 
             currentLevel.updateTTO(arrpossibilities, delta_time);
 
-            
+            if (CamCollision.isColliding(cam.x,cam.y,1,currentLevel.levelseries.get(currentLevel.currentTZ),'g'))
+            {
+            	if (nextLevel(1)) {
+            		return true;
+				}
+            }
             if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'k') || CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'K'))
             {
 				if (replaceTile(cam.x, cam.y, ' ') == 'k') {
