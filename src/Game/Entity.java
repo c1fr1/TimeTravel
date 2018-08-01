@@ -114,7 +114,6 @@ public class Entity
 			}
 			if (lastX == (int)MainView.cam.x && lastY == (int)MainView.cam.y) {
                 MainView.entOffset = 0;
-                System.out.println("a");
             }
             else {
 			    MainView.entOffset = 1;
