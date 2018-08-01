@@ -26,10 +26,8 @@ public class CamCollision
         ysquares[2] = (int)((y - border)/50);
         ysquares[3] = (int)((y - border)/50);
 
-        for (int i = 0; i < 4; i++)
-        {
-            if (room.get(ysquares[i])[xsquares[i]] == obstacle)
-            {
+        for (int i = 0; i < 4; i++) {
+            if (room.get(ysquares[i])[xsquares[i]] == obstacle) {
                 colliding = true;
                 break;
             }
@@ -37,8 +35,7 @@ public class CamCollision
         return colliding;
     }
 
-    public static boolean camEntityCollision(Entity a, int timeZone, float x, float y, int camBorder)
-    {
+    public static boolean camEntityCollision(Entity a, int timeZone, float x, float y, int camBorder) {
         boolean colliding = false;
         //if the entity exists in the given timezone
         if (a.xpos[timeZone] > -1) {
@@ -54,12 +51,9 @@ public class CamCollision
         return colliding;
     }
 
-    public static Entity checkEntityColliding(LevelBase currentLevel, int timeZone, float x, float y)
-    {
-        for (int i = 0; i < currentLevel.entities.size(); i++)
-        {
-            if (camEntityCollision(currentLevel.entities.get(i),timeZone, x, y, 15))
-            {
+    public static Entity checkEntityColliding(LevelBase currentLevel, int timeZone, float x, float y) {
+        for (int i = 0; i < currentLevel.entities.size(); i++) {
+            if (camEntityCollision(currentLevel.entities.get(i),timeZone, x, y, 15)) {
                 return currentLevel.entities.get(i);
             }
         }
@@ -67,26 +61,20 @@ public class CamCollision
     }
 
     //snaps to collisions with entities
-    public static float entitySnapCollisionX(LevelBase currentLevel, int timeZone, float x, float y, float hspeed)
-    {
+    public static float entitySnapCollisionX(LevelBase currentLevel, int timeZone, float x, float y, float hspeed) {
         float newx = x;
         Entity e = checkEntityColliding(currentLevel, timeZone, x, y);
-        if (e != null)
-        {
+        if (e != null) {
             float xsave = x - hspeed;
             //you are on the side
-            if ((e.ypos[timeZone] + e.border >= y - 15 &&
-                    e.ypos[timeZone] - e.border <= y + 15))
-            {
+            if ((e.ypos[timeZone] + e.border >= y - 15 && e.ypos[timeZone] - e.border <= y + 15)) {
                 //you are to the left and moving right
-                if (xsave < e.xpos[timeZone] && hspeed > 0)
-                {
+                if (xsave < e.xpos[timeZone] && hspeed > 0) {
                     float snap = e.xpos[timeZone] - e.border;
                     newx = snap * Math.round(xsave/snap);
                     newx += 15.001 * Util.getSign(-hspeed);
                 }
-                else if (xsave > e.xpos[timeZone] && hspeed < 0)
-                {
+                else if (xsave > e.xpos[timeZone] && hspeed < 0) {
                     float snap = e.xpos[timeZone] + e.border;
                     newx = snap * Math.round(xsave/snap);
                     newx += 15.001 * Util.getSign(-hspeed);
