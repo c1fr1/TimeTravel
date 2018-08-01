@@ -1,5 +1,9 @@
 package Game;
 
+import Game.Views.LevelSelect;
+import Game.Views.LoadingScreen;
+import Game.Views.MainMenu;
+import Game.Views.WinScreen;
 import engine.*;
 import engine.Entities.Camera;
 import engine.OpenGL.*;
@@ -7,8 +11,6 @@ import org.joml.Vector2f;
 import org.lwjglx.debug.javax.servlet.http.HttpServletRequest;
 
 import java.io.File;
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -100,15 +102,16 @@ public class MainView extends EnigView {
 	boolean yDoor = true;
 	boolean zDoor = true;
 
+	static float aspectRatio;
+
 	@Override
 	public void setup() {
+		aspectRatio = (float)window.getHeight()/(float)window.getWidth();
 		LevelSelect.createTextFolder();
 		new MainMenu(window);
 		if(!quit) {
-			float aspectRatio = (float)window.getHeight()/(float)window.getWidth();
 			LoadingScreen.texturePath = new SpriteButton(-1f/aspectRatio, -1f, 2f/aspectRatio, 2f, "res/sprites/Loading.png");
             new LoadingScreen(window);
-
             //set variables here
             glDisable(GL_DEPTH_TEST);
             //needs to be generalized to use level selected - level path is a parameter
@@ -125,7 +128,7 @@ public class MainView extends EnigView {
             inv = new Inventory();
 
             spriteTexture = new Texture[4];//down left right up;
-            spriteTexture[0] = new Texture("res/sprites/future-wall.png");
+            spriteTexture[0] = new Texture("res/sprites/avatar-0.png");
             //spriteTexture[1] = new Texture("res/sprites/sprite-left.png");
             //spriteTexture[2] = new Texture("res/sprites/sprite-right.png");
             //spriteTexture[3] = new Texture("res/sprites/sprite-up.png");
@@ -324,6 +327,8 @@ public class MainView extends EnigView {
 
 	@Override
 	public boolean loop() {
+		//System.out.println(window.cursorXFloat + " " + window.cursorYFloat);
+
 	    if(quit){
 	        return true;
         }

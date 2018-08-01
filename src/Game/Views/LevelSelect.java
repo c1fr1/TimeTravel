@@ -1,30 +1,61 @@
-package Game;
+package Game.Views;
 
+import Game.SpriteButton;
 import engine.EnigView;
-import engine.OpenGL.EnigWindow;
+import engine.OpenGL.*;
 
 import java.io.*;
 import java.util.Scanner;
 
 public class LevelSelect extends EnigView {
 
-    static int[] levelState = new int[new File("res/Levels").listFiles().length];
+    public SpriteButton[] levels;
+
+    public static int[] levelState = new int[new File("res/Levels").listFiles().length];
     //0 = not cleared
     //1 = clear
     //2 = locked
+
+    float aspectRatio;
+
+    Texture select;
+    VAO selectVAO;
 
     public LevelSelect(EnigWindow window){
         super(window, false);
     }
 
+    public void LevelSelectButtons(EnigWindow window){
 
-    @Override
+        levels = new SpriteButton[LevelSelect.levelState.length];
+        int rowNumber = (int)(window.getWidth()/100f);
+        for(int i = 0; i < LevelSelect.levelState.length; i++){
+
+            float thingY = 50f + (i / rowNumber)*50f;
+            float thingX = ((i%rowNumber)*50f + 50f);
+            System.out.println(thingX + " " + thingY);
+            levels[i] = new SpriteButton((int)thingX, (int)thingY,50f, 50f, "res/sprites/levelSelect.png", aspectRatio);
+        }
+    }
+
+
     public boolean loop() {
+        FBO.prepareDefaultRender();
+
+        for (int i = 0; i < levels.length; i++) {
+            //System.out.println("lklklklklk");
+            //TODO I hAVE NO IDEA WHY THIS DOESNT WORK
+            levels[i].render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
+        }
+
         return false;
     }
 
     @Override
     public void setup() {
+        aspectRatio = (float)window.getHeight()/(float)window.getWidth();
+        SpriteButton.shader = new ShaderProgram("buttonShader");
+        LevelSelectButtons(window);
         //reads file
         Scanner reader = new Scanner("res/levelComplete.txt");
         String read = reader.nextLine();
@@ -40,6 +71,10 @@ public class LevelSelect extends EnigView {
                 levelState[i] = 2;
             }
         }
+
+
+
+
     }
 
     @Override

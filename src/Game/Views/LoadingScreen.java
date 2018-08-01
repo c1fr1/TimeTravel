@@ -1,5 +1,6 @@
-package Game;
+package Game.Views;
 
+import Game.SpriteButton;
 import engine.EnigView;
 import engine.OpenGL.*;
 import org.joml.Vector4f;
