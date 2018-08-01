@@ -472,8 +472,8 @@ public class MainView extends EnigView {
 			cam.x += crateOffsetX;
 			cam.y += crateOffsetY;
 			//background shifting
-			backgroundOffset.x += (m.getXOffset() + crateOffsetX) * 0.0005;
-			backgroundOffset.y += (m.getYOffset() + crateOffsetY) * 0.0005;
+			backgroundOffset.x += (m.getXOffset()) * 0.0005;
+			backgroundOffset.y += (m.getYOffset()) * 0.0005;
 
 			LevelBase.levelProgram.enable();
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));

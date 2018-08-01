@@ -49,10 +49,39 @@ public class Entity
         spriteVAO = new VAO(-40, 10, 30f, 30f);
         levelProgram = new ShaderProgram("levelShader");
     }
+    
+	public boolean playerAABB(float xvel, float yvel) {
+		if (xpos[MainView.currentLevel.currentTZ] + border > MainView.cam.x - 15 + xvel) {
+			if (xpos[MainView.currentLevel.currentTZ] - border < MainView.cam.x + 15 + xvel) {
+				if (ypos[MainView.currentLevel.currentTZ] + border > MainView.cam.y - 15 + yvel) {
+					if (ypos[MainView.currentLevel.currentTZ] - border < MainView.cam.y + 15 + yvel) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 
     //sets box movement
     public void getBoxMovement(LevelBase currentLevel, int timeZone, float camHSpeed, float camVSpeed)
     {
+    	if (playerAABB(camHSpeed, camVSpeed)) {
+			if ((camHSpeed > 0 && MainView.cam.x + 29 < xpos[timeZone])) {
+				xpos[timeZone] += CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, camHSpeed,
+						currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+			}else if ((camHSpeed < 0 && MainView.cam.x - 29 > xpos[timeZone])) {
+				xpos[timeZone] += CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, camHSpeed,
+						currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+			}
+			if ((camVSpeed > 0 && MainView.cam.y + 29 < ypos[timeZone])) {
+				ypos[timeZone] += CamCollision.verticalMove(xpos[timeZone], ypos[timeZone], border, camVSpeed,
+						currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+			}else if ((camVSpeed < 0 && MainView.cam.y - 29 > ypos[timeZone])) {
+				ypos[timeZone] += CamCollision.verticalMove(xpos[timeZone], ypos[timeZone], border, camVSpeed,
+						currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+			}
+		}
         int camBorder = 15;
         //if you are colliding with the camera
         if (CamCollision.camEntityCollision(currentLevel.entities.get(arrayIndex),timeZone,
