@@ -113,7 +113,8 @@ public class MainView extends EnigView {
             currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt"/*, new String[] {"res/levelTemplate.png", "res/levelTemplate.png"}*/);
             cam = new Camera((float) window.getWidth(), (float) window.getHeight());
             guiShader = new ShaderProgram("guiShader");
-            ttoGUI = new Texture("res/sprites/timeTravelGUI.png");
+			WinScreen.aespectShader = guiShader;
+			ttoGUI = new Texture("res/sprites/timeTravelGUI.png");
             keyTexture = new Texture("res/sprites/inventoryKey.png");
             inventoryObjectVAO = new VAO(-1f, -0.9f, 0.1f, 0.1f);
             ttoGUIVAO = new VAO(-0.5f, 0.125f, 1f, 0.25f);
@@ -127,11 +128,14 @@ public class MainView extends EnigView {
             //spriteTexture[3] = new Texture("res/sprites/sprite-up.png");
 
             cont = new SpriteButton(-0.5f, 0.525f, 1f, 0.25f, "res/sprites/continueButton.png", aspectRatio);
+            WinScreen.continueButton = cont;
+            
             restart = new SpriteButton(-0.5f, -0.125f, 1f, 0.25f, "res/sprites/restart.png", aspectRatio);
             menu = new SpriteButton(-0.5f, -0.725f, 1f, 0.25f, "res/sprites/mainMenu.png", aspectRatio);
 
             textureShader = new ShaderProgram("textureShaders");
             pauseShader = new ShaderProgram("pauseShaders");
+			WinScreen.normieShader = textureShader;
             ttoguiShader = new ShaderProgram("ttoGUIShader");
             travelShader = new ShaderProgram("travelShaders");
             inventoryShader = new ShaderProgram("inventoryShaders");
@@ -154,6 +158,8 @@ public class MainView extends EnigView {
 
             mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));
             screenVAO = new VAO(-1f, -1f, 2f, 2f);
+		
+            WinScreen.fullScreen = screenVAO;
 
             cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
             cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
@@ -427,7 +433,7 @@ public class MainView extends EnigView {
 
 			lastTime = System.nanoTime();
 
-			timeTravelFrames+=delta_time*0.05;
+			timeTravelFrames += delta_time * 0.05;
 			if (timeTravelFrames >= 50) {
 				timeTravelFrames = 0;
 			}
@@ -458,22 +464,18 @@ public class MainView extends EnigView {
 			//MOVEMENT
 			Movement m = new Movement(delta_time, window, cam, currentLevel, solidBlocks);
 
-			//crate movement - sets the box x and y from entity
-			for (int i = 0; i < currentLevel.entities.size(); i++)
-			{
-				currentLevel.entities.get(i).getBoxMovement(currentLevel,currentLevel.currentTZ,m.getHSpeed(),m.getVSpeed());
+			//Crate Movement - sets the box x and y from entity
+			boolean xWallCollide = false;
+			boolean yWallCollide = false;
+			for (int i = 0; i < currentLevel.entities.size(); i++) {
+				currentLevel.entities.get(i).getBoxMovement(currentLevel, currentLevel.currentTZ, m.getXOffset(), m.getYOffset());
 			}
-			//avatar movement
+
 			cam.x += m.getXOffset();
 			cam.y += m.getYOffset();
-			//snap to box movement
-			float crateOffsetX = CamCollision.entitySnapCollisionX(currentLevel,currentLevel.currentTZ,cam.x,cam.y,m.getHSpeed());
-			float crateOffsetY = CamCollision.entitySnapCollisionY(currentLevel,currentLevel.currentTZ,cam.x,cam.y,m.getVSpeed());
-			cam.x += crateOffsetX;
-			cam.y += crateOffsetY;
-			//background shifting
-			backgroundOffset.x += (m.getXOffset() + crateOffsetX) * 0.0005;
-			backgroundOffset.y += (m.getYOffset() + crateOffsetY) * 0.0005;
+			backgroundOffset.x += m.getXOffset() * 0.0005;
+			backgroundOffset.y += m.getYOffset() * 0.0005;
+			
 
 			LevelBase.levelProgram.enable();
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
@@ -580,12 +582,7 @@ public class MainView extends EnigView {
 
             currentLevel.updateTTO(arrpossibilities, delta_time);
 
-            if (CamCollision.isColliding(cam.x,cam.y,1,currentLevel.levelseries.get(currentLevel.currentTZ),'g'))
-            {
-            	if (nextLevel(1)) {
-            		return true;
-				}
-            }
+            
             if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'k') || CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'K'))
             {
 				if (replaceTile(cam.x, cam.y, ' ') == 'k') {
@@ -627,6 +624,14 @@ public class MainView extends EnigView {
 
 			guiShader.enable();
 			guiShader.shaders[0].uniforms[0].set(aspectRatio);
+			if (CamCollision.isColliding(cam.x,cam.y,1,currentLevel.levelseries.get(currentLevel.currentTZ),'g'))
+			{
+				new WinScreen(mainFBO.getBoundTexture(), aspectRatio);
+				if (nextLevel(1)) {
+					return true;
+				}
+			}
+			
 			FBO.prepareDefaultRender();
 			textureShader.enable();
 			mainFBO.getBoundTexture().bind();

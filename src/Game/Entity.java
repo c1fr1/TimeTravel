@@ -50,38 +50,67 @@ public class Entity
         levelProgram = new ShaderProgram("levelShader");
     }
 
-    //sets box movement
-    public void getBoxMovement(LevelBase currentLevel, int timeZone, float camHSpeed, float camVSpeed)
+    public static boolean camEntityCollision(Entity a, int timeZone)
     {
-        int camBorder = 15;
-        //if you are colliding with the camera
-        if (CamCollision.camEntityCollision(currentLevel.entities.get(arrayIndex),timeZone,
-                MainView.cam.x,MainView.cam.y, 16))
-        {
-            //if you are on the side of the box
-            if (MainView.cam.y + camBorder >= ypos[timeZone] - border &&
-                    MainView.cam.y - camBorder <= ypos[timeZone] + border)
+        boolean overlap = false;
+        if (a.xpos[timeZone] + a.border >= MainView.cam.x - 15 &&
+                a.xpos[timeZone] - a.border <= MainView.cam.x + 15)
+        {//this is literally the hardest possible organization for readability. if you want to do multiple if statements, do four if statements. If you want one if statement, do one if statement.
+            if (a.ypos[timeZone] + a.border >= MainView.cam.y - 15 &&
+                    a.ypos[timeZone] - a.border <= MainView.cam.y + 15)
             {
-                //if you are pushing the box in a horizontal direction
-                if ((camHSpeed > 0 && MainView.cam.x < xpos[timeZone]) || (camHSpeed < 0 && MainView.cam.x > xpos[timeZone]))
-                {
-                    //tests to make sure the box obeys normal wall collisions
-                    xpos[timeZone] += CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, camHSpeed,
-                            currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
-                }
-            }
-
-            if (MainView.cam.x + camBorder >= xpos[timeZone] - border &&
-                    MainView.cam.x - camBorder <= xpos[timeZone] + border)
-            {
-                if ((camVSpeed > 0 && MainView.cam.y < ypos[timeZone]) || (camVSpeed < 0 && MainView.cam.y > ypos[timeZone]))
-                {
-                    //tests to make sure the box obeys normal wall collisions
-                    ypos[timeZone] += CamCollision.verticalMove(xpos[timeZone], ypos[timeZone], border, camVSpeed,
-                            currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
-                }
+                overlap = true;//declaration of the overlap variable is useless, overlap will never be set to false after this, so just return true here
             }
         }
+        return overlap;//and return false here.
+    }
+    public boolean playerAABB(float xvel, float yvel) {
+    	if (xpos[MainView.currentLevel.currentTZ] + border > MainView.cam.x - 15 + xvel) {
+    		if (xpos[MainView.currentLevel.currentTZ] - border < MainView.cam.x + 15 + xvel) {
+    			if (ypos[MainView.currentLevel.currentTZ] + border > MainView.cam.y - 15 + yvel) {
+					if (ypos[MainView.currentLevel.currentTZ] - border < MainView.cam.y + 15 + yvel) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+    //sets box movement
+    public void getBoxMovement(LevelBase currentLevel, int timeZone, float camHSpeed, float camVSpeed) {//x and y are much more standard than horizontal and vertical, think 3d.
+        //if you are colliding with the camera
+		//Nathans old
+        /*if (camEntityCollision(currentLevel.entities.get(arrayIndex), currentLevel.currentTZ))  {
+            if ((camHSpeed > 0 && MainView.cam.x < xpos[timeZone])) {
+                xpos[timeZone] = MainView.cam.x + camHSpeed + 30f;
+            }else if ((camHSpeed < 0 && MainView.cam.x > xpos[timeZone])) {
+				xpos[timeZone] = MainView.cam.x + camHSpeed - 30f;
+			}
+			
+            /*CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, camHSpeed,
+                    currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks); FOR FUTURE STUFF*//*
+
+            
+            if ((camVSpeed > 0 && MainView.cam.y < ypos[timeZone])) {
+                ypos[timeZone] = MainView.cam.y + camVSpeed + 30f;
+            }else if ((camVSpeed < 0 && MainView.cam.y > ypos[timeZone])) {
+				ypos[timeZone] = MainView.cam.y + camVSpeed - 30f;
+			}
+        }*/
+		if (playerAABB(camHSpeed, camVSpeed)) {
+			if ((camHSpeed > 0 && MainView.cam.x + 29 < xpos[timeZone])) {
+				xpos[timeZone] = MainView.cam.x + camHSpeed + 30f;
+			}else if ((camHSpeed < 0 && MainView.cam.x - 29 > xpos[timeZone])) {
+				xpos[timeZone] = MainView.cam.x + camHSpeed - 30f;
+			}
+			if ((camVSpeed > 0 && MainView.cam.y + 29 < ypos[timeZone])) {
+				ypos[timeZone] = MainView.cam.y + camVSpeed + 30f;
+			}else if ((camVSpeed < 0 && MainView.cam.y - 29 > ypos[timeZone])) {
+				ypos[timeZone] = MainView.cam.y + camVSpeed - 30f;
+			}
+		}
+    
     }
 
     public void render(Camera cam, int timeZone){

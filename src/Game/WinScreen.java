@@ -1,33 +1,28 @@
 package Game;
 
 import engine.EnigView;
-import engine.OpenGL.EnigWindow;
-import engine.OpenGL.Texture;
-import engine.OpenGL.VAO;
+import engine.OpenGL.*;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
 public class WinScreen extends EnigView {
 	public static VAO fullScreen;
 	public static Texture wonScreenTaxture;
 	public static VAO wonSreamVEO;
+	public static SpriteButton continueButton;
 	public Texture t;
+	public static ShaderProgram normieShader;
+	public static ShaderProgram aespectShader;
 	public WinScreen(Texture background, float aespectionrations) {
+		super(EnigWindow.mainWindow);
 		if (wonScreenTaxture == null) {
-			wonScreenTaxture = new Texture("winScreen.png");
+			wonScreenTaxture = new Texture("res/menu/winScreen.png");
 			wonSreamVEO = new VAO(aespectionrations * -0.5f, -0.5f, aespectionrations, 1f);
 		}
 		t = background;
 		window = EnigWindow.mainWindow;
-		while ( !glfwWindowShouldClose(EnigWindow.mainWindow.id) ) {
-			++framesSinceStart;
-			if (loop()) {
-				cleanUp();
-				break;
-			}
-			window.update();
-			cleanUp();
-		}
+		runLoop();
 	}
 	@Override
 	public void setup() {
@@ -36,8 +31,17 @@ public class WinScreen extends EnigView {
 	
 	@Override
 	public boolean loop() {
+		FBO.prepareDefaultRender();
+		normieShader.enable();
 		t.bind();
 		fullScreen.fullRender();
+		wonScreenTaxture.bind();
+		wonSreamVEO.fullRender();
+		SpriteButton.shader.enable();
+		continueButton.render(EnigWindow.mainWindow.cursorXFloat, EnigWindow.mainWindow.cursorYFloat);
+		if (EnigWindow.mainWindow.keys[GLFW_KEY_ENTER] > 0) {
+			return true;
+		}
 		return false;
 	}
 	

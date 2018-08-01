@@ -18,15 +18,7 @@ public abstract class EnigView {
 	public EnigView() {
 		window = new EnigWindow(1080, 780, getName());
 		setup();
-		while ( !glfwWindowShouldClose(EnigWindow.mainWindow.id) ) {
-			++framesSinceStart;
-			if (loop()) {
-				cleanUp();
-				break;
-			}
-			window.update();
-			cleanUp();
-		}
+		runLoop();
 		window.terminate();
 	}
 	
@@ -38,15 +30,7 @@ public abstract class EnigView {
 	public EnigView(int width, int height) {
 		window = new EnigWindow(width, height, getName());
 		setup();
-		while ( !glfwWindowShouldClose(EnigWindow.mainWindow.id) ) {
-			++framesSinceStart;
-			if (loop()) {
-				cleanUp();
-				break;
-			}
-			window.update();
-			cleanUp();
-		}
+		runLoop();
 		window.terminate();
 	}
 	
@@ -58,6 +42,18 @@ public abstract class EnigView {
 	public EnigView(EnigWindow swindow, boolean isMain) {
 		window = swindow;
 		setup();
+		runLoop();
+		if (isMain) {
+			window.terminate();
+		}
+	}
+	
+	public EnigView(EnigWindow swindow) {
+		window = swindow;
+	}
+	
+	public void runLoop() {
+		setup();
 		while ( !glfwWindowShouldClose(EnigWindow.mainWindow.id) ) {
 			++framesSinceStart;
 			if (loop()) {
@@ -66,9 +62,6 @@ public abstract class EnigView {
 			};
 			window.update();
 			cleanUp();
-		}
-		if (isMain) {
-			window.terminate();
 		}
 	}
 	

@@ -36,10 +36,10 @@ public class Movement {
         if (UserControls.right(window)) {
             hSpeed += delta_time / 3f;
         }
-        if (hSpeed != 0) {
+        if (Math.abs(hSpeed) > 0.00001) {
             vSpeed *= 0.70710678118f;
         }
-        if (vSpeed != 0) {
+        if (Math.abs(vSpeed) > 0.00001) {
             hSpeed *= 0.70710678118f;
         }
 
