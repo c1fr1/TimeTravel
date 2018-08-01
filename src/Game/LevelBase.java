@@ -162,6 +162,7 @@ public class LevelBase
 						xstart[i] = j;
 						ystart[i] = k;
 						currentTZ = i;
+						levelrow[k] = ' ';
 					}
 					else if (lane.charAt(k) == 'b')
 					{

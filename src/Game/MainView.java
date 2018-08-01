@@ -100,15 +100,16 @@ public class MainView extends EnigView {
 	boolean yDoor = true;
 	boolean zDoor = true;
 
+	static float aspectRatio;
+
 	@Override
 	public void setup() {
+		aspectRatio = (float)window.getHeight()/(float)window.getWidth();
 		LevelSelect.createTextFolder();
 		new MainMenu(window);
 		if(!quit) {
-			float aspectRatio = (float)window.getHeight()/(float)window.getWidth();
 			LoadingScreen.texturePath = new SpriteButton(-1f/aspectRatio, -1f, 2f/aspectRatio, 2f, "res/sprites/Loading.png");
             new LoadingScreen(window);
-
             //set variables here
             glDisable(GL_DEPTH_TEST);
             //needs to be generalized to use level selected - level path is a parameter
@@ -324,6 +325,8 @@ public class MainView extends EnigView {
 
 	@Override
 	public boolean loop() {
+		//System.out.println(window.cursorXFloat + " " + window.cursorYFloat);
+
 	    if(quit){
 	        return true;
         }
