@@ -37,7 +37,95 @@ public class CamCollision
         return colliding;
     }
 
-    public static char checkAllCollision(float x, float y, int border, ArrayList<Character[]> room, char[] obstacles)
+    public static boolean camEntityCollision(Entity a, int timeZone, float x, float y, int camBorder)
+    {
+        boolean colliding = false;
+        //if the entity exists in the given timezone
+        if (a.xpos[timeZone] > -1) {
+            //if the camera is colliding with the entity
+            if (a.xpos[timeZone] + a.border >= x - camBorder &&
+                    a.xpos[timeZone] - a.border <= x + camBorder) {
+                if (a.ypos[timeZone] + a.border >= y - camBorder &&
+                        a.ypos[timeZone] - a.border <= y + camBorder) {
+                    colliding = true;
+                }
+            }
+        }
+        return colliding;
+    }
+
+    public static Entity checkEntityColliding(LevelBase currentLevel, int timeZone, float x, float y)
+    {
+        for (int i = 0; i < currentLevel.entities.size(); i++)
+        {
+            if (camEntityCollision(currentLevel.entities.get(i),timeZone, x, y, 15))
+            {
+                return currentLevel.entities.get(i);
+            }
+        }
+        return null;
+    }
+
+    //snaps to collisions with entities
+    public static float entitySnapCollisionX(LevelBase currentLevel, int timeZone, float x, float y, float hspeed)
+    {
+        float newx = x;
+        Entity e = checkEntityColliding(currentLevel, timeZone, x, y);
+        if (e != null)
+        {
+            float xsave = x - hspeed;
+            //you are on the side
+            if ((e.ypos[timeZone] + e.border >= y - 15 &&
+                    e.ypos[timeZone] - e.border <= y + 15))
+            {
+                //you are to the left and moving right
+                if (xsave < e.xpos[timeZone] && hspeed > 0)
+                {
+                    float snap = e.xpos[timeZone] - e.border;
+                    newx = snap * Math.round(xsave/snap);
+                    newx += 15.001 * Util.getSign(-hspeed);
+                }
+                else if (xsave > e.xpos[timeZone] && hspeed < 0)
+                {
+                    float snap = e.xpos[timeZone] + e.border;
+                    newx = snap * Math.round(xsave/snap);
+                    newx += 15.001 * Util.getSign(-hspeed);
+                }
+            }
+        }
+        return newx - x;
+    }
+
+    public static float entitySnapCollisionY(LevelBase currentLevel, int timeZone, float x, float y, float vspeed)
+    {
+        float newy = y;
+        Entity e = checkEntityColliding(currentLevel, timeZone, x, y);
+        if (e != null)
+        {
+            float ysave = y - vspeed;
+            //you are on the side
+            if ((e.xpos[timeZone] + e.border >= x - 15 &&
+                    e.xpos[timeZone] - e.border <= x + 15))
+            {
+                //you are to the left and moving right
+                if (ysave < e.ypos[timeZone] && vspeed > 0)
+                {
+                    float snap = e.ypos[timeZone] - e.border;
+                    newy = snap * Math.round(ysave/snap);
+                    newy += 15.001 * Util.getSign(-vspeed);
+                }
+                else if (ysave > e.ypos[timeZone] && vspeed < 0)
+                {
+                    float snap = e.ypos[timeZone] + e.border;
+                    newy = snap * Math.round(ysave/snap);
+                    newy += 15.001 * Util.getSign(-vspeed);
+                }
+            }
+        }
+        return newy - y;
+    }
+
+    public static char checkCharColliding(float x, float y, int border, ArrayList<Character[]> room, char[] obstacles)
     {
         char solid = '`';
         for (int i = 0; i < obstacles.length; i++)
@@ -58,7 +146,7 @@ public class CamCollision
     {
         float xsave = x;
         x += hspeed;
-        char block = checkAllCollision(x,y,border,room,obstacles);
+        char block = checkCharColliding(x,y,border,room,obstacles);
         //pass doors
         if (block == '>')
         {
@@ -89,6 +177,7 @@ public class CamCollision
             x = 50 * Math.round(xsave/50);
             x += 15.001 * Util.getSign(-hspeed);
         }
+
         return x - xsave;
     }
 
@@ -97,7 +186,7 @@ public class CamCollision
     {
         float ysave = y;
         y += vspeed;
-        char block = checkAllCollision(x,y,border,room,obstacles);
+        char block = checkCharColliding(x,y,border,room,obstacles);
         //pass one way doors
         if (block == '^')
         {

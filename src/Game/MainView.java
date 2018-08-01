@@ -458,17 +458,22 @@ public class MainView extends EnigView {
 			//MOVEMENT
 			Movement m = new Movement(delta_time, window, cam, currentLevel, solidBlocks);
 
-			//Crate Movement - sets the box x and y from entity
+			//crate movement - sets the box x and y from entity
 			for (int i = 0; i < currentLevel.entities.size(); i++)
 			{
 				currentLevel.entities.get(i).getBoxMovement(currentLevel,currentLevel.currentTZ,m.getHSpeed(),m.getVSpeed());
 			}
-
+			//avatar movement
 			cam.x += m.getXOffset();
 			cam.y += m.getYOffset();
-			backgroundOffset.x += m.getXOffset() * 0.0005;
-			backgroundOffset.y += m.getYOffset() * 0.0005;
-			
+			//snap to box movement
+			float crateOffsetX = CamCollision.entitySnapCollisionX(currentLevel,currentLevel.currentTZ,cam.x,cam.y,m.getHSpeed());
+			float crateOffsetY = CamCollision.entitySnapCollisionY(currentLevel,currentLevel.currentTZ,cam.x,cam.y,m.getVSpeed());
+			cam.x += crateOffsetX;
+			cam.y += crateOffsetY;
+			//background shifting
+			backgroundOffset.x += (m.getXOffset() + crateOffsetX) * 0.0005;
+			backgroundOffset.y += (m.getYOffset() + crateOffsetY) * 0.0005;
 
 			LevelBase.levelProgram.enable();
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
