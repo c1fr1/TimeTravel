@@ -68,18 +68,30 @@ public class Entity
     {
     	if (playerAABB(camHSpeed, camVSpeed)) {
 			if ((camHSpeed > 0 && MainView.cam.x + 29 < xpos[timeZone])) {
-				xpos[timeZone] += CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, camHSpeed,
-						currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+				xpos[timeZone] += CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, camHSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+                for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
+                    xpos[i] = xpos[timeZone];
+                    ypos[i] = ypos[timeZone];
+                }
 			}else if ((camHSpeed < 0 && MainView.cam.x - 29 > xpos[timeZone])) {
-				xpos[timeZone] += CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, camHSpeed,
-						currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+				xpos[timeZone] += CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, camHSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+                for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
+                    xpos[i] = xpos[timeZone];
+                    ypos[i] = ypos[timeZone];
+                }
 			}
 			if ((camVSpeed > 0 && MainView.cam.y + 29 < ypos[timeZone])) {
-				ypos[timeZone] += CamCollision.verticalMove(xpos[timeZone], ypos[timeZone], border, camVSpeed,
-						currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+				ypos[timeZone] += CamCollision.verticalMove(xpos[timeZone], ypos[timeZone], border, camVSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+                for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
+                    xpos[i] = xpos[timeZone];
+                    ypos[i] = ypos[timeZone];
+                }
 			}else if ((camVSpeed < 0 && MainView.cam.y - 29 > ypos[timeZone])) {
-				ypos[timeZone] += CamCollision.verticalMove(xpos[timeZone], ypos[timeZone], border, camVSpeed,
-						currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+				ypos[timeZone] += CamCollision.verticalMove(xpos[timeZone], ypos[timeZone], border, camVSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+                for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
+                    xpos[i] = xpos[timeZone];
+                    ypos[i] = ypos[timeZone];
+                }
 			}
 		}
         int camBorder = 15;
@@ -88,26 +100,33 @@ public class Entity
                 MainView.cam.x,MainView.cam.y, 16))
         {
             //if you are on the side of the box
-            if (MainView.cam.y + camBorder >= ypos[timeZone] - border &&
-                    MainView.cam.y - camBorder <= ypos[timeZone] + border)
+            if (MainView.cam.y + camBorder > ypos[timeZone] - border &&
+                    MainView.cam.y - camBorder < ypos[timeZone] + border)
             {
                 //if you are pushing the box in a horizontal direction
                 if ((camHSpeed > 0 && MainView.cam.x < xpos[timeZone]) || (camHSpeed < 0 && MainView.cam.x > xpos[timeZone]))
                 {
                     //tests to make sure the box obeys normal wall collisions
-                    xpos[timeZone] += CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, camHSpeed,
-                            currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+                    xpos[timeZone] += CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, camHSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+                    for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
+                        xpos[i] = xpos[timeZone];
+                        ypos[i] = ypos[timeZone];
+                        System.out.println("a");
+                    }
                 }
             }
 
-            if (MainView.cam.x + camBorder >= xpos[timeZone] - border &&
-                    MainView.cam.x - camBorder <= xpos[timeZone] + border)
+            if (MainView.cam.x + camBorder > xpos[timeZone] - border &&
+                    MainView.cam.x - camBorder < xpos[timeZone] + border)
             {
                 if ((camVSpeed > 0 && MainView.cam.y < ypos[timeZone]) || (camVSpeed < 0 && MainView.cam.y > ypos[timeZone]))
                 {
                     //tests to make sure the box obeys normal wall collisions
-                    ypos[timeZone] += CamCollision.verticalMove(xpos[timeZone], ypos[timeZone], border, camVSpeed,
-                            currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+                    ypos[timeZone] += CamCollision.verticalMove(xpos[timeZone], ypos[timeZone], border, camVSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+                    for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
+                        xpos[i] = xpos[timeZone];
+                        ypos[i] = ypos[timeZone];
+                    }
                 }
             }
         }
