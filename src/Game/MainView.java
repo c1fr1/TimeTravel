@@ -12,9 +12,11 @@ import Game.Views.MainMenu;
 import Game.Views.WinScreen;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static Game.Util.absMin;
 import static org.lwjgl.glfw.GLFW.*;
@@ -657,9 +659,30 @@ public class MainView extends EnigView {
 
 
 	public static void main(String[] args) {
-		main = new MainView();
+		try {
+			Scanner s = new Scanner(new File("res/options.txt"));
+			String lina = s.nextLine();
+			if (lina.startsWith("f")) {
+				main = new MainView();
+			}else {
+				String linb = s.nextLine();
+				int width = Integer.parseInt(lina);
+				int height = Integer.parseInt(linb);
+				main = new MainView(width, height);
+			}
+		} catch (FileNotFoundException e) {
+			main = new MainView();
+		}
 	}
-
+	
+	public MainView() {
+		super();
+	}
+	
+	public MainView(int width, int height) {
+		super(width, height);
+	}
+	
 	@Override
 	public String getName() {
 		return "Time Travel Puzzle game";
