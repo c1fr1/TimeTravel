@@ -172,9 +172,9 @@ public class LevelBase
 						//Entity tempEnt = new Entity(startX, startY);
 						for (int l = 0; l < entities.size(); l++)
 						{
-							if (Math.abs(entities.get(l).xpos[entities.get(l).startZone] - startX) < 1 &&
-									Math.abs(entities.get(l).ypos[entities.get(l).startZone] - startY) < 1)
+							if (Math.abs(entities.get(l).xpos[entities.get(l).startZone] - startX) < 1 && Math.abs(entities.get(l).ypos[entities.get(l).startZone] - startY) < 1)
 							{
+								System.out.print("sdf\n");
 								entities.get(l).xpos[i] = startX;
 								entities.get(l).ypos[i] = startY;
 								taken = true;
