@@ -9,9 +9,7 @@ import engine.OpenGL.FBO;
 
 import java.util.TimeZone;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_G;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class PanScreen extends EnigView {
 	public LevelBase lvl;
@@ -55,7 +53,7 @@ public class PanScreen extends EnigView {
 	
 	@Override
 	public boolean loop() {
-		if (window.keys[GLFW_KEY_ENTER] > 0 || window.keys[GLFW_KEY_ESCAPE] > 0) {
+		if (window.keys[GLFW_KEY_ENTER] > 0 || window.keys[GLFW_KEY_TAB] > 0) {
 			return true;
 		}
 		FBO.prepareDefaultRender();
