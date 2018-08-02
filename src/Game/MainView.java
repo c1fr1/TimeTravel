@@ -13,6 +13,8 @@ import Game.Views.WinScreen;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -664,8 +666,30 @@ public class MainView extends EnigView {
 		return currentLevel.levelseries.get(currentLevel.currentTZ);
 	}
 
+    public static void createTextFolder(){
+        boolean check = false;
+        for(File i:new File("res/").listFiles()){
+            if(i.getName().equals("options.txt")){
+                check = true;
+            }
+        }
+        if(!check){
+            try {
+                PrintWriter writer = new PrintWriter("res/options.txt", "UTF-8");
+                String format = "f";
+                writer.println(format);
+                writer.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 	public static void main(String[] args) {
+	    createTextFolder();
 		try {
 			Scanner s = new Scanner(new File("res/options.txt"));
 			String lina = s.nextLine();
