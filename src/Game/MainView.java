@@ -340,8 +340,8 @@ public class MainView extends EnigView {
 		//System.out.println(ttoSelector);
 		long time = System.nanoTime();
 		float delta_time = ((float)(time - lastTime) / 1000000f);
-		if (delta_time > 60f) {
-			delta_time = 60f;
+		if (delta_time > 40f) {
+			delta_time = 40f;
 		}
 		float aspectRatio = (float) window.getHeight() / (float) window.getWidth();
 		if(UserControls.pause(window)){
