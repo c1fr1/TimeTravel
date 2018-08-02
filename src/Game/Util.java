@@ -54,4 +54,11 @@ public class Util {
         }
         return val;
     }
+    
+    public static float absMin(float a, float b) {
+    	if (Math.abs(a) < Math.abs(b)) {
+    		return a;
+		}
+		return b;
+	}
 }

@@ -34,6 +34,33 @@ public class CamCollision
         }
         return colliding;
     }
+	
+	public static boolean isColliding(float x, float y, int border, ArrayList<Character[]> room, char[] obstacle)
+	{
+		boolean colliding = false;
+		int[] xsquares = new int[4];
+		int[] ysquares = new int[4];
+		//point arrays
+		xsquares[0] = (int)((x - border)/50);
+		xsquares[1] = (int)((x + border)/50);
+		xsquares[2] = (int)((x + border)/50);
+		xsquares[3] = (int)((x - border)/50);
+		
+		ysquares[0] = (int)((y + border)/50);
+		ysquares[1] = (int)((y + border)/50);
+		ysquares[2] = (int)((y - border)/50);
+		ysquares[3] = (int)((y - border)/50);
+		
+		for (int o = 0; o < obstacle.length;++o) {
+			for (int i = 0; i < 4; i++) {
+				if (room.get(ysquares[i])[xsquares[i]] == obstacle[o]) {
+					colliding = true;
+					break;
+				}
+			}
+		}
+		return false;
+	}
 
     public static char checkCharColliding(float x, float y, int border, ArrayList<Character[]> room, char[] obstacles)
     {

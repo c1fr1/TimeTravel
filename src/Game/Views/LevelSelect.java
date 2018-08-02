@@ -31,10 +31,10 @@ public class LevelSelect extends EnigView {
         int rowNumber = (int)(window.getWidth()/100f);
         for(int i = 0; i < LevelSelect.levelState.length; i++){
 
-            float thingY = 50f + (i / rowNumber)*50f;
-            float thingX = ((i%rowNumber)*50f + 50f);
+            float thingY = (0.4f + (i / rowNumber)*0.4f);
+            float thingX = ((i%rowNumber)*0.4f + 0.4f) - 1;
             System.out.println(thingX + " " + thingY);
-            levels[i] = new SpriteButton((int)thingX, (int)thingY,50f, 50f, "res/sprites/levelSelect.png", aspectRatio);
+            levels[i] = new SpriteButton(thingX, thingY,0.2f, 0.2f, "res/sprites/levelSelect.png", aspectRatio);
         }
     }
 
@@ -71,10 +71,6 @@ public class LevelSelect extends EnigView {
                 levelState[i] = 2;
             }
         }
-
-
-
-
     }
 
     @Override

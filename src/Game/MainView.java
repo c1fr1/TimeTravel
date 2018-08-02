@@ -16,6 +16,7 @@ import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import static Game.Util.absMin;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -37,7 +38,6 @@ public class MainView extends EnigView {
 	}
 	
 	public static int entOffset = 1;
-	public static int testIndex = 0;
 
 	public static Camera cam;
 
@@ -472,18 +472,20 @@ public class MainView extends EnigView {
 			//MOVEMENT
 			Movement m;
 			m = new Movement(delta_time, window, cam, currentLevel, solidBlocks);
-
+			float xOffset = m.getXOffset();
+			float yOffset = m.getYOffset();
 			//crate movement - sets the box x and y from entity
 			for (int i = 0; i < currentLevel.entities.size(); i++) {
-				currentLevel.entities.get(i).getBoxMovement(currentLevel,currentLevel.currentTZ,m.getHSpeed(),m.getVSpeed());
+				float[] newOffsets = currentLevel.entities.get(i).getBoxMovement(cam.x, cam.y, m.getHSpeed(), m.getVSpeed());
+				xOffset = absMin(newOffsets[0], xOffset);
+				yOffset = absMin(newOffsets[1], yOffset);
 			}
-			testIndex = 0;
 			//avatar movement
-			cam.x += m.getXOffset();
-			cam.y += m.getYOffset();
+			cam.x += xOffset;
+			cam.y += yOffset;
 			//background shifting
-			backgroundOffset.x += m.getXOffset() * 0.0005;
-			backgroundOffset.y += m.getYOffset() * 0.0005;
+			backgroundOffset.x += xOffset * 0.0005;
+			backgroundOffset.y += yOffset * 0.0005;
 
 			LevelBase.levelProgram.enable();
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
