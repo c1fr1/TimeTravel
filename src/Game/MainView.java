@@ -11,6 +11,7 @@ import Game.Views.LoadingScreen;
 import Game.Views.MainMenu;
 import Game.Views.WinScreen;
 
+import java.awt.geom.Arc2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -115,14 +116,17 @@ public class MainView extends EnigView {
 	public void setup() {
 		aspectRatio = (float)window.getHeight()/(float)window.getWidth();
 		LevelSelect.createTextFolder();
+        DoubleTextureButton.dtexShader = new ShaderProgram("buttonShader");
 		new MainMenu(window);
 		if(!quit) {
+		    MainMenu.mainMenuQuit = false;
 			LoadingScreen.texturePath = new ShaderOptimizedButton(-1f/aspectRatio, -1f, 2f/aspectRatio, 2f, "res/sprites/Loading.png");
             new LoadingScreen(window);
             //set variables here
             glDisable(GL_DEPTH_TEST);
             //needs to be generalized to use level selected - level path is a parameter
             SpriteButton.shader = new ShaderProgram("buttonShader");
+
             currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt"/*, new String[] {"res/levelTemplate.png", "res/levelTemplate.png"}*/);
             cam = new Camera((float) window.getWidth(), (float) window.getHeight());
             guiShader = new ShaderProgram("guiShader");
@@ -341,6 +345,7 @@ public class MainView extends EnigView {
 
 	@Override
 	public boolean loop() {
+	    MainMenu.mainMenuQuit = false;
 		//System.out.println(window.cursorXFloat + " " + window.cursorYFloat);
 
 	    if(quit){
