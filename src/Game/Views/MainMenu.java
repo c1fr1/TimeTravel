@@ -25,7 +25,7 @@ public class MainMenu extends EnigView {
     @Override
     public void setup() {
         aspectRatio =  (float)window.getHeight()/(float)window.getWidth();
-        title = new SpriteButton(-1.6f,.6f,1.6f,0.2f,"res/sprites/Button.png", aspectRatio);
+        title = new SpriteButton(-1.6f,.6f,2f,0.2f,"res/menu/titleImage.png", aspectRatio);
         start = new SpriteButton(-1.6f,0f,1f,0.125f,"res/menu/playButton-1.png", aspectRatio);
         levelSelect = new SpriteButton(-1.6f,-.2f,1f,0.125f,"res/menu/selectorButton-1.png", aspectRatio);
         options = new SpriteButton(-1.6f,-.4f,1f,0.125f,"res/menu/optionsButton-1.png", aspectRatio);
