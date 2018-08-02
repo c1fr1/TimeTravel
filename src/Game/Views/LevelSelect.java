@@ -31,8 +31,11 @@ public class LevelSelect extends EnigView {
 
     public void LevelSelectButtons(EnigWindow window){
 
+        for(int j: levelState){
+            //System.out.println(j);
+        }
         levels = new SpriteButton[LevelSelect.levelState.length];
-        int columnNumber = (int)(window.getHeight()/200f);
+        int columnNumber = (int)(window.getHeight()/100f);
         int rowNumber = (int)(window.getWidth()/200f);
         for(int i = 0; i < LevelSelect.levelState.length; i++){
 
@@ -51,9 +54,16 @@ public class LevelSelect extends EnigView {
 
 
 
-            System.out.println(thingXPos + " " + thingYPos);
+            //System.out.println(thingXPos + " " + thingYPos);
             //System.out.println(thingWidth + " " + thingHeight);
-            levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos,thingWidth,thingHeight, "res/sprites/levelSelect.png");
+
+            if(levelState[i] == 1){
+                levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos,thingWidth,thingHeight, "res/sprites/levelSelectComplete.png");
+            } else if(levelState[i] == 2){
+                levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos,thingWidth,thingHeight, "res/sprites/levelSelectLock.png");
+            } else {
+                levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos, thingWidth, thingHeight, "res/sprites/levelSelect.png");
+            }
         }
     }
 
@@ -63,7 +73,7 @@ public class LevelSelect extends EnigView {
 
         for (int i = 0; i < levels.length; i++) {
             levels[i].render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
-            if (levels[i].hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)) {
+            if (levels[i].hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window) && levelState[i] != 2) {
                 MainView.currentLevelNum = i;
                 MainMenu.mainMenuQuit = true;
                 return true;
@@ -81,22 +91,32 @@ public class LevelSelect extends EnigView {
     public void setup() {
         aspectRatio = (float)window.getHeight()/(float)window.getWidth();
         SpriteButton.shader = new ShaderProgram("buttonShader");
-        LevelSelectButtons(window);
+
         //reads file
-        Scanner reader = new Scanner("res/levelComplete.txt");
+        Scanner reader = null;
+        try {
+            reader = new Scanner(new File("res/levelComplete.txt"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         String read = reader.nextLine();
+        reader.close();
         String[] readArray = read.split(",");
         int index = -1;
         for(int i = 0; i < readArray.length; i++){
-            if(readArray[i].equals('c')){
+            if(readArray[i].equals("c")){
+                //System.out.println("1");
                 levelState[i] = 1;
-            } else if(readArray[i].equals('n') && index == -1){
+            } else if(readArray[i].equals("n") && index == -1){
+                //System.out.println("0");
                 levelState[i] = 0;
                 index = i;
-            } else if(readArray[i].equals('n') && index > -1){
+            } else if(readArray[i].equals("n") && index > -1){
+                //System.out.println("2");
                 levelState[i] = 2;
             }
         }
+        LevelSelectButtons(window);
     }
 
     @Override

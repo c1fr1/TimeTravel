@@ -26,10 +26,10 @@ public class MainMenu extends EnigView {
     public void setup() {
         aspectRatio = (float)window.getHeight()/(float)window.getWidth();
         title = new DoubleTextureButton(-1.6f,.5f,1.2f,0.4f,"res/menu/titleImage.png", "res/menu/titleImage.png", aspectRatio);
-        start = new DoubleTextureButton(-1.6f,0f,1f,0.125f,"res/menu/playButton-1.png","res/menu/playButton-0.png", aspectRatio);
-        levelSelect = new DoubleTextureButton(-1.6f,-.2f,1f,0.125f,"res/menu/selectorButton-1.png","res/menu/selectorButton-0.png", aspectRatio);
-        options = new DoubleTextureButton(-1.6f,-.4f,1f,0.125f,"res/menu/optionsButton-1.png","res/menu/optionsButton-0.png", aspectRatio);
-        quit = new DoubleTextureButton(-1.6f,-.6f,1f,0.125f,"res/menu/quitButton-1.png", "res/menu/quitButton-1.png", aspectRatio);
+        start = new DoubleTextureButton(-1.6f,0f,1f,0.125f,"res/menu/playButton-0.png","res/menu/playButton-1.png", aspectRatio);
+        levelSelect = new DoubleTextureButton(-1.6f,-.2f,1f,0.125f,"res/menu/selectorButton-0.png","res/menu/selectorButton-1.png", aspectRatio);
+        options = new DoubleTextureButton(-1.6f,-.4f,1f,0.125f,"res/menu/optionsButton-0.png","res/menu/optionsButton-1.png", aspectRatio);
+        quit = new DoubleTextureButton(-1.6f,-.6f,1f,0.125f,"res/menu/quitButton-0.png", "res/menu/quitButton-1.png", aspectRatio);
         SpriteButton.shader = new ShaderProgram("buttonShader");
 
 

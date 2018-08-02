@@ -53,34 +53,38 @@ public class PanScreen extends EnigView {
 	
 	@Override
 	public boolean loop() {
-		if (window.keys[GLFW_KEY_ENTER] > 0 || window.keys[GLFW_KEY_TAB] > 0) {
-			return true;
-		}
-		FBO.prepareDefaultRender();
-		MainView.main.renderBackground();
-		lvl.render(camera);
-		if (lvl.currentTZ % 2 == 0) {
-			camera.x += maxX/200;
-			camera.y += maxY/200;
-			if (camera.x > maxX || camera.y > maxY) {
-				++lvl.currentTZ;
-				if (!(lvl.currentTZ < lvl.levelseries.size())) {
-					lvl.currentTZ = startTZ;
-					return true;
-				}
-			}
-		}else {
-			camera.x -= maxX/200;
-			camera.y -= maxY/200;
-			if (camera.x < minX || camera.y < minY) {
-				++lvl.currentTZ;
-				if (!(lvl.currentTZ < lvl.levelseries.size())) {
-					lvl.currentTZ = startTZ;
-					return true;
-				}
-			}
-		}
-		return false;
+        if(!MainView.quit) {
+            if (window.keys[GLFW_KEY_ENTER] > 0 || window.keys[GLFW_KEY_TAB] > 0) {
+                return true;
+            }
+            FBO.prepareDefaultRender();
+            MainView.main.renderBackground();
+            lvl.render(camera);
+            if (lvl.currentTZ % 2 == 0) {
+                camera.x += maxX/200;
+                camera.y += maxY/200;
+                if (camera.x > maxX || camera.y > maxY) {
+                    ++lvl.currentTZ;
+                    if (!(lvl.currentTZ < lvl.levelseries.size())) {
+                        lvl.currentTZ = startTZ;
+                        return true;
+                    }
+                }
+            }else {
+                camera.x -= maxX/200;
+                camera.y -= maxY/200;
+                if (camera.x < minX || camera.y < minY) {
+                    ++lvl.currentTZ;
+                    if (!(lvl.currentTZ < lvl.levelseries.size())) {
+                        lvl.currentTZ = startTZ;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } else {
+            return true;
+        }
 	}
 	
 	
