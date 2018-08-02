@@ -19,7 +19,7 @@ public class WinScreen extends EnigView {
 	public WinScreen(Texture background, float aespectionrations) {
 		super(EnigWindow.mainWindow);
 		if (wonScreenTaxture == null) {
-			wonScreenTaxture = new Texture("res/menu/winScreen.png");
+			wonScreenTaxture = new Texture("res/menu/levelComplete.png");
 			wonSreamVEO = new VAO(aespectionrations * -0.5f, -0.5f, aespectionrations, 1f);
 		}
 		t = background;

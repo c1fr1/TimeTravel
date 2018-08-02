@@ -1,10 +1,12 @@
 package Game.Views;
 
+import Game.MainView;
 import Game.ShaderOptimizedButton;
 import Game.SpriteButton;
 import Game.UserControls;
 import engine.EnigView;
 import engine.OpenGL.*;
+import sun.tools.jar.Main;
 
 import java.io.*;
 import java.util.Scanner;
@@ -44,7 +46,7 @@ public class LevelSelect extends EnigView {
             float thingHeight = 100f/window.getHeight();
 
             float thingXPos = (float)thingXIndex/(float)rowNumber*2f-1f;
-            float thingYPos = ((float)thingYIndex/(float)columnNumber*2f-1f);
+            float thingYPos = ((float)thingYIndex/(float)columnNumber*-2f+1f) - thingHeight*4;
 
 
 
@@ -61,7 +63,13 @@ public class LevelSelect extends EnigView {
 
         for (int i = 0; i < levels.length; i++) {
             levels[i].render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
+            if (levels[i].hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)) {
+                MainView.currentLevelNum = i;
+                MainMenu.mainMenuQuit = true;
+                return true;
+            }
         }
+
 
         if(UserControls.pause(window)){
             return true;
