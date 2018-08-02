@@ -232,7 +232,7 @@ public class MainView extends EnigView {
 					Character[] currentRow = currentZone.get(row);
 					for (int i = 0;i < currentRow.length; ++i) {
 						if (currentRow[i].equals('X')) {
-							replaceTile(i, row, 'i');
+							replaceCurrentTile(i, row, 'i');
 						}
 					}
 				}
@@ -242,7 +242,7 @@ public class MainView extends EnigView {
 					Character[] currentRow = currentZone.get(row);
 					for (int i = 0;i < currentRow.length; ++i) {
 						if (currentRow[i].equals('Y')) {
-							replaceTile(i, row, 'o');
+							replaceCurrentTile(i, row, 'o');
 						}
 					}
 				}
@@ -252,7 +252,7 @@ public class MainView extends EnigView {
 					Character[] currentRow = currentZone.get(row);
 					for (int i = 0;i < currentRow.length; ++i) {
 						if (currentRow[i].equals('Z')) {
-							replaceTile(i, row, 'p');
+							replaceCurrentTile(i, row, 'p');
 						}
 					}
 				}
@@ -264,7 +264,7 @@ public class MainView extends EnigView {
 					Character[] currentRow = currentZone.get(row);
 					for (int i = 0;i < currentRow.length; ++i) {
 						if (currentRow[i].equals('i')) {
-							replaceTile(i, row, 'X');
+							replaceCurrentTile(i, row, 'X');
 						}
 					}
 				}
@@ -272,19 +272,19 @@ public class MainView extends EnigView {
 				ArrayList<Character[]> currentZone = getCurrentZone();
 				for(int row = 0; row < currentZone.size();++row) {
 					Character[] currentRow = currentZone.get(row);
-					for (int i = 0;i < currentRow.length; ++i) {
+					for (int i = 0; i < currentRow.length; ++i) {
 						if (currentRow[i].equals('o')) {
-							replaceTile(i, row, 'Y');
+							replaceCurrentTile(i, row, 'Y');
 						}
 					}
 				}
 			}else if (button == 'z') {
 				ArrayList<Character[]> currentZone = getCurrentZone();
-				for(int row = 0; row < currentZone.size();++row) {
+				for(int row = 0; row < currentZone.size(); ++row) {
 					Character[] currentRow = currentZone.get(row);
-					for (int i = 0;i < currentRow.length; ++i) {
+					for (int i = 0; i < currentRow.length; ++i) {
 						if (currentRow[i].equals('p')) {
-							replaceTile(i, row, 'Z');
+							replaceCurrentTile(i, row, 'Z');
 						}
 					}
 				}
@@ -303,10 +303,20 @@ public class MainView extends EnigView {
 	public char replaceTile(float x, float y, char replacement) {
 		int tempIntX = (int)(x/50f);
 		int tempIntY = (int)(y/50f);
-        char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(tempIntY)[tempIntX];
+		char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(tempIntY)[tempIntX];
 		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
 			currentLevel.levelseries.get(i).get(tempIntY)[tempIntX] = replacement;
 		}
+
+		//currentLevel.levelseries.get(tempIntY)
+		return current;
+	}
+
+	public char replaceCurrentTile(float x, float y, char replacement) {
+		int tempIntX = (int)(x/50f);
+		int tempIntY = (int)(y/50f);
+		char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(tempIntY)[tempIntX];
+		currentLevel.levelseries.get(currentLevel.currentTZ).get(tempIntY)[tempIntX] = replacement;
 
 		//currentLevel.levelseries.get(tempIntY)
 		return current;
