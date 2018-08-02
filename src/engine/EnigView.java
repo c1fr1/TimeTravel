@@ -16,7 +16,7 @@ public abstract class EnigView {
 	 * creates a new main view
 	 */
 	public EnigView() {
-		window = new EnigWindow(1080, 780, getName());
+		window = new EnigWindow(getName());
 		runLoop();
 		window.terminate();
 	}
