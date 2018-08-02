@@ -1,6 +1,7 @@
 package Game.Views;
 
 import Game.MainView;
+import Game.ShaderOptimizedButton;
 import Game.SpriteButton;
 import Game.UserControls;
 import Game.Views.LevelSelect;
@@ -25,11 +26,11 @@ public class MainMenu extends EnigView {
     @Override
     public void setup() {
         aspectRatio =  (float)window.getHeight()/(float)window.getWidth();
-        title = new SpriteButton(-1.6f,.5f,1.2f,0.4f,"res/menu/titleImage.png", aspectRatio);
-        start = new SpriteButton(-1.6f,0f,1f,0.125f,"res/menu/playButton-1.png", aspectRatio);
-        levelSelect = new SpriteButton(-1.6f,-.2f,1f,0.125f,"res/menu/selectorButton-1.png", aspectRatio);
-        options = new SpriteButton(-1.6f,-.4f,1f,0.125f,"res/menu/optionsButton-1.png", aspectRatio);
-        quit = new SpriteButton(-1.6f,-.6f,1f,0.125f,"res/menu/quitButton-1.png", aspectRatio);
+        title = new ShaderOptimizedButton(-1.6f,.5f,1.2f,0.4f,"res/menu/titleImage.png", aspectRatio);
+        start = new ShaderOptimizedButton(-1.6f,0f,1f,0.125f,"res/menu/playButton-1.png", aspectRatio);
+        levelSelect = new ShaderOptimizedButton(-1.6f,-.2f,1f,0.125f,"res/menu/selectorButton-1.png", aspectRatio);
+        options = new ShaderOptimizedButton(-1.6f,-.4f,1f,0.125f,"res/menu/optionsButton-1.png", aspectRatio);
+        quit = new ShaderOptimizedButton(-1.6f,-.6f,1f,0.125f,"res/menu/quitButton-1.png", aspectRatio);
         SpriteButton.shader = new ShaderProgram("buttonShader");
 
 

@@ -6,19 +6,17 @@ import engine.OpenGL.VAO;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-public class SpriteButton
-{
+public abstract class SpriteButton {
     public float xpos;
     public float ypos;
     public float width;
     public float height;
-    public Texture sprite;
-    public VAO vao;
+    /*public Texture sprite;
+    public VAO vao;*/
     public static ShaderProgram shader;
 
 
-    public SpriteButton(float x, float y, float width, float height, String path)
-    {
+    /*public SpriteButton(float x, float y, float width, float height, String path) {
         xpos = x;
         ypos = y;
         this.width = width;
@@ -35,22 +33,18 @@ public class SpriteButton
 		this.height = height;
 		sprite = new Texture(path);
 		vao = new VAO(x, y, width, height);
-	}
+	}*/
     
-    public boolean hoverCheck(float xmouse, float ymouse)
-    {
-        if (xmouse <= xpos + width && xmouse >= xpos)
-        {
-            if (ymouse >= ypos && ymouse <= ypos + height)
-            {
+    public boolean hoverCheck(float xmouse, float ymouse) {
+        if (xmouse <= xpos + width && xmouse >= xpos) {
+            if (ymouse >= ypos && ymouse <= ypos + height) {
                 return true;
             }
         }
         return false;
     }
 
-    public float getXpos()
-    {
+    public float getXpos() {
         return xpos;
     }
 
@@ -66,7 +60,7 @@ public class SpriteButton
         return height;
     }
     
-    public boolean render(float cursorX, float cursorY) {
+    public abstract boolean render(float cursorX, float cursorY);/* {
     	boolean ret = false;
     	shader.enable();
     	if (hoverCheck(cursorX, cursorY)) {
@@ -78,9 +72,9 @@ public class SpriteButton
     	sprite.bind();
     	vao.fullRender();
     	return ret;
-	}
+	}*/
 
-    public boolean render(float cursorX, float cursorY, float aspectRatio) {
+    public abstract boolean render(float cursorX, float cursorY, float aspectRatio); /*{
         boolean ret = false;
         shader.enable();
         shader.shaders[0].uniforms[0].set(aspectRatio);
@@ -93,5 +87,5 @@ public class SpriteButton
         sprite.bind();
         vao.fullRender();
         return ret;
-    }
+    }*/
 }

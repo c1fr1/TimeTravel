@@ -65,7 +65,7 @@ public class MainView extends EnigView {
 	public Vector2f backgroundOffset = new Vector2f();
 	public Vector2f backgroundVelocity = new Vector2f();
 
-	public SpriteButton ttoGUIButton;
+	public ShaderOptimizedButton ttoGUIButton;
 
 	public Texture frontStars;
 	public Texture ttoGUI;
@@ -115,7 +115,7 @@ public class MainView extends EnigView {
 		LevelSelect.createTextFolder();
 		new MainMenu(window);
 		if(!quit) {
-			LoadingScreen.texturePath = new SpriteButton(-1f/aspectRatio, -1f, 2f/aspectRatio, 2f, "res/sprites/Loading.png");
+			LoadingScreen.texturePath = new ShaderOptimizedButton(-1f/aspectRatio, -1f, 2f/aspectRatio, 2f, "res/sprites/Loading.png");
             new LoadingScreen(window);
             //set variables here
             glDisable(GL_DEPTH_TEST);
@@ -138,11 +138,11 @@ public class MainView extends EnigView {
             //spriteTexture[2] = new Texture("res/sprites/sprite-right.png");
             //spriteTexture[3] = new Texture("res/sprites/sprite-up.png");
 
-            cont = new SpriteButton(-0.5f, 0.525f, 1f, 0.25f, "res/sprites/continueButton.png", aspectRatio);
+            cont = new ShaderOptimizedButton(-0.5f, 0.525f, 1f, 0.25f, "res/sprites/continueButton.png", aspectRatio);
             WinScreen.continueButton = cont;
 
-            restart = new SpriteButton(-0.5f, -0.125f, 1f, 0.25f, "res/sprites/restart.png", aspectRatio);
-            menu = new SpriteButton(-0.5f, -0.725f, 1f, 0.25f, "res/sprites/mainMenu.png", aspectRatio);
+            restart = new ShaderOptimizedButton(-0.5f, -0.125f, 1f, 0.25f, "res/sprites/restart.png", aspectRatio);
+            menu = new ShaderOptimizedButton(-0.5f, -0.725f, 1f, 0.25f, "res/sprites/mainMenu.png", aspectRatio);
 
             textureShader = new ShaderProgram("textureShaders");
             pauseShader = new ShaderProgram("pauseShaders");
@@ -164,7 +164,7 @@ public class MainView extends EnigView {
             backgroundOffset = new Vector2f(0f, 0f);
             backgroundVelocity = new Vector2f(0f, 0f);
 
-            ttoGUIButton = new SpriteButton(-0.06f, 0.4f, 0.12f, 0.12f, "res/sprites/ttoguiButton.png");
+            ttoGUIButton = new ShaderOptimizedButton(-0.06f, 0.4f, 0.12f, 0.12f, "res/sprites/ttoguiButton.png");
             ttoGUIButtonShader = new ShaderProgram("ttoGUIButtonShader");
 
             mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));

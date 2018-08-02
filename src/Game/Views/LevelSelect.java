@@ -1,5 +1,6 @@
 package Game.Views;
 
+import Game.ShaderOptimizedButton;
 import Game.SpriteButton;
 import Game.UserControls;
 import engine.EnigView;
@@ -50,7 +51,7 @@ public class LevelSelect extends EnigView {
 
             System.out.println(thingXPos + " " + thingYPos);
             //System.out.println(thingWidth + " " + thingHeight);
-            levels[i] = new SpriteButton(thingXPos, thingYPos,thingWidth,thingHeight, "res/sprites/levelSelect.png");
+            levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos,thingWidth,thingHeight, "res/sprites/levelSelect.png");
         }
     }
 
@@ -88,10 +89,6 @@ public class LevelSelect extends EnigView {
                 levelState[i] = 2;
             }
         }
-
-
-
-
     }
 
     @Override
