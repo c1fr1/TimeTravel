@@ -13,11 +13,11 @@ import java.util.Scanner;
 
 public class LevelBase
 {
-	ArrayList<ArrayList<Character[]>> levelseries;
-	Texture[] BackgroundTextures;
-	float[] xstart;
-	float[] ystart;
-	int currentTZ;
+	public ArrayList<ArrayList<Character[]>> levelseries;
+	public Texture[] BackgroundTextures;
+	public float[] xstart;
+	public float[] ystart;
+	public int currentTZ;
     
     public static VAO tileObj;
     public static Texture floorTexture;

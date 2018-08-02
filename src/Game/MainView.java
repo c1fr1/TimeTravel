@@ -1,5 +1,6 @@
 package Game;
 
+import Game.Views.*;
 import engine.*;
 import engine.Entities.Camera;
 import engine.OpenGL.*;
@@ -11,7 +12,6 @@ import Game.Views.LoadingScreen;
 import Game.Views.MainMenu;
 import Game.Views.WinScreen;
 
-import java.awt.geom.Arc2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -114,6 +114,7 @@ public class MainView extends EnigView {
 
 	@Override
 	public void setup() {
+		main = this;
 		aspectRatio = (float)window.getHeight()/(float)window.getWidth();
 		LevelSelect.createTextFolder();
         DoubleTextureButton.dtexShader = new ShaderProgram("buttonShader");
@@ -195,163 +196,10 @@ public class MainView extends EnigView {
         }
 
 	}
-
-	public boolean nextLevel(int increment) {
-		inv.reset();
-		File test = new File("res/Levels");
-		if(test.listFiles().length > currentLevelNum+increment && !(currentLevelNum+increment < 0)) {
-            currentLevelNum+=increment;
-            currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt");
-            ttoSelector =  currentLevel.currentTZ;
-            cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
-            cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
-            return false;
-        }else {
-			return true;
-		}
-    }
-
-    public int[] findCharacter(char ch){
-		ArrayList<Character[]> level = currentLevel.levelseries.get(currentLevel.currentTZ);
-		for(int i = 0; i < level.size(); i++){
-			for(int j = 0; j < level.get(i).length; j++){
-				if(level.get(i)[j].equals(ch)){
-					return new int[] {j,i};
-				}
-			}
-		}
-		return new int[] {-1,-1};
-	}
-
-	public boolean checkBoxPosition(ArrayList<Entity> boxes, char obs){
-		int tz = currentLevel.currentTZ;
-		for (Entity i: boxes){
-			if(CamCollision.isColliding(i.xpos[tz], i.ypos[tz], 15, currentLevel.levelseries.get(tz), obs)){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void checkButtonPress (char button, char door) {
-		if (checkBoxPosition(currentLevel.entities, button) || CamCollision.isColliding(cam.x, cam.y,15, currentLevel.levelseries.get(currentLevel.currentTZ), button)) {
-			int[] location = findCharacter(door);
-			if (button == 'x') {
-				ArrayList<Character[]> currentZone = getCurrentZone();
-				for(int row = 0; row < currentZone.size();++row) {
-					Character[] currentRow = currentZone.get(row);
-					for (int i = 0;i < currentRow.length; ++i) {
-						if (currentRow[i].equals('X')) {
-							replaceCurrentTile(i, row, 'i');
-						}
-					}
-				}
-			}else if (button == 'y') {
-				ArrayList<Character[]> currentZone = getCurrentZone();
-				for(int row = 0; row < currentZone.size();++row) {
-					Character[] currentRow = currentZone.get(row);
-					for (int i = 0;i < currentRow.length; ++i) {
-						if (currentRow[i].equals('Y')) {
-							replaceCurrentTile(i, row, 'o');
-						}
-					}
-				}
-			}else if (button == 'z') {
-				ArrayList<Character[]> currentZone = getCurrentZone();
-				for(int row = 0; row < currentZone.size();++row) {
-					Character[] currentRow = currentZone.get(row);
-					for (int i = 0;i < currentRow.length; ++i) {
-						if (currentRow[i].equals('Z')) {
-							replaceCurrentTile(i, row, 'p');
-						}
-					}
-				}
-			}
-		}else {
-			if (button == 'x') {
-				ArrayList<Character[]> currentZone = getCurrentZone();
-				for(int row = 0; row < currentZone.size();++row) {
-					Character[] currentRow = currentZone.get(row);
-					for (int i = 0;i < currentRow.length; ++i) {
-						if (currentRow[i].equals('i')) {
-							replaceCurrentTile(i, row, 'X');
-						}
-					}
-				}
-			}else if (button == 'y') {
-				ArrayList<Character[]> currentZone = getCurrentZone();
-				for(int row = 0; row < currentZone.size();++row) {
-					Character[] currentRow = currentZone.get(row);
-					for (int i = 0; i < currentRow.length; ++i) {
-						if (currentRow[i].equals('o')) {
-							replaceCurrentTile(i, row, 'Y');
-						}
-					}
-				}
-			}else if (button == 'z') {
-				ArrayList<Character[]> currentZone = getCurrentZone();
-				for(int row = 0; row < currentZone.size(); ++row) {
-					Character[] currentRow = currentZone.get(row);
-					for (int i = 0; i < currentRow.length; ++i) {
-						if (currentRow[i].equals('p')) {
-							replaceCurrentTile(i, row, 'Z');
-						}
-					}
-				}
-			}
-		}
-	}
-
-
-	/**
-	 *
-     * @return character replaced
-	 * @param x location of replace
-	 * @param y location of replace
-	 * @param replacement tile you are replacing it with
-	 */
-	public char replaceTile(float x, float y, char replacement) {
-		int tempIntX = (int)(x/50f);
-		int tempIntY = (int)(y/50f);
-		char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(tempIntY)[tempIntX];
-		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
-			currentLevel.levelseries.get(i).get(tempIntY)[tempIntX] = replacement;
-		}
-
-		//currentLevel.levelseries.get(tempIntY)
-		return current;
-	}
-
-	public char replaceCurrentTile(int x, int y, char replacement) {
-		char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(y)[x];
-		currentLevel.levelseries.get(currentLevel.currentTZ).get(y)[x] = replacement;
-		//currentLevel.levelseries.get(tempIntY)
-		return current;
-	}
-
-	/**
-	 *
-	 * @param x index of replace
-	 * @param y index of replace
-	 * @param replacement tile you are replacing it with
-	 * @return
-	 */
-	public char replaceTile(int x, int y, char replacement) {
-		char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(y)[x];
-		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
-			currentLevel.levelseries.get(i).get(y)[x] = replacement;
-		}
-		
-		//currentLevel.levelseries.get(tempIntY)
-		return current;
-	}
-
-
+	//DO NOT PLACE FUNCTIONS BETWEEN SETUP AND LOOP, PUT BELOW LOOP
 	@Override
 	public boolean loop() {
 	    MainMenu.mainMenuQuit = false;
-		//System.out.println(window.cursorXFloat + " " + window.cursorYFloat);
-
 	    if(quit){
 	        return true;
         }
@@ -434,17 +282,7 @@ public class MainView extends EnigView {
 			ttoSelector = currentLevel.currentTZ;
 			ttoSelectorBool = false;
 
-			backgroundShader.enable();
-			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
-			starBackground.bind();
-			screenVAO.prepareRender();
-			screenVAO.drawTriangles();
-			frontStars.bind();
-			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.5f, new Vector2f()));
-			screenVAO.drawTriangles();
-			screenVAO.unbind();
-			
-			
+			renderBackground();
 			
 			currentLevel.render(cam);
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
@@ -470,15 +308,7 @@ public class MainView extends EnigView {
 		else {
 			mainFBO.prepareForTexture();
 			
-			backgroundShader.enable();
-			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
-			starBackground.bind();
-			screenVAO.prepareRender();
-			screenVAO.drawTriangles();
-			frontStars.bind();
-			backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.5f, new Vector2f()));
-			screenVAO.drawTriangles();
-			screenVAO.unbind();
+			renderBackground();
 			
 			backgroundVelocity.mul(0.99f);
 			backgroundVelocity.add((float) (delta_time * 0.000007f * (Math.random() - 0.5)), (float) (delta_time * 0.000007f * (Math.random() - 0.5)));
@@ -669,6 +499,169 @@ public class MainView extends EnigView {
 			screenVAO.fullRender();
 		}
 		return false;
+	}
+	
+	public void renderBackground() {
+		backgroundShader.enable();
+		backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
+		starBackground.bind();
+		screenVAO.prepareRender();
+		screenVAO.drawTriangles();
+		frontStars.bind();
+		backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.5f, new Vector2f()));
+		screenVAO.drawTriangles();
+		screenVAO.unbind();
+	}
+	
+	public boolean nextLevel(int increment) {
+		inv.reset();
+		File test = new File("res/Levels");
+		if(test.listFiles().length > currentLevelNum + increment && !(currentLevelNum + increment < 0)) {
+			currentLevelNum += increment;
+			currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt");
+			ttoSelector =  currentLevel.currentTZ;
+			cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
+			cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
+			new PanScreen(window);
+			return false;
+		}else {
+			return true;
+		}
+	}
+	
+	public int[] findCharacter(char ch){
+		ArrayList<Character[]> level = currentLevel.levelseries.get(currentLevel.currentTZ);
+		for(int i = 0; i < level.size(); i++){
+			for(int j = 0; j < level.get(i).length; j++){
+				if(level.get(i)[j].equals(ch)){
+					return new int[] {j,i};
+				}
+			}
+		}
+		return new int[] {-1,-1};
+	}
+	
+	public boolean checkBoxPosition(ArrayList<Entity> boxes, char obs){
+		int tz = currentLevel.currentTZ;
+		for (Entity i: boxes){
+			if(CamCollision.isColliding(i.xpos[tz], i.ypos[tz], 15, currentLevel.levelseries.get(tz), obs)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void checkButtonPress (char button, char door) {
+		if (checkBoxPosition(currentLevel.entities, button) || CamCollision.isColliding(cam.x, cam.y,15, currentLevel.levelseries.get(currentLevel.currentTZ), button)) {
+			int[] location = findCharacter(door);
+			if (button == 'x') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size();++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0;i < currentRow.length; ++i) {
+						if (currentRow[i].equals('X')) {
+							replaceCurrentTile(i, row, 'i');
+						}
+					}
+				}
+			}else if (button == 'y') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size();++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0;i < currentRow.length; ++i) {
+						if (currentRow[i].equals('Y')) {
+							replaceCurrentTile(i, row, 'o');
+						}
+					}
+				}
+			}else if (button == 'z') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size();++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0;i < currentRow.length; ++i) {
+						if (currentRow[i].equals('Z')) {
+							replaceCurrentTile(i, row, 'p');
+						}
+					}
+				}
+			}
+		}else {
+			if (button == 'x') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size();++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0;i < currentRow.length; ++i) {
+						if (currentRow[i].equals('i')) {
+							replaceCurrentTile(i, row, 'X');
+						}
+					}
+				}
+			}else if (button == 'y') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size();++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0; i < currentRow.length; ++i) {
+						if (currentRow[i].equals('o')) {
+							replaceCurrentTile(i, row, 'Y');
+						}
+					}
+				}
+			}else if (button == 'z') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size(); ++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0; i < currentRow.length; ++i) {
+						if (currentRow[i].equals('p')) {
+							replaceCurrentTile(i, row, 'Z');
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 *
+	 * @return character replaced
+	 * @param x location of replace
+	 * @param y location of replace
+	 * @param replacement tile you are replacing it with
+	 */
+	public char replaceTile(float x, float y, char replacement) {
+		int tempIntX = (int)(x/50f);
+		int tempIntY = (int)(y/50f);
+		char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(tempIntY)[tempIntX];
+		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
+			currentLevel.levelseries.get(i).get(tempIntY)[tempIntX] = replacement;
+		}
+		
+		//currentLevel.levelseries.get(tempIntY)
+		return current;
+	}
+	
+	public char replaceCurrentTile(int x, int y, char replacement) {
+		char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(y)[x];
+		currentLevel.levelseries.get(currentLevel.currentTZ).get(y)[x] = replacement;
+		//currentLevel.levelseries.get(tempIntY)
+		return current;
+	}
+	
+	/**
+	 *
+	 * @param x index of replace
+	 * @param y index of replace
+	 * @param replacement tile you are replacing it with
+	 * @return
+	 */
+	public char replaceTile(int x, int y, char replacement) {
+		char current = currentLevel.levelseries.get(currentLevel.currentTZ).get(y)[x];
+		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
+			currentLevel.levelseries.get(i).get(y)[x] = replacement;
+		}
+		
+		//currentLevel.levelseries.get(tempIntY)
+		return current;
 	}
 
 	public ArrayList<Character[]> getCurrentZone() {
