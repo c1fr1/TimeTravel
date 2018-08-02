@@ -109,8 +109,10 @@ public class Entity
                 xpos[timeZone] += absMin(xOffset, fit);
 				//MainView.cam.x = xpos[timeZone] - 36f;
                 for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i++) {
-                    xpos[i] = xpos[timeZone];
-                    ypos[i] = ypos[timeZone];
+                    if (xpos[i] > -1) {
+                        xpos[i] = xpos[timeZone];
+                        ypos[i] = ypos[timeZone];
+                    }
                 }
             } else if ((xOffset < 0 && entX - 29 > xpos[timeZone])) {
                 xOffset = CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, xOffset, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
@@ -119,8 +121,10 @@ public class Entity
                 xpos[timeZone] += xOffset;
                 //MainView.cam.x = xpos[timeZone] + 36f;
                 for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i++) {
-                    xpos[i] = xpos[timeZone];
-                    ypos[i] = ypos[timeZone];
+                    if (xpos[i] > -1) {
+                        xpos[i] = xpos[timeZone];
+                        ypos[i] = ypos[timeZone];
+                    }
                 }
             }
             if ((yOffset > 0 && entY + 29 < ypos[timeZone])) {
@@ -129,8 +133,10 @@ public class Entity
                 ypos[timeZone] += absMin(yOffset, fit);
                 //MainView.cam.y = ypos[timeZone] - 36f;
                 for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i++) {
-                    xpos[i] = xpos[timeZone];
-                    ypos[i] = ypos[timeZone];
+                    if (xpos[i] > -1) {
+                        xpos[i] = xpos[timeZone];
+                        ypos[i] = ypos[timeZone];
+                    }
                 }
             } else if ((yOffset < 0 && entY - 29 > ypos[timeZone])) {
             	yOffset = CamCollision.verticalMove(xpos[timeZone], ypos[timeZone], border, yOffset, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
@@ -138,8 +144,10 @@ public class Entity
             	ypos[timeZone] += absMin(yOffset, fit);
                 //MainView.cam.y = ypos[timeZone] + 36f;
                 for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i++) {
-                    xpos[i] = xpos[timeZone];
-                    ypos[i] = ypos[timeZone];
+                    if (xpos[i] > -1) {
+                        xpos[i] = xpos[timeZone];
+                        ypos[i] = ypos[timeZone];
+                    }
                 }
             }
         }
