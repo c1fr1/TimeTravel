@@ -135,6 +135,14 @@ public class UserControls {
 		}
 		return false;
 	}
+	public static boolean leftMBPress(EnigWindow window) {
+		for (int i:leftMB) {
+			if (window.mouseButtons[i] == 1) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public static boolean levelAdvance(EnigWindow window) {
 		for (int i:levelAdvance) {
 			if (window.keys[i] > 0) {

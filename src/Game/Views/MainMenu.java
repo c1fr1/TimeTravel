@@ -16,6 +16,8 @@ public class MainMenu extends EnigView {
     SpriteButton options;
     SpriteButton quit;
 
+    static boolean mainMenuQuit = false;
+
 
     public MainMenu(EnigWindow window){
         super(window, false);
@@ -38,28 +40,32 @@ public class MainMenu extends EnigView {
 
     @Override
     public boolean loop() {
+        if(!mainMenuQuit) {
+            FBO.prepareDefaultRender();
+            SpriteButton.shader.enable();
 
-        FBO.prepareDefaultRender();
-        SpriteButton.shader.enable();
-
-        SpriteButton.shader.shaders[0].uniforms[0].set(aspectRatio);
-        title.render(window.cursorXFloat, window.cursorYFloat);
-        start.render(window.cursorXFloat, window.cursorYFloat);
-        levelSelect.render(window.cursorXFloat, window.cursorYFloat);
-        options.render(window.cursorXFloat, window.cursorYFloat);
-        quit.render(window.cursorXFloat, window.cursorYFloat);
-        if(start.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)){
-            //System.out.println("yeah");
+            SpriteButton.shader.shaders[0].uniforms[0].set(aspectRatio);
+            title.render(window.cursorXFloat, window.cursorYFloat);
+            start.render(window.cursorXFloat, window.cursorYFloat);
+            levelSelect.render(window.cursorXFloat, window.cursorYFloat);
+            options.render(window.cursorXFloat, window.cursorYFloat);
+            quit.render(window.cursorXFloat, window.cursorYFloat);
+            if (start.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)) {
+                //System.out.println("yeah");
+                return true;
+            }
+            if (levelSelect.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)) {
+                new LevelSelect(window);
+            }
+            if (quit.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)) {
+                MainView.quit = true;
+                return true;
+            }
+            EnigWindow.checkGLError();
+            return false;
+        } else if(mainMenuQuit){
             return true;
         }
-        if(levelSelect.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)){
-            new LevelSelect(window);
-        }
-        if(quit.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)){
-            MainView.quit = true;
-            return true;
-        }
-        EnigWindow.checkGLError();
         return false;
     }
 

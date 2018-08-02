@@ -699,6 +699,11 @@ public class MainView extends EnigView {
 				String linb = s.nextLine();
 				int width = Integer.parseInt(lina);
 				int height = Integer.parseInt(linb);
+				if(width < 200){
+				    width = 200;
+                } if(height < 200){
+				    height = 200;
+                }
 				main = new MainView(width, height);
 			}
 		} catch (FileNotFoundException e) {
