@@ -1,6 +1,7 @@
 package Game.Views;
 
 import Game.SpriteButton;
+import Game.UserControls;
 import engine.EnigView;
 import engine.OpenGL.*;
 
@@ -28,13 +29,28 @@ public class LevelSelect extends EnigView {
     public void LevelSelectButtons(EnigWindow window){
 
         levels = new SpriteButton[LevelSelect.levelState.length];
-        int rowNumber = (int)(window.getWidth()/100f);
+        int columnNumber = (int)(window.getHeight()/200f);
+        int rowNumber = (int)(window.getWidth()/200f);
         for(int i = 0; i < LevelSelect.levelState.length; i++){
 
             float thingY = (0.4f + (i / rowNumber)*0.4f);
             float thingX = ((i%rowNumber)*0.4f + 0.4f) - 1;
-            System.out.println(thingX + " " + thingY);
-            levels[i] = new SpriteButton(thingX, thingY,0.2f, 0.2f, "res/sprites/levelSelect.png", aspectRatio);
+
+            int thingXIndex = i % rowNumber;
+            int thingYIndex = i / rowNumber;
+
+            float thingWidth = 100f/window.getWidth()/aspectRatio;
+            float thingHeight = 100f/window.getHeight();
+
+            float thingXPos = (float)thingXIndex/(float)rowNumber*2f-1f;
+            float thingYPos = ((float)thingYIndex/(float)columnNumber*2f-1f);
+
+
+
+
+            System.out.println(thingXPos + " " + thingYPos);
+            //System.out.println(thingWidth + " " + thingHeight);
+            levels[i] = new SpriteButton(thingXPos, thingYPos,thingWidth,thingHeight, "res/sprites/levelSelect.png");
         }
     }
 
@@ -43,11 +59,12 @@ public class LevelSelect extends EnigView {
         FBO.prepareDefaultRender();
 
         for (int i = 0; i < levels.length; i++) {
-            //System.out.println("lklklklklk");
-            //TODO I hAVE NO IDEA WHY THIS DOESNT WORK
             levels[i].render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
         }
 
+        if(UserControls.pause(window)){
+            return true;
+        }
         return false;
     }
 
@@ -71,6 +88,10 @@ public class LevelSelect extends EnigView {
                 levelState[i] = 2;
             }
         }
+
+
+
+
     }
 
     @Override
