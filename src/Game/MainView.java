@@ -522,7 +522,9 @@ public class MainView extends EnigView {
 			ttoSelector =  currentLevel.currentTZ;
 			cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
 			cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
-			new PanScreen(window);
+			if (increment == 1) {
+				new PanScreen(window);
+			}
 			return false;
 		}else {
 			return true;
