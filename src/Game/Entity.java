@@ -30,10 +30,11 @@ public class Entity
     VAO spriteVAO;
     public static ShaderProgram levelProgram;
 
-    public Entity(float startX, float startY, int amountOfTimezones, int startZone, int arrayLocation)
+    public Entity(float startX, float startY, int amountOfTimezones, int timeZone, int arrayLocation)
     {
         border = 15;
         arrayIndex = arrayLocation;
+        startZone = timeZone;
         xpos = new float[amountOfTimezones];
         ypos = new float[amountOfTimezones];
         xpos[startZone] = startX;
