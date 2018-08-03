@@ -1,3 +1,20 @@
-#####
-#s g#
-#####,
+###########
+#s       y#
+#YbZbYbXbZ#
+#zzzzzzzzz#
+#YXYZXYZXZ#
+#ZYXYZXYZX#
+#xxxxxxxxx#
+#YYZZXXYXZ####
+#ZZZZZZZZZ  t#
+##############,
+###########
+#s       y#
+#YbZbYbXbZ#
+#zzzzzzzzz#
+#YXYZXYZXZ#
+#ZYXYZXYZX#
+#xxxxxxxxx#
+#YYZZXXYXZ####
+#ZZZZZZZZZ# t#
+##############
