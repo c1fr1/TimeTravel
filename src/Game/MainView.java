@@ -50,7 +50,7 @@ public class MainView extends EnigView {
 
 	//Glodal booleans
 
-	static boolean backgroundMove;
+	static boolean backgroundMoveBool;
 
 	//project variables
 
@@ -99,6 +99,8 @@ public class MainView extends EnigView {
 	public float animationFrameCounter = 0;
 
 	public long lastTime = System.nanoTime();
+	
+	public static float delta_time;
 
 	SpriteButton cont;
 	SpriteButton restart;
@@ -207,7 +209,7 @@ public class MainView extends EnigView {
         }
 		//System.out.println(ttoSelector);
 		long time = System.nanoTime();
-		float delta_time = ((float)(time - lastTime) / 1000000f);
+		delta_time = ((float)(time - lastTime) / 1000000f);
 		if (delta_time > 40f) {
 			delta_time = 40f;
 		}
@@ -311,10 +313,6 @@ public class MainView extends EnigView {
 			mainFBO.prepareForTexture();
 			
 			renderBackground();
-			
-			backgroundVelocity.mul(0.99f);
-			backgroundVelocity.add((float) (delta_time * 0.000007f * (Math.random() - 0.5)), (float) (delta_time * 0.000007f * (Math.random() - 0.5)));
-			backgroundOffset.add(backgroundVelocity);
 
 			lastTime = time;
 
@@ -505,14 +503,21 @@ public class MainView extends EnigView {
 	
 	public void renderBackground() {
 		backgroundShader.enable();
-		backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
+		backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.5f, new Vector2f()));
 		starBackground.bind();
 		screenVAO.prepareRender();
 		screenVAO.drawTriangles();
 		frontStars.bind();
-		backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.5f, new Vector2f()));
+		backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
 		screenVAO.drawTriangles();
 		screenVAO.unbind();
+		
+		
+		if (backgroundMoveBool) {
+			backgroundVelocity.mul(0.99f);
+			backgroundVelocity.add((float) (delta_time * 0.000007f * (Math.random() - 0.5)), (float) (delta_time * 0.000007f * (Math.random() - 0.5)));
+			backgroundOffset.add(backgroundVelocity);
+		}
 	}
 	
 	public boolean nextLevel(int increment) {
@@ -761,9 +766,9 @@ public class MainView extends EnigView {
 				main = new MainView(width, height);
 			}
 			if(backgroundMove.replace("backgroundmove:", "").equals("t")){
-			    MainView.backgroundMove = true;
+			    MainView.backgroundMoveBool = true;
             } else {
-			    MainView.backgroundMove = false;
+			    MainView.backgroundMoveBool = false;
             }
 		} catch (FileNotFoundException e) {
 			main = new MainView();

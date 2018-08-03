@@ -49,12 +49,14 @@ public class PanScreen extends EnigView {
 		camera = new Camera((float) window.getWidth(), (float) window.getHeight());
 		camera.x = minX;
 		camera.y = minY;
+		window.keys[GLFW_KEY_ENTER] = 0;
 	}
 	
 	@Override
 	public boolean loop() {
         if(!MainView.quit) {
             if (window.keys[GLFW_KEY_ENTER] > 0 || window.keys[GLFW_KEY_TAB] > 0) {
+            	lvl.currentTZ = startTZ;
                 return true;
             }
             FBO.prepareDefaultRender();
