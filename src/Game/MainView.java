@@ -742,12 +742,12 @@ public class MainView extends EnigView {
                         "backward:83\n" +
                         "left:65\n" +
                         "right:68\n" +
-                        "leftArrow:263\n" +
-                        "rightArrow:262\n" +
+                        "leftArrow:81\n" +
+                        "rightArrow:69\n" +
                         "down:340\n" +
                         "up:32\n" +
                         "pause:256\n" +
-                        "enter:257\n" +
+                        "enter:82\n" +
                         "levelAdvance:78\n" +
                         "levelBack:66\n" +
                         "ohYknow:344\n";
