@@ -78,7 +78,7 @@ public class LevelBase
 			tileObj = new VAO(-25f, -25f, 50f, 50f);
 			floorTexture = new Texture("res/sprites/steelFloor.png");
 			wallTexture = new Texture("res/sprites/steelWall.png");
-			newwallTexture = new Texture("res/sprites/future-wall.png");
+			newwallTexture = new Texture("res/sprites/steel-wall.png");
 			keyTexture = new Texture("res/sprites/inventoryKey.png");
 			endLevelTexture = new Texture("res/sprites/endLevel.png");
 			upGateTexture = new Texture("res/sprites/upGate.png");
@@ -174,7 +174,6 @@ public class LevelBase
 						{
 							if (Math.abs(entities.get(l).xpos[entities.get(l).startZone] - startX) < 1 && Math.abs(entities.get(l).ypos[entities.get(l).startZone] - startY) < 1)
 							{
-								System.out.print("sdf\n");
 								entities.get(l).xpos[i] = startX;
 								entities.get(l).ypos[i] = startY;
 								taken = true;
