@@ -7,8 +7,9 @@ out/
 .idea/**/shelf
 
 res/levelComplete.txt
-res/options.txt
 
 bin/
 
 .DS_Store
+res/controls.txt
+res/options.txt
