@@ -76,8 +76,8 @@ public class LevelBase
 	public void init(String filename, String[] textures) {
 		if (tileObj == null) {
 			tileObj = new VAO(-25f, -25f, 50f, 50f);
-			floorTexture = new Texture("res/sprites/present-floor.png");
-			wallTexture = new Texture("res/sprites/present-wall.png");
+			floorTexture = new Texture("res/sprites/steelFloor.png");
+			wallTexture = new Texture("res/sprites/steelWall.png");
 			newwallTexture = new Texture("res/sprites/future-wall.png");
 			keyTexture = new Texture("res/sprites/inventoryKey.png");
 			endLevelTexture = new Texture("res/sprites/endLevel.png");
