@@ -1,6 +1,7 @@
 package Game;
 
 import engine.OpenGL.EnigWindow;
+import org.lwjgl.glfw.GLFW;
 
 import static org.lwjgl.glfw.GLFW.*;
 

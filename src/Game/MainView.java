@@ -669,6 +669,9 @@ public class MainView extends EnigView {
 	}
 
     public static void createTextFolder(){
+	    /*
+	    OPTIONS <<<<<<<<<<<<<<<<<<<<<<<<
+	     */
         boolean check = false;
         for(File i:new File("res/").listFiles()){
             if(i.getName().equals("options.txt")){
@@ -678,7 +681,10 @@ public class MainView extends EnigView {
         if(!check){
             try {
                 PrintWriter writer = new PrintWriter("res/options.txt", "UTF-8");
-                String format = "f";
+                String format =
+                        "fullscreen:t\n" +
+                        "res:1080,720\n" +
+                        "backgroundmove:f";
                 writer.println(format);
                 writer.close();
             } catch (FileNotFoundException e) {
@@ -687,6 +693,46 @@ public class MainView extends EnigView {
                 e.printStackTrace();
             }
         }
+        boolean checkc = false;
+        for(File i:new File("res/").listFiles()){
+            if(i.getName().equals("controls.txt")){
+                checkc = true;
+            }
+        }
+        if(!checkc){
+            try {
+                PrintWriter writer = new PrintWriter("res/controls.txt", "UTF-8");
+                String format =
+                        "forward:\n" +
+                        "backward:\n" +
+                        "left:\n" +
+                        "right:\n" +
+                        "leftArrow:\n" +
+                        "rightArrow:\n" +
+                        "down:\n" +
+                        "up:\n" +
+                        "pause:\n" +
+                        "enter:\n" +
+                        "rightMB:\n" +
+                        "leftMB:\n" +
+                        "levelAdvance:\n" +
+                        "levelBack:\n" +
+                        "ohYknow:\n";
+
+                //org.lwjgl.glfw.GLFW.glfwGetKeyName() use this
+
+                writer.println(format);
+                writer.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        /*
+        CONTROLS <<<<<<<<<<<<<<<<<<<<<<<<
+         */
+
     }
 
 
@@ -694,13 +740,18 @@ public class MainView extends EnigView {
 	    createTextFolder();
 		try {
 			Scanner s = new Scanner(new File("res/options.txt"));
-			String lina = s.nextLine();
-			if (lina.startsWith("f")) {
+
+			String fullscreen = s.nextLine();
+            String res = s.nextLine();
+            String backGroundMove = s.nextLine();
+
+			if (fullscreen.replace("fullscreen:", "").equals("t")) {
 				main = new MainView();
 			}else {
-				String linb = s.nextLine();
-				int width = Integer.parseInt(lina);
-				int height = Integer.parseInt(linb);
+
+				String[] dim = res.replace("res:", "").split(",");
+				int width = Integer.parseInt(dim[0]);
+				int height = Integer.parseInt(dim[1]);
 				if(width < 200){
 				    width = 200;
                 } if(height < 200){
@@ -708,6 +759,11 @@ public class MainView extends EnigView {
                 }
 				main = new MainView(width, height);
 			}
+			if(backGroundMove.replace("backgroundmove:", "").equals("t")){
+			    //Enable background movement
+            } else {
+			    //disable
+            }
 		} catch (FileNotFoundException e) {
 			main = new MainView();
 		}

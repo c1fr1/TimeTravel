@@ -1,1 +1,3 @@
-f
+fullscreen:t
+res:1080,720
+backgroundmove:f
