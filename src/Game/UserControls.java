@@ -36,6 +36,20 @@ public class UserControls {
 	public static int levelBackSetting;
 	public static int ohYknowSetting;
 
+	public static int forwardSetting2 = 0;
+	public static int backwardSetting2 = 0;
+	public static int leftSetting2 = 0;
+	public static int rightSetting2 = 0;
+	public static int leftArrowSetting2 = 0;
+	public static int rightArrowSetting2 = 0;
+	public static int downSetting2 = 0;
+	public static int upSetting2 = 0;
+	public static int pauseSetting2 = 0;
+	public static int enterSetting2 = 0;
+	public static int levelAdvanceSetting2 = 0;
+	public static int levelBackSetting2 = 0;
+	public static int ohYknowSetting2 = 0;
+
 	public static int[] forward;
 	public static int[] backward;
 	public static int[] left;
@@ -55,19 +69,19 @@ public class UserControls {
 	public static float sensitivity = 1f/500f;
 
 	public static void intit(){
-		forward  =  new int[] {forwardSetting};
-		backward =  new int[] {backwardSetting};
-		left =  new int[] {leftSetting};
-		right =  new int[] {rightSetting};
-		leftArrow =  new int[] {leftArrowSetting};
-		rightArrow =  new int[] {rightArrowSetting};
-		down =  new int[] {downSetting};
-		up =  new int[] {upSetting};
-		pause =  new int[] {pauseSetting};
-		enter =  new int[] {enterSetting};
-		levelAdvance =  new int[] {levelAdvanceSetting};
-		levelBack =  new int[] {levelBackSetting};
-		ohYknow =  new int[] {ohYknowSetting};
+		forward  =  new int[] {forwardSetting, forwardSetting2};
+		backward =  new int[] {backwardSetting, backwardSetting2};
+		left =  new int[] {leftSetting, leftSetting2};
+		right =  new int[] {rightSetting, rightSetting2};
+		leftArrow =  new int[] {leftArrowSetting, leftArrowSetting2};
+		rightArrow =  new int[] {rightArrowSetting, rightArrowSetting2};
+		down =  new int[] {downSetting, downSetting2};
+		up =  new int[] {upSetting, upSetting2};
+		pause =  new int[] {pauseSetting, pauseSetting2};
+		enter =  new int[] {enterSetting, enterSetting2};
+		levelAdvance =  new int[] {levelAdvanceSetting, levelAdvanceSetting2};
+		levelBack =  new int[] {levelBackSetting, levelBackSetting2};
+		ohYknow =  new int[] {ohYknowSetting, ohYknowSetting2};
 	}
 	
 	public static boolean forward(EnigWindow window) {
