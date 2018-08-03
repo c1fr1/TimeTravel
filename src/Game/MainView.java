@@ -48,6 +48,10 @@ public class MainView extends EnigView {
 
 	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v', 'X', 'Y', 'Z', 'w'};
 
+	//Glodal booleans
+
+	static boolean backgroundMove;
+
 	//project variables
 
 	public static LevelBase currentLevel;
@@ -760,9 +764,9 @@ public class MainView extends EnigView {
 				main = new MainView(width, height);
 			}
 			if(backGroundMove.replace("backgroundmove:", "").equals("t")){
-			    //Enable background movement
+			    backgroundMove = true;
             } else {
-			    //disable
+			    backgroundMove = false;
             }
 		} catch (FileNotFoundException e) {
 			main = new MainView();
