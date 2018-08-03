@@ -747,7 +747,7 @@ public class MainView extends EnigView {
 
 			String fullscreen = s.nextLine();
             String res = s.nextLine();
-            String backGroundMove = s.nextLine();
+            String backgroundMove = s.nextLine();
 
 			if (fullscreen.replace("fullscreen:", "").equals("t")) {
 				main = new MainView();
@@ -756,17 +756,14 @@ public class MainView extends EnigView {
 				String[] dim = res.replace("res:", "").split(",");
 				int width = Integer.parseInt(dim[0]);
 				int height = Integer.parseInt(dim[1]);
-				if(width < 200){
-				    width = 200;
-                } if(height < 200){
-				    height = 200;
-                }
+				if(width < 200) width = 200;
+				if(height < 200) height = 200;
 				main = new MainView(width, height);
 			}
-			if(backGroundMove.replace("backgroundmove:", "").equals("t")){
-			    backgroundMove = true;
+			if(backgroundMove.replace("backgroundmove:", "").equals("t")){
+			    MainView.backgroundMove = true;
             } else {
-			    backgroundMove = false;
+			    MainView.backgroundMove = false;
             }
 		} catch (FileNotFoundException e) {
 			main = new MainView();
