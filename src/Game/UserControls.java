@@ -21,6 +21,7 @@ public class UserControls {
 	public static String levelAdvanceSettingString;
 	public static String levelBackSettingString;
 	public static String ohYknowSettingString;
+	public static String skipSettingString;
 
 	public static int forwardSetting;
 	public static int backwardSetting;
@@ -35,6 +36,7 @@ public class UserControls {
 	public static int levelAdvanceSetting;
 	public static int levelBackSetting;
 	public static int ohYknowSetting;
+	public static int skipSetting;
 
 	public static int forwardSetting2 = 0;
 	public static int backwardSetting2 = 0;
@@ -49,6 +51,7 @@ public class UserControls {
 	public static int levelAdvanceSetting2 = 0;
 	public static int levelBackSetting2 = 0;
 	public static int ohYknowSetting2 = 0;
+	public static int skipSetting2 = 0;
 
 	public static int[] forward;
 	public static int[] backward;
@@ -65,6 +68,7 @@ public class UserControls {
 	public static int[] levelAdvance;
 	public static int[] levelBack;
 	public static int[] ohYknow;
+	public static int[] skip;
 
 	public static float sensitivity = 1f/500f;
 
@@ -82,6 +86,7 @@ public class UserControls {
 		levelAdvance =  new int[] {levelAdvanceSetting, levelAdvanceSetting2};
 		levelBack =  new int[] {levelBackSetting, levelBackSetting2};
 		ohYknow =  new int[] {ohYknowSetting, ohYknowSetting2};
+		skip = new int[] {skipSetting, skipSetting2};
 	}
 	
 	public static boolean forward(EnigWindow window) {
@@ -222,6 +227,14 @@ public class UserControls {
 	}
 	public static boolean ohYknow(EnigWindow window) {
 		for (int i:ohYknow) {
+			if (window.keys[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean skip(EnigWindow window) {
+		for (int i:skip) {
 			if (window.keys[i] > 0) {
 				return true;
 			}

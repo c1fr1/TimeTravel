@@ -750,7 +750,8 @@ public class MainView extends EnigView {
                         "enter:82,257\n" +
                         "levelAdvance:78\n" +
                         "levelBack:66\n" +
-                        "ohYknow:344\n";
+                        "ohYknow:344\n" +
+						"skip:258,257";
 
                 //org.lwjgl.glfw.GLFW.glfwGetKeyName() use this
 
@@ -783,6 +784,7 @@ public class MainView extends EnigView {
 			UserControls.levelAdvanceSettingString = s.nextLine();
 			UserControls.levelBackSettingString = s.nextLine();
 			UserControls.ohYknowSettingString = s.nextLine();
+			UserControls.skipSettingString = s.nextLine();
 
 			String[] forwardSettingStringArray = UserControls.forwardSettingString.substring(UserControls.forwardSettingString.indexOf(":") + 1).split(",");
 			String[] backwardSettingStringArray = UserControls.backwardSettingString.substring(UserControls.backwardSettingString.indexOf(":") + 1).split(",");
@@ -797,6 +799,7 @@ public class MainView extends EnigView {
 			String[] levelAdvanceSettingStringArray = UserControls.levelAdvanceSettingString.substring(UserControls.levelAdvanceSettingString.indexOf(":") + 1).split(",");
 			String[] levelBackSettingStringArray = UserControls.levelBackSettingString.substring(UserControls.levelBackSettingString.indexOf(":") + 1).split(",");
 			String[] ohYknowSettingStringArray = UserControls.ohYknowSettingString.substring(UserControls.ohYknowSettingString.indexOf(":") + 1).split(",");
+			String[] skipSettingStringArray = UserControls.skipSettingString.substring(UserControls.skipSettingString.indexOf(":") + 1).split(",");
 
 			UserControls.forwardSetting = Integer.parseInt(forwardSettingStringArray[0]);
 			UserControls.backwardSetting = Integer.parseInt(backwardSettingStringArray[0]);
@@ -811,6 +814,7 @@ public class MainView extends EnigView {
 			UserControls.levelAdvanceSetting = Integer.parseInt(levelAdvanceSettingStringArray[0]);
 			UserControls.levelBackSetting = Integer.parseInt(levelBackSettingStringArray[0]);
 			UserControls.ohYknowSetting = Integer.parseInt(ohYknowSettingStringArray[0]);
+			UserControls.skipSetting = Integer.parseInt(skipSettingStringArray[0]);
 
 			if(forwardSettingStringArray.length > 1) UserControls.forwardSetting2 = Integer.parseInt(forwardSettingStringArray[1]);
 			if(backwardSettingStringArray.length > 1) UserControls.backwardSetting2 = Integer.parseInt(backwardSettingStringArray[1]);
@@ -825,6 +829,7 @@ public class MainView extends EnigView {
 			if(levelAdvanceSettingStringArray.length > 1) UserControls.levelAdvanceSetting2 = Integer.parseInt(levelAdvanceSettingStringArray[1]);
 			if(levelBackSettingStringArray.length > 1) UserControls.levelBackSetting2 = Integer.parseInt(levelBackSettingStringArray[1]);
 			if(ohYknowSettingStringArray.length > 1) UserControls.ohYknowSetting2 = Integer.parseInt(ohYknowSettingStringArray[1]);
+			if(skipSettingStringArray.length > 1) UserControls.skipSetting2 = Integer.parseInt(skipSettingStringArray[1]);
 
 			UserControls.intit();
 		} catch (FileNotFoundException e) {
