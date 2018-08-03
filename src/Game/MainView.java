@@ -4,7 +4,9 @@ import Game.Views.*;
 import engine.*;
 import engine.Entities.Camera;
 import engine.OpenGL.*;
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
+import org.lwjgl.glfw.GLFW;
 import org.lwjglx.debug.javax.servlet.http.HttpServletRequest;
 
 import Game.Views.LevelSelect;
@@ -101,6 +103,14 @@ public class MainView extends EnigView {
 	public long lastTime = System.nanoTime();
 	
 	public static float delta_time;
+	
+	public float animationTimer = 0;
+	
+	public int playerDirection = 0;
+	//0 is up
+	//1 is right
+	//2 is down
+	//3 is left
 
 	SpriteButton cont;
 	SpriteButton restart;
@@ -142,14 +152,14 @@ public class MainView extends EnigView {
             keyTexture = new Texture("res/sprites/inventoryKey.png");
             inventoryObjectVAO = new VAO(-1f, -0.9f, 0.1f, 0.1f);
             ttoGUIVAO = new VAO(-0.5f, 0.125f, 1f, 0.25f);
-            playerVAO = new VAO(-40f, 10f, 30f, 30f);
+            playerVAO = new VAO(-15, -15f, 30f, 30f);
             inv = new Inventory();
 
             spriteTexture = new Texture[4];//down left right up;
             spriteTexture[0] = new Texture("res/sprites/avatar-0.png");
-            //spriteTexture[1] = new Texture("res/sprites/sprite-left.png");
-            //spriteTexture[2] = new Texture("res/sprites/sprite-right.png");
-            //spriteTexture[3] = new Texture("res/sprites/sprite-up.png");
+			spriteTexture[1] = new Texture("res/sprites/avatar-1.png");
+			spriteTexture[2] = new Texture("res/sprites/avatar-2.png");
+			spriteTexture[3] = new Texture("res/sprites/avatar-3.png");
 
             cont = new ShaderOptimizedButton(-0.5f, 0.525f, 1f, 0.25f, "res/sprites/continueButton.png", aspectRatio);
             WinScreen.continueButton = cont;
@@ -187,8 +197,8 @@ public class MainView extends EnigView {
 
             WinScreen.fullScreen = screenVAO;
 
-            cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
-            cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
+            cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
+            cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
 
             ttoSelector = currentLevel.currentTZ;
             ttoSelectorBool = false;
@@ -290,7 +300,8 @@ public class MainView extends EnigView {
 			
 			currentLevel.render(cam);
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
-			spriteTexture[0].bind();
+			int frame = (int) ((animationTimer % 400)/100f);
+			spriteTexture[frame].bind();
 			playerVAO.fullRender();
 			
 			travelShader.enable();
@@ -326,20 +337,44 @@ public class MainView extends EnigView {
 			float yOffset = m.getYOffset();
 			//crate movement - sets the box x and y from entity
 			for (int i = 0; i < currentLevel.entities.size(); i++) {
-				float[] newOffsets = currentLevel.entities.get(i).getBoxMovement(cam.x, cam.y, m.getHSpeed(), m.getVSpeed());
+				float[] newOffsets = currentLevel.entities.get(i).getBoxMovement(cam.x + 25, cam.y + 25, m.getHSpeed(), m.getVSpeed());
 				xOffset = absMin(newOffsets[0], xOffset);
 				yOffset = absMin(newOffsets[1], yOffset);
 			}
 			//avatar movement
 			cam.x += xOffset;
 			cam.y += yOffset;
+			
 			//background shifting
 			backgroundOffset.x += xOffset * 0.0005;
 			backgroundOffset.y += yOffset * 0.0005;
 
 			LevelBase.levelProgram.enable();
-			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
-			spriteTexture[0].bind();
+			Matrix4f camMatrix = cam.getCameraMatrix(cam.x, cam.y, 0);
+			if (xOffset > 0.001) {
+				playerDirection = 3;
+			}else if (xOffset < -0.001) {
+				playerDirection = 1;
+			}
+			if (yOffset > 0.001) {
+				playerDirection = 2;
+			}else if (yOffset < -0.001) {
+				playerDirection = 0;
+			}
+			if (playerDirection == 1) {
+				camMatrix.rotateZ((float)Math.PI/2f);
+			}else if (playerDirection == 2) {
+				camMatrix.rotateZ((float)Math.PI);
+			}else if (playerDirection == 3) {
+				camMatrix.rotateZ((float)-Math.PI/2f);
+			}
+			LevelBase.levelProgram.shaders[0].uniforms[0].set(camMatrix);
+			if (m.isMoving) {
+				animationTimer += delta_time;
+			}
+			int frame = (int) ((animationTimer % 400)/100f);
+			spriteTexture[frame].bind();
+			
 			playerVAO.fullRender();
 
 			int[] nearesTTOCheck = new int[4];
@@ -404,11 +439,6 @@ public class MainView extends EnigView {
 					ttoGUIButton.vao.draw();
 				}
 				ttoGUIButton.vao.unbind();
-				/*if (ttoGUIButton.hoverCheck(window.cursorXFloat * aspectRatio, window.cursorYFloat)) {
-					ttoGUIButton.shader.enable();
-					ttoGUIButton.shader.shaders[0].uniforms[0].set(aspectRatio);
-
-				}*/
 				ttoguiShader.enable();
 				ttoGUIButton.shader.shaders[0].uniforms[0].set(aspectRatio);
 				if (timeTravelFrames == 0) {
@@ -441,13 +471,10 @@ public class MainView extends EnigView {
 			}
 
             currentLevel.updateTTO(arrpossibilities, delta_time);
-
-			if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'k') || CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'K'))
-            {
-				if (replaceTile(cam.x, cam.y, ' ') == 'k') {
-					inv.add('k');
-				}
-            }
+			
+			if (CamCollision.checkAndReplace(cam.x, cam.y, 15, 'k', ' ')) {
+				inv.add('k');
+			}
 
 			//checks to open button doors
 			checkButtonPress('x','X');
@@ -459,17 +486,14 @@ public class MainView extends EnigView {
 				ohYknow.bind();
 				ohYknowVAO.fullRender();
 			}
-
-
-			int gateCheckXIndex = (int)((cam.x + Util.getSign(m.getHSpeed())*20f)/50f);
-			int gateCheckYIndex = (int)((cam.y + Util.getSign(m.getVSpeed())*20f)/50f);
-			if(currentLevel.charAtPos(gateCheckXIndex, gateCheckYIndex) == 'l'){
-				
-                if(inv.check('k')){
-                    replaceTile(gateCheckXIndex, gateCheckYIndex, ' ');
-                    inv.getAndRemove('k');
-                }
-            }
+			
+			if (inv.check('k')) {
+				if (CamCollision.checkAndReplace(cam.x, cam.y, 16, 'l', ' ')) {
+					inv.getAndRemove('k');
+				}
+			}
+			
+			
             inventoryShader.enable();
 			inventoryShader.shaders[0].uniforms[0].set(aspectRatio);
             inventoryObjectVAO.prepareRender();
@@ -483,8 +507,7 @@ public class MainView extends EnigView {
 
 			guiShader.enable();
 			guiShader.shaders[0].uniforms[0].set(aspectRatio);
-			if (CamCollision.isColliding(cam.x,cam.y,1,currentLevel.levelseries.get(currentLevel.currentTZ),'g'))
-			{
+			if (CamCollision.isColliding(cam.x,cam.y,1,currentLevel.levelseries.get(currentLevel.currentTZ),'g')) {
 				LevelSelect.levelState[currentLevelNum] = 1;
 				LevelSelect.updateLevelTextDoc();
 				new WinScreen(mainFBO.getBoundTexture(), aspectRatio);
@@ -527,8 +550,8 @@ public class MainView extends EnigView {
 			currentLevelNum += increment;
 			currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt");
 			ttoSelector =  currentLevel.currentTZ;
-			cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
-			cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
+			cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
+			cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
 			if (increment == 1) {
 				new PanScreen(window);
 			}
@@ -553,7 +576,7 @@ public class MainView extends EnigView {
 	public boolean checkBoxPosition(ArrayList<Entity> boxes, char obs){
 		int tz = currentLevel.currentTZ;
 		for (Entity i: boxes){
-			if(CamCollision.isColliding(i.xpos[tz], i.ypos[tz], 15, currentLevel.levelseries.get(tz), obs)){
+			if(CamCollision.isColliding(i.xpos[tz] - 25, i.ypos[tz] - 25, 15, currentLevel.levelseries.get(tz), obs)){
 				return true;
 			}
 		}
@@ -678,9 +701,6 @@ public class MainView extends EnigView {
 	}
 
     public static void createTextFolder(){
-	    /*
-	    OPTIONS <<<<<<<<<<<<<<<<<<<<<<<<
-	     */
         boolean check = false;
         for(File i:new File("res/").listFiles()){
             if(i.getName().equals("options.txt")){
@@ -738,10 +758,6 @@ public class MainView extends EnigView {
                 e.printStackTrace();
             }
         }
-        /*
-        CONTROLS <<<<<<<<<<<<<<<<<<<<<<<<
-         */
-
     }
 
 
