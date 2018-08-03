@@ -1,10 +1,8 @@
-package Game;
+package Game.Buttons;
 
-import engine.OpenGL.Shader;
 import engine.OpenGL.ShaderProgram;
 import engine.OpenGL.Texture;
 import engine.OpenGL.VAO;
-import org.joml.Vector4f;
 
 public class DoubleTextureButton extends SpriteButton {
 	public Texture textureA;

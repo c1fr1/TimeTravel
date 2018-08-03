@@ -6,23 +6,69 @@ import org.lwjgl.glfw.GLFW;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class UserControls {
-	public static int[] forward = new int[] {GLFW_KEY_W};
-	public static int[] backward = new int[] {GLFW_KEY_S};
-	public static int[] left = new int[] {GLFW_KEY_A};
-	public static int[] right = new int[] {GLFW_KEY_D};
-	public static int[] leftArrow = new int[] {GLFW_KEY_LEFT, GLFW_KEY_Q};
-	public static int[] rightArrow = new int[] {GLFW_KEY_RIGHT, GLFW_KEY_E};
-	public static int[] down = new int[] {GLFW_KEY_LEFT_SHIFT};
-	public static int[] up = new int[] {GLFW_KEY_SPACE};
-	public static int[] pause = new int[] {GLFW_KEY_ESCAPE};
-	public static int[] enter = new int[] {GLFW_KEY_ENTER, GLFW_KEY_R};
+
+
+	public static String forwardSettingString = "";
+	public static String backwardSettingString;
+	public static String leftSettingString;
+	public static String rightSettingString;
+	public static String leftArrowSettingString;
+	public static String rightArrowSettingString;
+	public static String downSettingString;
+	public static String upSettingString;
+	public static String pauseSettingString;
+	public static String enterSettingString;
+	public static String levelAdvanceSettingString;
+	public static String levelBackSettingString;
+	public static String ohYknowSettingString;
+
+	public static int forwardSetting;
+	public static int backwardSetting;
+	public static int leftSetting;
+	public static int rightSetting;
+	public static int leftArrowSetting;
+	public static int rightArrowSetting;
+	public static int downSetting;
+	public static int upSetting;
+	public static int pauseSetting;
+	public static int enterSetting;
+	public static int levelAdvanceSetting;
+	public static int levelBackSetting;
+	public static int ohYknowSetting;
+
+	public static int[] forward;
+	public static int[] backward;
+	public static int[] left;
+	public static int[] right;
+	public static int[] leftArrow;
+	public static int[] rightArrow;
+	public static int[] down;
+	public static int[] up;
+	public static int[] pause;
+	public static int[] enter;
 	public static int[] rightMB = new int[] {GLFW_MOUSE_BUTTON_RIGHT};
 	public static int[] leftMB = new int[] {GLFW_MOUSE_BUTTON_LEFT};
-	public static int[] levelAdvance = new int[] {GLFW_KEY_N};
-	public static int[] levelBack = new int[] {GLFW_KEY_B};
-	public static int[] ohYknow = new int[] {GLFW_KEY_RIGHT_SHIFT};
+	public static int[] levelAdvance;
+	public static int[] levelBack;
+	public static int[] ohYknow;
 
 	public static float sensitivity = 1f/500f;
+
+	public static void intit(){
+		forward  =  new int[] {forwardSetting};
+		backward =  new int[] {backwardSetting};
+		left =  new int[] {leftSetting};
+		right =  new int[] {rightSetting};
+		leftArrow =  new int[] {leftArrowSetting};
+		rightArrow =  new int[] {rightArrowSetting};
+		down =  new int[] {downSetting};
+		up =  new int[] {upSetting};
+		pause =  new int[] {pauseSetting};
+		enter =  new int[] {enterSetting};
+		levelAdvance =  new int[] {levelAdvanceSetting};
+		levelBack =  new int[] {levelBackSetting};
+		ohYknow =  new int[] {ohYknowSetting};
+	}
 	
 	public static boolean forward(EnigWindow window) {
 		for (int i:forward) {

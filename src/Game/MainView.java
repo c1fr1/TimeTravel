@@ -1,5 +1,8 @@
 package Game;
 
+import Game.Buttons.DoubleTextureButton;
+import Game.Buttons.ShaderOptimizedButton;
+import Game.Buttons.SpriteButton;
 import Game.Views.*;
 import engine.*;
 import engine.Entities.Camera;
@@ -27,6 +30,7 @@ import static Game.Util.absMin;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
+
 public class MainView extends EnigView {
     public static boolean quit = false;
 	public static MainView main;
@@ -52,7 +56,8 @@ public class MainView extends EnigView {
 
 	//Glodal booleans
 
-	static boolean backgroundMoveBool;
+	public static boolean fullScreenBool;
+	public static boolean backgroundMoveBool;
 
 	//project variables
 
@@ -130,6 +135,7 @@ public class MainView extends EnigView {
 
 	@Override
 	public void setup() {
+		getControls();
 		main = this;
 		aspectRatio = (float)window.getHeight()/(float)window.getWidth();
 		LevelSelect.createTextFolder();
@@ -732,23 +738,23 @@ public class MainView extends EnigView {
             try {
                 PrintWriter writer = new PrintWriter("res/controls.txt", "UTF-8");
                 String format =
-                        "forward:\n" +
-                        "backward:\n" +
-                        "left:\n" +
-                        "right:\n" +
-                        "leftArrow:\n" +
-                        "rightArrow:\n" +
-                        "down:\n" +
-                        "up:\n" +
-                        "pause:\n" +
-                        "enter:\n" +
-                        "rightMB:\n" +
-                        "leftMB:\n" +
-                        "levelAdvance:\n" +
-                        "levelBack:\n" +
-                        "ohYknow:\n";
+                        "forward:87\n" +
+                        "backward:83\n" +
+                        "left:65\n" +
+                        "right:68\n" +
+                        "leftArrow:263\n" +
+                        "rightArrow:262\n" +
+                        "down:340\n" +
+                        "up:32\n" +
+                        "pause:256\n" +
+                        "enter:257\n" +
+                        "levelAdvance:78\n" +
+                        "levelBack:66\n" +
+                        "ohYknow:344\n";
 
                 //org.lwjgl.glfw.GLFW.glfwGetKeyName() use this
+
+				//org.lwjgl.glfw.GLFW.glfwGetKeyName();
 
                 writer.println(format);
                 writer.close();
@@ -759,6 +765,45 @@ public class MainView extends EnigView {
             }
         }
     }
+
+    public void getControls(){
+		try {
+			Scanner s = new Scanner(new File("res/controls.txt"));
+
+			UserControls.forwardSettingString = s.nextLine();
+			UserControls.backwardSettingString = s.nextLine();
+			UserControls.leftSettingString = s.nextLine();
+			UserControls.rightSettingString = s.nextLine();
+			UserControls.leftArrowSettingString = s.nextLine();
+			UserControls.rightArrowSettingString = s.nextLine();
+			UserControls.downSettingString = s.nextLine();
+			UserControls.upSettingString = s.nextLine();
+			UserControls.pauseSettingString = s.nextLine();
+			UserControls.enterSettingString = s.nextLine();
+			UserControls.levelAdvanceSettingString = s.nextLine();
+			UserControls.levelBackSettingString = s.nextLine();
+			UserControls.ohYknowSettingString = s.nextLine();
+
+			UserControls.forwardSetting = Integer.parseInt(UserControls.forwardSettingString.substring(UserControls.forwardSettingString.indexOf(':') + 1));
+			UserControls.backwardSetting = Integer.parseInt(UserControls.backwardSettingString.substring(UserControls.backwardSettingString.indexOf(':') + 1));
+			UserControls.leftSetting = Integer.parseInt(UserControls.leftSettingString.substring(UserControls.leftSettingString.indexOf(':') + 1));
+			UserControls.rightSetting = Integer.parseInt(UserControls.rightSettingString.substring(UserControls.rightSettingString.indexOf(':') + 1));
+			UserControls.leftArrowSetting = Integer.parseInt(UserControls.leftArrowSettingString.substring(UserControls.leftArrowSettingString.indexOf(':') + 1));
+			UserControls.rightArrowSetting = Integer.parseInt(UserControls.rightArrowSettingString.substring(UserControls.rightArrowSettingString.indexOf(':') + 1));
+			UserControls.downSetting = Integer.parseInt(UserControls.downSettingString.substring(UserControls.downSettingString.indexOf(':') + 1));
+			UserControls.upSetting = Integer.parseInt(UserControls.upSettingString.substring(UserControls.upSettingString.indexOf(':') + 1));
+			UserControls.pauseSetting = Integer.parseInt(UserControls.pauseSettingString.substring(UserControls.pauseSettingString.indexOf(':') + 1));
+			UserControls.enterSetting = Integer.parseInt(UserControls.enterSettingString.substring(UserControls.enterSettingString.indexOf(':') + 1));
+			UserControls.levelAdvanceSetting = Integer.parseInt(UserControls.levelAdvanceSettingString.substring(UserControls.levelAdvanceSettingString.indexOf(':') + 1));
+			UserControls.levelBackSetting = Integer.parseInt(UserControls.levelBackSettingString.substring(UserControls.levelBackSettingString.indexOf(':') + 1));
+			UserControls.ohYknowSetting = Integer.parseInt(UserControls.ohYknowSettingString.substring(UserControls.ohYknowSettingString.indexOf(':') + 1));
+
+			UserControls.intit();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+	}
 
 
 	public static void main(String[] args) {
@@ -771,9 +816,11 @@ public class MainView extends EnigView {
             String backgroundMove = s.nextLine();
 
 			if (fullscreen.replace("fullscreen:", "").equals("t")) {
+				fullScreenBool = true;
 				main = new MainView();
-			}else {
 
+			}else {
+				fullScreenBool = false;
 				String[] dim = res.replace("res:", "").split(",");
 				int width = Integer.parseInt(dim[0]);
 				int height = Integer.parseInt(dim[1]);
@@ -782,9 +829,9 @@ public class MainView extends EnigView {
 				main = new MainView(width, height);
 			}
 			if(backgroundMove.replace("backgroundmove:", "").equals("t")){
-			    MainView.backgroundMoveBool = true;
+			    backgroundMoveBool = true;
             } else {
-			    MainView.backgroundMoveBool = false;
+			    backgroundMoveBool = false;
             }
 		} catch (FileNotFoundException e) {
 			main = new MainView();

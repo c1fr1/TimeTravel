@@ -1,7 +1,8 @@
 package Game.Views;
 
 import Game.*;
-import Game.Views.LevelSelect;
+import Game.Buttons.DoubleTextureButton;
+import Game.Buttons.SpriteButton;
 import engine.EnigView;
 import engine.OpenGL.*;
 
@@ -52,6 +53,9 @@ public class MainMenu extends EnigView {
             }
             if (levelSelect.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)) {
                 new LevelSelect(window);
+            }
+            if(options.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)){
+                new OptionsMenu(window);
             }
             if (quit.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)) {
                 MainView.quit = true;
