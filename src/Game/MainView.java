@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static Game.Util.absMin;
@@ -143,7 +144,7 @@ public class MainView extends EnigView {
 		new MainMenu(window);
 		if(!quit) {
 		    MainMenu.mainMenuQuit = false;
-			LoadingScreen.texturePath = new ShaderOptimizedButton(-1f/aspectRatio, -1f, 2f/aspectRatio, 2f, "res/sprites/Loading.png");
+			LoadingScreen.texturePath = new ShaderOptimizedButton(-1f, -1f, 2f, 2f, "res/sprites/Loading.png");
             new LoadingScreen(window);
             //set variables here
             glDisable(GL_DEPTH_TEST);
@@ -684,7 +685,7 @@ public class MainView extends EnigView {
 		//currentLevel.levelseries.get(tempIntY)
 		return current;
 	}
-	
+
 	/**
 	 *
 	 * @param x index of replace
@@ -697,7 +698,7 @@ public class MainView extends EnigView {
 		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
 			currentLevel.levelseries.get(i).get(y)[x] = replacement;
 		}
-		
+
 		//currentLevel.levelseries.get(tempIntY)
 		return current;
 	}
@@ -834,6 +835,9 @@ public class MainView extends EnigView {
 			UserControls.intit();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		} catch (NoSuchElementException e){
+			System.out.println("Delete your controls.txt folder (TimeTravel/res/options.txt) and try again.\n" +
+					"Or fix the ordering manually if you have custom keybinds.");
 		}
 
 	}
