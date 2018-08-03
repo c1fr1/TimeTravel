@@ -12,6 +12,7 @@ public class Movement {
     private float yOffset;
     private float vSpeed = 0;
     private float hSpeed = 0;
+    public boolean isMoving = false;
 
 
     /**
@@ -26,15 +27,19 @@ public class Movement {
 
         if (UserControls.forward(window)) {
             vSpeed -= delta_time / 3f;
+            isMoving = true;
         }
         if (UserControls.backward(window)) {
             vSpeed += delta_time / 3f;
+			isMoving = true;
         }
         if (UserControls.left(window)) {
             hSpeed -= delta_time / 3f;
+			isMoving = true;
         }
         if (UserControls.right(window)) {
             hSpeed += delta_time / 3f;
+			isMoving = true;
         }
         if (Math.abs(hSpeed) > 0.00001) {
             vSpeed *= 0.70710678118f;
@@ -43,9 +48,8 @@ public class Movement {
             hSpeed *= 0.70710678118f;
         }
 
-        xOffset = CamCollision.horizontalMove(cam.x,cam.y,15,hSpeed,
-                currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
-        yOffset = CamCollision.verticalMove(cam.x,cam.y,15,vSpeed,
+        xOffset = CamCollision.horizontalMove(cam.x, cam.y, 15,hSpeed, currentLevel.levelseries.get(currentLevel.currentTZ), solidBlocks);
+        yOffset = CamCollision.verticalMove(cam.x, cam.y,15,vSpeed,
                 currentLevel.levelseries.get(currentLevel.currentTZ),solidBlocks);
     }
 

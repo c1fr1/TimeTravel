@@ -1,9 +1,8 @@
 package Game.Views;
 
-import Game.SpriteButton;
+import Game.Buttons.SpriteButton;
 import engine.EnigView;
 import engine.OpenGL.*;
-import org.joml.Vector4f;
 
 public class LoadingScreen extends EnigView {
     SpriteButton load;

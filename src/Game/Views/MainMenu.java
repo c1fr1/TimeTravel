@@ -1,7 +1,8 @@
 package Game.Views;
 
 import Game.*;
-import Game.Views.LevelSelect;
+import Game.Buttons.DoubleTextureButton;
+import Game.Buttons.SpriteButton;
 import engine.EnigView;
 import engine.OpenGL.*;
 
@@ -24,12 +25,13 @@ public class MainMenu extends EnigView {
 
     @Override
     public void setup() {
-        aspectRatio = (float)window.getHeight()/(float)window.getWidth();
-        title = new DoubleTextureButton(-1.6f,.5f,1.2f,0.4f,"res/menu/titleImage.png", "res/menu/titleImage.png", aspectRatio);
-        start = new DoubleTextureButton(-1.6f,0f,1f,0.125f,"res/menu/playButton-0.png","res/menu/playButton-1.png", aspectRatio);
-        levelSelect = new DoubleTextureButton(-1.6f,-.2f,1f,0.125f,"res/menu/selectorButton-0.png","res/menu/selectorButton-1.png", aspectRatio);
-        options = new DoubleTextureButton(-1.6f,-.4f,1f,0.125f,"res/menu/optionsButton-0.png","res/menu/optionsButton-1.png", aspectRatio);
-        quit = new DoubleTextureButton(-1.6f,-.6f,1f,0.125f,"res/menu/quitButton-0.png", "res/menu/quitButton-1.png", aspectRatio);
+        aspectRatio = (float)window.getHeight()/(float)window.getWidth();//0.56222546
+		float border = -0.9f / aspectRatio;
+        title = new DoubleTextureButton(border,.5f,1.2f,0.4f,"res/menu/titleImage.png", "res/menu/titleImage.png", aspectRatio);
+        start = new DoubleTextureButton(border,0f,1f,0.125f,"res/menu/playButton-0.png","res/menu/playButton-1.png", aspectRatio);
+        levelSelect = new DoubleTextureButton(border,-.2f,1f,0.125f,"res/menu/selectorButton-0.png","res/menu/selectorButton-1.png", aspectRatio);
+        options = new DoubleTextureButton(border,-.4f,1f,0.125f,"res/menu/optionsButton-0.png","res/menu/optionsButton-1.png", aspectRatio);
+        quit = new DoubleTextureButton(border,-.6f,1f,0.125f,"res/menu/quitButton-0.png", "res/menu/quitButton-1.png", aspectRatio);
         SpriteButton.shader = new ShaderProgram("buttonShader");
 
 
@@ -51,6 +53,9 @@ public class MainMenu extends EnigView {
             }
             if (levelSelect.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)) {
                 new LevelSelect(window);
+            }
+            if(options.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)){
+                new OptionsMenu(window);
             }
             if (quit.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)) {
                 MainView.quit = true;

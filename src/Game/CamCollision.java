@@ -10,21 +10,20 @@ import java.util.logging.Level;
 public class CamCollision
 {
     //tests if you are colliding with the obstacle in your current position
-    public static boolean isColliding(float x, float y, int border, ArrayList<Character[]> room, char obstacle)
-    {
+    public static boolean isColliding(float x, float y, int border, ArrayList<Character[]> room, char obstacle) {
         boolean colliding = false;
         int[] xsquares = new int[4];
         int[] ysquares = new int[4];
         //point arrays
-        xsquares[0] = (int)((x - border)/50);
-        xsquares[1] = (int)((x + border)/50);
-        xsquares[2] = (int)((x + border)/50);
-        xsquares[3] = (int)((x - border)/50);
+        xsquares[0] = (int)((x - border + 25)/50);
+        xsquares[1] = (int)((x + border + 25)/50);
+        xsquares[2] = (int)((x + border + 25)/50);
+        xsquares[3] = (int)((x - border + 25)/50);
 
-        ysquares[0] = (int)((y + border)/50);
-        ysquares[1] = (int)((y + border)/50);
-        ysquares[2] = (int)((y - border)/50);
-        ysquares[3] = (int)((y - border)/50);
+        ysquares[0] = (int)((y + border + 25)/50);
+        ysquares[1] = (int)((y + border + 25)/50);
+        ysquares[2] = (int)((y - border + 25)/50);
+        ysquares[3] = (int)((y - border + 25)/50);
 
         for (int i = 0; i < 4; i++) {
             if (room.get(ysquares[i])[xsquares[i]] == obstacle) {
@@ -34,6 +33,33 @@ public class CamCollision
         }
         return colliding;
     }
+    
+	public static boolean checkAndReplace(float x, float y, int border, char obstacle, char replacement) {
+		boolean colliding = false;
+		int[] xsquares = new int[4];
+		int[] ysquares = new int[4];
+		//point arrays
+		xsquares[0] = (int)((x - border + 25)/50);
+		xsquares[1] = (int)((x + border + 25)/50);
+		xsquares[2] = (int)((x + border + 25)/50);
+		xsquares[3] = (int)((x - border + 25)/50);
+		
+		ysquares[0] = (int)((y + border + 25)/50);
+		ysquares[1] = (int)((y + border + 25)/50);
+		ysquares[2] = (int)((y - border + 25)/50);
+		ysquares[3] = (int)((y - border + 25)/50);
+		
+		for (int i = 0; i < 4; i++) {
+			if (MainView.currentLevel.levelseries.get(MainView.currentLevel.currentTZ).get(ysquares[i])[xsquares[i]] == obstacle) {
+				colliding = true;
+				for (int j = MainView.currentLevel.currentTZ;j < MainView.currentLevel.levelseries.size();++j) {
+					MainView.currentLevel.levelseries.get(j).get(ysquares[i])[xsquares[i]] = replacement;
+				}
+				break;
+			}
+		}
+		return colliding;
+	}
 	
 	public static boolean isColliding(float x, float y, int border, ArrayList<Character[]> room, char[] obstacle)
 	{
@@ -78,8 +104,7 @@ public class CamCollision
     }
 
     //moves you in the direction until you hit a wall and then moves you to touching the wall
-    public static float horizontalMove(float x, float y, int border, float hspeed,
-                                       ArrayList<Character[]> room, char[] obstacles)
+    public static float horizontalMove(float x, float y, int border, float hspeed, ArrayList<Character[]> room, char[] obstacles)
     {
         float xsave = x;
         x += hspeed;
@@ -99,7 +124,7 @@ public class CamCollision
         else if (block == '<')
         {
             block = '`';
-            if (hspeed > 0 && !isColliding(xsave,y,border,room,'<'))
+            if (hspeed > 0 && !isColliding(xsave, y, border, room,'<'))
             {
                 block = '#';
             }
@@ -112,7 +137,7 @@ public class CamCollision
         if (block != '`')
         {
             x = 50 * Math.round(xsave/50);
-            x += 15.001 * Util.getSign(-hspeed);
+            x += 9.99 * Util.getSign(hspeed);
         }
 
         return x - xsave;
@@ -120,9 +145,7 @@ public class CamCollision
 
 
 
-    public static float verticalMove(float x, float y, int border, float vspeed,
-                                     ArrayList<Character[]> room, char[] obstacles)
-    {
+    public static float verticalMove(float x, float y, int border, float vspeed, ArrayList<Character[]> room, char[] obstacles) {
         float ysave = y;
         y += vspeed;
         char block = checkCharColliding(x,y,border,room,obstacles);
@@ -154,7 +177,7 @@ public class CamCollision
         if (block != '`')
         {
             y = 50 * Math.round(ysave/50);
-            y += 15.001 * Util.getSign(-vspeed);
+            y += 9.99 * Util.getSign(vspeed);
         }
         return y - ysave;
     }

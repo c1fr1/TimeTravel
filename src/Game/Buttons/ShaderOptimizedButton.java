@@ -1,4 +1,4 @@
-package Game;
+package Game.Buttons;
 
 import engine.OpenGL.Texture;
 import engine.OpenGL.VAO;
