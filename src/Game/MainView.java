@@ -155,7 +155,7 @@ public class MainView extends EnigView {
             cam = new Camera((float) window.getWidth(), (float) window.getHeight());
             guiShader = new ShaderProgram("guiShader");
 			WinScreen.aespectShader = guiShader;
-			ttoGUI = new Texture("res/sprites/timeTravelGUI.png");
+			ttoGUI = new Texture("res/menu/timeTravelGUI.png");
             keyTexture = new Texture("res/sprites/inventoryKey.png");
             inventoryObjectVAO = new VAO(-1f, -0.9f, 0.1f, 0.1f);
             ttoGUIVAO = new VAO(-0.5f, 0.125f, 1f, 0.25f);
@@ -163,16 +163,16 @@ public class MainView extends EnigView {
             inv = new Inventory();
 
             spriteTexture = new Texture[4];//down left right up;
-            spriteTexture[0] = new Texture("res/sprites/avatar-0.png");
-			spriteTexture[1] = new Texture("res/sprites/avatar-1.png");
-			spriteTexture[2] = new Texture("res/sprites/avatar-2.png");
-			spriteTexture[3] = new Texture("res/sprites/avatar-3.png");
+            spriteTexture[0] = new Texture("res/anims/avatar-0.png");
+			spriteTexture[1] = new Texture("res/anims/avatar-1.png");
+			spriteTexture[2] = new Texture("res/anims/avatar-2.png");
+			spriteTexture[3] = new Texture("res/anims/avatar-3.png");
 
-            cont = new ShaderOptimizedButton(-0.5f, 0.525f, 1f, 0.25f, "res/sprites/continueButton.png", aspectRatio);
+            cont = new ShaderOptimizedButton(-0.5f, 0.525f, 1f, 0.25f, "res/menu/continueButton.png", aspectRatio);
             WinScreen.continueButton = cont;
 
-            restart = new ShaderOptimizedButton(-0.5f, -0.125f, 1f, 0.25f, "res/sprites/restart.png", aspectRatio);
-            menu = new ShaderOptimizedButton(-0.5f, -0.725f, 1f, 0.25f, "res/sprites/mainMenu.png", aspectRatio);
+            restart = new ShaderOptimizedButton(-0.5f, -0.125f, 1f, 0.25f, "res/menu/restart.png", aspectRatio);
+            menu = new ShaderOptimizedButton(-0.5f, -0.725f, 1f, 0.25f, "res/menu/mainMenu.png", aspectRatio);
 
             textureShader = new ShaderProgram("textureShaders");
             pauseShader = new ShaderProgram("pauseShaders");

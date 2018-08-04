@@ -24,7 +24,6 @@ public class LevelBase
     public static Texture wallTexture;
 	public static Texture endLevelTexture;
     public static Texture lockTexture;
-	public static Texture newwallTexture;
     public static Texture upGateTexture;
     public static Texture downGateTexture;
     public static Texture leftGateTexture;
@@ -76,9 +75,8 @@ public class LevelBase
 	public void init(String filename, String[] textures) {
 		if (tileObj == null) {
 			tileObj = new VAO(-25f, -25f, 50f, 50f);
-			floorTexture = new Texture("res/sprites/steelFloor.png");
-			wallTexture = new Texture("res/sprites/steelWall.png");
-			newwallTexture = new Texture("res/sprites/steel-wall.png");
+			floorTexture = new Texture("res/tilesets/floor-future.png");
+			wallTexture = new Texture("res/tilesets/wall-future.png");
 			keyTexture = new Texture("res/sprites/inventoryKey.png");
 			endLevelTexture = new Texture("res/sprites/endLevel.png");
 			upGateTexture = new Texture("res/sprites/upGate.png");
@@ -100,7 +98,6 @@ public class LevelBase
 			ttoTexture[8] = new Texture("res/anims/tto-9.png");
 
 			levelProgram = new ShaderProgram("levelShader");
-			controllerTexture = new Texture("res/sprites/controller-tto.png");
 
 			//button, gate closed, gate open
 			xElectricTextures = new Texture[3];
@@ -261,7 +258,7 @@ public class LevelBase
 					}else if (currentChar == ' ') {//sbiop
     					floorTexture.bind();
 					}else if (currentChar == '#') {
-    					newwallTexture.bind();
+    					wallTexture.bind();
 					}else if (Util.isNumericValue(currentChar)) {
 						ttoTexture[(int) ttoFrameCounter[Character.getNumericValue(currentChar)]].bind();
 					}else if (currentChar == 'g') {
