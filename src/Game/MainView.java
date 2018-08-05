@@ -552,20 +552,20 @@ public class MainView extends EnigView {
 	
 	public boolean nextLevel(int increment) {
 		inv.reset();
-		File test = new File("res/Levels");
-		if(test.listFiles().length > currentLevelNum + increment && !(currentLevelNum + increment < 0)) {
+		File test = new File("res/Levels/Level" + (increment+currentLevelNum) + ".txt");
+		if(test.exists()) {
 			currentLevelNum += increment;
 			currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt");
-			ttoSelector =  currentLevel.currentTZ;
+			ttoSelector = currentLevel.currentTZ;
 			cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
 			cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
 			if (increment == 1) {
 				new PanScreen(window);
 			}
-			return false;
-		}else {
 			return true;
 		}
+		return false;
+
 	}
 	
 	public int[] findCharacter(char ch){
