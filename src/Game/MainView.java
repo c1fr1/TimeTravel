@@ -562,9 +562,9 @@ public class MainView extends EnigView {
 			if (increment == 1) {
 				new PanScreen(window);
 			}
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 
 	}
 	
