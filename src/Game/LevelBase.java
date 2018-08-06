@@ -67,10 +67,12 @@ public class LevelBase
 			}
 		}
 	}
+
 	public LevelBase(String filename, ArrayList<Boolean[]> ttoAbilities, String[] textures) {
 		init(filename, textures);
 		timeZonePossibilities = ttoAbilities;
 	}
+
 	public void init(String filename, String[] textures) {
 		if (tileObj == null) {
 			tileObj = new VAO(-25f, -25f, 50f, 50f);
