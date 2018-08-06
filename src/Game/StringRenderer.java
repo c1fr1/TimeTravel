@@ -34,7 +34,7 @@ public class StringRenderer {
 		float semiWidth = ((float) width) / 2f;
 		float semiHeight = ((float) height) / 2f;
 		mat = new Matrix4f().ortho(-semiWidth, semiWidth, -semiHeight, semiHeight, 0, 1);
-		this.fontSize = 1080f * fontSize / semiHeight;
+		this.fontSize = 1080f * 1080f * fontSize / (semiHeight * semiHeight);
 		this.x = /*1920f * */x / semiWidth;
 		this.y = /*1080f * */y / semiHeight;
 		System.out.println(this.fontSize);
