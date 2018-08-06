@@ -31,7 +31,6 @@ public class LevelBase
     public static Texture keyTexture;
 	public static Texture boxTexture;
 	public static Texture[] ttoTexture;
-    public static Texture controllerTexture;
     public static ShaderProgram levelProgram;
     
     public static Texture[] xElectricTextures;

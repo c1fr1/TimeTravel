@@ -59,24 +59,24 @@ public class UserControls {
 	public static int ohYknowSetting2 = 0;
 	public static int skipSetting2 = 0;
 
-	public static int[] forward;
-	public static int[] backward;
-	public static int[] left;
-	public static int[] right;
-	public static int[] leftArrow;
-	public static int[] rightArrow;
-	public static int[] upArrow;
-	public static int[] downArrow;
-	public static int[] down;
-	public static int[] up;
-	public static int[] pause;
-	public static int[] enter;
+	public static int[] forward = new int[] {GLFW_KEY_W};
+	public static int[] backward = new int[] {GLFW_KEY_S};
+	public static int[] left = new int[] {GLFW_KEY_A};
+	public static int[] right = new int[] {GLFW_KEY_D};
+	public static int[] leftArrow = new int[] {GLFW_KEY_LEFT, GLFW_KEY_Q};
+	public static int[] rightArrow = new int[] {GLFW_KEY_RIGHT, GLFW_KEY_E};
+	public static int[] upArrow = new int[] {GLFW_KEY_UP};
+	public static int[] downArrow = new int[] {GLFW_KEY_DOWN};
+	public static int[] down = new int[] {GLFW_KEY_DOWN};
+	public static int[] up = new int[] {GLFW_KEY_UP};
+	public static int[] pause = new int[] {GLFW_KEY_ESCAPE};
+	public static int[] enter = new int[] {GLFW_KEY_ENTER, GLFW_KEY_R};
 	public static int[] rightMB = new int[] {GLFW_MOUSE_BUTTON_RIGHT};
 	public static int[] leftMB = new int[] {GLFW_MOUSE_BUTTON_LEFT};
-	public static int[] levelAdvance;
-	public static int[] levelBack;
-	public static int[] ohYknow;
-	public static int[] skip;
+	public static int[] levelAdvance = new int[] {GLFW_KEY_N};
+	public static int[] levelBack = new int[] {GLFW_KEY_B};
+	public static int[] ohYknow = new int[] {GLFW_KEY_RIGHT_SHIFT};
+	public static int[] skip = new int[] {GLFW_KEY_TAB, GLFW_KEY_ENTER};
 
 	public static float sensitivity = 1f/500f;
 

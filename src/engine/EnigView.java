@@ -39,7 +39,6 @@ public abstract class EnigView {
 	 */
 	public EnigView(EnigWindow swindow, boolean isMain) {
 		window = swindow;
-		setup();
 		runLoop();
 		if (isMain) {
 			window.terminate();
@@ -64,6 +63,17 @@ public abstract class EnigView {
 	}
 	
 	/**
+	 * sets up the view
+	 */
+	public abstract void setup();
+	
+	/**
+	 * loop that gets called every frame
+	 * @return if the view should close after this frame ends
+	 */
+	public abstract boolean loop();
+	
+	/**
 	 * cleans up at the end of a frame
 	 */
 	public void cleanUp() {
@@ -74,17 +84,6 @@ public abstract class EnigView {
 		EnigWindow.checkGLError();
 		//window.update();
 	}
-	
-	/**
-	 * loop that gets called every frame
-	 * @return if the view should close after this frame ends
-	 */
-	public abstract boolean loop();
-	
-	/**
-	 * sets up the view
-	 */
-	public abstract void setup();
 	
 	/**
 	 * gets the name of the window

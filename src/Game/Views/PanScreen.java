@@ -10,6 +10,8 @@ import engine.OpenGL.FBO;
 
 import java.util.TimeZone;
 
+import static Game.MainView.currentLevelNum;
+import static Game.MainView.levelMarker;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class PanScreen extends EnigView {
@@ -50,6 +52,9 @@ public class PanScreen extends EnigView {
 		camera = new Camera((float) window.getWidth(), (float) window.getHeight());
 		camera.x = minX;
 		camera.y = minY;
+		for (int i:UserControls.skip) {
+			window.keys[i] = 0;
+		}
 	}
 	
 	@Override
@@ -61,6 +66,7 @@ public class PanScreen extends EnigView {
             }
             FBO.prepareDefaultRender();
             MainView.main.renderBackground();
+			levelMarker.renderNum("level " + (currentLevelNum + 1));
             lvl.render(camera);
             if (lvl.currentTZ % 2 == 0) {
                 camera.x += maxX/200;

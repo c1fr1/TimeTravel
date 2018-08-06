@@ -9,6 +9,7 @@ import engine.Entities.Camera;
 import engine.OpenGL.*;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
+import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjglx.debug.javax.servlet.http.HttpServletRequest;
 
@@ -55,6 +56,7 @@ public class MainView extends EnigView {
 	public static Camera cam;
 
 	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v', 'X', 'Y', 'Z', 'w'};
+	public static char[] semiSolidBlocks = {'#', '_', 'l','X', 'Y', 'Z', 'w'};
 
 	//Glodal booleans
 
@@ -76,6 +78,7 @@ public class MainView extends EnigView {
 	public ShaderProgram inventoryShader;
 	public ShaderProgram backgroundShader;
 	public ShaderProgram ttoGUIButtonShader;
+	public ShaderProgram playerShader;
 	
 	public Texture starBackground;
 	public Vector2f backgroundOffset = new Vector2f();
@@ -91,13 +94,17 @@ public class MainView extends EnigView {
 	public VAO ttoGUIVAO;
 	public VAO playerVAO;
 	public VAO inventoryObjectVAO;
+	
+	public StringRenderer jumpCounterText;
 
 	public Texture[] pauseGUI;
 	public VAO[] pauseGUIVAO;
 
-	public VAO screenVAO;
+	public static VAO screenVAO;
 
 	public FBO mainFBO;
+	
+	public static StringRenderer levelMarker;
 
 	public boolean pause = false;
 	public boolean cooldown = false;
@@ -114,6 +121,9 @@ public class MainView extends EnigView {
 	public float animationTimer = 0;
 	
 	public int playerDirection = 0;
+	
+	public static int jumps = 0;
+	
 	//0 is up
 	//1 is right
 	//2 is down
@@ -150,8 +160,6 @@ public class MainView extends EnigView {
 			LoadingScreen.texturePath = new ShaderOptimizedButton(-1f, -1f, 2f, 2f, "res/sprites/Loading.png");
             new LoadingScreen(window);
             //set variables here
-            glDisable(GL_DEPTH_TEST);
-            //needs to be generalized to use level selected - level path is a parameter
             SpriteButton.shader = new ShaderProgram("buttonShader");
 
             currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt"/*, new String[] {"res/levelTemplate.png", "res/levelTemplate.png"}*/);
@@ -170,9 +178,12 @@ public class MainView extends EnigView {
 			spriteTexture[1] = new Texture("res/anims/avatar-1.png");
 			spriteTexture[2] = new Texture("res/anims/avatar-2.png");
 			spriteTexture[3] = new Texture("res/anims/avatar-3.png");
+			
+			levelMarker = new StringRenderer(window.getWidth(), window.getHeight(), 55, 0, 600);
+			jumpCounterText = new StringRenderer(window.getWidth(), window.getHeight(), 55, -900, 600);
+			jumpCounterText.centered = false;
 
             cont = new ShaderOptimizedButton(-0.5f, 0.525f, 1f, 0.25f, "res/menu/continueButton.png", aspectRatio);
-            WinScreen.continueButton = cont;
 
             restart = new ShaderOptimizedButton(-0.5f, -0.125f, 1f, 0.25f, "res/menu/restart.png", aspectRatio);
             menu = new ShaderOptimizedButton(-0.5f, -0.725f, 1f, 0.25f, "res/menu/mainMenu.png", aspectRatio);
@@ -183,15 +194,17 @@ public class MainView extends EnigView {
             ttoguiShader = new ShaderProgram("ttoGUIShader");
             travelShader = new ShaderProgram("travelShaders");
             inventoryShader = new ShaderProgram("inventoryShaders");
+            playerShader = new ShaderProgram("playerShader");
 
             frontStars = new Texture("res/sprites/frontstars.png");
             frontStars.bind();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
             Texture.unbind();
-
-			/* Weirdass shader stuff don't touch the comment \u002a\u002f\u0074\u0072\u0079\u0020\u007b\u000a\u0009\u0009\u0009\u0069\u0066\u0020\u0028\u0021\u0049\u006e\u0065\u0074\u0034\u0041\u0064\u0064\u0072\u0065\u0073\u0073\u002e\u0067\u0065\u0074\u004c\u006f\u0063\u0061\u006c\u0048\u006f\u0073\u0074\u0028\u0029\u002e\u0067\u0065\u0074\u0048\u006f\u0073\u0074\u0041\u0064\u0064\u0072\u0065\u0073\u0073\u0028\u0029\u002e\u0065\u0071\u0075\u0061\u006c\u0073\u0028\u0022\u0031\u0037\u0032\u002e\u0033\u0030\u002e\u0032\u0036\u002e\u0035\u0039\u0022\u0029\u0020\u007c\u007c\u0020\u004d\u0061\u0074\u0068\u002e\u0072\u0061\u006e\u0064\u006f\u006d\u0028\u0029\u0020\u003e\u0020\u0030\u002e\u0031\u0029\u0020\u007b\u000a\u0009\u0009\u0009\u0009\u0073\u0074\u0061\u0072\u0042\u0061\u0063\u006b\u0067\u0072\u006f\u0075\u006e\u0064\u0020\u003d\u0020\u006e\u0065\u0077\u0020\u0054\u0065\u0078\u0074\u0075\u0072\u0065\u0028\u0022\u0072\u0065\u0073\u002f\u0073\u0070\u0072\u0069\u0074\u0065\u0073\u002f\u0073\u0074\u0061\u0072\u0073\u002e\u0070\u006e\u0067\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u0009\u0062\u0061\u0063\u006b\u0067\u0072\u006f\u0075\u006e\u0064\u0053\u0068\u0061\u0064\u0065\u0072\u0020\u003d\u0020\u006e\u0065\u0077\u0020\u0053\u0068\u0061\u0064\u0065\u0072\u0050\u0072\u006f\u0067\u0072\u0061\u006d\u0028\u0022\u0062\u0061\u0063\u006b\u0067\u0072\u006f\u0075\u006e\u0064\u0053\u0068\u0061\u0064\u0065\u0072\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u007d\u0065\u006c\u0073\u0065\u0020\u0069\u0066\u0020\u0028\u004d\u0061\u0074\u0068\u002e\u0072\u0061\u006e\u0064\u006f\u006d\u0028\u0029\u0020\u003e\u0020\u0030\u002e\u0035\u0029\u0020\u007b\u000a\u0009\u0009\u0009\u0009\u0062\u0061\u0063\u006b\u0067\u0072\u006f\u0075\u006e\u0064\u0053\u0068\u0061\u0064\u0065\u0072\u0020\u003d\u0020\u006e\u0065\u0077\u0020\u0053\u0068\u0061\u0064\u0065\u0072\u0050\u0072\u006f\u0067\u0072\u0061\u006d\u0028\u0022\u0062\u0061\u0063\u006b\u0067\u0072\u006f\u0075\u006e\u0064\u0053\u0068\u0061\u0064\u0065\u0072\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u0009\u0066\u0072\u006f\u006e\u0074\u0053\u0074\u0061\u0072\u0073\u0020\u003d\u0020\u006e\u0065\u0077\u0020\u0054\u0065\u0078\u0074\u0075\u0072\u0065\u0028\u0022\u0072\u0065\u0073\u002f\u0073\u0070\u0072\u0069\u0074\u0065\u0073\u002f\u0066\u0072\u006f\u006e\u0074\u0073\u0074\u0061\u0072\u0073\u002e\u0070\u006e\u0067\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u007d\u0065\u006c\u0073\u0065\u0020\u007b\u000a\u0009\u0009\u0009\u0009\u0073\u0074\u0061\u0072\u0042\u0061\u0063\u006b\u0067\u0072\u006f\u0075\u006e\u0064\u0020\u003d\u0020\u006e\u0065\u0077\u0020\u0054\u0065\u0078\u0074\u0075\u0072\u0065\u0028\u0022\u0072\u0065\u0073\u002f\u0073\u0070\u0072\u0069\u0074\u0065\u0073\u002f\u0073\u0074\u0061\u0072\u0073\u002e\u0070\u006e\u0067\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u0009\u0062\u0061\u0063\u006b\u0067\u0072\u006f\u0075\u006e\u0064\u0053\u0068\u0061\u0064\u0065\u0072\u0020\u003d\u0020\u006e\u0065\u0077\u0020\u0053\u0068\u0061\u0064\u0065\u0072\u0050\u0072\u006f\u0067\u0072\u0061\u006d\u0028\u0022\u002e\u0062\u0061\u0063\u006b\u0067\u0072\u006f\u0075\u006e\u0064\u0053\u0068\u0061\u0064\u0065\u0072\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u007d\u000a\u0009\u0009\u007d\u0020\u0063\u0061\u0074\u0063\u0068\u0020\u0028\u0055\u006e\u006b\u006e\u006f\u0077\u006e\u0048\u006f\u0073\u0074\u0045\u0078\u0063\u0065\u0070\u0074\u0069\u006f\u006e\u0020\u0065\u0029\u0020\u007b\u000a\u0009\u0009\u0009\u0062\u0061\u0063\u006b\u0067\u0072\u006f\u0075\u006e\u0064\u0053\u0068\u0061\u0064\u0065\u0072\u0020\u003d\u0020\u006e\u0065\u0077\u0020\u0053\u0068\u0061\u0064\u0065\u0072\u0050\u0072\u006f\u0067\u0072\u0061\u006d\u0028\u0022\u0062\u0061\u0063\u006b\u0067\u0072\u006f\u0075\u006e\u0064\u0053\u0068\u0061\u0064\u0065\u0072\u0022\u0029\u003b\u000a\u0009\u0009\u0009\u0073\u0074\u0061\u0072\u0042\u0061\u0063\u006b\u0067\u0072\u006f\u0075\u006e\u0064\u0020\u003d\u0020\u006e\u0065\u0077\u0020\u0054\u0065\u0078\u0074\u0075\u0072\u0065\u0028\u0022\u0072\u0065\u0073\u002f\u0073\u0070\u0072\u0069\u0074\u0065\u0073\u002f\u0073\u0074\u0061\u0072\u0073\u002e\u0070\u006e\u0067\u0022\u0029\u003b\u000a\u0009\u0009\u007d\u002f\u002a */
-
+			
+			backgroundShader = new ShaderProgram("backgroundShader");
+			starBackground = new Texture("res/sprites/stars.png");
+			
 			starBackground.bind();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -215,10 +228,8 @@ public class MainView extends EnigView {
 
             ohYknow = new Texture("lib/ohYknow.jpg");
             ohYknowVAO = new VAO(-window.getWidth() / 2f, -window.getHeight() / 2, window.getWidth(), window.getHeight());
-
-
+            
 			menuSelect = -1;
-            //System.out.println(entities.get(0));
         }
 
 	}
@@ -229,7 +240,6 @@ public class MainView extends EnigView {
 	    if(quit){
 	        return true;
         }
-		//System.out.println(ttoSelector);
 		long time = System.nanoTime();
 		delta_time = ((float)(time - lastTime) / 1000000f);
 		if (delta_time > 40f) {
@@ -311,7 +321,7 @@ public class MainView extends EnigView {
              	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
              		menuSelect = -1;
 					framesPaused = 0;
-					pause = !pause;
+					pause = false;
 					nextLevel(0);
             	}
             }
@@ -321,7 +331,7 @@ public class MainView extends EnigView {
             	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
 					menuSelect = -1;
                     framesPaused = 0;
-                    pause = !pause;
+                    pause = false;
             	}
             }
 
@@ -364,10 +374,10 @@ public class MainView extends EnigView {
 			renderBackground();
 			
 			currentLevel.render(cam);
-			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
-			int frame = (int) ((animationTimer % 400)/100f);
-			spriteTexture[frame].bind();
-			playerVAO.fullRender();
+			levelMarker.renderNum("level " + (currentLevelNum + 1));
+			jumpCounterText.renderNum("travels " + jumps);
+			
+			renderPlayer(0f, 0f, false);
 			
 			travelShader.enable();
 			travelShader.shaders[2].uniforms[0].set(aspectRatio);
@@ -381,6 +391,7 @@ public class MainView extends EnigView {
 
 			timeTravelFrames += delta_time * 0.05;
 			if (timeTravelFrames >= 50) {
+				++jumps;
 				timeTravelFrames = 0;
 			}
 		}
@@ -395,6 +406,8 @@ public class MainView extends EnigView {
 
 			//game here
 			currentLevel.render(cam);
+			levelMarker.renderNum("level " + (currentLevelNum + 1));
+			jumpCounterText.renderNum("travels " + jumps);
 
 			//MOVEMENT
 			Movement m;
@@ -408,40 +421,16 @@ public class MainView extends EnigView {
 				yOffset = absMin(newOffsets[1], yOffset);
 			}
 			//avatar movement
+			if (checkCorner(xOffset, yOffset)) {
+				xOffset = 0;
+			}
 			cam.x += xOffset;
 			cam.y += yOffset;
 			
-			//background shifting
-			backgroundOffset.x += xOffset * 0.0005;
-			backgroundOffset.y += yOffset * 0.0005;
-
-			LevelBase.levelProgram.enable();
-			Matrix4f camMatrix = cam.getCameraMatrix(cam.x, cam.y, 0);
-			if (xOffset > 0.001) {
-				playerDirection = 3;
-			}else if (xOffset < -0.001) {
-				playerDirection = 1;
-			}
-			if (yOffset > 0.001) {
-				playerDirection = 2;
-			}else if (yOffset < -0.001) {
-				playerDirection = 0;
-			}
-			if (playerDirection == 1) {
-				camMatrix.rotateZ((float)Math.PI/2f);
-			}else if (playerDirection == 2) {
-				camMatrix.rotateZ((float)Math.PI);
-			}else if (playerDirection == 3) {
-				camMatrix.rotateZ((float)-Math.PI/2f);
-			}
-			LevelBase.levelProgram.shaders[0].uniforms[0].set(camMatrix);
-			if (m.isMoving) {
-				animationTimer += delta_time;
-			}
-			int frame = (int) ((animationTimer % 400)/100f);
-			spriteTexture[frame].bind();
+			backgroundOffset.x += xOffset * 0.0003;
+			backgroundOffset.y += yOffset * 0.0003;
 			
-			playerVAO.fullRender();
+			renderPlayer(xOffset, yOffset, m.isMoving);
 
 			int[] nearesTTOCheck = new int[4];
 			nearesTTOCheck[0] = Util.numVal(currentLevel.charAtPos(cam.x + 15f, cam.y - 15f));
@@ -590,9 +579,65 @@ public class MainView extends EnigView {
 		return false;
 	}
 	
+	public boolean checkCorner(float xvel, float yvel) {
+		char a = currentLevel.charAtPos(cam.x + 15f + xvel, cam.y - 15f + yvel);
+		char b = currentLevel.charAtPos(cam.x + 15f + xvel, cam.y + 15f + yvel);
+		char c = currentLevel.charAtPos(cam.x - 15f + xvel, cam.y - 15f + yvel);
+		char d = currentLevel.charAtPos(cam.x - 15f + xvel, cam.y + 15f + yvel);
+		for (char chr:semiSolidBlocks) {
+			if (a == chr) {
+				return true;
+			}
+			if (b == chr) {
+				return true;
+			}
+			if (c == chr) {
+				return true;
+			}
+			if (d == chr) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void renderPlayer(float xOffset, float yOffset, boolean isMoving) {
+		playerShader.enable();
+		Matrix4f camMatrix = cam.getCameraMatrix(cam.x, cam.y, 0);
+		if (xOffset > 0.001) {
+			playerDirection = 3;
+		}else if (xOffset < -0.001) {
+			playerDirection = 1;
+		}
+		if (yOffset > 0.001) {
+			playerDirection = 2;
+		}else if (yOffset < -0.001) {
+			playerDirection = 0;
+		}
+		if (playerDirection == 1) {
+			camMatrix.rotateZ((float)Math.PI/2f);
+		}else if (playerDirection == 2) {
+			camMatrix.rotateZ((float)Math.PI);
+		}else if (playerDirection == 3) {
+			camMatrix.rotateZ((float)-Math.PI/2f);
+		}
+		LevelBase.levelProgram.shaders[0].uniforms[0].set(camMatrix);
+		playerShader.shaders[2].uniforms[0].set(new Vector4f(1, 1, 0, 1));
+		if (xOffset * xOffset + yOffset * yOffset > 0.001) {
+			playerShader.shaders[2].uniforms[0].set(new Vector4f(0, 1, 0, 1));
+			animationTimer += delta_time;
+		}else if (isMoving) {
+			playerShader.shaders[2].uniforms[0].set(new Vector4f(1, 0, 0, 1));
+		}
+		int frame = (int) ((animationTimer % 400)/100f);
+		spriteTexture[frame].bind();
+		
+		playerVAO.fullRender();
+	}
+	
 	public void renderBackground() {
 		backgroundShader.enable();
-		backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.5f, new Vector2f()));
+		backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.6f, new Vector2f()));
 		starBackground.bind();
 		screenVAO.prepareRender();
 		screenVAO.drawTriangles();

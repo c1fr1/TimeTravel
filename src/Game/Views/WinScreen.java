@@ -1,6 +1,9 @@
 package Game.Views;
 
 import Game.Buttons.SpriteButton;
+import Game.MainView;
+import Game.NumberRenderer;
+import Game.StringRenderer;
 import engine.EnigView;
 import engine.OpenGL.*;
 
@@ -11,10 +14,10 @@ public class WinScreen extends EnigView {
 	public static VAO fullScreen;
 	public static Texture wonScreenTaxture;
 	public static VAO wonSreamVEO;
-	public static SpriteButton continueButton;
 	public Texture t;
 	public static ShaderProgram normieShader;
 	public static ShaderProgram aespectShader;
+	public StringRenderer jumpCounter;
 	public WinScreen(Texture background, float aespectionrations) {
 		super(EnigWindow.mainWindow);
 		if (wonScreenTaxture == null) {
@@ -23,11 +26,11 @@ public class WinScreen extends EnigView {
 		}
 		t = background;
 		window = EnigWindow.mainWindow;
+		jumpCounter = new StringRenderer(window.getWidth(), window.getHeight(), 55, 0f, 60f);
 		runLoop();
 	}
 	@Override
 	public void setup() {
-	
 	}
 	
 	@Override
@@ -40,9 +43,11 @@ public class WinScreen extends EnigView {
 		wonSreamVEO.fullRender();
 		SpriteButton.shader.enable();
 		SpriteButton.shader.shaders[0].uniforms[0].set((float) EnigWindow.mainWindow.getHeight() / (float) EnigWindow.mainWindow.getWidth());
-		if (EnigWindow.mainWindow.keys[GLFW_KEY_ENTER] > 0 || (continueButton.render(EnigWindow.mainWindow.cursorXFloat, EnigWindow.mainWindow.cursorYFloat) && EnigWindow.mainWindow.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] > 0)) {
+		if (EnigWindow.mainWindow.keys[GLFW_KEY_ENTER] > 0 || EnigWindow.mainWindow.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] > 0) {
+			MainView.jumps = 0;
 			return true;
 		}
+		jumpCounter.renderNum("travels " + MainView.jumps);
 		return false;
 	}
 	
