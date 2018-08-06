@@ -29,19 +29,6 @@ import static org.lwjgl.opengl.GL11.*;
 public class MainView extends EnigView {
     public static boolean quit = false;
 	public static MainView main;
-	private static String getClientIp(HttpServletRequest request) {
-		
-		String remoteAddr = "";
-		
-		if (request != null) {
-			remoteAddr = request.getHeader("X-FORWARDED-FOR");
-			if (remoteAddr == null || "".equals(remoteAddr)) {
-				remoteAddr = request.getRemoteAddr();
-			}
-		}
-		
-		return remoteAddr;
-	}
 	
 	public static int entOffset = 1;
 
@@ -64,27 +51,21 @@ public class MainView extends EnigView {
 	public Inventory inv;
 
 	public ShaderProgram guiShader;
-	public ShaderProgram ttoguiShader;
 	public ShaderProgram textureShader;
 	public ShaderProgram pauseShader;
 	public ShaderProgram travelShader;
 	public ShaderProgram inventoryShader;
 	public ShaderProgram backgroundShader;
-	public ShaderProgram ttoGUIButtonShader;
 	public ShaderProgram playerShader;
 	
 	public Texture starBackground;
 	public Vector2f backgroundOffset = new Vector2f();
 	public Vector2f backgroundVelocity = new Vector2f();
 
-	public ShaderOptimizedButton ttoGUIButton;
-
 	public Texture frontStars;
-	public Texture ttoGUI;
 	public Texture keyTexture;
 	public Texture[] spriteTexture;
-
-	public VAO ttoGUIVAO;
+	
 	public VAO playerVAO;
 	public VAO inventoryObjectVAO;
 	
@@ -116,6 +97,8 @@ public class MainView extends EnigView {
 	public int playerDirection = 0;
 	
 	public static int jumps = 0;
+	
+	public TTOGUI ttoguiclass;
 	
 	//0 is up
 	//1 is right
@@ -159,10 +142,8 @@ public class MainView extends EnigView {
             cam = new Camera((float) window.getWidth(), (float) window.getHeight());
             guiShader = new ShaderProgram("guiShader");
 			WinScreen.aespectShader = guiShader;
-			ttoGUI = new Texture("res/menu/timeTravelGUI.png");
             keyTexture = new Texture("res/sprites/inventoryKey.png");
             inventoryObjectVAO = new VAO(-1f, -0.9f, 0.1f, 0.1f);
-            ttoGUIVAO = new VAO(-0.5f, 0.125f, 1f, 0.25f);
             playerVAO = new VAO(-15, -15f, 30f, 30f);
             inv = new Inventory();
 
@@ -184,7 +165,6 @@ public class MainView extends EnigView {
             textureShader = new ShaderProgram("textureShaders");
             pauseShader = new ShaderProgram("pauseShaders");
 			WinScreen.normieShader = textureShader;
-            ttoguiShader = new ShaderProgram("ttoGUIShader");
             travelShader = new ShaderProgram("travelShaders");
             inventoryShader = new ShaderProgram("inventoryShaders");
             playerShader = new ShaderProgram("playerShader");
@@ -205,9 +185,6 @@ public class MainView extends EnigView {
             backgroundOffset = new Vector2f(0f, 0f);
             backgroundVelocity = new Vector2f(0f, 0f);
 
-            ttoGUIButton = new ShaderOptimizedButton(-0.06f, 0.4f, 0.12f, 0.12f, "res/sprites/ttoguiButton.png");
-            ttoGUIButtonShader = new ShaderProgram("ttoGUIButtonShader");
-
             mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));
             screenVAO = new VAO(-1f, -1f, 2f, 2f);
 
@@ -223,6 +200,8 @@ public class MainView extends EnigView {
             ohYknowVAO = new VAO(-window.getWidth() / 2f, -window.getHeight() / 2, window.getWidth(), window.getHeight());
             
 			menuSelect = -1;
+			
+			ttoguiclass = new TTOGUI();
         }
 
 	}
@@ -438,64 +417,11 @@ public class MainView extends EnigView {
 				}
 			}
 			if (ttoOnInd >= 0) {
-				ttoguiShader.enable();
-				ttoguiShader.shaders[0].uniforms[0].set(aspectRatio);
-
-				ttoGUIButtonShader.enable();
-				ttoGUIButtonShader.shaders[0].uniforms[0].set(aspectRatio);
-				ttoGUIButton.sprite.bind();
-				ttoGUIButton.vao.prepareRender();
-				float leftOffset = 0.025f * (float) currentLevel.levelseries.size();
-				//Arrow key switching in the tto
-				if(UserControls.leftArrowPress(window)){
-					if(ttoSelector-1 >= 0) {
-						ttoSelector--;
-					}
+				int newTZ = ttoguiclass.render(aspectRatio, ttoOnInd);
+				if (newTZ != currentLevel.currentTZ) {
+					currentLevel.currentTZ = newTZ;
+					++timeTravelFrames;
 				}
-				if(UserControls.rightArrowPress(window)){
-					if(ttoSelector+1 < currentLevel.levelseries.size()) {
-						ttoSelector++;
-					}
-				}
-				//regular switching
-				for (int i = 0; i < currentLevel.levelseries.size(); ++i) {
-					float floati = (float) i;
-					//float x = floati * 0.2f + window.cursorXFloat * aspectRatio;
-					ttoGUIButtonShader.shaders[0].uniforms[1].set(-leftOffset + 0.1f * floati - ttoGUIButton.width/2);
-					if (!currentLevel.timeZonePossibilities.get(ttoOnInd)[i]) {
-						ttoGUIButtonShader.shaders[2].uniforms[0].set(0f);
-					} else if (currentLevel.currentTZ == i) {
-						ttoGUIButtonShader.shaders[2].uniforms[0].set(2f);
-					} else if (ttoGUIButton.hoverCheck((window.cursorXFloat - floati * 0.1f + leftOffset + ttoGUIButton.width/2)/aspectRatio, window.cursorYFloat) || ttoSelector == i) {
-						if(ttoGUIButton.hoverCheck((window.cursorXFloat - floati * 0.1f + leftOffset + ttoGUIButton.width/2)/aspectRatio, window.cursorYFloat)) {
-							ttoSelector = i;
-							if (UserControls.leftMB(window)) {
-								currentLevel.currentTZ = i;
-								++timeTravelFrames;
-							}
-						}
-						if(ttoSelector == i){
-							if(UserControls.enter(window)){
-								currentLevel.currentTZ = i;
-								++timeTravelFrames;
-							}
-							ttoGUIButtonShader.shaders[2].uniforms[0].set(3f);
-						}
-					} else {
-						ttoGUIButtonShader.shaders[2].uniforms[0].set(1f);
-					}
-					ttoGUIButton.vao.draw();
-				}
-				ttoGUIButton.vao.unbind();
-				ttoguiShader.enable();
-				ttoGUIButton.shader.shaders[0].uniforms[0].set(aspectRatio);
-				if (timeTravelFrames == 0) {
-					ttoGUI.bind();
-					ttoGUIVAO.fullRender();
-				}
-				//ttoGUIButtonTexture.bind();
-				//ttoGUIButtonVAO.fullRender();
-
 			}
 			int spriteSize = 35;
 			int[] arrpossibilities = new int[12];
