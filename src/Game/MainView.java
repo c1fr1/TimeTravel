@@ -1,10 +1,15 @@
 package Game;
 
+import Game.Buttons.DoubleTextureButton;
+import Game.Buttons.ShaderOptimizedButton;
+import Game.Buttons.SpriteButton;
 import Game.Views.*;
 import engine.*;
 import engine.Entities.Camera;
 import engine.OpenGL.*;
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
+import org.lwjgl.glfw.GLFW;
 import org.lwjglx.debug.javax.servlet.http.HttpServletRequest;
 
 import Game.Views.LevelSelect;
@@ -19,11 +24,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static Game.Util.absMin;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+
 
 public class MainView extends EnigView {
     public static boolean quit = false;
@@ -47,6 +54,11 @@ public class MainView extends EnigView {
 	public static Camera cam;
 
 	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v', 'X', 'Y', 'Z', 'w'};
+
+	//Glodal booleans
+
+	public static boolean fullScreenBool;
+	public static boolean backgroundMoveBool;
 
 	//project variables
 
@@ -95,6 +107,16 @@ public class MainView extends EnigView {
 	public float animationFrameCounter = 0;
 
 	public long lastTime = System.nanoTime();
+	
+	public static float delta_time;
+	
+	public float animationTimer = 0;
+	
+	public int playerDirection = 0;
+	//0 is up
+	//1 is right
+	//2 is down
+	//3 is left
 
 	SpriteButton cont;
 	SpriteButton restart;
@@ -114,6 +136,7 @@ public class MainView extends EnigView {
 
 	@Override
 	public void setup() {
+		getControls();
 		main = this;
 		aspectRatio = (float)window.getHeight()/(float)window.getWidth();
 		LevelSelect.createTextFolder();
@@ -121,7 +144,7 @@ public class MainView extends EnigView {
 		new MainMenu(window);
 		if(!quit) {
 		    MainMenu.mainMenuQuit = false;
-			LoadingScreen.texturePath = new ShaderOptimizedButton(-1f/aspectRatio, -1f, 2f/aspectRatio, 2f, "res/sprites/Loading.png");
+			LoadingScreen.texturePath = new ShaderOptimizedButton(-1f, -1f, 2f, 2f, "res/sprites/Loading.png");
             new LoadingScreen(window);
             //set variables here
             glDisable(GL_DEPTH_TEST);
@@ -132,24 +155,24 @@ public class MainView extends EnigView {
             cam = new Camera((float) window.getWidth(), (float) window.getHeight());
             guiShader = new ShaderProgram("guiShader");
 			WinScreen.aespectShader = guiShader;
-			ttoGUI = new Texture("res/sprites/timeTravelGUI.png");
+			ttoGUI = new Texture("res/menu/timeTravelGUI.png");
             keyTexture = new Texture("res/sprites/inventoryKey.png");
             inventoryObjectVAO = new VAO(-1f, -0.9f, 0.1f, 0.1f);
             ttoGUIVAO = new VAO(-0.5f, 0.125f, 1f, 0.25f);
-            playerVAO = new VAO(-40f, 10f, 30f, 30f);
+            playerVAO = new VAO(-15, -15f, 30f, 30f);
             inv = new Inventory();
 
             spriteTexture = new Texture[4];//down left right up;
-            spriteTexture[0] = new Texture("res/sprites/avatar-0.png");
-            //spriteTexture[1] = new Texture("res/sprites/sprite-left.png");
-            //spriteTexture[2] = new Texture("res/sprites/sprite-right.png");
-            //spriteTexture[3] = new Texture("res/sprites/sprite-up.png");
+            spriteTexture[0] = new Texture("res/anims/avatar-0.png");
+			spriteTexture[1] = new Texture("res/anims/avatar-1.png");
+			spriteTexture[2] = new Texture("res/anims/avatar-2.png");
+			spriteTexture[3] = new Texture("res/anims/avatar-3.png");
 
-            cont = new ShaderOptimizedButton(-0.5f, 0.525f, 1f, 0.25f, "res/sprites/continueButton.png", aspectRatio);
+            cont = new ShaderOptimizedButton(-0.5f, 0.525f, 1f, 0.25f, "res/menu/continueButton.png", aspectRatio);
             WinScreen.continueButton = cont;
 
-            restart = new ShaderOptimizedButton(-0.5f, -0.125f, 1f, 0.25f, "res/sprites/restart.png", aspectRatio);
-            menu = new ShaderOptimizedButton(-0.5f, -0.725f, 1f, 0.25f, "res/sprites/mainMenu.png", aspectRatio);
+            restart = new ShaderOptimizedButton(-0.5f, -0.125f, 1f, 0.25f, "res/menu/restart.png", aspectRatio);
+            menu = new ShaderOptimizedButton(-0.5f, -0.725f, 1f, 0.25f, "res/menu/mainMenu.png", aspectRatio);
 
             textureShader = new ShaderProgram("textureShaders");
             pauseShader = new ShaderProgram("pauseShaders");
@@ -181,8 +204,8 @@ public class MainView extends EnigView {
 
             WinScreen.fullScreen = screenVAO;
 
-            cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
-            cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
+            cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
+            cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
 
             ttoSelector = currentLevel.currentTZ;
             ttoSelectorBool = false;
@@ -203,7 +226,7 @@ public class MainView extends EnigView {
         }
 		//System.out.println(ttoSelector);
 		long time = System.nanoTime();
-		float delta_time = ((float)(time - lastTime) / 1000000f);
+		delta_time = ((float)(time - lastTime) / 1000000f);
 		if (delta_time > 40f) {
 			delta_time = 40f;
 		}
@@ -284,7 +307,8 @@ public class MainView extends EnigView {
 			
 			currentLevel.render(cam);
 			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
-			spriteTexture[0].bind();
+			int frame = (int) ((animationTimer % 400)/100f);
+			spriteTexture[frame].bind();
 			playerVAO.fullRender();
 			
 			travelShader.enable();
@@ -307,10 +331,6 @@ public class MainView extends EnigView {
 			mainFBO.prepareForTexture();
 			
 			renderBackground();
-			
-			backgroundVelocity.mul(0.99f);
-			backgroundVelocity.add((float) (delta_time * 0.000007f * (Math.random() - 0.5)), (float) (delta_time * 0.000007f * (Math.random() - 0.5)));
-			backgroundOffset.add(backgroundVelocity);
 
 			lastTime = time;
 
@@ -324,20 +344,44 @@ public class MainView extends EnigView {
 			float yOffset = m.getYOffset();
 			//crate movement - sets the box x and y from entity
 			for (int i = 0; i < currentLevel.entities.size(); i++) {
-				float[] newOffsets = currentLevel.entities.get(i).getBoxMovement(cam.x, cam.y, m.getHSpeed(), m.getVSpeed());
+				float[] newOffsets = currentLevel.entities.get(i).getBoxMovement(cam.x + 25, cam.y + 25, m.getHSpeed(), m.getVSpeed());
 				xOffset = absMin(newOffsets[0], xOffset);
 				yOffset = absMin(newOffsets[1], yOffset);
 			}
 			//avatar movement
 			cam.x += xOffset;
 			cam.y += yOffset;
+			
 			//background shifting
 			backgroundOffset.x += xOffset * 0.0005;
 			backgroundOffset.y += yOffset * 0.0005;
 
 			LevelBase.levelProgram.enable();
-			LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
-			spriteTexture[0].bind();
+			Matrix4f camMatrix = cam.getCameraMatrix(cam.x, cam.y, 0);
+			if (xOffset > 0.001) {
+				playerDirection = 3;
+			}else if (xOffset < -0.001) {
+				playerDirection = 1;
+			}
+			if (yOffset > 0.001) {
+				playerDirection = 2;
+			}else if (yOffset < -0.001) {
+				playerDirection = 0;
+			}
+			if (playerDirection == 1) {
+				camMatrix.rotateZ((float)Math.PI/2f);
+			}else if (playerDirection == 2) {
+				camMatrix.rotateZ((float)Math.PI);
+			}else if (playerDirection == 3) {
+				camMatrix.rotateZ((float)-Math.PI/2f);
+			}
+			LevelBase.levelProgram.shaders[0].uniforms[0].set(camMatrix);
+			if (m.isMoving) {
+				animationTimer += delta_time;
+			}
+			int frame = (int) ((animationTimer % 400)/100f);
+			spriteTexture[frame].bind();
+			
 			playerVAO.fullRender();
 
 			int[] nearesTTOCheck = new int[4];
@@ -402,11 +446,6 @@ public class MainView extends EnigView {
 					ttoGUIButton.vao.draw();
 				}
 				ttoGUIButton.vao.unbind();
-				/*if (ttoGUIButton.hoverCheck(window.cursorXFloat * aspectRatio, window.cursorYFloat)) {
-					ttoGUIButton.shader.enable();
-					ttoGUIButton.shader.shaders[0].uniforms[0].set(aspectRatio);
-
-				}*/
 				ttoguiShader.enable();
 				ttoGUIButton.shader.shaders[0].uniforms[0].set(aspectRatio);
 				if (timeTravelFrames == 0) {
@@ -439,13 +478,10 @@ public class MainView extends EnigView {
 			}
 
             currentLevel.updateTTO(arrpossibilities, delta_time);
-
-			if (CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'k') || CamCollision.isColliding(cam.x, cam.y, 1, currentLevel.levelseries.get(currentLevel.currentTZ),'K'))
-            {
-				if (replaceTile(cam.x, cam.y, ' ') == 'k') {
-					inv.add('k');
-				}
-            }
+			
+			if (CamCollision.checkAndReplace(cam.x, cam.y, 15, 'k', ' ')) {
+				inv.add('k');
+			}
 
 			//checks to open button doors
 			checkButtonPress('x','X');
@@ -457,17 +493,14 @@ public class MainView extends EnigView {
 				ohYknow.bind();
 				ohYknowVAO.fullRender();
 			}
-
-
-			int gateCheckXIndex = (int)((cam.x + Util.getSign(m.getHSpeed())*20f)/50f);
-			int gateCheckYIndex = (int)((cam.y + Util.getSign(m.getVSpeed())*20f)/50f);
-			if(currentLevel.charAtPos(gateCheckXIndex, gateCheckYIndex) == 'l'){
-				
-                if(inv.check('k')){
-                    replaceTile(gateCheckXIndex, gateCheckYIndex, ' ');
-                    inv.getAndRemove('k');
-                }
-            }
+			
+			if (inv.check('k')) {
+				if (CamCollision.checkAndReplace(cam.x, cam.y, 16, 'l', ' ')) {
+					inv.getAndRemove('k');
+				}
+			}
+			
+			
             inventoryShader.enable();
 			inventoryShader.shaders[0].uniforms[0].set(aspectRatio);
             inventoryObjectVAO.prepareRender();
@@ -481,8 +514,7 @@ public class MainView extends EnigView {
 
 			guiShader.enable();
 			guiShader.shaders[0].uniforms[0].set(aspectRatio);
-			if (CamCollision.isColliding(cam.x,cam.y,1,currentLevel.levelseries.get(currentLevel.currentTZ),'g'))
-			{
+			if (CamCollision.isColliding(cam.x,cam.y,1,currentLevel.levelseries.get(currentLevel.currentTZ),'g')) {
 				LevelSelect.levelState[currentLevelNum] = 1;
 				LevelSelect.updateLevelTextDoc();
 				new WinScreen(mainFBO.getBoundTexture(), aspectRatio);
@@ -501,32 +533,39 @@ public class MainView extends EnigView {
 	
 	public void renderBackground() {
 		backgroundShader.enable();
-		backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
+		backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.5f, new Vector2f()));
 		starBackground.bind();
 		screenVAO.prepareRender();
 		screenVAO.drawTriangles();
 		frontStars.bind();
-		backgroundShader.shaders[2].uniforms[0].set(backgroundOffset.mul(0.5f, new Vector2f()));
+		backgroundShader.shaders[2].uniforms[0].set(backgroundOffset);
 		screenVAO.drawTriangles();
 		screenVAO.unbind();
+		
+		
+		if (backgroundMoveBool) {
+			backgroundVelocity.mul(0.99f);
+			backgroundVelocity.add((float) (delta_time * 0.000007f * (Math.random() - 0.5)), (float) (delta_time * 0.000007f * (Math.random() - 0.5)));
+			backgroundOffset.add(backgroundVelocity);
+		}
 	}
 	
 	public boolean nextLevel(int increment) {
 		inv.reset();
-		File test = new File("res/Levels");
-		if(test.listFiles().length > currentLevelNum + increment && !(currentLevelNum + increment < 0)) {
+		File test = new File("res/Levels/Level" + (increment+currentLevelNum) + ".txt");
+		if(test.exists()) {
 			currentLevelNum += increment;
 			currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt");
-			ttoSelector =  currentLevel.currentTZ;
-			cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50 + 25;
-			cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50 + 25;
+			ttoSelector = currentLevel.currentTZ;
+			cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
+			cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
 			if (increment == 1) {
 				new PanScreen(window);
 			}
 			return false;
-		}else {
-			return true;
 		}
+		return true;
+
 	}
 	
 	public int[] findCharacter(char ch){
@@ -544,7 +583,7 @@ public class MainView extends EnigView {
 	public boolean checkBoxPosition(ArrayList<Entity> boxes, char obs){
 		int tz = currentLevel.currentTZ;
 		for (Entity i: boxes){
-			if(CamCollision.isColliding(i.xpos[tz], i.ypos[tz], 15, currentLevel.levelseries.get(tz), obs)){
+			if(CamCollision.isColliding(i.xpos[tz] - 25, i.ypos[tz] - 25, 15, currentLevel.levelseries.get(tz), obs)){
 				return true;
 			}
 		}
@@ -646,7 +685,7 @@ public class MainView extends EnigView {
 		//currentLevel.levelseries.get(tempIntY)
 		return current;
 	}
-	
+
 	/**
 	 *
 	 * @param x index of replace
@@ -659,7 +698,7 @@ public class MainView extends EnigView {
 		for (int i = currentLevel.currentTZ; i < currentLevel.levelseries.size(); i ++) {
 			currentLevel.levelseries.get(i).get(y)[x] = replacement;
 		}
-		
+
 		//currentLevel.levelseries.get(tempIntY)
 		return current;
 	}
@@ -678,7 +717,47 @@ public class MainView extends EnigView {
         if(!check){
             try {
                 PrintWriter writer = new PrintWriter("res/options.txt", "UTF-8");
-                String format = "f";
+                String format =
+                        "fullscreen:t\n" +
+                        "res:1080,720\n" +
+                        "backgroundmove:f";
+                writer.println(format);
+                writer.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        boolean checkc = false;
+        for(File i:new File("res/").listFiles()){
+            if(i.getName().equals("controls.txt")){
+                checkc = true;
+            }
+        }
+        if(!checkc){
+            try {
+                PrintWriter writer = new PrintWriter("res/controls.txt", "UTF-8");
+                String format =
+                        "forward:87\n" +
+                        "backward:83\n" +
+                        "left:65\n" +
+                        "right:68\n" +
+                        "leftArrow:81,263\n" +
+                        "rightArrow:69,262\n" +
+                        "down:340\n" +
+                        "up:32\n" +
+                        "pause:256\n" +
+                        "enter:82,257\n" +
+                        "levelAdvance:78\n" +
+                        "levelBack:66\n" +
+                        "ohYknow:344\n" +
+						"skip:258,257";
+
+                //org.lwjgl.glfw.GLFW.glfwGetKeyName() use this
+
+				//org.lwjgl.glfw.GLFW.glfwGetKeyName();
+
                 writer.println(format);
                 writer.close();
             } catch (FileNotFoundException e) {
@@ -689,25 +768,108 @@ public class MainView extends EnigView {
         }
     }
 
+    public void getControls(){
+		try {
+			Scanner s = new Scanner(new File("res/controls.txt"));
+
+			UserControls.forwardSettingString = s.nextLine();
+			UserControls.backwardSettingString = s.nextLine();
+			UserControls.leftSettingString = s.nextLine();
+			UserControls.rightSettingString = s.nextLine();
+			UserControls.leftArrowSettingString = s.nextLine();
+			UserControls.rightArrowSettingString = s.nextLine();
+			UserControls.downSettingString = s.nextLine();
+			UserControls.upSettingString = s.nextLine();
+			UserControls.pauseSettingString = s.nextLine();
+			UserControls.enterSettingString = s.nextLine();
+			UserControls.levelAdvanceSettingString = s.nextLine();
+			UserControls.levelBackSettingString = s.nextLine();
+			UserControls.ohYknowSettingString = s.nextLine();
+			UserControls.skipSettingString = s.nextLine();
+
+			String[] forwardSettingStringArray = UserControls.forwardSettingString.substring(UserControls.forwardSettingString.indexOf(":") + 1).split(",");
+			String[] backwardSettingStringArray = UserControls.backwardSettingString.substring(UserControls.backwardSettingString.indexOf(":") + 1).split(",");
+			String[] leftSettingStringArray = UserControls.leftSettingString.substring(UserControls.leftSettingString.indexOf(":") + 1).split(",");
+			String[] rightSettingStringArray = UserControls.rightSettingString.substring(UserControls.rightSettingString.indexOf(":") + 1).split(",");
+			String[] leftArrowSettingStringArray = UserControls.leftArrowSettingString.substring(UserControls.leftArrowSettingString.indexOf(":") + 1).split(",");
+			String[] rightArrowSettingStringArray = UserControls.rightArrowSettingString.substring(UserControls.rightArrowSettingString.indexOf(":") + 1).split(",");
+			String[] downSettingStringArray = UserControls.downSettingString.substring(UserControls.downSettingString.indexOf(":") + 1).split(",");
+			String[] upSettingStringArray = UserControls.upSettingString.substring(UserControls.upSettingString.indexOf(":") + 1).split(",");
+			String[] pauseSettingStringArray = UserControls.pauseSettingString.substring(UserControls.pauseSettingString.indexOf(":") + 1).split(",");
+			String[] enterSettingStringArray = UserControls.enterSettingString.substring(UserControls.enterSettingString.indexOf(":") + 1).split(",");
+			String[] levelAdvanceSettingStringArray = UserControls.levelAdvanceSettingString.substring(UserControls.levelAdvanceSettingString.indexOf(":") + 1).split(",");
+			String[] levelBackSettingStringArray = UserControls.levelBackSettingString.substring(UserControls.levelBackSettingString.indexOf(":") + 1).split(",");
+			String[] ohYknowSettingStringArray = UserControls.ohYknowSettingString.substring(UserControls.ohYknowSettingString.indexOf(":") + 1).split(",");
+			String[] skipSettingStringArray = UserControls.skipSettingString.substring(UserControls.skipSettingString.indexOf(":") + 1).split(",");
+
+			UserControls.forwardSetting = Integer.parseInt(forwardSettingStringArray[0]);
+			UserControls.backwardSetting = Integer.parseInt(backwardSettingStringArray[0]);
+			UserControls.leftSetting = Integer.parseInt(leftSettingStringArray[0]);
+			UserControls.rightSetting = Integer.parseInt(rightSettingStringArray[0]);
+			UserControls.leftArrowSetting = Integer.parseInt(leftArrowSettingStringArray[0]);
+			UserControls.rightArrowSetting = Integer.parseInt(rightArrowSettingStringArray[0]);
+			UserControls.downSetting = Integer.parseInt(downSettingStringArray[0]);
+			UserControls.upSetting = Integer.parseInt(upSettingStringArray[0]);
+			UserControls.pauseSetting = Integer.parseInt(pauseSettingStringArray[0]);
+			UserControls.enterSetting = Integer.parseInt(enterSettingStringArray[0]);
+			UserControls.levelAdvanceSetting = Integer.parseInt(levelAdvanceSettingStringArray[0]);
+			UserControls.levelBackSetting = Integer.parseInt(levelBackSettingStringArray[0]);
+			UserControls.ohYknowSetting = Integer.parseInt(ohYknowSettingStringArray[0]);
+			UserControls.skipSetting = Integer.parseInt(skipSettingStringArray[0]);
+
+			if(forwardSettingStringArray.length > 1) UserControls.forwardSetting2 = Integer.parseInt(forwardSettingStringArray[1]);
+			if(backwardSettingStringArray.length > 1) UserControls.backwardSetting2 = Integer.parseInt(backwardSettingStringArray[1]);
+			if(leftSettingStringArray.length > 1) UserControls.leftSetting2 = Integer.parseInt(leftSettingStringArray[1]);
+			if(rightSettingStringArray.length > 1) UserControls.rightSetting2 = Integer.parseInt(rightSettingStringArray[1]);
+			if(leftArrowSettingStringArray.length > 1) UserControls.leftArrowSetting2 = Integer.parseInt(leftArrowSettingStringArray[1]);
+			if(rightArrowSettingStringArray.length > 1) UserControls.rightArrowSetting2 = Integer.parseInt(rightArrowSettingStringArray[1]);
+			if(downSettingStringArray.length > 1) UserControls.downSetting2 = Integer.parseInt(downSettingStringArray[1]);
+			if(upSettingStringArray.length > 1) UserControls.upSetting2 = Integer.parseInt(upSettingStringArray[1]);
+			if(pauseSettingStringArray.length > 1) UserControls.pauseSetting2 = Integer.parseInt(pauseSettingStringArray[1]);
+			if(enterSettingStringArray.length > 1) UserControls.enterSetting2 = Integer.parseInt(enterSettingStringArray[1]);
+			if(levelAdvanceSettingStringArray.length > 1) UserControls.levelAdvanceSetting2 = Integer.parseInt(levelAdvanceSettingStringArray[1]);
+			if(levelBackSettingStringArray.length > 1) UserControls.levelBackSetting2 = Integer.parseInt(levelBackSettingStringArray[1]);
+			if(ohYknowSettingStringArray.length > 1) UserControls.ohYknowSetting2 = Integer.parseInt(ohYknowSettingStringArray[1]);
+			if(skipSettingStringArray.length > 1) UserControls.skipSetting2 = Integer.parseInt(skipSettingStringArray[1]);
+
+			UserControls.intit();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (NoSuchElementException e){
+			System.out.println("Delete your controls.txt folder (TimeTravel/res/options.txt) and try again.\n" +
+					"Or fix the ordering manually if you have custom keybinds.");
+		}
+
+	}
+
 
 	public static void main(String[] args) {
 	    createTextFolder();
 		try {
 			Scanner s = new Scanner(new File("res/options.txt"));
-			String lina = s.nextLine();
-			if (lina.startsWith("f")) {
+
+			String fullscreen = s.nextLine();
+            String res = s.nextLine();
+            String backgroundMove = s.nextLine();
+
+			if (fullscreen.replace("fullscreen:", "").equals("t")) {
+				fullScreenBool = true;
 				main = new MainView();
+
 			}else {
-				String linb = s.nextLine();
-				int width = Integer.parseInt(lina);
-				int height = Integer.parseInt(linb);
-				if(width < 200){
-				    width = 200;
-                } if(height < 200){
-				    height = 200;
-                }
+				fullScreenBool = false;
+				String[] dim = res.replace("res:", "").split(",");
+				int width = Integer.parseInt(dim[0]);
+				int height = Integer.parseInt(dim[1]);
+				if(width < 200) width = 200;
+				if(height < 200) height = 200;
 				main = new MainView(width, height);
 			}
+			if(backgroundMove.replace("backgroundmove:", "").equals("t")){
+			    backgroundMoveBool = true;
+            } else {
+			    backgroundMoveBool = false;
+            }
 		} catch (FileNotFoundException e) {
 			main = new MainView();
 		}

@@ -1,12 +1,11 @@
 package Game.Views;
 
-import Game.SpriteButton;
+import Game.Buttons.SpriteButton;
 import engine.EnigView;
 import engine.OpenGL.*;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
-import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
 public class WinScreen extends EnigView {
 	public static VAO fullScreen;

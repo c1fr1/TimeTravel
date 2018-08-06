@@ -2,6 +2,7 @@ package Game.Views;
 
 import Game.LevelBase;
 import Game.MainView;
+import Game.UserControls;
 import engine.EnigView;
 import engine.Entities.Camera;
 import engine.OpenGL.EnigWindow;
@@ -54,7 +55,8 @@ public class PanScreen extends EnigView {
 	@Override
 	public boolean loop() {
         if(!MainView.quit) {
-            if (window.keys[GLFW_KEY_ENTER] > 0 || window.keys[GLFW_KEY_TAB] > 0) {
+            if (UserControls.skip(window)) {
+            	lvl.currentTZ = startTZ;
                 return true;
             }
             FBO.prepareDefaultRender();

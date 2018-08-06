@@ -1,12 +1,11 @@
 package Game.Views;
 
 import Game.MainView;
-import Game.ShaderOptimizedButton;
-import Game.SpriteButton;
+import Game.Buttons.ShaderOptimizedButton;
+import Game.Buttons.SpriteButton;
 import Game.UserControls;
 import engine.EnigView;
 import engine.OpenGL.*;
-import sun.tools.jar.Main;
 
 import java.io.*;
 import java.util.Scanner;
@@ -35,8 +34,8 @@ public class LevelSelect extends EnigView {
             //System.out.println(j);
         }
         levels = new SpriteButton[LevelSelect.levelState.length];
-        int columnNumber = (int)(window.getHeight()/100f);
-        int rowNumber = (int)(window.getWidth()/200f);
+        int columnNumber = (int)((window.getHeight()-50f)/100f);
+        int rowNumber = (int)((window.getWidth()-50f)/200f);
         for(int i = 0; i < LevelSelect.levelState.length; i++){
 
             float thingY = (0.4f + (i / rowNumber)*0.4f);
@@ -48,7 +47,7 @@ public class LevelSelect extends EnigView {
             float thingWidth = 100f/window.getWidth()/aspectRatio;
             float thingHeight = 100f/window.getHeight();
 
-            float thingXPos = (float)thingXIndex/(float)rowNumber*2f-1f;
+            float thingXPos = ((float)thingXIndex/(float)rowNumber*2f-1f)/aspectRatio + thingWidth * 4;
             float thingYPos = ((float)thingYIndex/(float)columnNumber*-2f+1f) - thingHeight*4;
 
 
@@ -58,11 +57,11 @@ public class LevelSelect extends EnigView {
             //System.out.println(thingWidth + " " + thingHeight);
 
             if(levelState[i] == 1){
-                levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos,thingWidth,thingHeight, "res/sprites/levelSelectComplete.png");
+                levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos,thingWidth,thingHeight, "res/sprites/levelSelectComplete.png", aspectRatio);
             } else if(levelState[i] == 2){
-                levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos,thingWidth,thingHeight, "res/sprites/levelSelectLock.png");
+                levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos,thingWidth,thingHeight, "res/sprites/levelSelectLock.png", aspectRatio);
             } else {
-                levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos, thingWidth, thingHeight, "res/sprites/levelSelect.png");
+                levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos, thingWidth, thingHeight, "res/sprites/levelSelect.png", aspectRatio);
             }
         }
     }
@@ -73,7 +72,7 @@ public class LevelSelect extends EnigView {
 
         for (int i = 0; i < levels.length; i++) {
             levels[i].render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
-            if (levels[i].hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window) && levelState[i] != 2) {
+            if (levels[i].hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)/* && levelState[i] != 2*/) {
                 MainView.currentLevelNum = i;
                 MainMenu.mainMenuQuit = true;
                 return true;

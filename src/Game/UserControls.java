@@ -1,27 +1,93 @@
 package Game;
 
 import engine.OpenGL.EnigWindow;
+import org.lwjgl.glfw.GLFW;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class UserControls {
-	public static int[] forward = new int[] {GLFW_KEY_W};
-	public static int[] backward = new int[] {GLFW_KEY_S};
-	public static int[] left = new int[] {GLFW_KEY_A};
-	public static int[] right = new int[] {GLFW_KEY_D};
-	public static int[] leftArrow = new int[] {GLFW_KEY_LEFT, GLFW_KEY_Q};
-	public static int[] rightArrow = new int[] {GLFW_KEY_RIGHT, GLFW_KEY_E};
-	public static int[] down = new int[] {GLFW_KEY_LEFT_SHIFT};
-	public static int[] up = new int[] {GLFW_KEY_SPACE};
-	public static int[] pause = new int[] {GLFW_KEY_ESCAPE};
-	public static int[] enter = new int[] {GLFW_KEY_ENTER, GLFW_KEY_R};
+
+
+	public static String forwardSettingString = "";
+	public static String backwardSettingString;
+	public static String leftSettingString;
+	public static String rightSettingString;
+	public static String leftArrowSettingString;
+	public static String rightArrowSettingString;
+	public static String downSettingString;
+	public static String upSettingString;
+	public static String pauseSettingString;
+	public static String enterSettingString;
+	public static String levelAdvanceSettingString;
+	public static String levelBackSettingString;
+	public static String ohYknowSettingString;
+	public static String skipSettingString;
+
+	public static int forwardSetting;
+	public static int backwardSetting;
+	public static int leftSetting;
+	public static int rightSetting;
+	public static int leftArrowSetting;
+	public static int rightArrowSetting;
+	public static int downSetting;
+	public static int upSetting;
+	public static int pauseSetting;
+	public static int enterSetting;
+	public static int levelAdvanceSetting;
+	public static int levelBackSetting;
+	public static int ohYknowSetting;
+	public static int skipSetting;
+
+	public static int forwardSetting2 = 0;
+	public static int backwardSetting2 = 0;
+	public static int leftSetting2 = 0;
+	public static int rightSetting2 = 0;
+	public static int leftArrowSetting2 = 0;
+	public static int rightArrowSetting2 = 0;
+	public static int downSetting2 = 0;
+	public static int upSetting2 = 0;
+	public static int pauseSetting2 = 0;
+	public static int enterSetting2 = 0;
+	public static int levelAdvanceSetting2 = 0;
+	public static int levelBackSetting2 = 0;
+	public static int ohYknowSetting2 = 0;
+	public static int skipSetting2 = 0;
+
+	public static int[] forward;
+	public static int[] backward;
+	public static int[] left;
+	public static int[] right;
+	public static int[] leftArrow;
+	public static int[] rightArrow;
+	public static int[] down;
+	public static int[] up;
+	public static int[] pause;
+	public static int[] enter;
 	public static int[] rightMB = new int[] {GLFW_MOUSE_BUTTON_RIGHT};
 	public static int[] leftMB = new int[] {GLFW_MOUSE_BUTTON_LEFT};
-	public static int[] levelAdvance = new int[] {GLFW_KEY_N};
-	public static int[] levelBack = new int[] {GLFW_KEY_B};
-	public static int[] ohYknow = new int[] {GLFW_KEY_RIGHT_SHIFT};
+	public static int[] levelAdvance;
+	public static int[] levelBack;
+	public static int[] ohYknow;
+	public static int[] skip;
 
 	public static float sensitivity = 1f/500f;
+
+	public static void intit(){
+		forward  =  new int[] {forwardSetting, forwardSetting2};
+		backward =  new int[] {backwardSetting, backwardSetting2};
+		left =  new int[] {leftSetting, leftSetting2};
+		right =  new int[] {rightSetting, rightSetting2};
+		leftArrow =  new int[] {leftArrowSetting, leftArrowSetting2};
+		rightArrow =  new int[] {rightArrowSetting, rightArrowSetting2};
+		down =  new int[] {downSetting, downSetting2};
+		up =  new int[] {upSetting, upSetting2};
+		pause =  new int[] {pauseSetting, pauseSetting2};
+		enter =  new int[] {enterSetting, enterSetting2};
+		levelAdvance =  new int[] {levelAdvanceSetting, levelAdvanceSetting2};
+		levelBack =  new int[] {levelBackSetting, levelBackSetting2};
+		ohYknow =  new int[] {ohYknowSetting, ohYknowSetting2};
+		skip = new int[] {skipSetting, skipSetting2};
+	}
 	
 	public static boolean forward(EnigWindow window) {
 		for (int i:forward) {
@@ -161,6 +227,14 @@ public class UserControls {
 	}
 	public static boolean ohYknow(EnigWindow window) {
 		for (int i:ohYknow) {
+			if (window.keys[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean skip(EnigWindow window) {
+		for (int i:skip) {
 			if (window.keys[i] > 0) {
 				return true;
 			}

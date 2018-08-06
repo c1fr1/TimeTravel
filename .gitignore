@@ -8,10 +8,8 @@ out/
 
 res/levelComplete.txt
 
-res/options.txt
-
-res/controls.txt
-
 bin/
 
 .DS_Store
+res/controls.txt
+res/options.txt

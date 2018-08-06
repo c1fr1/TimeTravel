@@ -24,7 +24,6 @@ public class LevelBase
     public static Texture wallTexture;
 	public static Texture endLevelTexture;
     public static Texture lockTexture;
-	public static Texture newwallTexture;
     public static Texture upGateTexture;
     public static Texture downGateTexture;
     public static Texture leftGateTexture;
@@ -76,9 +75,8 @@ public class LevelBase
 	public void init(String filename, String[] textures) {
 		if (tileObj == null) {
 			tileObj = new VAO(-25f, -25f, 50f, 50f);
-			floorTexture = new Texture("res/sprites/present-floor.png");
-			wallTexture = new Texture("res/sprites/present-wall.png");
-			newwallTexture = new Texture("res/sprites/future-wall.png");
+			floorTexture = new Texture("res/tilesets/floor-industrial2.png");
+			wallTexture = new Texture("res/tilesets/wall-industrial1.png");
 			keyTexture = new Texture("res/sprites/inventoryKey.png");
 			endLevelTexture = new Texture("res/sprites/endLevel.png");
 			upGateTexture = new Texture("res/sprites/upGate.png");
@@ -100,7 +98,6 @@ public class LevelBase
 			ttoTexture[8] = new Texture("res/anims/tto-9.png");
 
 			levelProgram = new ShaderProgram("levelShader");
-			controllerTexture = new Texture("res/sprites/controller-tto.png");
 
 			//button, gate closed, gate open
 			xElectricTextures = new Texture[3];
@@ -174,7 +171,6 @@ public class LevelBase
 						{
 							if (Math.abs(entities.get(l).xpos[entities.get(l).startZone] - startX) < 1 && Math.abs(entities.get(l).ypos[entities.get(l).startZone] - startY) < 1)
 							{
-								System.out.print("sdf\n");
 								entities.get(l).xpos[i] = startX;
 								entities.get(l).ypos[i] = startY;
 								taken = true;
@@ -262,7 +258,7 @@ public class LevelBase
 					}else if (currentChar == ' ') {//sbiop
     					floorTexture.bind();
 					}else if (currentChar == '#') {
-    					newwallTexture.bind();
+    					wallTexture.bind();
 					}else if (Util.isNumericValue(currentChar)) {
 						ttoTexture[(int) ttoFrameCounter[Character.getNumericValue(currentChar)]].bind();
 					}else if (currentChar == 'g') {
@@ -333,7 +329,7 @@ public class LevelBase
 	}
 	
 	public char charAtPos(float x, float y) {
-		return levelseries.get(currentTZ).get((int)(y/50f))[(int)(x/50f)];
+		return levelseries.get(currentTZ).get((int)(y/50f + 0.5))[(int)(x/50f + 0.5)];
 	}
 	public char charAtPos(int x, int y) {
 		return levelseries.get(currentTZ).get(y)[x];

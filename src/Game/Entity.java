@@ -30,10 +30,11 @@ public class Entity
     VAO spriteVAO;
     public static ShaderProgram levelProgram;
 
-    public Entity(float startX, float startY, int amountOfTimezones, int startZone, int arrayLocation)
+    public Entity(float startX, float startY, int amountOfTimezones, int timeZone, int arrayLocation)
     {
         border = 15;
         arrayIndex = arrayLocation;
+        startZone = timeZone;
         xpos = new float[amountOfTimezones];
         ypos = new float[amountOfTimezones];
         xpos[startZone] = startX;
@@ -85,8 +86,8 @@ public class Entity
     public float[] getBoxMovement(float entX, float entY, float entXVel, float entYVel) {
     	float xOffset = entXVel;
     	float yOffset = entYVel;
-        int lastX = (int)entX;
-        int lastY = (int)entY;
+        int lastX = (int)entX + 25;
+        int lastY = (int)entY + 25;
         LevelBase currentLevel = MainView.currentLevel;
         int timeZone = currentLevel.currentTZ;
 
@@ -104,7 +105,7 @@ public class Entity
             }
 
             if ((xOffset > 0 && entX + 29 < xpos[timeZone])) {
-                xOffset = CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, xOffset, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+                xOffset = CamCollision.horizontalMove(xpos[timeZone] - 25, ypos[timeZone] - 25, border, xOffset, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
                 float fit = 30.1f + entX + entXVel - xpos[timeZone];
                 xpos[timeZone] += absMin(xOffset, fit);
 				//MainView.cam.x = xpos[timeZone] - 36f;
@@ -115,7 +116,7 @@ public class Entity
                     }
                 }
             } else if ((xOffset < 0 && entX - 29 > xpos[timeZone])) {
-                xOffset = CamCollision.horizontalMove(xpos[timeZone], ypos[timeZone], border, xOffset, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+                xOffset = CamCollision.horizontalMove(xpos[timeZone] - 25, ypos[timeZone] - 25, border, xOffset, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
 				float fit = xpos[timeZone] - 30.1f - entX - entXVel;
                 xOffset = absMin(xOffset, fit);
                 xpos[timeZone] += xOffset;
@@ -128,7 +129,7 @@ public class Entity
                 }
             }
             if ((yOffset > 0 && entY + 29 < ypos[timeZone])) {
-                yOffset = CamCollision.verticalMove(xpos[timeZone], ypos[timeZone], border, yOffset, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+                yOffset = CamCollision.verticalMove(xpos[timeZone] - 25, ypos[timeZone] - 25, border, yOffset, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
 				float fit = 30.1f + entY + entYVel - ypos[timeZone];
                 ypos[timeZone] += absMin(yOffset, fit);
                 //MainView.cam.y = ypos[timeZone] - 36f;
@@ -139,7 +140,7 @@ public class Entity
                     }
                 }
             } else if ((yOffset < 0 && entY - 29 > ypos[timeZone])) {
-            	yOffset = CamCollision.verticalMove(xpos[timeZone], ypos[timeZone], border, yOffset, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
+            	yOffset = CamCollision.verticalMove(xpos[timeZone] - 25, ypos[timeZone] - 25, border, yOffset, currentLevel.levelseries.get(currentLevel.currentTZ), MainView.solidBlocks);
 				float fit = xpos[timeZone] - 30.1f - entX - entXVel;
             	ypos[timeZone] += absMin(yOffset, fit);
                 //MainView.cam.y = ypos[timeZone] + 36f;
