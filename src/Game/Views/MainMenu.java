@@ -73,13 +73,13 @@ public class MainMenu extends EnigView {
             //System.out.println(mainMenuSelector);
             if(mainMenuSelector > 0) {
                 if (UserControls.upArrowPress(window)) {
-                    System.out.println("up Press");
+                    //System.out.println("up Press");
                     mainMenuSelector--;
                 }
             }
             if(mainMenuSelector < 3){
                 if(UserControls.downArrowPress(window)){
-                    System.out.println("down Press");
+                    //System.out.println("down Press");
                     mainMenuSelector++;
                 }
             }

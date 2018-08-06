@@ -948,7 +948,7 @@ public class MainView extends EnigView {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (NoSuchElementException e){
-			System.out.println("Delete your controls.txt folder (TimeTravel/res/options.txt) and try again.\n" +
+			System.out.println("Delete your controls.txt folder (TimeTravel/res/controls.txt) and try again.\n" +
 					"Or fix the ordering manually if you have custom keybinds.");
 		}
 
