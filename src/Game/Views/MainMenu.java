@@ -73,13 +73,13 @@ public class MainMenu extends EnigView {
             //System.out.println(mainMenuSelector);
             if(mainMenuSelector > 0) {
                 if (UserControls.upArrowPress(window)) {
-                    //System.out.println("up Press");
+                    System.out.println("up Press");
                     mainMenuSelector--;
                 }
             }
             if(mainMenuSelector < 3){
                 if(UserControls.downArrowPress(window)){
-                    //System.out.println("down Press");
+                    System.out.println("down Press");
                     mainMenuSelector++;
                 }
             }
@@ -94,6 +94,32 @@ public class MainMenu extends EnigView {
 			
             title.render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
 
+            if (start.render(window.cursorXFloat, window.cursorYFloat, aspectRatio)) {
+                mainMenuSelector = 0;
+                if(UserControls.leftMB(window) ){
+                    //System.out.println("yeah");
+                    return true;
+                }
+            }
+            if (levelSelect.render(window.cursorXFloat, window.cursorYFloat, aspectRatio) ) {
+                mainMenuSelector = 1;
+                if(UserControls.leftMB(window)) {
+                    new LevelSelect(window);
+                }
+            }
+            if(options.render(window.cursorXFloat, window.cursorYFloat, aspectRatio)){
+                mainMenuSelector = 2;
+                if( UserControls.leftMB(window)) {
+                    new OptionsMenu(window);
+                }
+            }
+            if (quit.render(window.cursorXFloat, window.cursorYFloat, aspectRatio)) {
+                mainMenuSelector = 3;
+                if(UserControls.leftMB(window)) {
+                    MainView.quit = true;
+                    return true;
+                }
+            }
 
             if(!start.hoverCheck(window.cursorXFloat, window.cursorYFloat) && !levelSelect.hoverCheck(window.cursorXFloat, window.cursorYFloat) &&
                     !options.hoverCheck(window.cursorXFloat, window.cursorYFloat) && !quit.hoverCheck(window.cursorXFloat, window.cursorYFloat)){
@@ -128,32 +154,7 @@ public class MainMenu extends EnigView {
                 }
             }
 
-            if (start.render(window.cursorXFloat, window.cursorYFloat, aspectRatio)) {
-                mainMenuSelector = 0;
-                if(UserControls.leftMB(window) ){
-                    //System.out.println("yeah");
-                    return true;
-                }
-            }
-            if (levelSelect.render(window.cursorXFloat, window.cursorYFloat, aspectRatio) ) {
-                mainMenuSelector = 1;
-                if(UserControls.leftMB(window)) {
-                    new LevelSelect(window);
-                }
-            }
-            if(options.render(window.cursorXFloat, window.cursorYFloat, aspectRatio)){
-                mainMenuSelector = 2;
-                if( UserControls.leftMB(window)) {
-                    new OptionsMenu(window);
-                }
-            }
-            if (quit.render(window.cursorXFloat, window.cursorYFloat, aspectRatio)) {
-                mainMenuSelector = 3;
-                if(UserControls.leftMB(window)) {
-                    MainView.quit = true;
-                    return true;
-                }
-            }
+
             EnigWindow.checkGLError();
             return false;
         } else if(mainMenuQuit){
