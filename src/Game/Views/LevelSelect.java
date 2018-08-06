@@ -80,13 +80,7 @@ public class LevelSelect extends EnigView {
 
     @Override
     public void setup() {
-        int co = 0;
-        for(File i: new File("res/levels").listFiles()){
-            if(i.getName().contains(".txt")){
-                co++;
-            }
-        }
-        levelState = new int[co];
+
         aspectRatio = (float)window.getHeight()/(float)window.getWidth();
         SpriteButton.shader = new ShaderProgram("buttonShader");
 
@@ -169,5 +163,12 @@ public class LevelSelect extends EnigView {
                 e.printStackTrace();
             }
         }
+        int co = 0;
+        for(File i: new File("res/Levels").listFiles()){
+            if(i.getName().contains(".txt")){
+                co++;
+            }
+        }
+        levelState = new int[co];
     }
 }
