@@ -1,5 +1,6 @@
 #version 400 core
 
+uniform vec4 fontColor;
 uniform sampler2D textureSampler;
 
 in vec2 texCoords;
@@ -8,4 +9,7 @@ out vec4 color;
 
 void main() {
     color = texture(textureSampler, vec2(texCoords.x, texCoords.y));
+    if (color.w > 0.5) {
+        color = fontColor;
+    }
 }

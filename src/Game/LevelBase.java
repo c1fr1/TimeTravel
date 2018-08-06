@@ -20,8 +20,8 @@ public class LevelBase
 	public int currentTZ;
     
     public static VAO tileObj;
-    public static Texture floorTexture;
-    public static Texture wallTexture;
+    public static Texture[] floorTexture = new Texture[5];
+    public static Texture[] wallTexture = new Texture[5];
 	public static Texture endLevelTexture;
     public static Texture lockTexture;
     public static Texture upGateTexture;
@@ -74,8 +74,17 @@ public class LevelBase
 	public void init(String filename, String[] textures) {
 		if (tileObj == null) {
 			tileObj = new VAO(-25f, -25f, 50f, 50f);
-			floorTexture = new Texture("res/tilesets/floor-apocalypse-no-ivy.png");
-			wallTexture = new Texture("res/tilesets/wall-apocalypse.png");
+			floorTexture[0] = new Texture("res/tilesets/floor-mud.png");
+			wallTexture[0] = new Texture("res/tilesets/wall-mud.png");
+			floorTexture[1] = new Texture("res/tilesets/floor-industrial.png");
+			wallTexture[1] = new Texture("res/tilesets/wall-industrial.png");
+			floorTexture[2] = new Texture("res/tilesets/floor-industrial1.png");
+			wallTexture[2] = new Texture("res/tilesets/wall-industrial1.png");
+			floorTexture[3] = new Texture("res/tilesets/floor-future.png");
+			wallTexture[3] = new Texture("res/tilesets/wall-future.png");
+			floorTexture[4] = new Texture("res/tilesets/floor-apocalypse.png");
+			wallTexture[4] = new Texture("res/tilesets/wall-apocalypse.png");
+			
 			keyTexture = new Texture("res/sprites/inventoryKey.png");
 			endLevelTexture = new Texture("res/sprites/endLevel.png");
 			upGateTexture = new Texture("res/sprites/upGate.png");
@@ -255,15 +264,15 @@ public class LevelBase
 						background[currentTZ].bind();
 						levelProgram.shaders[0].uniforms[1].set(new Matrix4f().scale(0.02f).translate((float)chr, (float)row, 0f));
 					}else if (currentChar == ' ') {//sbiop
-    					floorTexture.bind();
+    					floorTexture[currentTZ].bind();
 					}else if (currentChar == '#') {
-    					wallTexture.bind();
+    					wallTexture[currentTZ].bind();
 					}else if (Util.isNumericValue(currentChar)) {
 						ttoTexture[(int) ttoFrameCounter[Character.getNumericValue(currentChar)]].bind();
 					}else if (currentChar == 'g') {
                         endLevelTexture.bind();
 					}else if (currentChar == 'k') {
-						floorTexture.bind();
+						floorTexture[currentTZ].bind();
 						tileObj.drawTriangles();
 						keyTexture.bind();
 					}else if (currentChar == 'l') {
@@ -277,39 +286,39 @@ public class LevelBase
 					}else if (currentChar == '<') {
 						leftGateTexture.bind();
 					}else if (currentChar == 'x') {
-						floorTexture.bind();
+						floorTexture[currentTZ].bind();
 						tileObj.drawTriangles();
 						xElectricTextures[0].bind();
 					}else if (currentChar == 'y') {
-						floorTexture.bind();
+						floorTexture[currentTZ].bind();
 						tileObj.drawTriangles();
 						yElectricTextures[0].bind();
 					}else if (currentChar == 'z') {
-						floorTexture.bind();
+						floorTexture[currentTZ].bind();
 						tileObj.drawTriangles();
 						zElectricTextures[0].bind();
 					}else if (currentChar == 'X') {
-						floorTexture.bind();
+						floorTexture[currentTZ].bind();
 						tileObj.drawTriangles();
 						xElectricTextures[1].bind();
 					}else if (currentChar == 'Y') {
-						floorTexture.bind();
+						floorTexture[currentTZ].bind();
 						tileObj.drawTriangles();
 						yElectricTextures[1].bind();
 					}else if (currentChar == 'Z') {
-						floorTexture.bind();
+						floorTexture[currentTZ].bind();
 						tileObj.drawTriangles();
 						zElectricTextures[1].bind();
 					}else if (currentChar == 'i') {
-						floorTexture.bind();
+						floorTexture[currentTZ].bind();
 						tileObj.drawTriangles();
 						xElectricTextures[2].bind();
 					}else if (currentChar == 'o') {
-						floorTexture.bind();
+						floorTexture[currentTZ].bind();
 						tileObj.drawTriangles();
 						yElectricTextures[2].bind();
 					}else if (currentChar == 'p') {
-						floorTexture.bind();
+						floorTexture[currentTZ].bind();
 						tileObj.drawTriangles();
 						zElectricTextures[2].bind();
 					}else {
