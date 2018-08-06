@@ -31,10 +31,12 @@ public class StringRenderer {
 			shape = new VAO(-0.26470588235f, -0.5f, 0.5294117647f, 1f);
 			shader = new ShaderProgram("numberShader");
 		}
-		mat = new Matrix4f().ortho(-width/2, width/2, -height/2, height/2, 0, 1);
-		this.fontSize = 1080f * fontSize / (float) height;
-		this.x = /*1920f * */x / (float) width;
-		this.y = /*1080f * */y / (float) height;
+		float semiWidth = ((float) width) / 2f;
+		float semiHeight = ((float) height) / 2f;
+		mat = new Matrix4f().ortho(-semiWidth, semiWidth, -semiHeight, semiHeight, 0, 1);
+		this.fontSize = 1080f * fontSize / semiHeight;
+		this.x = /*1920f * */x / semiWidth;
+		this.y = /*1080f * */y / semiHeight;
 		System.out.println(this.fontSize);
 		System.out.println(this.x);
 		System.out.println(this.y);
