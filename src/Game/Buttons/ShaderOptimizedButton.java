@@ -55,4 +55,33 @@ public class ShaderOptimizedButton extends SpriteButton {
 		vao.fullRender();
 		return ret;
 	}
+
+	public boolean render(float cursorX, float cursorY, boolean hoverOverride) {
+		boolean ret = false;
+		shader.enable();
+		if (hoverCheck(cursorX, cursorY) || hoverOverride) {
+			ret = true;
+			shader.shaders[2].uniforms[0].set(new Vector4f(1f, 1f, 0f, 1f));
+		}else {
+			shader.shaders[2].uniforms[0].set(new Vector4f(0f, 0f, 0f, 0f));
+		}
+		sprite.bind();
+		vao.fullRender();
+		return ret;
+	}
+
+	public boolean render(float cursorX, float cursorY, float aspectRatio, boolean hoverOverride) {
+		boolean ret = false;
+		shader.enable();
+		shader.shaders[0].uniforms[0].set(aspectRatio);
+		if (hoverCheck(cursorX, cursorY) || hoverOverride) {
+			ret = true;
+			shader.shaders[2].uniforms[0].set(new Vector4f(1f, 1f, 0f, 1f));
+		}else {
+			shader.shaders[2].uniforms[0].set(new Vector4f(0f, 0f, 0f, 0f));
+		}
+		sprite.bind();
+		vao.fullRender();
+		return ret;
+	}
 }

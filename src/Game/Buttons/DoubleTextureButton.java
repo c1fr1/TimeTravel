@@ -55,4 +55,29 @@ public class DoubleTextureButton extends SpriteButton {
 		vao.fullRender();
 		return ret;
 	}
+
+	public boolean render(float cursorX, float cursorY, boolean manualOverride) {
+		boolean ret = hoverCheck(cursorX, cursorY);
+		dtexShader.enable();
+		if (manualOverride) {
+			textureB.bind();
+		}else {
+			textureA.bind();
+		}
+		vao.fullRender();
+		return ret;
+	}
+
+	public boolean render(float cursorX, float cursorY, float aspectRatio, boolean manualOverride) {
+		boolean ret = hoverCheck(cursorX, cursorY);
+		dtexShader.enable();
+		dtexShader.shaders[0].uniforms[0].set(aspectRatio);
+		if (manualOverride) {
+			textureB.bind();
+		}else {
+			textureA.bind();
+		}
+		vao.fullRender();
+		return ret;
+	}
 }
