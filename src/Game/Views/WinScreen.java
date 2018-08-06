@@ -24,7 +24,7 @@ public class WinScreen extends EnigView {
 		}
 		t = background;
 		window = EnigWindow.mainWindow;
-		jumpCounter = new StringRenderer(window.getWidth(), window.getHeight(), 55, 0f, 60f);
+		jumpCounter = new StringRenderer(window.getWidth(), window.getHeight(), 100, 0f, 100f);
 		runLoop();
 	}
 	@Override

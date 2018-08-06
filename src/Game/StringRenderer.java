@@ -35,11 +35,8 @@ public class StringRenderer {
 		float semiHeight = ((float) height) / 2f;
 		mat = new Matrix4f().ortho(-semiWidth, semiWidth, -semiHeight, semiHeight, 0, 1);
 		this.fontSize = semiHeight * fontSize / 1080f;
-		this.x = /*1920f * */x / semiWidth;
-		this.y = /*1080f * */y / semiHeight;
-		System.out.println(this.fontSize);
-		System.out.println(this.x);
-		System.out.println(this.y);
+		this.x = semiWidth * x / 1920f;
+		this.y = semiHeight * y / 1080f;
 	}
 	public void renderNum(String str) {
 		shader.enable();
