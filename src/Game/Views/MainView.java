@@ -10,6 +10,7 @@ import engine.OpenGL.*;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
+import org.lwjgl.system.CallbackI;
 import org.lwjglx.debug.javax.servlet.http.HttpServletRequest;
 
 import java.io.File;
@@ -58,6 +59,7 @@ public class MainView extends EnigView {
 
 	public static LevelBase currentLevel;
 	public static int currentLevelNum = 0;
+	public static LevelBase ttoThing;
 
 	public Inventory inv;
 
@@ -644,12 +646,48 @@ public class MainView extends EnigView {
 			backgroundOffset.add(backgroundVelocity);
 		}
 	}
-	
+
 	public boolean nextLevel(int increment) {
 		inv.reset();
 		File test = new File("res/Levels/Level" + (increment+currentLevelNum) + ".txt");
 		if(test.exists()) {
 			currentLevelNum += increment;
+			int currentTTO = 0;
+
+			Scanner fileInput;
+			String boolstr = "";
+			//stores level rooms
+			ArrayList boolList = new ArrayList<ArrayList<Character[]>>();
+			//get the rooms
+			try {
+				fileInput = new Scanner(new File("res/Levels/Level" + currentLevelNum + ".cfg"));
+				while (fileInput.hasNextLine()) {
+					String nextline = fileInput.nextLine();
+					if (!nextline.endsWith(",")) {
+						boolstr += nextline + "\n";
+					}else {
+						boolstr += nextline;
+					}
+				}
+			}catch (FileNotFoundException ex) {
+				ex.printStackTrace();
+				System.exit(0);
+			}
+
+			System.out.println(boolstr);
+			String[] roomBool = boolstr.split(",");
+			for (int i = 0; i < roomBool.length; i++)
+			{
+				String[] timeSlices = roomBool[i].split("\n");
+				Boolean[] boolSlices = new Boolean[];
+				for (int j = 0; j < timeSlices.length; j++)
+				{
+					if (timeSlices[j].charAt(j)
+				}
+			}
+
+			System.out.println(currentLevelNum+": "+boolList);
+			ttoThing = new LevelBase("res/Levels/Level" + currentLevelNum + ".cfg");
 			currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt");
 			ttoSelector = currentLevel.currentTZ;
 			cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
