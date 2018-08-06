@@ -849,8 +849,8 @@ public class MainView extends EnigView {
                         "right:68\n" +
                         "leftArrow:81,263\n" +
                         "rightArrow:69,262\n" +
-                        "upArrow:265\n" +
-                        "downArrow:264\n" +
+                        "upArrow:265,87\n" +
+                        "downArrow:264,83\n" +
                         "down:340\n" +
                         "up:32\n" +
                         "pause:256\n" +
