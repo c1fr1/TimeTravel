@@ -958,38 +958,6 @@ public class MainView extends EnigView {
 
 	}
 
-
-	public static void main(String[] args) {
-	    createTextFolder();
-		try {
-			Scanner s = new Scanner(new File("res/options.txt"));
-
-			String fullscreen = s.nextLine();
-            String res = s.nextLine();
-            String backgroundMove = s.nextLine();
-
-			if (fullscreen.replace("fullscreen:", "").equals("t")) {
-				fullScreenBool = true;
-				main = new MainView();
-
-			}else {
-				fullScreenBool = false;
-				String[] dim = res.replace("res:", "").split(",");
-				int width = Integer.parseInt(dim[0]);
-				int height = Integer.parseInt(dim[1]);
-				if(width < 200) width = 200;
-				if(height < 200) height = 200;
-				main = new MainView(width, height);
-			}
-			if(backgroundMove.replace("backgroundmove:", "").equals("t")){
-			    backgroundMoveBool = true;
-            } else {
-			    backgroundMoveBool = false;
-            }
-		} catch (FileNotFoundException e) {
-			main = new MainView();
-		}
-	}
 	
 	public MainView() {
 		super();
