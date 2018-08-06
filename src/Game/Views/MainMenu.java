@@ -6,10 +6,8 @@ import Game.Buttons.SpriteButton;
 import engine.EnigView;
 import engine.OpenGL.*;
 import org.joml.Vector2f;
-import org.lwjglx.debug.org.eclipse.jetty.server.Authentication;
 
-import static Game.MainView.screenVAO;
-import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
+import static Game.Views.MainView.screenVAO;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_REPEAT;
 

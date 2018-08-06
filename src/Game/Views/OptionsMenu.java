@@ -4,13 +4,10 @@ import Game.Buttons.NoChangeButton;
 import Game.Buttons.ShaderOptimizedButton;
 import Game.Buttons.TwoStateButton;
 import Game.Game;
-import Game.MainView;
 import Game.UserControls;
 import engine.EnigView;
 import engine.OpenGL.EnigWindow;
 import engine.OpenGL.FBO;
-import org.omg.PortableServer.CurrentPackage.NoContextHelper;
-import sun.applet.Main;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -97,10 +94,10 @@ public class OptionsMenu extends EnigView {
         String[] currentOptions = getOptionsString().split("\n");
 
         boolean restartCheck = false;
-        if(options[0].equals(currentOptions[0])) restartCheck = true;
-        if(options[1].equals(currentOptions[1])) restartCheck = true;
+        if(!options[0].equals(currentOptions[0])) restartCheck = true;
+        if(!options[1].equals(currentOptions[1])) restartCheck = true;
 
-        if(restartCheck && restart.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMB(window)){
+        if(restartCheck && restart.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)){
             writeToOptions(options);
             MainView.quit = true;
             MainMenu.mainMenuQuit = true;

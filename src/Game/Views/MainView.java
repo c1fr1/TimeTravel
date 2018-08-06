@@ -1,30 +1,21 @@
-package Game;
+package Game.Views;
 
+import Game.*;
 import Game.Buttons.DoubleTextureButton;
 import Game.Buttons.ShaderOptimizedButton;
 import Game.Buttons.SpriteButton;
-import Game.Views.*;
 import engine.*;
 import engine.Entities.Camera;
 import engine.OpenGL.*;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
-import org.lwjgl.glfw.GLFW;
 import org.lwjglx.debug.javax.servlet.http.HttpServletRequest;
 
-import Game.Views.LevelSelect;
-import Game.Views.LoadingScreen;
-import Game.Views.MainMenu;
-import Game.Views.WinScreen;
-
-import javax.jws.soap.SOAPBinding;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;

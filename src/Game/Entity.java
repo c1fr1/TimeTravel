@@ -1,14 +1,11 @@
 package Game;
 
+import Game.Views.MainView;
 import engine.Entities.Camera;
 import engine.OpenGL.ShaderProgram;
 import engine.OpenGL.Texture;
 import engine.OpenGL.VAO;
 import org.joml.Matrix4f;
-import sun.applet.Main;
-
-import java.util.ArrayList;
-import java.util.logging.Level;
 
 import static Game.Util.absMin;
 

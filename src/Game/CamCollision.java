@@ -1,11 +1,8 @@
 package Game;
 
-import engine.Entities.Camera;
-import org.joml.Vector2f;
+import Game.Views.MainView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 public class CamCollision
 {

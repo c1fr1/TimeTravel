@@ -1,8 +1,6 @@
 package Game.Views;
 
 import Game.Buttons.SpriteButton;
-import Game.MainView;
-import Game.NumberRenderer;
 import Game.StringRenderer;
 import engine.EnigView;
 import engine.OpenGL.*;

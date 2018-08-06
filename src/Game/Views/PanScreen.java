@@ -1,18 +1,14 @@
 package Game.Views;
 
 import Game.LevelBase;
-import Game.MainView;
 import Game.UserControls;
 import engine.EnigView;
 import engine.Entities.Camera;
 import engine.OpenGL.EnigWindow;
 import engine.OpenGL.FBO;
 
-import java.util.TimeZone;
-
-import static Game.MainView.currentLevelNum;
-import static Game.MainView.levelMarker;
-import static org.lwjgl.glfw.GLFW.*;
+import static Game.Views.MainView.currentLevelNum;
+import static Game.Views.MainView.levelMarker;
 
 public class PanScreen extends EnigView {
 	public LevelBase lvl;

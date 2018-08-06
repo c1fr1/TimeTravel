@@ -1,5 +1,7 @@
 package Game;
 
+import Game.Views.MainView;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;

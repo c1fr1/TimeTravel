@@ -1,6 +1,5 @@
 package Game.Views;
 
-import Game.MainView;
 import Game.Buttons.ShaderOptimizedButton;
 import Game.Buttons.SpriteButton;
 import Game.UserControls;
@@ -14,7 +13,7 @@ public class LevelSelect extends EnigView {
 
     public SpriteButton[] levels;
 
-    public static int[] levelState = new int[new File("res/Levels").listFiles().length];
+    public static int[] levelState;
     //0 = not cleared
     //1 = clear
     //2 = locked
@@ -81,6 +80,13 @@ public class LevelSelect extends EnigView {
 
     @Override
     public void setup() {
+        int co = 0;
+        for(File i: new File("res/levels").listFiles()){
+            if(i.getName().contains(".txt")){
+                co++;
+            }
+        }
+        levelState = new int[co];
         aspectRatio = (float)window.getHeight()/(float)window.getWidth();
         SpriteButton.shader = new ShaderProgram("buttonShader");
 
@@ -151,7 +157,9 @@ public class LevelSelect extends EnigView {
                 PrintWriter writer = new PrintWriter("res/levelComplete.txt", "UTF-8");
                 String format = "n";
                 for(int i = 1; i < new File("res/Levels").listFiles().length; i++){
-                    format += ",n";
+                    if(new File("res/Lebels").listFiles()[i].getName().contains(".txt")) {
+                        format += ",n";
+                    }
                 }
                 writer.println(format);
                 writer.close();
