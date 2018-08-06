@@ -656,39 +656,39 @@ public class MainView extends EnigView {
 
 			Scanner fileInput;
 			String boolstr = "";
-			//stores level rooms
-			ArrayList boolList = new ArrayList<ArrayList<Character[]>>();
 			//get the rooms
 			try {
 				fileInput = new Scanner(new File("res/Levels/Level" + currentLevelNum + ".cfg"));
 				while (fileInput.hasNextLine()) {
 					String nextline = fileInput.nextLine();
-					if (!nextline.endsWith(",")) {
-						boolstr += nextline + "\n";
-					}else {
-						boolstr += nextline;
-					}
+					boolstr += nextline + "\n";
 				}
 			}catch (FileNotFoundException ex) {
 				ex.printStackTrace();
 				System.exit(0);
 			}
 
-			System.out.println(boolstr);
-			String[] roomBool = boolstr.split(",");
+			ArrayList<Boolean[]> ttoTimeRange = new ArrayList<Boolean[]>();
+			String[] roomBool = boolstr.split("\n");
 			for (int i = 0; i < roomBool.length; i++)
 			{
-				String[] timeSlices = roomBool[i].split("\n");
-				Boolean[] boolSlices = new Boolean[];
-				for (int j = 0; j < timeSlices.length; j++)
+				String boolSlice = roomBool[i];
+				Boolean[] boolSlices = new Boolean[roomBool[i].length()];
+				for (int j = 0; j < boolSlice.length(); j++)
 				{
-					if (timeSlices[j].charAt(j)
+					if (boolSlice.charAt(j) == '1')
+					{
+						boolSlices[j] = true;
+					}
+					else
+					{
+						boolSlices[j] = false;
+					}
 				}
+				ttoTimeRange.add(boolSlices);
 			}
 
-			System.out.println(currentLevelNum+": "+boolList);
-			ttoThing = new LevelBase("res/Levels/Level" + currentLevelNum + ".cfg");
-			currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt");
+			currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt", ttoTimeRange);
 			ttoSelector = currentLevel.currentTZ;
 			cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
 			cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
