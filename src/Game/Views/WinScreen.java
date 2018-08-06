@@ -15,7 +15,7 @@ public class WinScreen extends EnigView {
 	public Texture t;
 	public static ShaderProgram normieShader;
 	public static ShaderProgram aespectShader;
-	public StringRenderer jumpCounter;
+	//public StringRenderer jumpCounter;
 	public WinScreen(Texture background, float aespectionrations) {
 		super(EnigWindow.mainWindow);
 		if (wonScreenTaxture == null) {
@@ -24,7 +24,7 @@ public class WinScreen extends EnigView {
 		}
 		t = background;
 		window = EnigWindow.mainWindow;
-		jumpCounter = new StringRenderer(window.getWidth(), window.getHeight(), 100, 0f, 100f);
+		//jumpCounter = new StringRenderer(window.getWidth(), window.getHeight(), 100, 0f, 100f);
 		runLoop();
 	}
 	@Override
@@ -45,7 +45,7 @@ public class WinScreen extends EnigView {
 			MainView.jumps = 0;
 			return true;
 		}
-		jumpCounter.renderNum("travels " + MainView.jumps);
+		//jumpCounter.renderStr("travels " + MainView.jumps);
 		return false;
 	}
 	

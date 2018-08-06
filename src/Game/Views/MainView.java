@@ -170,8 +170,8 @@ public class MainView extends EnigView {
 			spriteTexture[2] = new Texture("res/anims/avatar-2.png");
 			spriteTexture[3] = new Texture("res/anims/avatar-3.png");
 			
-			levelMarker = new StringRenderer(window.getWidth(), window.getHeight(), 55, 0, 600);
-			jumpCounterText = new StringRenderer(window.getWidth(), window.getHeight(), 55, -900, 600);
+			levelMarker = new StringRenderer(100, 0, 1000);
+			jumpCounterText = new StringRenderer(100, -1850, 1000);
 			jumpCounterText.centered = false;
 
             cont = new ShaderOptimizedButton(-0.5f, 0.525f, 1f, 0.25f, "res/menu/continueButton.png", aspectRatio);
@@ -365,8 +365,8 @@ public class MainView extends EnigView {
 			renderBackground();
 			
 			currentLevel.render(cam);
-			levelMarker.renderNum("level " + (currentLevelNum + 1));
-			jumpCounterText.renderNum("travels " + jumps);
+			levelMarker.renderStr("level " + (currentLevelNum + 1));
+			jumpCounterText.renderStr(jumps + " jumps");
 			
 			renderPlayer(0f, 0f, false);
 			
@@ -397,8 +397,8 @@ public class MainView extends EnigView {
 
 			//game here
 			currentLevel.render(cam);
-			levelMarker.renderNum("level " + (currentLevelNum + 1));
-			jumpCounterText.renderNum("travels " + jumps);
+			levelMarker.renderStr("level " + (currentLevelNum + 1));
+			jumpCounterText.renderStr(jumps + " jumps");
 
 			//MOVEMENT
 			Movement m;
