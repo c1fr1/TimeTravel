@@ -186,7 +186,8 @@ public class UserControls {
 			}
 		}
 		return false;
-	}public static boolean downArrowPress(EnigWindow window){
+	}
+	public static boolean downArrowPress(EnigWindow window){
 		for (int i:downArrow) {
 			if (window.keys[i] == 1) {
 				return true;
