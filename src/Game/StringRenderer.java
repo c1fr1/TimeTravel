@@ -33,8 +33,11 @@ public class StringRenderer {
 		}
 		mat = new Matrix4f().ortho(-width/2, width/2, -height/2, height/2, 0, 1);
 		this.fontSize = 1080f * fontSize / (float) height;
-		this.x = 1920 * x / (float) width;
-		this.y = 1080 * y / (float) height;
+		this.x = /*1920f * */x / (float) width;
+		this.y = /*1080f * */y / (float) height;
+		System.out.println(this.fontSize);
+		System.out.println(this.x);
+		System.out.println(this.y);
 	}
 	public void renderNum(String str) {
 		shader.enable();

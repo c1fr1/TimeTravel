@@ -53,7 +53,11 @@ public class CamCollision
 			if (MainView.currentLevel.levelseries.get(MainView.currentLevel.currentTZ).get(ysquares[i])[xsquares[i]] == obstacle) {
 				colliding = true;
 				for (int j = MainView.currentLevel.currentTZ;j < MainView.currentLevel.levelseries.size();++j) {
-					MainView.currentLevel.levelseries.get(j).get(ysquares[i])[xsquares[i]] = replacement;
+					if (ysquares[i] < MainView.currentLevel.levelseries.get(j).size()) {
+						if (xsquares[i] < MainView.currentLevel.levelseries.get(j).get(ysquares[i]).length) {
+							MainView.currentLevel.levelseries.get(j).get(ysquares[i])[xsquares[i]] = replacement;
+						}
+					}
 				}
 				break;
 			}
