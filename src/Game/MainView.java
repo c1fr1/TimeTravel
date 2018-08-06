@@ -849,6 +849,8 @@ public class MainView extends EnigView {
                         "right:68\n" +
                         "leftArrow:81,263\n" +
                         "rightArrow:69,262\n" +
+                        "upArrow:265\n" +
+                        "downArrow:264\n" +
                         "down:340\n" +
                         "up:32\n" +
                         "pause:256\n" +
@@ -934,7 +936,7 @@ public class MainView extends EnigView {
 			if(leftArrowSettingStringArray.length > 1) UserControls.leftArrowSetting2 = Integer.parseInt(leftArrowSettingStringArray[1]);
 			if(rightArrowSettingStringArray.length > 1) UserControls.rightArrowSetting2 = Integer.parseInt(rightArrowSettingStringArray[1]);
 			if(upArrowSettingStringArray.length > 1) UserControls.upArrowSetting2 = Integer.parseInt(upArrowSettingStringArray[1]);
-			if(downArrowSettingStringArray.length > 1) UserControls.rightArrowSetting2 = Integer.parseInt(downArrowSettingStringArray[1]);
+			if(downArrowSettingStringArray.length > 1) UserControls.downArrowSetting2 = Integer.parseInt(downArrowSettingStringArray[1]);
 			if(downSettingStringArray.length > 1) UserControls.downSetting2 = Integer.parseInt(downSettingStringArray[1]);
 			if(upSettingStringArray.length > 1) UserControls.upSetting2 = Integer.parseInt(upSettingStringArray[1]);
 			if(pauseSettingStringArray.length > 1) UserControls.pauseSetting2 = Integer.parseInt(pauseSettingStringArray[1]);
@@ -950,6 +952,8 @@ public class MainView extends EnigView {
 		} catch (NoSuchElementException e){
 			System.out.println("Delete your controls.txt folder (TimeTravel/res/controls.txt) and try again.\n" +
 					"Or fix the ordering manually if you have custom keybinds.");
+
+			e.printStackTrace();
 		}
 
 	}
