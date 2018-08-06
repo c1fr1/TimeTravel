@@ -14,6 +14,8 @@ public class UserControls {
 	public static String rightSettingString;
 	public static String leftArrowSettingString;
 	public static String rightArrowSettingString;
+	public static String upArrowSettingString;
+	public static String downArrowSettingString;
 	public static String downSettingString;
 	public static String upSettingString;
 	public static String pauseSettingString;
@@ -29,6 +31,8 @@ public class UserControls {
 	public static int rightSetting;
 	public static int leftArrowSetting;
 	public static int rightArrowSetting;
+	public static int upArrowSetting;
+	public static int downArrowSetting;
 	public static int downSetting;
 	public static int upSetting;
 	public static int pauseSetting;
@@ -44,6 +48,8 @@ public class UserControls {
 	public static int rightSetting2 = 0;
 	public static int leftArrowSetting2 = 0;
 	public static int rightArrowSetting2 = 0;
+	public static int upArrowSetting2 = 0;
+	public static int downArrowSetting2 = 0;
 	public static int downSetting2 = 0;
 	public static int upSetting2 = 0;
 	public static int pauseSetting2 = 0;
@@ -59,6 +65,8 @@ public class UserControls {
 	public static int[] right;
 	public static int[] leftArrow;
 	public static int[] rightArrow;
+	public static int[] upArrow;
+	public static int[] downArrow;
 	public static int[] down;
 	public static int[] up;
 	public static int[] pause;
@@ -79,6 +87,8 @@ public class UserControls {
 		right =  new int[] {rightSetting, rightSetting2};
 		leftArrow =  new int[] {leftArrowSetting, leftArrowSetting2};
 		rightArrow =  new int[] {rightArrowSetting, rightArrowSetting2};
+		upArrow =  new int[] {upArrowSetting, upArrowSetting2};
+		downArrow =  new int[] {downArrowSetting, downArrowSetting2};
 		down =  new int[] {downSetting, downSetting2};
 		up =  new int[] {upSetting, upSetting2};
 		pause =  new int[] {pauseSetting, pauseSetting2};
@@ -97,9 +107,25 @@ public class UserControls {
 		}
 		return false;
 	}
+	public static boolean forwardPress(EnigWindow window) {
+		for (int i:forward) {
+			if (window.keys[i] == 1) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public static boolean backward(EnigWindow window) {
 		for (int i:backward) {
 			if (window.keys[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean backwardPress(EnigWindow window) {
+		for (int i:backward) {
+			if (window.keys[i] == 1) {
 				return true;
 			}
 		}
@@ -153,6 +179,21 @@ public class UserControls {
 		}
 		return false;
 	}
+	public static boolean upArrowPress(EnigWindow window){
+		for (int i:upArrow) {
+			if (window.keys[i] == 1) {
+				return true;
+			}
+		}
+		return false;
+	}public static boolean downArrowPress(EnigWindow window){
+		for (int i:downArrow) {
+			if (window.keys[i] == 1) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public static boolean down(EnigWindow window) {
 		for (int i:down) {
 			if (window.keys[i] > 0) {
@@ -161,9 +202,25 @@ public class UserControls {
 		}
 		return false;
 	}
+	public static boolean downPress(EnigWindow window) {
+		for (int i:down) {
+			if (window.keys[i] == 0) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public static boolean up(EnigWindow window) {
 		for (int i:up) {
 			if (window.keys[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean upPress(EnigWindow window) {
+		for (int i:up) {
+			if (window.keys[i] == 1) {
 				return true;
 			}
 		}

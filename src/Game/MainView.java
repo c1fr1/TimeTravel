@@ -17,6 +17,7 @@ import Game.Views.LoadingScreen;
 import Game.Views.MainMenu;
 import Game.Views.WinScreen;
 
+import javax.jws.soap.SOAPBinding;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -118,9 +119,9 @@ public class MainView extends EnigView {
 	//2 is down
 	//3 is left
 
-	SpriteButton cont;
-	SpriteButton restart;
-	SpriteButton menu;
+	ShaderOptimizedButton cont;
+	ShaderOptimizedButton restart;
+	ShaderOptimizedButton menu;
 
 	Texture ohYknow;
 	VAO ohYknowVAO;
@@ -133,6 +134,8 @@ public class MainView extends EnigView {
 	boolean zDoor = true;
 
 	static float aspectRatio;
+
+	int menuSelect;
 
 	@Override
 	public void setup() {
@@ -213,6 +216,8 @@ public class MainView extends EnigView {
             ohYknow = new Texture("lib/ohYknow.jpg");
             ohYknowVAO = new VAO(-window.getWidth() / 2f, -window.getHeight() / 2, window.getWidth(), window.getHeight());
 
+
+			menuSelect = -1;
             //System.out.println(entities.get(0));
         }
 
@@ -253,12 +258,30 @@ public class MainView extends EnigView {
 
 		//Pause menu
 		if(pause){
+			//System.out.println(menuSelect);
+			if(menuSelect > 0) {
+				if (UserControls.upArrowPress(window)) {
+					//System.out.println("up Press");
+					menuSelect--;
+				}
+			}
+			if(menuSelect < 2){
+				if(UserControls.downArrowPress(window)){
+					//System.out.println("down Press");
+					menuSelect++;
+				}
+			}
+			if(menuSelect == -1){
+				if(UserControls.upArrowPress(window)){
+					//System.out.println("down Press");
+					menuSelect = 2;
+				}
+			}
 			++framesPaused;
 			float scalar = 1-((float)framesPaused/50f);
 			if (scalar < 0.5f) {
 				scalar = 0.5f;
 			}
-
 
 			lastTime = System.nanoTime();
 
@@ -273,7 +296,9 @@ public class MainView extends EnigView {
 			SpriteButton.shader.shaders[0].uniforms[0].set(aspectRatio);
 			
 			if (menu.render(window.cursorXFloat,window.cursorYFloat)) {
+				menuSelect = 2;
                 if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
+					menuSelect = -1;
 					new MainMenu(window);
 					pause = false;
 					nextLevel(0);
@@ -282,7 +307,9 @@ public class MainView extends EnigView {
 			}
 			
             if (restart.render(window.cursorXFloat,window.cursorYFloat)) {
+            	menuSelect = 1;
              	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
+             		menuSelect = -1;
 					framesPaused = 0;
 					pause = !pause;
 					nextLevel(0);
@@ -290,11 +317,42 @@ public class MainView extends EnigView {
             }
             
             if (cont.render(window.cursorXFloat, window.cursorYFloat)) {
+            	menuSelect = 0;
             	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
+					menuSelect = -1;
                     framesPaused = 0;
                     pause = !pause;
             	}
             }
+
+            if(!cont.render(window.cursorXFloat, window.cursorYFloat) && !menu.render(window.cursorXFloat, window.cursorYFloat) && !restart.render(window.cursorXFloat, window.cursorYFloat)){
+            	if(menuSelect == 0){
+            		cont.render(window.cursorXFloat, window.cursorYFloat, true);
+            		if(UserControls.enter(window)){
+						menuSelect = -1;
+						framesPaused = 0;
+						pause = !pause;
+					}
+				}
+				if(menuSelect == 1){
+					restart.render(window.cursorXFloat, window.cursorYFloat, true);
+					if(UserControls.enter(window)){
+						menuSelect = -1;
+						framesPaused = 0;
+						pause = !pause;
+						nextLevel(0);
+					}
+				}
+				if(menuSelect == 2){
+					menu.render(window.cursorXFloat, window.cursorYFloat, true);
+					if(UserControls.enter(window)){
+						menuSelect = -1;
+						new MainMenu(window);
+						pause = false;
+						nextLevel(0);
+					}
+				}
+			}
 		}
 		//Time Travel animation
 		else if (timeTravelFrames > 0) {
@@ -328,6 +386,7 @@ public class MainView extends EnigView {
 		}
 		//run game
 		else {
+			menuSelect = -1;
 			mainFBO.prepareForTexture();
 			
 			renderBackground();
@@ -778,6 +837,8 @@ public class MainView extends EnigView {
 			UserControls.rightSettingString = s.nextLine();
 			UserControls.leftArrowSettingString = s.nextLine();
 			UserControls.rightArrowSettingString = s.nextLine();
+			UserControls.upArrowSettingString = s.nextLine();
+			UserControls.downArrowSettingString = s.nextLine();
 			UserControls.downSettingString = s.nextLine();
 			UserControls.upSettingString = s.nextLine();
 			UserControls.pauseSettingString = s.nextLine();
@@ -793,6 +854,8 @@ public class MainView extends EnigView {
 			String[] rightSettingStringArray = UserControls.rightSettingString.substring(UserControls.rightSettingString.indexOf(":") + 1).split(",");
 			String[] leftArrowSettingStringArray = UserControls.leftArrowSettingString.substring(UserControls.leftArrowSettingString.indexOf(":") + 1).split(",");
 			String[] rightArrowSettingStringArray = UserControls.rightArrowSettingString.substring(UserControls.rightArrowSettingString.indexOf(":") + 1).split(",");
+			String[] upArrowSettingStringArray = UserControls.upArrowSettingString.substring(UserControls.upArrowSettingString.indexOf(":") + 1).split(",");
+			String[] downArrowSettingStringArray = UserControls.downArrowSettingString.substring(UserControls.downArrowSettingString.indexOf(":") + 1).split(",");
 			String[] downSettingStringArray = UserControls.downSettingString.substring(UserControls.downSettingString.indexOf(":") + 1).split(",");
 			String[] upSettingStringArray = UserControls.upSettingString.substring(UserControls.upSettingString.indexOf(":") + 1).split(",");
 			String[] pauseSettingStringArray = UserControls.pauseSettingString.substring(UserControls.pauseSettingString.indexOf(":") + 1).split(",");
@@ -808,6 +871,8 @@ public class MainView extends EnigView {
 			UserControls.rightSetting = Integer.parseInt(rightSettingStringArray[0]);
 			UserControls.leftArrowSetting = Integer.parseInt(leftArrowSettingStringArray[0]);
 			UserControls.rightArrowSetting = Integer.parseInt(rightArrowSettingStringArray[0]);
+			UserControls.upArrowSetting = Integer.parseInt(upArrowSettingStringArray[0]);
+			UserControls.downArrowSetting = Integer.parseInt(downArrowSettingStringArray[0]);
 			UserControls.downSetting = Integer.parseInt(downSettingStringArray[0]);
 			UserControls.upSetting = Integer.parseInt(upSettingStringArray[0]);
 			UserControls.pauseSetting = Integer.parseInt(pauseSettingStringArray[0]);
@@ -823,6 +888,8 @@ public class MainView extends EnigView {
 			if(rightSettingStringArray.length > 1) UserControls.rightSetting2 = Integer.parseInt(rightSettingStringArray[1]);
 			if(leftArrowSettingStringArray.length > 1) UserControls.leftArrowSetting2 = Integer.parseInt(leftArrowSettingStringArray[1]);
 			if(rightArrowSettingStringArray.length > 1) UserControls.rightArrowSetting2 = Integer.parseInt(rightArrowSettingStringArray[1]);
+			if(upArrowSettingStringArray.length > 1) UserControls.upArrowSetting2 = Integer.parseInt(upArrowSettingStringArray[1]);
+			if(downArrowSettingStringArray.length > 1) UserControls.rightArrowSetting2 = Integer.parseInt(downArrowSettingStringArray[1]);
 			if(downSettingStringArray.length > 1) UserControls.downSetting2 = Integer.parseInt(downSettingStringArray[1]);
 			if(upSettingStringArray.length > 1) UserControls.upSetting2 = Integer.parseInt(upSettingStringArray[1]);
 			if(pauseSettingStringArray.length > 1) UserControls.pauseSetting2 = Integer.parseInt(pauseSettingStringArray[1]);
