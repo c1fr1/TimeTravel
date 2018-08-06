@@ -24,11 +24,11 @@ public class StringRenderer {
 			}
 			for (int i = 0; i < 26; ++i) {
 				char letter = (char) (i + 'a');
-				textures[i + 10] = new Texture("res/letters/lower-" + letter + ".png");
+				textures[i + 10] = new Texture("res/letters/upper-" + letter + ".png");
 			}
 			for (int i = 0; i < 26; ++i) {
 				char letter = (char) (i + 'a');
-				textures[i + 36] = new Texture("res/letters/upper-" + letter + ".png");
+				textures[i + 36] = new Texture("res/letters/lower-" + letter + ".png");
 			}
 			shape = new VAO(-0.26470588235f, -0.5f, 0.5294117647f, 1f);
 			shader = new ShaderProgram("numberShader");

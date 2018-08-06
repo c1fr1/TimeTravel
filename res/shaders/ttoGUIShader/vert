@@ -6,8 +6,9 @@ layout (location = 1) in vec2 txtPos;
 out vec2 texCoords;
 
 uniform float aspectRatio;
+uniform float offset;
 
 void main() {
-	gl_Position = vec4(aspectRatio * vertices.x, vertices.y, vertices.z, 1);
+	gl_Position = vec4(aspectRatio * vertices.x + offset, vertices.y, vertices.z, 1);
 	texCoords = txtPos;
 }
