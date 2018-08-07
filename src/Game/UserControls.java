@@ -240,6 +240,14 @@ public class UserControls {
 		}
 		return false;
 	}
+	public static boolean pausePress(EnigWindow window) {
+		for (int i:pause) {
+			if (window.keys[i] == 1) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public static boolean enter(EnigWindow window) {
 		for (int i:enter) {
 			if (window.keys[i] > 0) {
