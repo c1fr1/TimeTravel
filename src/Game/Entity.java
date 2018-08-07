@@ -154,7 +154,8 @@ public class Entity
                 float x = xpos[timeZone];
                 float y = -ypos[timeZone];
                 sprite.bind();
-                levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2 * cam.y, 0));
+                Matrix4f mat = new Matrix4f(cam.projectionMatrix).scale(MainView.scale).translate(x - cam.x, y + cam.y, 0);
+                levelProgram.shaders[0].uniforms[0].set(mat/*cam.getCameraMatrix(x, y + 2 * cam.y, 0)*/);
                 levelProgram.shaders[0].uniforms[1].set(new Matrix4f());
                 spriteVAO.fullRender();
         }

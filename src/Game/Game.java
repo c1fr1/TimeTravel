@@ -16,37 +16,41 @@ public class Game {
     }
 
     public static void setup(){
-		MainView.quit = false;
-		MainMenu.mainMenuQuit = false;
-		restart = false;
-		MainView.createTextFolder();
-		try {
-			Scanner s = new Scanner(new File("res/options.txt"));
-			
-			String fullscreen = s.nextLine();
-			String res = s.nextLine();
-			String backgroundMove = s.nextLine();
-			
-			if (fullscreen.replace("fullscreen:", "").equals("t")) {
-				MainView.fullScreenBool = true;
-				MainView.main = new MainView();
-				
-			} else {
-				MainView.fullScreenBool = false;
-				String[] dim = res.replace("res:", "").split(",");
-				int width = Integer.parseInt(dim[0]);
-				int height = Integer.parseInt(dim[1]);
-				if (width < 200) width = 200;
-				if (height < 200) height = 200;
-				MainView.main = new MainView(width, height);
-			}
-			if (backgroundMove.replace("backgroundmove:", "").equals("t")) {
-				MainView.backgroundMoveBool = true;
-			} else {
-				MainView.backgroundMoveBool = false;
-			}
-		} catch (FileNotFoundException e) {
-			MainView.main = new MainView();
-		}
+        MainView.quit = false;
+        MainMenu.mainMenuQuit = false;
+        restart = false;
+        MainView.createTextFolder();
+        try {
+            Scanner s = new Scanner(new File("res/options.txt"));
+
+            String fullscreen = s.nextLine();
+            String res = s.nextLine();
+            String backgroundMove = s.nextLine();
+            String texLock = s.nextLine();
+
+            if (fullscreen.replace("fullscreen:", "").equals("t")) {
+                MainView.fullScreenBool = true;
+                MainView.main = new MainView();
+
+            }else {
+                MainView.fullScreenBool = false;
+                String[] dim = res.replace("res:", "").split(",");
+                int width = Integer.parseInt(dim[0]);
+                int height = Integer.parseInt(dim[1]);
+                if(width < 200) width = 200;
+                if(height < 200) height = 200;
+                MainView.main = new MainView(width, height);
+            }
+            if(backgroundMove.replace("backgroundmove:", "").equals("t")){
+                MainView.backgroundMoveBool = true;
+            } else
+            if(texLock.replace("texLock:", "").equals("t")){
+                LevelBase.lockedTextures = true;
+            } else {
+                LevelBase.lockedTextures = false;
+            }
+        } catch (FileNotFoundException e) {
+            MainView.main = new MainView();
+        }
     }
 }
