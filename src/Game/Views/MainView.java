@@ -397,7 +397,7 @@ public class MainView extends EnigView {
 	
 	public void renderPlayer(float xOffset, float yOffset, boolean isMoving) {
 		playerShader.enable();
-		Matrix4f camMatrix = cam.getCameraMatrix(cam.x, cam.y, 0);
+		Matrix4f camMatrix = cam.getCameraMatrix(cam.x, cam.y, 0).scale(scale);
 		if (xOffset > 0.001) {
 			playerDirection = 3;
 		}else if (xOffset < -0.001) {

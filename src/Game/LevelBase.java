@@ -1,10 +1,12 @@
 package Game;
 
+import Game.Views.MainView;
 import engine.Entities.Camera;
 import engine.OpenGL.ShaderProgram;
 import engine.OpenGL.Texture;
 import engine.OpenGL.VAO;
 import org.joml.Matrix4f;
+import sun.applet.Main;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -261,7 +263,10 @@ public class LevelBase
     			char currentChar = levelseries.get(currentTZ).get(row)[chr];
 				if (currentChar != '_') {
 					levelProgram.shaders[0].uniforms[1].set(new Matrix4f());
-					levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(x, y + 2*cam.y, 0));
+					float xoffset = x - cam.x;
+					float yoffset = y + cam.y;
+					Matrix4f camMatrix = new Matrix4f(cam.projectionMatrix).scale(MainView.scale).translate(xoffset, yoffset, 0);
+					levelProgram.shaders[0].uniforms[0].set(camMatrix/*cam.getCameraMatrix(x * MainView.scale, (y * MainView.scale + 2*cam.y), 0).scale(MainView.scale)*/);
 					if (currentChar == 'w' || currentChar == 'G' || currentChar == 'K' || currentChar == 'C' || currentChar == '-' || currentChar == 'S' || currentChar == 'T' || currentChar == '/' || currentChar == '*' || currentChar == '.' || currentChar == ',' || currentChar == 'V') {
 						background[currentTZ].bind();
 						levelProgram.shaders[0].uniforms[1].set(new Matrix4f().scale(0.02f).translate((float)chr, (float)row, 0f));
