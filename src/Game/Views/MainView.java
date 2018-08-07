@@ -253,7 +253,6 @@ public class MainView extends EnigView {
 				for (int i = 0; i < currentLevel.entities.size(); i ++) {
 					if (CamCollision.isInWall(currentLevel.entities.get(i).xpos[currentLevel.currentTZ], currentLevel.entities.get(i).ypos[currentLevel.currentTZ], currentLevel.levelseries.get(currentLevel.currentTZ))) {
 						currentLevel.entities.get(i).ypos[currentLevel.currentTZ] = -1;
-						System.out.println("aas");
 					}
 				}
 				++jumps;
