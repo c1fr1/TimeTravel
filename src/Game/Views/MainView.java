@@ -115,7 +115,7 @@ public class MainView extends EnigView {
 		main = this;
 		aspectRatio = (float)window.getHeight()/(float)window.getWidth();
 		if(window.getWidth() > window.getHeight()){
-			scale = window.getHeight()/780f;
+			scale = window.getHeight()/720f;
 		} else {
 			scale = window.getWidth()/1080f;
 		}
