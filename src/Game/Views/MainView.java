@@ -252,7 +252,8 @@ public class MainView extends EnigView {
 			if (timeTravelFrames >= 50) {
 				for (int i = 0; i < currentLevel.entities.size(); i ++) {
 					if (CamCollision.isInWall(currentLevel.entities.get(i).xpos[currentLevel.currentTZ], currentLevel.entities.get(i).ypos[currentLevel.currentTZ], currentLevel.levelseries.get(currentLevel.currentTZ))) {
-						System.out.println("hi");
+						currentLevel.entities.get(i).ypos[currentLevel.currentTZ] = -1;
+						System.out.println("aas");
 					}
 				}
 				++jumps;

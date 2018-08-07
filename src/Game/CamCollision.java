@@ -33,11 +33,27 @@ public class CamCollision
 
     public static boolean isInWall(float x, float y, ArrayList<Character[]> room) {
         boolean colliding = false;
-        int xsquares = (int)((x + 25)/50);
-        int ysquares = (int)((y + 25)/50);
-        for (int i = 0; i < MainView.semiSolidBlocks.length; i ++)
-        if (room.get(ysquares)[xsquares] == MainView.semiSolidBlocks[i]) {
-            colliding = true;
+        int[] xsquares = new int[4];
+        int[] ysquares = new int[4];
+        int offset = 0;
+        int twunnywunnytwunnytwunnyvizzhun = 13;
+        //point arrays
+        xsquares[0] = (int)((x - offset + twunnywunnytwunnytwunnyvizzhun)/50);
+        xsquares[1] = (int)((x + offset + twunnywunnytwunnytwunnyvizzhun)/50);
+        xsquares[2] = (int)((x + offset + twunnywunnytwunnytwunnyvizzhun)/50);
+        xsquares[3] = (int)((x - offset + twunnywunnytwunnytwunnyvizzhun)/50);
+
+        ysquares[0] = (int)((y + offset + twunnywunnytwunnytwunnyvizzhun)/50);
+        ysquares[1] = (int)((y + offset + twunnywunnytwunnytwunnyvizzhun)/50);
+        ysquares[2] = (int)((y - offset + twunnywunnytwunnytwunnyvizzhun)/50);
+        ysquares[3] = (int)((y - offset + twunnywunnytwunnytwunnyvizzhun)/50);
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < MainView.semiSolidBlocks.length; j ++) {
+                if (room.get(ysquares[i])[xsquares[i]] == MainView.semiSolidBlocks[j]) {
+                    colliding = true;
+                }
+            }
         }
         return colliding;
     }
