@@ -35,18 +35,17 @@ public class CamCollision
         boolean colliding = false;
         int[] xsquares = new int[4];
         int[] ysquares = new int[4];
-        int offset = 0;
-        int twunnywunnytwunnytwunnyvizzhun = 13;
+        int offset = 15;
         //point arrays
-        xsquares[0] = (int)((x - offset + twunnywunnytwunnytwunnyvizzhun)/50);
-        xsquares[1] = (int)((x + offset + twunnywunnytwunnytwunnyvizzhun)/50);
-        xsquares[2] = (int)((x + offset + twunnywunnytwunnytwunnyvizzhun)/50);
-        xsquares[3] = (int)((x - offset + twunnywunnytwunnytwunnyvizzhun)/50);
+        xsquares[0] = (int)((x - offset)/50);
+        xsquares[1] = (int)((x + offset)/50);
+        xsquares[2] = (int)((x + offset)/50);
+        xsquares[3] = (int)((x - offset)/50);
 
-        ysquares[0] = (int)((y + offset + twunnywunnytwunnytwunnyvizzhun)/50);
-        ysquares[1] = (int)((y + offset + twunnywunnytwunnytwunnyvizzhun)/50);
-        ysquares[2] = (int)((y - offset + twunnywunnytwunnytwunnyvizzhun)/50);
-        ysquares[3] = (int)((y - offset + twunnywunnytwunnytwunnyvizzhun)/50);
+        ysquares[0] = (int)((y + offset)/50);
+        ysquares[1] = (int)((y + offset)/50);
+        ysquares[2] = (int)((y - offset)/50);
+        ysquares[3] = (int)((y - offset)/50);
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < MainView.semiSolidBlocks.length; j ++) {

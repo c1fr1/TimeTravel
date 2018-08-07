@@ -251,11 +251,6 @@ public class MainView extends EnigView {
 
 			timeTravelFrames += delta_time * 0.05;
 			if (timeTravelFrames >= 50) {
-				for (int i = 0; i < currentLevel.entities.size(); i ++) {
-					if (CamCollision.isInWall(currentLevel.entities.get(i).xpos[currentLevel.currentTZ], currentLevel.entities.get(i).ypos[currentLevel.currentTZ], currentLevel.levelseries.get(currentLevel.currentTZ))) {
-						currentLevel.entities.get(i).ypos[currentLevel.currentTZ] = -1;
-					}
-				}
 				++jumps;
 				timeTravelFrames = 0;
 			}
@@ -318,6 +313,11 @@ public class MainView extends EnigView {
 			if (ttoOnInd >= 0) {
 				if (newTZ != currentLevel.currentTZ) {
 					currentLevel.currentTZ = newTZ;
+					for (int i = 0; i < currentLevel.entities.size(); i ++) {
+						if (CamCollision.isInWall(currentLevel.entities.get(i).xpos[currentLevel.currentTZ], currentLevel.entities.get(i).ypos[currentLevel.currentTZ], currentLevel.levelseries.get(currentLevel.currentTZ))) {
+							currentLevel.entities.get(i).ypos[currentLevel.currentTZ] = -1;
+						}
+					}
 					++timeTravelFrames;
 				}
 			}
