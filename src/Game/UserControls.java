@@ -3,6 +3,11 @@ package Game;
 import engine.OpenGL.EnigWindow;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 public class UserControls {
@@ -299,7 +304,88 @@ public class UserControls {
 		}
 		return false;
 	}
-	
+	public static void getControls(){
+		try {
+			Scanner s = new Scanner(new File("res/controls.txt"));
+			
+			UserControls.forwardSettingString = s.nextLine();
+			UserControls.backwardSettingString = s.nextLine();
+			UserControls.leftSettingString = s.nextLine();
+			UserControls.rightSettingString = s.nextLine();
+			UserControls.leftArrowSettingString = s.nextLine();
+			UserControls.rightArrowSettingString = s.nextLine();
+			UserControls.upArrowSettingString = s.nextLine();
+			UserControls.downArrowSettingString = s.nextLine();
+			UserControls.downSettingString = s.nextLine();
+			UserControls.upSettingString = s.nextLine();
+			UserControls.pauseSettingString = s.nextLine();
+			UserControls.enterSettingString = s.nextLine();
+			UserControls.levelAdvanceSettingString = s.nextLine();
+			UserControls.levelBackSettingString = s.nextLine();
+			UserControls.ohYknowSettingString = s.nextLine();
+			UserControls.skipSettingString = s.nextLine();
+			
+			String[] forwardSettingStringArray = UserControls.forwardSettingString.substring(UserControls.forwardSettingString.indexOf(":") + 1).split(",");
+			String[] backwardSettingStringArray = UserControls.backwardSettingString.substring(UserControls.backwardSettingString.indexOf(":") + 1).split(",");
+			String[] leftSettingStringArray = UserControls.leftSettingString.substring(UserControls.leftSettingString.indexOf(":") + 1).split(",");
+			String[] rightSettingStringArray = UserControls.rightSettingString.substring(UserControls.rightSettingString.indexOf(":") + 1).split(",");
+			String[] leftArrowSettingStringArray = UserControls.leftArrowSettingString.substring(UserControls.leftArrowSettingString.indexOf(":") + 1).split(",");
+			String[] rightArrowSettingStringArray = UserControls.rightArrowSettingString.substring(UserControls.rightArrowSettingString.indexOf(":") + 1).split(",");
+			String[] upArrowSettingStringArray = UserControls.upArrowSettingString.substring(UserControls.upArrowSettingString.indexOf(":") + 1).split(",");
+			String[] downArrowSettingStringArray = UserControls.downArrowSettingString.substring(UserControls.downArrowSettingString.indexOf(":") + 1).split(",");
+			String[] downSettingStringArray = UserControls.downSettingString.substring(UserControls.downSettingString.indexOf(":") + 1).split(",");
+			String[] upSettingStringArray = UserControls.upSettingString.substring(UserControls.upSettingString.indexOf(":") + 1).split(",");
+			String[] pauseSettingStringArray = UserControls.pauseSettingString.substring(UserControls.pauseSettingString.indexOf(":") + 1).split(",");
+			String[] enterSettingStringArray = UserControls.enterSettingString.substring(UserControls.enterSettingString.indexOf(":") + 1).split(",");
+			String[] levelAdvanceSettingStringArray = UserControls.levelAdvanceSettingString.substring(UserControls.levelAdvanceSettingString.indexOf(":") + 1).split(",");
+			String[] levelBackSettingStringArray = UserControls.levelBackSettingString.substring(UserControls.levelBackSettingString.indexOf(":") + 1).split(",");
+			String[] ohYknowSettingStringArray = UserControls.ohYknowSettingString.substring(UserControls.ohYknowSettingString.indexOf(":") + 1).split(",");
+			String[] skipSettingStringArray = UserControls.skipSettingString.substring(UserControls.skipSettingString.indexOf(":") + 1).split(",");
+			
+			UserControls.forwardSetting = Integer.parseInt(forwardSettingStringArray[0]);
+			UserControls.backwardSetting = Integer.parseInt(backwardSettingStringArray[0]);
+			UserControls.leftSetting = Integer.parseInt(leftSettingStringArray[0]);
+			UserControls.rightSetting = Integer.parseInt(rightSettingStringArray[0]);
+			UserControls.leftArrowSetting = Integer.parseInt(leftArrowSettingStringArray[0]);
+			UserControls.rightArrowSetting = Integer.parseInt(rightArrowSettingStringArray[0]);
+			UserControls.upArrowSetting = Integer.parseInt(upArrowSettingStringArray[0]);
+			UserControls.downArrowSetting = Integer.parseInt(downArrowSettingStringArray[0]);
+			UserControls.downSetting = Integer.parseInt(downSettingStringArray[0]);
+			UserControls.upSetting = Integer.parseInt(upSettingStringArray[0]);
+			UserControls.pauseSetting = Integer.parseInt(pauseSettingStringArray[0]);
+			UserControls.enterSetting = Integer.parseInt(enterSettingStringArray[0]);
+			UserControls.levelAdvanceSetting = Integer.parseInt(levelAdvanceSettingStringArray[0]);
+			UserControls.levelBackSetting = Integer.parseInt(levelBackSettingStringArray[0]);
+			UserControls.ohYknowSetting = Integer.parseInt(ohYknowSettingStringArray[0]);
+			UserControls.skipSetting = Integer.parseInt(skipSettingStringArray[0]);
+			
+			if(forwardSettingStringArray.length > 1) UserControls.forwardSetting2 = Integer.parseInt(forwardSettingStringArray[1]);
+			if(backwardSettingStringArray.length > 1) UserControls.backwardSetting2 = Integer.parseInt(backwardSettingStringArray[1]);
+			if(leftSettingStringArray.length > 1) UserControls.leftSetting2 = Integer.parseInt(leftSettingStringArray[1]);
+			if(rightSettingStringArray.length > 1) UserControls.rightSetting2 = Integer.parseInt(rightSettingStringArray[1]);
+			if(leftArrowSettingStringArray.length > 1) UserControls.leftArrowSetting2 = Integer.parseInt(leftArrowSettingStringArray[1]);
+			if(rightArrowSettingStringArray.length > 1) UserControls.rightArrowSetting2 = Integer.parseInt(rightArrowSettingStringArray[1]);
+			if(upArrowSettingStringArray.length > 1) UserControls.upArrowSetting2 = Integer.parseInt(upArrowSettingStringArray[1]);
+			if(downArrowSettingStringArray.length > 1) UserControls.downArrowSetting2 = Integer.parseInt(downArrowSettingStringArray[1]);
+			if(downSettingStringArray.length > 1) UserControls.downSetting2 = Integer.parseInt(downSettingStringArray[1]);
+			if(upSettingStringArray.length > 1) UserControls.upSetting2 = Integer.parseInt(upSettingStringArray[1]);
+			if(pauseSettingStringArray.length > 1) UserControls.pauseSetting2 = Integer.parseInt(pauseSettingStringArray[1]);
+			if(enterSettingStringArray.length > 1) UserControls.enterSetting2 = Integer.parseInt(enterSettingStringArray[1]);
+			if(levelAdvanceSettingStringArray.length > 1) UserControls.levelAdvanceSetting2 = Integer.parseInt(levelAdvanceSettingStringArray[1]);
+			if(levelBackSettingStringArray.length > 1) UserControls.levelBackSetting2 = Integer.parseInt(levelBackSettingStringArray[1]);
+			if(ohYknowSettingStringArray.length > 1) UserControls.ohYknowSetting2 = Integer.parseInt(ohYknowSettingStringArray[1]);
+			if(skipSettingStringArray.length > 1) UserControls.skipSetting2 = Integer.parseInt(skipSettingStringArray[1]);
+			
+			UserControls.intit();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (NoSuchElementException e){
+			System.out.println("Delete your controls.txt folder (TimeTravel/res/controls.txt) and try again.\n" +
+					"Or fix the ordering manually if you have custom keybinds.");
+			
+			e.printStackTrace();
+		}
+	}
 	
 	
 /*

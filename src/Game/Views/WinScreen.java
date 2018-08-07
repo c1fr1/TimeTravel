@@ -24,7 +24,6 @@ public class WinScreen extends EnigView {
 		}
 		t = background;
 		window = EnigWindow.mainWindow;
-		//jumpCounter = new StringRenderer(window.getWidth(), window.getHeight(), 100, 0f, 100f);
 		runLoop();
 	}
 	@Override
@@ -45,7 +44,6 @@ public class WinScreen extends EnigView {
 			MainView.jumps = 0;
 			return true;
 		}
-		//jumpCounter.renderStr("travels " + MainView.jumps);
 		return false;
 	}
 	

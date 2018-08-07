@@ -10,8 +10,6 @@ import engine.OpenGL.*;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
-import org.lwjgl.system.CallbackI;
-import org.lwjglx.debug.javax.servlet.http.HttpServletRequest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -80,11 +78,6 @@ public class MainView extends EnigView {
 	
 	public static StringRenderer levelMarker;
 
-	public boolean pause = false;
-	public boolean cooldown = false;
-
-	public int framesPaused;
-
 	public float timeTravelFrames = 0;
 	public float animationFrameCounter = 0;
 
@@ -98,16 +91,12 @@ public class MainView extends EnigView {
 	
 	public static int jumps = 0;
 	
-	public TTOGUI ttoguiclass;
+	public TTOGUI ttogui;
 	
 	//0 is up
 	//1 is right
 	//2 is down
 	//3 is left
-
-	ShaderOptimizedButton cont;
-	ShaderOptimizedButton restart;
-	ShaderOptimizedButton menu;
 
 	Texture ohYknow;
 	VAO ohYknowVAO;
@@ -125,7 +114,7 @@ public class MainView extends EnigView {
 
 	@Override
 	public void setup() {
-		getControls();
+		UserControls.getControls();
 		main = this;
 		aspectRatio = (float)window.getHeight()/(float)window.getWidth();
 		LevelSelect.createTextFolder();
@@ -156,11 +145,6 @@ public class MainView extends EnigView {
 			levelMarker = new StringRenderer(100, 0, 1000);
 			jumpCounterText = new StringRenderer(100, -1850, 1000);
 			jumpCounterText.centered = false;
-
-            cont = new ShaderOptimizedButton(-0.5f, 0.525f, 1f, 0.25f, "res/menu/continueButton.png", aspectRatio);
-
-            restart = new ShaderOptimizedButton(-0.5f, -0.125f, 1f, 0.25f, "res/menu/restart.png", aspectRatio);
-            menu = new ShaderOptimizedButton(-0.5f, -0.725f, 1f, 0.25f, "res/menu/mainMenu.png", aspectRatio);
 
             textureShader = new ShaderProgram("textureShaders");
             pauseShader = new ShaderProgram("pauseShaders");
@@ -201,7 +185,7 @@ public class MainView extends EnigView {
             
 			menuSelect = -1;
 			
-			ttoguiclass = new TTOGUI();
+			ttogui = new TTOGUI();
         }
 
 	}
@@ -217,16 +201,15 @@ public class MainView extends EnigView {
 		if (delta_time > 40f) {
 			delta_time = 40f;
 		}
-		float aspectRatio = (float) window.getHeight() / (float) window.getWidth();
-		if(UserControls.pause(window)){
-			if(!cooldown){
-				framesPaused = 0;
-				pause = !pause;
+		//aspectRatio = (float) window.getHeight() / (float) window.getWidth();
+		
+		for (int i:UserControls.pause) {
+			if (window.keys[i] == 1) {
+				window.keys[i] = 2;
+				if (new PauseView(mainFBO.getBoundTexture()).shouldRestart) {
+					nextLevel(0);
+				}
 			}
-			cooldown = true;
-
-		} else if(!UserControls.pause(window)){
-			cooldown = false;
 		}
         //dev buttons
         if (window.keys[GLFW_KEY_N] == 1)
@@ -238,106 +221,8 @@ public class MainView extends EnigView {
             nextLevel(-1);
         }
 
-		//Pause menu
-		if(pause){
-			//System.out.println(menuSelect);
-			if(menuSelect > 0) {
-				if (UserControls.upArrowPress(window)) {
-					//System.out.println("up Press");
-					menuSelect--;
-				}
-			}
-			if(menuSelect < 2){
-				if(UserControls.downArrowPress(window)){
-					//System.out.println("down Press");
-					menuSelect++;
-				}
-			}
-			if(menuSelect == -1){
-				if(UserControls.upArrowPress(window)){
-					//System.out.println("down Press");
-					menuSelect = 2;
-				}
-			}
-			++framesPaused;
-			float scalar = 1-((float)framesPaused/50f);
-			if (scalar < 0.5f) {
-				scalar = 0.5f;
-			}
-
-			lastTime = System.nanoTime();
-
-			FBO.prepareDefaultRender();
-			pauseShader.enable();
-			pauseShader.shaders[2].uniforms[0].set(scalar);
-			mainFBO.getBoundTexture().bind();
-			screenVAO.fullRender();
-			
-			SpriteButton.shader.enable();
-
-			SpriteButton.shader.shaders[0].uniforms[0].set(aspectRatio);
-			
-			if (menu.render(window.cursorXFloat,window.cursorYFloat)) {
-				menuSelect = 2;
-                if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
-					menuSelect = -1;
-					new MainMenu(window);
-					pause = false;
-					nextLevel(0);
-
-				}
-			}
-			
-            if (restart.render(window.cursorXFloat,window.cursorYFloat)) {
-            	menuSelect = 1;
-             	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
-             		menuSelect = -1;
-					framesPaused = 0;
-					pause = false;
-					nextLevel(0);
-            	}
-            }
-            
-            if (cont.render(window.cursorXFloat, window.cursorYFloat)) {
-            	menuSelect = 0;
-            	if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
-					menuSelect = -1;
-                    framesPaused = 0;
-                    pause = false;
-            	}
-            }
-
-            if(!cont.render(window.cursorXFloat, window.cursorYFloat) && !menu.render(window.cursorXFloat, window.cursorYFloat) && !restart.render(window.cursorXFloat, window.cursorYFloat)){
-            	if(menuSelect == 0){
-            		cont.render(window.cursorXFloat, window.cursorYFloat, true);
-            		if(UserControls.enter(window)){
-						menuSelect = -1;
-						framesPaused = 0;
-						pause = !pause;
-					}
-				}
-				if(menuSelect == 1){
-					restart.render(window.cursorXFloat, window.cursorYFloat, true);
-					if(UserControls.enter(window)){
-						menuSelect = -1;
-						framesPaused = 0;
-						pause = !pause;
-						nextLevel(0);
-					}
-				}
-				if(menuSelect == 2){
-					menu.render(window.cursorXFloat, window.cursorYFloat, true);
-					if(UserControls.enter(window)){
-						menuSelect = -1;
-						new MainMenu(window);
-						pause = false;
-						nextLevel(0);
-					}
-				}
-			}
-		}
-		//Time Travel animation
-		else if (timeTravelFrames > 0) {
+		//time travel animation
+		if (timeTravelFrames > 0) {
 			FBO.prepareDefaultRender();
 
 			ttoSelector = currentLevel.currentTZ;
@@ -417,7 +302,7 @@ public class MainView extends EnigView {
 				}
 			}
 			if (ttoOnInd >= 0) {
-				int newTZ = ttoguiclass.render(aspectRatio, ttoOnInd);
+				int newTZ = ttogui.render(aspectRatio, ttoOnInd);
 				if (newTZ != currentLevel.currentTZ) {
 					currentLevel.currentTZ = newTZ;
 					++timeTravelFrames;
@@ -437,12 +322,6 @@ public class MainView extends EnigView {
 			arrpossibilities[9] = nearesTTOCheck[1];
 			arrpossibilities[10] = nearesTTOCheck[2];
 			arrpossibilities[11] = nearesTTOCheck[3];
-			int ttotouchingindex = -1;
-			for (int i:arrpossibilities) {
-				if (i > ttotouchingindex) {
-					ttotouchingindex = i;
-				}
-			}
 
             currentLevel.updateTTO(arrpossibilities, delta_time);
 			
@@ -456,7 +335,6 @@ public class MainView extends EnigView {
             checkButtonPress('z','Z');
 
 			if(UserControls.ohYknow(window)){
-				//LevelBase.levelProgram.shaders[0].uniforms[0].set(cam.getCameraMatrix(cam.x, cam.y, 0));
 				ohYknow.bind();
 				ohYknowVAO.fullRender();
 			}
@@ -828,91 +706,6 @@ public class MainView extends EnigView {
             }
         }
     }
-
-    public void getControls(){
-		try {
-			Scanner s = new Scanner(new File("res/controls.txt"));
-
-			UserControls.forwardSettingString = s.nextLine();
-			UserControls.backwardSettingString = s.nextLine();
-			UserControls.leftSettingString = s.nextLine();
-			UserControls.rightSettingString = s.nextLine();
-			UserControls.leftArrowSettingString = s.nextLine();
-			UserControls.rightArrowSettingString = s.nextLine();
-			UserControls.upArrowSettingString = s.nextLine();
-			UserControls.downArrowSettingString = s.nextLine();
-			UserControls.downSettingString = s.nextLine();
-			UserControls.upSettingString = s.nextLine();
-			UserControls.pauseSettingString = s.nextLine();
-			UserControls.enterSettingString = s.nextLine();
-			UserControls.levelAdvanceSettingString = s.nextLine();
-			UserControls.levelBackSettingString = s.nextLine();
-			UserControls.ohYknowSettingString = s.nextLine();
-			UserControls.skipSettingString = s.nextLine();
-
-			String[] forwardSettingStringArray = UserControls.forwardSettingString.substring(UserControls.forwardSettingString.indexOf(":") + 1).split(",");
-			String[] backwardSettingStringArray = UserControls.backwardSettingString.substring(UserControls.backwardSettingString.indexOf(":") + 1).split(",");
-			String[] leftSettingStringArray = UserControls.leftSettingString.substring(UserControls.leftSettingString.indexOf(":") + 1).split(",");
-			String[] rightSettingStringArray = UserControls.rightSettingString.substring(UserControls.rightSettingString.indexOf(":") + 1).split(",");
-			String[] leftArrowSettingStringArray = UserControls.leftArrowSettingString.substring(UserControls.leftArrowSettingString.indexOf(":") + 1).split(",");
-			String[] rightArrowSettingStringArray = UserControls.rightArrowSettingString.substring(UserControls.rightArrowSettingString.indexOf(":") + 1).split(",");
-			String[] upArrowSettingStringArray = UserControls.upArrowSettingString.substring(UserControls.upArrowSettingString.indexOf(":") + 1).split(",");
-			String[] downArrowSettingStringArray = UserControls.downArrowSettingString.substring(UserControls.downArrowSettingString.indexOf(":") + 1).split(",");
-			String[] downSettingStringArray = UserControls.downSettingString.substring(UserControls.downSettingString.indexOf(":") + 1).split(",");
-			String[] upSettingStringArray = UserControls.upSettingString.substring(UserControls.upSettingString.indexOf(":") + 1).split(",");
-			String[] pauseSettingStringArray = UserControls.pauseSettingString.substring(UserControls.pauseSettingString.indexOf(":") + 1).split(",");
-			String[] enterSettingStringArray = UserControls.enterSettingString.substring(UserControls.enterSettingString.indexOf(":") + 1).split(",");
-			String[] levelAdvanceSettingStringArray = UserControls.levelAdvanceSettingString.substring(UserControls.levelAdvanceSettingString.indexOf(":") + 1).split(",");
-			String[] levelBackSettingStringArray = UserControls.levelBackSettingString.substring(UserControls.levelBackSettingString.indexOf(":") + 1).split(",");
-			String[] ohYknowSettingStringArray = UserControls.ohYknowSettingString.substring(UserControls.ohYknowSettingString.indexOf(":") + 1).split(",");
-			String[] skipSettingStringArray = UserControls.skipSettingString.substring(UserControls.skipSettingString.indexOf(":") + 1).split(",");
-
-			UserControls.forwardSetting = Integer.parseInt(forwardSettingStringArray[0]);
-			UserControls.backwardSetting = Integer.parseInt(backwardSettingStringArray[0]);
-			UserControls.leftSetting = Integer.parseInt(leftSettingStringArray[0]);
-			UserControls.rightSetting = Integer.parseInt(rightSettingStringArray[0]);
-			UserControls.leftArrowSetting = Integer.parseInt(leftArrowSettingStringArray[0]);
-			UserControls.rightArrowSetting = Integer.parseInt(rightArrowSettingStringArray[0]);
-			UserControls.upArrowSetting = Integer.parseInt(upArrowSettingStringArray[0]);
-			UserControls.downArrowSetting = Integer.parseInt(downArrowSettingStringArray[0]);
-			UserControls.downSetting = Integer.parseInt(downSettingStringArray[0]);
-			UserControls.upSetting = Integer.parseInt(upSettingStringArray[0]);
-			UserControls.pauseSetting = Integer.parseInt(pauseSettingStringArray[0]);
-			UserControls.enterSetting = Integer.parseInt(enterSettingStringArray[0]);
-			UserControls.levelAdvanceSetting = Integer.parseInt(levelAdvanceSettingStringArray[0]);
-			UserControls.levelBackSetting = Integer.parseInt(levelBackSettingStringArray[0]);
-			UserControls.ohYknowSetting = Integer.parseInt(ohYknowSettingStringArray[0]);
-			UserControls.skipSetting = Integer.parseInt(skipSettingStringArray[0]);
-
-			if(forwardSettingStringArray.length > 1) UserControls.forwardSetting2 = Integer.parseInt(forwardSettingStringArray[1]);
-			if(backwardSettingStringArray.length > 1) UserControls.backwardSetting2 = Integer.parseInt(backwardSettingStringArray[1]);
-			if(leftSettingStringArray.length > 1) UserControls.leftSetting2 = Integer.parseInt(leftSettingStringArray[1]);
-			if(rightSettingStringArray.length > 1) UserControls.rightSetting2 = Integer.parseInt(rightSettingStringArray[1]);
-			if(leftArrowSettingStringArray.length > 1) UserControls.leftArrowSetting2 = Integer.parseInt(leftArrowSettingStringArray[1]);
-			if(rightArrowSettingStringArray.length > 1) UserControls.rightArrowSetting2 = Integer.parseInt(rightArrowSettingStringArray[1]);
-			if(upArrowSettingStringArray.length > 1) UserControls.upArrowSetting2 = Integer.parseInt(upArrowSettingStringArray[1]);
-			if(downArrowSettingStringArray.length > 1) UserControls.downArrowSetting2 = Integer.parseInt(downArrowSettingStringArray[1]);
-			if(downSettingStringArray.length > 1) UserControls.downSetting2 = Integer.parseInt(downSettingStringArray[1]);
-			if(upSettingStringArray.length > 1) UserControls.upSetting2 = Integer.parseInt(upSettingStringArray[1]);
-			if(pauseSettingStringArray.length > 1) UserControls.pauseSetting2 = Integer.parseInt(pauseSettingStringArray[1]);
-			if(enterSettingStringArray.length > 1) UserControls.enterSetting2 = Integer.parseInt(enterSettingStringArray[1]);
-			if(levelAdvanceSettingStringArray.length > 1) UserControls.levelAdvanceSetting2 = Integer.parseInt(levelAdvanceSettingStringArray[1]);
-			if(levelBackSettingStringArray.length > 1) UserControls.levelBackSetting2 = Integer.parseInt(levelBackSettingStringArray[1]);
-			if(ohYknowSettingStringArray.length > 1) UserControls.ohYknowSetting2 = Integer.parseInt(ohYknowSettingStringArray[1]);
-			if(skipSettingStringArray.length > 1) UserControls.skipSetting2 = Integer.parseInt(skipSettingStringArray[1]);
-
-			UserControls.intit();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (NoSuchElementException e){
-			System.out.println("Delete your controls.txt folder (TimeTravel/res/controls.txt) and try again.\n" +
-					"Or fix the ordering manually if you have custom keybinds.");
-
-			e.printStackTrace();
-		}
-
-	}
-
 	
 	public MainView() {
 		super();
