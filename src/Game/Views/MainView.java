@@ -106,6 +106,8 @@ public class MainView extends EnigView {
 	static float aspectRatio;
 
 	int menuSelect;
+	
+	public static float scale = 1.5f;
 
 	@Override
 	public void setup() {
