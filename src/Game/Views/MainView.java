@@ -455,6 +455,7 @@ public class MainView extends EnigView {
 
 	public boolean nextLevel(int increment) {
 		inv.reset();
+		jumps = 0;
 		File test = new File("res/Levels/Level" + (increment+currentLevelNum) + ".txt");
 		if(test.exists()) {
 			currentLevelNum += increment;
