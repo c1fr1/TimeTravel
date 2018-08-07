@@ -45,6 +45,8 @@ public class LevelBase
 	public ArrayList<Entity> entities = new ArrayList<>();
     public float[] ttoFrameCounter;
 
+    public static boolean lockedTextures = false;
+
 
     //gets the map
 	public LevelBase(String filename) {
@@ -256,6 +258,10 @@ public class LevelBase
 	public void render(Camera cam) {
     	levelProgram.enable();
     	tileObj.prepareRender();
+    	int textureList = currentTZ;
+    	if(lockedTextures){
+    		textureList = 2;
+		}
     	for (int row = 0; row < levelseries.get(currentTZ).size();++row) {
     		for (int chr = 0; chr < levelseries.get(currentTZ).get(row).length; ++chr) {
 				float x = ((float) chr) * 50f;
@@ -268,18 +274,18 @@ public class LevelBase
 					Matrix4f camMatrix = new Matrix4f(cam.projectionMatrix).scale(MainView.scale).translate(xoffset, yoffset, 0);
 					levelProgram.shaders[0].uniforms[0].set(camMatrix/*cam.getCameraMatrix(x * MainView.scale, (y * MainView.scale + 2*cam.y), 0).scale(MainView.scale)*/);
 					if (currentChar == 'w' || currentChar == 'G' || currentChar == 'K' || currentChar == 'C' || currentChar == '-' || currentChar == 'S' || currentChar == 'T' || currentChar == '/' || currentChar == '*' || currentChar == '.' || currentChar == ',' || currentChar == 'V') {
-						background[currentTZ].bind();
+						background[textureList].bind();
 						levelProgram.shaders[0].uniforms[1].set(new Matrix4f().scale(0.02f).translate((float)chr, (float)row, 0f));
 					}else if (currentChar == ' ') {//sbiop
-    					floorTexture[currentTZ].bind();
+    					floorTexture[textureList].bind();
 					}else if (currentChar == '#') {
-    					wallTexture[currentTZ].bind();
+    					wallTexture[textureList].bind();
 					}else if (Util.isNumericValue(currentChar)) {
 						ttoTexture[(int) ttoFrameCounter[Character.getNumericValue(currentChar)]].bind();
 					}else if (currentChar == 'g') {
                         endLevelTexture.bind();
 					}else if (currentChar == 'k') {
-						floorTexture[currentTZ].bind();
+						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
 						keyTexture.bind();
 					}else if (currentChar == 'l') {
@@ -293,39 +299,39 @@ public class LevelBase
 					}else if (currentChar == '<') {
 						leftGateTexture.bind();
 					}else if (currentChar == 'x') {
-						floorTexture[currentTZ].bind();
+						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
 						xElectricTextures[0].bind();
 					}else if (currentChar == 'y') {
-						floorTexture[currentTZ].bind();
+						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
 						yElectricTextures[0].bind();
 					}else if (currentChar == 'z') {
-						floorTexture[currentTZ].bind();
+						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
 						zElectricTextures[0].bind();
 					}else if (currentChar == 'X') {
-						floorTexture[currentTZ].bind();
+						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
 						xElectricTextures[1].bind();
 					}else if (currentChar == 'Y') {
-						floorTexture[currentTZ].bind();
+						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
 						yElectricTextures[1].bind();
 					}else if (currentChar == 'Z') {
-						floorTexture[currentTZ].bind();
+						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
 						zElectricTextures[1].bind();
 					}else if (currentChar == 'i') {
-						floorTexture[currentTZ].bind();
+						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
 						xElectricTextures[2].bind();
 					}else if (currentChar == 'o') {
-						floorTexture[currentTZ].bind();
+						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
 						yElectricTextures[2].bind();
 					}else if (currentChar == 'p') {
-						floorTexture[currentTZ].bind();
+						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
 						zElectricTextures[2].bind();
 					}else {

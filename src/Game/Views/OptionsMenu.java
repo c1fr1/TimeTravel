@@ -6,6 +6,7 @@ import Game.Buttons.TwoStateButton;
 import Game.Game;
 import Game.UserControls;
 import Game.StringRenderer;
+import Game.LevelBase;
 import engine.EnigView;
 import engine.OpenGL.EnigWindow;
 import engine.OpenGL.FBO;
@@ -37,6 +38,8 @@ public class OptionsMenu extends EnigView {
     StringRenderer resolutionOption2;
     StringRenderer backgroundMove;
     StringRenderer backgroundMoveOption;
+    StringRenderer textureLock;
+    StringRenderer textureLockOption;
     ShaderOptimizedButton controlMenu;
     ShaderOptimizedButton restart;
 
@@ -93,6 +96,13 @@ public class OptionsMenu extends EnigView {
         backgroundMoveOption.centered = false;
         backgroundMoveOption.unselectedColor = new Vector4f(1f,0f,0f,1f);
 
+        textureLock = new StringRenderer(180, -1700, 300);
+        textureLock.centered = false;
+
+        textureLockOption = new StringRenderer(180, 400, 300);
+        textureLockOption.centered = false;
+        textureLockOption.unselectedColor = new Vector4f(1f,0f,0f,1f);
+
         controlMenu = new ShaderOptimizedButton(-1f, -.1f, 2f, .2f, "res/sprites/testex.png", aspectRatio);
         restart = new ShaderOptimizedButton(-1, -.4f, 2f, .2f, "res/menu/restart.png", aspectRatio);
 
@@ -133,6 +143,16 @@ public class OptionsMenu extends EnigView {
         backgroundMoveOption.renderStr(backGroundMoveOptionText);
         controlMenu.render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
 
+        textureLock.renderStr("Texture Lock");
+
+        String lockedTexturesOptionText;
+        if(LevelBase.lockedTextures){
+            lockedTexturesOptionText = "Enabled";
+        } else {
+            lockedTexturesOptionText = "Disabled";
+        }
+        textureLockOption.renderStr(lockedTexturesOptionText);
+
 
         if(fullScreenOption.hoverCheck(fullScreenOptionText, window.cursorXFloat, window.cursorYFloat, new Vector4f(.5f,.5f,1f,1f)) && UserControls.leftMBPress(window)){
             if(options[0].equals("fullscreen:t")){
@@ -170,8 +190,19 @@ public class OptionsMenu extends EnigView {
             write[2] = options[2];
             writeToOptions(write);
         }
+        if(textureLockOption.hoverCheck(lockedTexturesOptionText, window.cursorXFloat, window.cursorYFloat, new Vector4f(.5f,.5f,1f,1f)) && UserControls.leftMBPress(window)){
+            if(options[3].equals("texLock:t")){
+                options[3] =  "texLock:f";
+            } else {
+                options[3] = "texLock:t";
+            }
+            LevelBase.lockedTextures = !LevelBase.lockedTextures;
+            String[] write = getOptionsString().split("\n");
+            write[3] = options[3];
+            writeToOptions(write);
+        }
         if(controlMenu.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)){
-            //Controls menu
+            new ControlsMenu(window);
         }
 
 
