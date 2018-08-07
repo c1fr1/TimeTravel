@@ -43,11 +43,9 @@ public class Game {
             }
             if(backgroundMove.replace("backgroundmove:", "").equals("t")){
                 MainView.backgroundMoveBool = true;
-            } else
+            }
             if(texLock.replace("texLock:", "").equals("t")){
                 LevelBase.lockedTextures = true;
-            } else {
-                LevelBase.lockedTextures = false;
             }
         } catch (FileNotFoundException e) {
             MainView.main = new MainView();

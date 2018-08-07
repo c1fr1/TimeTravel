@@ -58,7 +58,7 @@ public class OptionsMenu extends EnigView {
     int callbackCounter = 0;
     int prevRes = 0;
 
-    boolean escapeRes = false;
+    public static boolean escapeRes = false;
 
     @Override
     public void setup() {

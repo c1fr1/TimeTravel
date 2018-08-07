@@ -5,6 +5,8 @@ import Game.UserControls;
 import engine.EnigView;
 import engine.OpenGL.EnigWindow;
 import engine.OpenGL.FBO;
+import org.lwjgl.glfw.GLFW;
+import org.lwjglx.debug.org.eclipse.jetty.server.Authentication;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,7 +20,15 @@ public class ControlsMenu extends EnigView {
 
     ControlButton[] keys;
 
+
+
+    boolean keyPress = false;
+    int keyPressValue = -1;
+    boolean alt = false;
+
     public static EnigView controlMenu;
+
+    public static boolean escapeRes = false;
 
     @Override
     public void setup() {
@@ -32,6 +42,7 @@ public class ControlsMenu extends EnigView {
         keys = new ControlButton[controlList.length];
         for(int i = 0; i < controlList.length; i++){
             int yPos = window.getHeight() - (i * 100);
+            int k = GLFW.GLFW_KEY_B;
 
             String controlName = controlList[i].substring(0, controlList[i].indexOf(':'));
             String[] controls = controlList[i].substring(controlList[i].indexOf(':') + 1).split(",");
@@ -46,11 +57,32 @@ public class ControlsMenu extends EnigView {
 
     }
 
+
+
     @Override
     public boolean loop() {
         FBO.prepareDefaultRender();
-        for(ControlButton i: keys){
-            i.render(window);
+        for(int i = 0; i < keys.length; i++){
+            keys[i].render(window);
+            if(keys[i].hoverCheck(window) && UserControls.leftMBPress(window)){
+                escapeRes = true;
+                keyPress = true;
+                keyPressValue = i;
+                alt = false;
+            }
+            if(keys[i].hoverCheckAlt(window) && UserControls.leftMBPress(window)) {
+                escapeRes = true;
+                keyPress = true;
+                keyPressValue = i;
+                alt = true;
+            }
+        }
+        if(UserControls.pausePress(window) && !keyPress && !escapeRes){
+            window.callbackView = null;
+            OptionsMenu.escapeRes = true;
+            return true;
+        } else if(escapeRes && UserControls.pausePress(window)){
+            escapeRes = false;
         }
         return false;
     }
@@ -60,12 +92,36 @@ public class ControlsMenu extends EnigView {
         return null;
     }
 
+
     @Override
     public void keyCallback(int key, int state){
+        if(key == 256){
+            keyPressValue = -1;
+            keyPress = false;
+            alt = false;
+            return;
+        }
+        if(keyPress){
+            if(state != 0){
 
+                keys[keyPressValue].writeToFile(key, alt);
+
+                if(!alt) {
+                    keys[keyPressValue].currentButton = key;
+                    keys[keyPressValue].writeToFile(key, false);
+                } else {
+                    keys[keyPressValue].currentButtonAlt = key;
+                    keys[keyPressValue].writeToFile(key, true);
+                }
+
+                keyPressValue = -1;
+                keyPress = false;
+                alt = false;
+            }
+        }
     }
 
-    public String[] getControls(){
+    public static String[] getControls(){
         Scanner s = null;
         try {
             s = new Scanner(new File("res/controls.txt"));
