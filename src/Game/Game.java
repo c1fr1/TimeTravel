@@ -1,5 +1,6 @@
 package Game;
 
+import Game.Views.MainMenu;
 import Game.Views.MainView;
 
 import java.io.File;
@@ -46,6 +47,9 @@ public class Game {
         }
 
         if(restart){
+            //TODO MAKE IT NOT BREAK
+            MainView.quit = false;
+            MainMenu.mainMenuQuit = false;
             restart = false;
             setup();
         }

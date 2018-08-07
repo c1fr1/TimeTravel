@@ -312,6 +312,9 @@ public class EnigWindow {
 			if (key >= 0) {
 				keys[key] = action;
 			}
+			if (callbackView != null) {
+				callbackView.keyCallback(key, action);
+			}
 		});
 		
 		glfwSetCursorPosCallback(id, new GLFWCursorPosCallback() {
