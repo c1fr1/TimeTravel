@@ -161,10 +161,14 @@ public class OptionsMenu extends EnigView {
         if(backgroundMoveOption.hoverCheck(backGroundMoveOptionText, window.cursorXFloat, window.cursorYFloat, new Vector4f(.5f, .5f, 1f, 1f)) && UserControls.leftMBPress(window)){
             if(options[2].equals("backgroundmove:t")){
                 options[2] =  "backgroundmove:f";
+                MainView.backgroundMoveBool = false;
             } else {
                 options[2] = "backgroundmove:t";
+                MainView.backgroundMoveBool = true;
             }
-            MainView.backgroundMoveBool = !MainView.backgroundMoveBool;
+            String[] write = getOptionsString().split("\n");
+            write[2] = options[2];
+            writeToOptions(write);
         }
         if(controlMenu.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)){
             //Controls menu
@@ -203,6 +207,15 @@ public class OptionsMenu extends EnigView {
     @Override
     public String getName() {
         return "options";
+    }
+
+    public String concat(String[] array){
+        String out = "";
+        for(String i: array){
+            out += i + "\n";
+        }
+        out = out.substring(0, out.length()-1);
+        return out;
     }
 
 
