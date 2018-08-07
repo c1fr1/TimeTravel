@@ -245,6 +245,11 @@ public class MainView extends EnigView {
 
 			timeTravelFrames += delta_time * 0.05;
 			if (timeTravelFrames >= 50) {
+				for (int i = 0; i < currentLevel.entities.size(); i ++) {
+					if (CamCollision.isInWall(currentLevel.entities.get(i).xpos[currentLevel.currentTZ], currentLevel.entities.get(i).ypos[currentLevel.currentTZ], currentLevel.levelseries.get(currentLevel.currentTZ))) {
+						System.out.println("hi");
+					}
+				}
 				++jumps;
 				timeTravelFrames = 0;
 			}

@@ -30,6 +30,17 @@ public class CamCollision
         }
         return colliding;
     }
+
+    public static boolean isInWall(float x, float y, ArrayList<Character[]> room) {
+        boolean colliding = false;
+        int xsquares = (int)((x + 25)/50);
+        int ysquares = (int)((y + 25)/50);
+        for (int i = 0; i < MainView.semiSolidBlocks.length; i ++)
+        if (room.get(ysquares)[xsquares] == MainView.semiSolidBlocks[i]) {
+            colliding = true;
+        }
+        return colliding;
+    }
     
 	public static boolean checkAndReplace(float x, float y, int border, char obstacle, char replacement) {
 		boolean colliding = false;
