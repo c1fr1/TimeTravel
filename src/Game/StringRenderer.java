@@ -17,6 +17,8 @@ public class StringRenderer {
 	public float y;
 	public boolean centered = true;
 	public Vector4f color = new Vector4f(1f, 1f, 1f, 1f);
+	public Vector4f selectColor = new Vector4f(.2f, .2f, 1f, 1f);
+	public Vector4f unselectedColor =  new Vector4f(1f,1f,1f,1f);
 	public StringRenderer(int fontSize, float x, float y) {
 		if (shape == null) {
 			for (int i = 0; i < 10; ++i) {
@@ -64,5 +66,32 @@ public class StringRenderer {
 			}
 		}
 		shape.unbind();
+	}
+
+
+	public boolean hoverCheck(String str, float mouseX, float mouseY, Vector4f select){
+		selectColor = select;
+		//System.out.println(x + " " + y);
+		float width = (0.5294117647f * fontSize)/(EnigWindow.mainWindow.getWidth()/2) * str.length();
+		float height = (fontSize)/(EnigWindow.mainWindow.getHeight()/2);
+		float xPos = x/(EnigWindow.mainWindow.getWidth()/2);
+		if(!centered){
+			xPos += ((str.length() - 1) * 0.5294117647f * fontSize/2) / (EnigWindow.mainWindow.getWidth()/2);
+		}
+		float yPos = y/(EnigWindow.mainWindow.getHeight()/2);
+
+		//System.out.println( xPos + " " + yPos);
+		//System.out.println(mouseX + " " + mouseY);
+		color = unselectedColor;
+		if (mouseX <= xPos + width/2 && mouseX >= xPos - width/2) {
+			if (mouseY >= yPos - height/2 && mouseY <= yPos + height/2) {
+				color = selectColor;
+				//System.out.println("yeah");
+				return true;
+
+			}
+		}
+
+		return false;
 	}
 }

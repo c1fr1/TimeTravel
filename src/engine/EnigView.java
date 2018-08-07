@@ -84,7 +84,9 @@ public abstract class EnigView {
 		EnigWindow.checkGLError();
 		//window.update();
 	}
-	
+
+	public void keyCallback(int key, int state) {}
+
 	/**
 	 * gets the name of the window
 	 * @return name of the window

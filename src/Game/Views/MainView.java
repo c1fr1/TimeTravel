@@ -926,4 +926,5 @@ public class MainView extends EnigView {
 	public String getName() {
 		return "Time Travel Puzzle game";
 	}
+
 }

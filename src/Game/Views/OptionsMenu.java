@@ -5,10 +5,14 @@ import Game.Buttons.ShaderOptimizedButton;
 import Game.Buttons.TwoStateButton;
 import Game.Game;
 import Game.UserControls;
+import Game.StringRenderer;
 import engine.EnigView;
 import engine.OpenGL.EnigWindow;
 import engine.OpenGL.FBO;
+import org.joml.Vector4f;
+import sun.applet.Main;
 
+import javax.xml.soap.Text;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -19,12 +23,13 @@ public class OptionsMenu extends EnigView {
         super(window, false);
     }
 
-    NoChangeButton fullScreen;
-    TwoStateButton fullScreenOption;
-    NoChangeButton resolution;
-    TwoStateButton resolutionOption;
-    NoChangeButton backgroundMove;
-    TwoStateButton backgroundMoveOption;
+    StringRenderer fullScreen;
+    StringRenderer fullScreenOption;
+    StringRenderer resolution;
+    StringRenderer resolutionOption1;
+    StringRenderer resolutionOption2;
+    StringRenderer backgroundMove;
+    StringRenderer backgroundMoveOption;
     ShaderOptimizedButton controlMenu;
     ShaderOptimizedButton restart;
 
@@ -32,16 +37,44 @@ public class OptionsMenu extends EnigView {
 
     float aspectRatio;
 
+    boolean keyInput = false;
+
+    int xRes;
+    int yRes;
+
+    int keyCallbackState = 0;
+
     @Override
     public void setup() {
+        xRes = window.getWidth();
+        yRes = window.getHeight();
         aspectRatio = (float)window.getHeight()/(float)window.getWidth();
 
-        fullScreen = new NoChangeButton(-1f, .8f, 1f, .2f, "res/sprites/crateEntity.png", aspectRatio);
-        fullScreenOption = new TwoStateButton(0, .8f, 1f, .2f, "res/sprites/crateEntity.png", "res/sprites/ButtonDoor.png", MainView.fullScreenBool, aspectRatio);
-        resolution = new NoChangeButton(-1f, .5f, 1f, .2f, "res/sprites/crateEntity.png", aspectRatio);
-        resolutionOption = new TwoStateButton(0, .5f, 1f, .2f, "res/sprites/crateEntity.png", "res/sprites/ButtonDoor.png", true, aspectRatio);
-        backgroundMove = new NoChangeButton(-1f, .2f, 1f, .2f, "res/sprites/crateEntity.png", aspectRatio);
-        backgroundMoveOption = new TwoStateButton(0, .2f, 1f, .2f, "res/sprites/crateEntity.png", "res/sprites/ButtonDoor.png", MainView.backgroundMoveBool, aspectRatio);
+        fullScreen = new StringRenderer(180, -1700, 900);
+        fullScreen.centered = false;
+
+        fullScreenOption = new StringRenderer(180, 400, 900);
+        fullScreenOption.centered = false;
+        fullScreenOption.unselectedColor = new Vector4f(1f,0f,0f,1f);
+
+        resolution = new StringRenderer(180, -1700, 700);
+        resolution.centered = false;
+
+        resolutionOption1 = new StringRenderer(180, 400, 700);
+        resolutionOption1.centered = false;
+        resolutionOption1.unselectedColor = new Vector4f(1f,0f,0f,1f);
+
+        resolutionOption2 = new StringRenderer(180, 900, 700);
+        resolutionOption2.centered = false;
+        resolutionOption2.unselectedColor = new Vector4f(1f,0f,0f,1f);
+
+        backgroundMove = new StringRenderer(180, -1700, 500);
+        backgroundMove.centered = false;
+
+        backgroundMoveOption = new StringRenderer(180, 400, 500);
+        backgroundMoveOption.centered = false;
+        backgroundMoveOption.unselectedColor = new Vector4f(1f,0f,0f,1f);
+
         controlMenu = new ShaderOptimizedButton(-1f, -.1f, 2f, .2f, "res/sprites/testex.png", aspectRatio);
         restart = new ShaderOptimizedButton(-1, -.4f, 2f, .2f, "res/menu/restart.png", aspectRatio);
 
@@ -52,18 +85,33 @@ public class OptionsMenu extends EnigView {
     public boolean loop() {
         FBO.prepareDefaultRender();
 
-        fullScreen.render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
-        fullScreenOption.render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
-        resolution.render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
-        resolutionOption.render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
-        backgroundMove.render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
-        backgroundMoveOption.render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
+        fullScreen.renderStr("Fullscreen");
+        String fullScreenOptionText;
+        if(MainView.fullScreenBool){
+            fullScreenOptionText = "Enabled";
+        } else {
+            fullScreenOptionText = "Disabled";
+        }
+        fullScreenOption.renderStr(fullScreenOptionText);
+        resolution.renderStr("Resolution");
+
+
+        resolutionOption1.renderStr("1080");
+        resolutionOption2.renderStr("780");
+
+
+        backgroundMove.renderStr("Background Move");
+        String backGroundMoveOptionText;
+        if(MainView.backgroundMoveBool){
+            backGroundMoveOptionText = "Enabled";
+        } else {
+            backGroundMoveOptionText = "Disabled";
+        }
+        backgroundMoveOption.renderStr(backGroundMoveOptionText);
         controlMenu.render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
 
 
-
-        if(fullScreenOption.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)){
-            fullScreenOption.state = !fullScreenOption.state;
+        if(fullScreenOption.hoverCheck(fullScreenOptionText, window.cursorXFloat, window.cursorYFloat, new Vector4f(.5f,.5f,1f,1f)) && UserControls.leftMBPress(window)){
             if(options[0].equals("fullscreen:t")){
                 options[0] =  "fullscreen:f";
             } else {
@@ -71,11 +119,23 @@ public class OptionsMenu extends EnigView {
             }
             MainView.fullScreenBool = !MainView.fullScreenBool;
         }
-        if(resolutionOption.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)){
-            resolutionOption.state = !resolutionOption.state;
+        if(resolutionOption1.hoverCheck(Integer.toString(xRes), window.cursorXFloat, window.cursorYFloat, new Vector4f(1f,1f,1f,1f)) && UserControls.leftMBPress(window)){
+
+            if(keyCallbackState == 0) {
+                keyInput = true;
+                keyCallbackState = 1;
+            }
+
         }
-        if(backgroundMoveOption.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)){
-            backgroundMoveOption.state = !backgroundMoveOption.state;
+        if(resolutionOption2.hoverCheck(Integer.toString(yRes), window.cursorXFloat, window.cursorYFloat, new Vector4f(1f,1f,1f,1f)) && UserControls.leftMBPress(window)){
+
+            if(keyCallbackState == 0) {
+                keyInput = true;
+                keyCallbackState = 2;
+            }
+
+        }
+        if(backgroundMoveOption.hoverCheck(backGroundMoveOptionText, window.cursorXFloat, window.cursorYFloat, new Vector4f(.5f, .5f, 1f, 1f)) && UserControls.leftMBPress(window)){
             if(options[2].equals("backgroundmove:t")){
                 options[2] =  "backgroundmove:f";
             } else {
@@ -140,6 +200,27 @@ public class OptionsMenu extends EnigView {
             w.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    int tempRes = 0;
+    int callbackCounter = 0;
+
+    @Override
+    public void keyCallback(int key, int state){
+        if(keyInput){
+            if(key == UserControls.enterSetting || key == UserControls.enterSetting2){
+                keyInput = false;
+                if(tempRes < 200) tempRes = 200;
+            }
+            if(key > 47 && key < 58){
+                tempRes = tempRes*10;
+                tempRes += key-48;
+            }
+
+            if(callbackCounter == 3){
+                keyInput = false;
+            }
         }
     }
 }

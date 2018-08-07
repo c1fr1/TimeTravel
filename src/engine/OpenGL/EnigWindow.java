@@ -1,5 +1,6 @@
 package engine.OpenGL;
 
+import engine.EnigView;
 import engine.Entities.Camera;
 import engine.Entities.GameObject;
 import engine.OpenAL.Sound;
@@ -69,6 +70,8 @@ public class EnigWindow {
 	private ALCCapabilities deviceCaps;
 	
 	public static EnigWindow mainWindow;
+
+	public EnigView callbackView;
 	
 	/**
 	 * creates an undecorated window
@@ -184,6 +187,9 @@ public class EnigWindow {
 		glfwSetKeyCallback(id, (window, key, scancode, action, mods) -> {
 			if (key >= 0) {
 				keys[key] = action;
+			}
+			if (callbackView != null) {
+				callbackView.keyCallback(key, action);
 			}
 		});
 		
