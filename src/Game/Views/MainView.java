@@ -114,6 +114,11 @@ public class MainView extends EnigView {
 		UserControls.getControls();
 		main = this;
 		aspectRatio = (float)window.getHeight()/(float)window.getWidth();
+		if(window.getWidth() > window.getHeight()){
+			scale = window.getHeight()/780f;
+		} else {
+			scale = window.getWidth()/1080f;
+		}
 		LevelSelect.createTextFolder();
         DoubleTextureButton.dtexShader = new ShaderProgram("buttonShader");
 		new MainMenu(window);
@@ -654,7 +659,8 @@ public class MainView extends EnigView {
                 String format =
                         "fullscreen:t\n" +
                         "res:1080,720\n" +
-                        "backgroundmove:f";
+                        "backgroundmove:f\n" +
+						"texLock:f";
                 writer.println(format);
                 writer.close();
             } catch (FileNotFoundException e) {
