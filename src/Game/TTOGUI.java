@@ -124,17 +124,17 @@ public class TTOGUI {
 			rightSide[0].bind();
 		}
 		vao.drawTriangles();
-		program.shaders[0].uniforms[1].set(translations[selectedTZ]);
 		if (enabled) {
-			arrow.bind();
-			vao.drawTriangles();
-			vao.unbind();
-			if (ret > -1) {
-				return ret;
-			} else {
-				return currentTZ;
+			if (possibilities[selectedTZ]) {
+				program.shaders[0].uniforms[1].set(translations[selectedTZ]);
+				arrow.bind();
+				vao.drawTriangles();
+				vao.unbind();
+				if (ret > -1) {
+					return ret;
+				}
 			}
 		}
-		return -1;
+		return currentTZ;
 	}
 }

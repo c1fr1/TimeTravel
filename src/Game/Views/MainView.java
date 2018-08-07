@@ -86,7 +86,7 @@ public class MainView extends EnigView {
 	
 	public static int jumps = 0;
 	
-	public TTOGUI ttogui;
+	public static TTOGUI ttogui;
 	
 	//0 is up
 	//1 is right
