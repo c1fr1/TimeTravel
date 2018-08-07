@@ -84,10 +84,10 @@ public class LevelBase
 			wallTexture[0] = new Texture("res/tilesets/wall-mud.png");
 			floorTexture[1] = new Texture("res/tilesets/floor-industrial.png");
 			wallTexture[1] = new Texture("res/tilesets/wall-industrial.png");
-			floorTexture[2] = new Texture("res/tilesets/floor-industrial1.png");
-			wallTexture[2] = new Texture("res/tilesets/wall-industrial1.png");
-			floorTexture[3] = new Texture("res/tilesets/floor-future.png");
-			wallTexture[3] = new Texture("res/tilesets/wall-future.png");
+			floorTexture[2] = new Texture("res/tilesets/floor-future.png");
+			wallTexture[2] = new Texture("res/tilesets/wall-future.png");
+			floorTexture[3] = new Texture("res/tilesets/floor-dystopia.png");
+			wallTexture[3] = new Texture("res/tilesets/wall-dystopia.png");
 			floorTexture[4] = new Texture("res/tilesets/floor-apocalypse.png");
 			wallTexture[4] = new Texture("res/tilesets/wall-apocalypse.png");
 			
@@ -260,7 +260,7 @@ public class LevelBase
     	tileObj.prepareRender();
     	int textureList = currentTZ;
     	if(lockedTextures){
-    		textureList = 2;
+    		textureList = 1;
 		}
     	for (int row = 0; row < levelseries.get(currentTZ).size();++row) {
     		for (int chr = 0; chr < levelseries.get(currentTZ).get(row).length; ++chr) {
