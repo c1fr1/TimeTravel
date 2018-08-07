@@ -301,8 +301,8 @@ public class MainView extends EnigView {
 					ttoOnInd = i;
 				}
 			}
+			int newTZ = ttogui.render(aspectRatio, ttoOnInd, ttoOnInd >= 0);
 			if (ttoOnInd >= 0) {
-				int newTZ = ttogui.render(aspectRatio, ttoOnInd);
 				if (newTZ != currentLevel.currentTZ) {
 					currentLevel.currentTZ = newTZ;
 					++timeTravelFrames;

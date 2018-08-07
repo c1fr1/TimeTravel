@@ -7,6 +7,8 @@ import engine.OpenGL.Texture;
 import engine.OpenGL.VAO;
 import org.joml.Matrix4f;
 
+import java.util.ArrayList;
+
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 public class TTOGUI {
@@ -15,7 +17,8 @@ public class TTOGUI {
 	public Texture[] middle = new Texture[3];
 	public Texture[] rightSide = new Texture[3];
 	public Texture arrow;
-	public VAO vao;
+	public VAO upVAO;
+	public VAO downVAO;
 	public ShaderProgram program;
 	public TTOGUI() {
 		float aspectRatio = (float) EnigWindow.mainWindow.getHeight() / (float)EnigWindow.mainWindow.getWidth();
@@ -29,18 +32,32 @@ public class TTOGUI {
 		rightSide[1] = new Texture("res/timeline/right-selected.png");
 		rightSide[2] = new Texture("res/timeline/right-closed.png");
 		arrow = new Texture("res/timeline/timeSelector.png");
-		vao = new VAO(-0.1f, 0.4f, 0.2f, 0.2f);
+		upVAO = new VAO(-0.15f, 0.35f, 0.3f, 0.3f);
+		downVAO = new VAO(-0.075f, -0.95f, 0.15f, 0.15f);
 		program = new ShaderProgram("ttoGUIShader");
 	}
-	public int render(float aspectRatio, int ttoInd) {
-		int ret = -1;
+	public int render(float aspectRatio, int ttoInd, boolean enabled) {
+		VAO vao = null;
+		float width = 0.3f;
+		Boolean[] possibilities;
 		int tzCount = MainView.currentLevel.levelseries.size();
+		if (enabled) {
+			possibilities = MainView.currentLevel.timeZonePossibilities.get(ttoInd);
+			vao = upVAO;
+		}else {
+			width = 0.15f;
+			vao = downVAO;
+			possibilities = new Boolean[tzCount];
+			for (int i = 0; i < possibilities.length; ++i) {
+				possibilities[i] = true;
+			}
+		}
+		int ret = -1;
 		int currentTZ = MainView.currentLevel.currentTZ;
-		Boolean[] possibilities = MainView.currentLevel.timeZonePossibilities.get(ttoInd);
-		float translation = -(float) (tzCount - 1) * 0.1f * aspectRatio;
+		float translation = -(float) (tzCount - 1) * width * aspectRatio * 0.5f;
 		float[] translations = new float[tzCount];
 		for (int i = 0; i < translations.length;++i) {
-			translations[i] = translation + ((float) i) * 0.2f * aspectRatio;
+			translations[i] = translation + ((float) i) * width * aspectRatio;
 		}
 		float yOff = EnigWindow.mainWindow.cursorYFloat - 0.5f;
 		float ys = (yOff) * (yOff);
@@ -105,13 +122,16 @@ public class TTOGUI {
 		}
 		vao.drawTriangles();
 		program.shaders[0].uniforms[1].set(translations[selectedTZ]);
-		arrow.bind();
-		vao.drawTriangles();
-		vao.unbind();
-		if (ret > -1) {
-			return ret;
-		}else {
-			return currentTZ;
+		if (enabled) {
+			arrow.bind();
+			vao.drawTriangles();
+			vao.unbind();
+			if (ret > -1) {
+				return ret;
+			} else {
+				return currentTZ;
+			}
 		}
+		return -1;
 	}
 }
