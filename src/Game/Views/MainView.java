@@ -107,7 +107,7 @@ public class MainView extends EnigView {
 
 	int menuSelect;
 	
-	public static float scale = 1.5f;
+	public static float scale = 2f;
 
 	@Override
 	public void setup() {
@@ -290,6 +290,11 @@ public class MainView extends EnigView {
 			backgroundOffset.y += yOffset * 0.0003;
 			
 			renderPlayer(xOffset, yOffset, m.isMoving);
+			
+			if(UserControls.ohYknow(window)){
+				ohYknow.bind();
+				ohYknowVAO.fullRender();
+			}
 
 			int[] nearesTTOCheck = new int[4];
 			nearesTTOCheck[0] = Util.numVal(currentLevel.charAtPos(cam.x + 15f, cam.y - 15f));
@@ -335,11 +340,6 @@ public class MainView extends EnigView {
 			checkButtonPress('x','X');
 			checkButtonPress('y','Y');
             checkButtonPress('z','Z');
-
-			if(UserControls.ohYknow(window)){
-				ohYknow.bind();
-				ohYknowVAO.fullRender();
-			}
 			
 			if (inv.check('k')) {
 				if (CamCollision.checkAndReplace(cam.x, cam.y, 16, 'l', ' ')) {
