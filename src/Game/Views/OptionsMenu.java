@@ -222,7 +222,7 @@ public class OptionsMenu extends EnigView {
     @Override
     public void keyCallback(int key, int state) {
         if (state != 0) {
-            System.out.println("callback");
+            //System.out.println("callback");
             if (keyInput) {
                 if (key == UserControls.enterSetting || key == UserControls.enterSetting2) {
                     keyInput = false;

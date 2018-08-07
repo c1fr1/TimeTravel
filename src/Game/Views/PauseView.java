@@ -4,10 +4,7 @@ import Game.Buttons.ShaderOptimizedButton;
 import Game.Buttons.SpriteButton;
 import Game.UserControls;
 import engine.EnigView;
-import engine.OpenGL.EnigWindow;
-import engine.OpenGL.FBO;
-import engine.OpenGL.ShaderProgram;
-import engine.OpenGL.Texture;
+import engine.OpenGL.*;
 
 import static Game.Views.MainView.screenVAO;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
@@ -70,8 +67,11 @@ public class PauseView extends EnigView {
 			scalar = 0.5f;
 		}
 		
+		
 		FBO.prepareDefaultRender();
+		EnigWindow.checkGLError();
 		pauseShader.enable();
+		EnigWindow.checkGLError();
 		pauseShader.shaders[2].uniforms[0].set(scalar);
 		background.bind();
 		screenVAO.fullRender();
@@ -83,6 +83,7 @@ public class PauseView extends EnigView {
 			menuSelect = 2;
 			if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
 				new MainMenu(window);
+				ShaderProgram.disable();
 				return true;
 			}
 		}
@@ -91,6 +92,7 @@ public class PauseView extends EnigView {
 			menuSelect = 1;
 			if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
 				shouldRestart = true;
+				ShaderProgram.disable();
 				return true;//nextLevel(0)
 			}
 		}
@@ -100,6 +102,7 @@ public class PauseView extends EnigView {
 			if (window.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] == 1) {
 				menuSelect = -1;
 				framesPaused = 0;
+				ShaderProgram.disable();
 				return true;
 			}
 		}
@@ -108,6 +111,7 @@ public class PauseView extends EnigView {
 			if(menuSelect == 0){
 				cont.render(window.cursorXFloat, window.cursorYFloat, true);
 				if(UserControls.enter(window)){
+					ShaderProgram.disable();
 					return true;
 				}
 			}
@@ -115,6 +119,7 @@ public class PauseView extends EnigView {
 				restart.render(window.cursorXFloat, window.cursorYFloat, true);
 				if(UserControls.enter(window)){
 					shouldRestart = true;
+					ShaderProgram.disable();
 					return true;
 				}
 			}
@@ -123,6 +128,7 @@ public class PauseView extends EnigView {
 				if(UserControls.enter(window)){
 					menuSelect = -1;
 					new MainMenu(window);
+					ShaderProgram.disable();
 					return true;
 				}
 			}

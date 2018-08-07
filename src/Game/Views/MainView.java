@@ -44,13 +44,11 @@ public class MainView extends EnigView {
 
 	public static LevelBase currentLevel;
 	public static int currentLevelNum = 0;
-	public static LevelBase ttoThing;
 
 	public Inventory inv;
 
 	public ShaderProgram guiShader;
 	public ShaderProgram textureShader;
-	public ShaderProgram pauseShader;
 	public ShaderProgram travelShader;
 	public ShaderProgram inventoryShader;
 	public ShaderProgram backgroundShader;
@@ -68,9 +66,6 @@ public class MainView extends EnigView {
 	public VAO inventoryObjectVAO;
 	
 	public StringRenderer jumpCounterText;
-
-	public Texture[] pauseGUI;
-	public VAO[] pauseGUIVAO;
 
 	public static VAO screenVAO;
 
@@ -147,7 +142,6 @@ public class MainView extends EnigView {
 			jumpCounterText.centered = false;
 
             textureShader = new ShaderProgram("textureShaders");
-            pauseShader = new ShaderProgram("pauseShaders");
 			WinScreen.normieShader = textureShader;
             travelShader = new ShaderProgram("travelShaders");
             inventoryShader = new ShaderProgram("inventoryShaders");
@@ -209,6 +203,7 @@ public class MainView extends EnigView {
 				if (new PauseView(mainFBO.getBoundTexture()).shouldRestart) {
 					nextLevel(0);
 				}
+				return false;
 			}
 		}
         //dev buttons

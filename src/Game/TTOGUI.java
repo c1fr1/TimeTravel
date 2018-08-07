@@ -37,10 +37,13 @@ public class TTOGUI {
 		program = new ShaderProgram("ttoGUIShader");
 	}
 	public int render(float aspectRatio, int ttoInd, boolean enabled) {
+		int tzCount = MainView.currentLevel.levelseries.size();
+		if (tzCount == 1) {
+			return -1;
+		}
 		VAO vao = null;
 		float width = 0.3f;
 		Boolean[] possibilities;
-		int tzCount = MainView.currentLevel.levelseries.size();
 		if (enabled) {
 			possibilities = MainView.currentLevel.timeZonePossibilities.get(ttoInd);
 			vao = upVAO;
