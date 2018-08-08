@@ -10,6 +10,7 @@ import engine.OpenGL.*;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
+import org.lwjglx.debug.org.eclipse.jetty.server.Authentication;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -130,6 +131,13 @@ public class MainView extends EnigView {
 	
 	public static float scale = 2f;
 
+	public StringRenderer instructions;
+
+	public static boolean timerBool;
+	StringRenderer timer;
+
+
+
 	@Override
 	public void setup() {
 		UserControls.getControls();
@@ -212,6 +220,11 @@ public class MainView extends EnigView {
 			ttogui = new TTOGUI();
 
 			nextLevel(currentLevelNum);
+
+			instructions = new StringRenderer(180, 0, 880);
+
+			timer = new StringRenderer(100, 1000, 1000);
+			timer.centered = false;
         }
 
 	}
@@ -321,6 +334,12 @@ public class MainView extends EnigView {
 				ohYknow.bind();
 				ohYknowVAO.fullRender();
 			}
+			if(currentLevelNum == 0) {
+				instructions.renderStr("Move with " + IHATEGLFW.getKeyName(UserControls.forwardSetting) + ", " +
+						IHATEGLFW.getKeyName(UserControls.leftSetting) + ", " +
+						IHATEGLFW.getKeyName(UserControls.backwardSetting) + ", " +
+						IHATEGLFW.getKeyName(UserControls.rightSetting));
+			}
 
 			int[] nearesTTOCheck = new int[4];
 			nearesTTOCheck[0] = Util.numVal(currentLevel.charAtPos(cam.x + 15f, cam.y - 15f));
@@ -381,6 +400,17 @@ public class MainView extends EnigView {
 
 			if (checkWin()) {
 				return true;
+			}
+			if (timerBool){
+				int secondTime = (int)(System.nanoTime()/1000000000d) - (int)(currentLevel.startSecondTime/1000000000d);
+				//System.out.println(secondTime);
+				String thing;
+				if(secondTime % 60 < 10){
+					thing = "Time: " + secondTime/60 + ":0" + secondTime % 60;
+				} else {
+					thing = "Time: " + secondTime/60 + ":" + secondTime % 60;
+				}
+				timer.renderStr(thing);
 			}
 
 			FBO.prepareDefaultRender();
@@ -708,7 +738,8 @@ public class MainView extends EnigView {
                         "fullscreen:t\n" +
                         "res:1080,720\n" +
                         "backgroundmove:f\n" +
-						"texLock:f";
+						"texLock:f\n" +
+						"timer:f";
                 writer.println(format);
                 writer.close();
             } catch (FileNotFoundException e) {
