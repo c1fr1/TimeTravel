@@ -156,7 +156,7 @@ public class MainView extends EnigView {
             guiShader = new ShaderProgram("guiShader");
 			WinScreen.aespectShader = guiShader;
             keyTexture = new Texture("res/sprites/inventoryKey.png");
-            inventoryObjectVAO = new VAO(-0.9f, -1f, 0.2f, 0.2f);
+            inventoryObjectVAO = new VAO(-0.5f, -1f, 0.2f, 0.2f);
             playerVAO = new VAO(-15, -15f, 30f, 30f);
 
 
@@ -409,7 +409,7 @@ public class MainView extends EnigView {
 		inventoryShader.enable();
 		inventoryObjectVAO.prepareRender();
 		inventoryShader.shaders[0].uniforms[0].set(aspectRatio);
-		for (int i = 0; i < 9;++i) {
+		for (int i = 0; i < 5;++i) {
 			inventoryShader.shaders[0].uniforms[1].set((float) i * 0.2f * aspectRatio);
 			inventoryTexture.bind();
 			inventoryObjectVAO.draw();
