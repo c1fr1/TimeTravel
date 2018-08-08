@@ -37,8 +37,8 @@ public class PanScreen extends EnigView {
 				}
 			}
 		}
-		maxX *= 25 * MainView.scale;
-		maxY *= 25 * MainView.scale;
+		maxX *= 50;
+		maxY *= 50;
 		minX = 0.2f * maxX;
 		minY = 0.2f * maxY;
 		maxX *= 0.8f;
