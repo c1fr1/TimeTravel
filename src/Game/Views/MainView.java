@@ -103,7 +103,9 @@ public class MainView extends EnigView {
 	boolean yDoor = true;
 	boolean zDoor = true;
 
-	static float aspectRatio;
+	public static float aspectRatio;
+	
+	public int ttoOnInd = -1;
 
 	int menuSelect;
 	
@@ -130,7 +132,7 @@ public class MainView extends EnigView {
             //set variables here
             SpriteButton.shader = new ShaderProgram("buttonShader");
 
-            currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt"/*, new String[] {"res/levelTemplate.png", "res/levelTemplate.png"}*/);
+            currentLevel = new LevelBase("res/levels/Level" + currentLevelNum + ".txt"/*, new String[] {"res/levelTemplate.png", "res/levelTemplate.png"}*/);
             cam = new Camera((float) window.getWidth(), (float) window.getHeight());
             guiShader = new ShaderProgram("guiShader");
 			WinScreen.aespectShader = guiShader;
@@ -239,6 +241,8 @@ public class MainView extends EnigView {
 			
 			renderPlayer(0f, 0f, false);
 			
+			ttogui.render(ttoOnInd, true);
+			
 			travelShader.enable();
 			travelShader.shaders[2].uniforms[0].set(aspectRatio);
 			float dist = (float) timeTravelFrames / 5;
@@ -302,14 +306,13 @@ public class MainView extends EnigView {
 			nearesTTOCheck[1] = Util.numVal(currentLevel.charAtPos(cam.x + 15f, cam.y + 15f));
 			nearesTTOCheck[2] = Util.numVal(currentLevel.charAtPos(cam.x - 15f, cam.y - 15f));
 			nearesTTOCheck[3] = Util.numVal(currentLevel.charAtPos(cam.x - 15f, cam.y + 15f));
-			int ttoOnInd = -1;
+			ttoOnInd = -1;
 			for (int i:nearesTTOCheck) {
 				if (i >= 0) {
-
 					ttoOnInd = i;
 				}
 			}
-			int newTZ = ttogui.render(aspectRatio, ttoOnInd, ttoOnInd >= 0);
+			int newTZ = ttogui.render(ttoOnInd, ttoOnInd >= 0);
 			if (ttoOnInd >= 0) {
 				if (newTZ != currentLevel.currentTZ) {
 					currentLevel.currentTZ = newTZ;
@@ -462,7 +465,7 @@ public class MainView extends EnigView {
 	public boolean nextLevel(int increment) {
 		inv.reset();
 		jumps = 0;
-		File test = new File("res/Levels/Level" + (increment+currentLevelNum) + ".txt");
+		File test = new File("res/levels/Level" + (increment+currentLevelNum) + ".txt");
 		if(test.exists()) {
 			currentLevelNum += increment;
 			int currentTTO = 0;
@@ -471,7 +474,7 @@ public class MainView extends EnigView {
 			String boolstr = "";
 			//get the rooms
 			try {
-				fileInput = new Scanner(new File("res/Levels/Level" + currentLevelNum + ".cfg"));
+				fileInput = new Scanner(new File("res/levels/Level" + currentLevelNum + ".cfg"));
 				while (fileInput.hasNextLine()) {
 					String nextline = fileInput.nextLine();
 					boolstr += nextline + "\n";
@@ -501,7 +504,7 @@ public class MainView extends EnigView {
 				ttoTimeRange.add(boolSlices);
 			}
 
-			currentLevel = new LevelBase("res/Levels/Level" + currentLevelNum + ".txt", ttoTimeRange);
+			currentLevel = new LevelBase("res/levels/Level" + currentLevelNum + ".txt", ttoTimeRange);
 			ttoSelector = currentLevel.currentTZ;
 			cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
 			cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;

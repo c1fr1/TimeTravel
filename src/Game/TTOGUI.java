@@ -9,6 +9,7 @@ import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 
+import static Game.Views.MainView.aspectRatio;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 public class TTOGUI {
@@ -21,7 +22,6 @@ public class TTOGUI {
 	public VAO downVAO;
 	public ShaderProgram program;
 	public TTOGUI() {
-		float aspectRatio = (float) EnigWindow.mainWindow.getHeight() / (float)EnigWindow.mainWindow.getWidth();
 		leftSide[0] = new Texture("res/timeline/left-open.png");
 		leftSide[1] = new Texture("res/timeline/left-selected.png");
 		leftSide[2] = new Texture("res/timeline/left-closed.png");
@@ -36,7 +36,7 @@ public class TTOGUI {
 		downVAO = new VAO(-0.075f, -0.95f, 0.15f, 0.15f);
 		program = new ShaderProgram("ttoGUIShader");
 	}
-	public int render(float aspectRatio, int ttoInd, boolean enabled) {
+	public int render(int ttoInd, boolean enabled) {
 		int tzCount = MainView.currentLevel.levelseries.size();
 		if (tzCount == 1) {
 			return -1;

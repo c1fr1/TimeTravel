@@ -137,10 +137,12 @@ public class LevelBase
 			fileInput = new Scanner(new File(filename));
 			while (fileInput.hasNextLine()) {
 				String nextline = fileInput.nextLine();
-				if (!nextline.endsWith(",")) {
-					roomlist += nextline + "\n";
-				}else {
-					roomlist += nextline;
+				if (!nextline.startsWith("//")) {
+					if (!nextline.endsWith(",")) {
+						roomlist += nextline + "\n";
+					} else {
+						roomlist += nextline;
+					}
 				}
 			}
 		}catch (FileNotFoundException ex) {

@@ -37,12 +37,12 @@ public class PanScreen extends EnigView {
 				}
 			}
 		}
-		maxX *= 7 * MainView.scale;
-		maxY *= 7 * MainView.scale;
-		minX = 0.2f * maxX * MainView.scale;
-		minY = 0.2f * maxY * MainView.scale;
-		maxX *= 0.8f * MainView.scale;
-		maxY *= 0.8f * MainView.scale;
+		maxX *= 25 * MainView.scale;
+		maxY *= 25 * MainView.scale;
+		minX = 0.2f * maxX;
+		minY = 0.2f * maxY;
+		maxX *= 0.8f;
+		maxY *= 0.8f;
 		lvl = MainView.currentLevel;
 		camera = new Camera((float) window.getWidth(), (float) window.getHeight());
 		camera.x = minX;
@@ -84,7 +84,7 @@ public class PanScreen extends EnigView {
                     }
                 }
             }
-			ttogui.render(aspectRatio, -1, false);
+			ttogui.render(-1, false);
             return false;
         } else {
             return true;

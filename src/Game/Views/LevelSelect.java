@@ -150,7 +150,7 @@ public class LevelSelect extends EnigView {
             try {
                 PrintWriter writer = new PrintWriter("res/levelComplete.txt", "UTF-8");
                 String format = "n";
-                for(int i = 1; i < new File("res/Levels").listFiles().length; i++){
+                for(int i = 1; i < new File("res/levels").listFiles().length; i++){
                     if(new File("res/Lebels").listFiles()[i].getName().contains(".txt")) {
                         format += ",n";
                     }
@@ -164,7 +164,7 @@ public class LevelSelect extends EnigView {
             }
         }
         int co = 0;
-        for(File i: new File("res/Levels").listFiles()){
+        for(File i: new File("res/levels").listFiles()){
             if(i.getName().contains(".txt")){
                 co++;
             }
