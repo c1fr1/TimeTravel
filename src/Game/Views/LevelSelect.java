@@ -65,7 +65,8 @@ public class LevelSelect extends EnigView {
         for (int i = 0; i < levels.length; i++) {
             levels[i].render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
             if (levels[i].hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)/* && levelState[i] != 2*/) {
-                MainView.currentLevelNum = i;
+                MainView.currentLevelNum = 0;
+                MainView.main.nextLevel(i);
                 MainMenu.mainMenuQuit = true;
                 return true;
             }

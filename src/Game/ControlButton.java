@@ -119,7 +119,8 @@ public class ControlButton {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
+        UserControls.getControls();
+        UserControls.intit();
 
     }
 }
