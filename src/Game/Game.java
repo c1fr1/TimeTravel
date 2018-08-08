@@ -27,7 +27,7 @@ public class Game {
             String res = s.nextLine();
             String backgroundMove = s.nextLine();
             String texLock = s.nextLine();
-
+            MainView.inv = new Inventory();
             if (fullscreen.replace("fullscreen:", "").equals("t")) {
                 MainView.fullScreenBool = true;
                 MainView.main = new MainView();
