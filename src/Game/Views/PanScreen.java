@@ -66,6 +66,8 @@ public class PanScreen extends EnigView {
             if (lvl.currentTZ % 2 == 0) {
                 camera.x += maxX/200;
                 camera.y += maxY/200;
+				backgroundOffset.x += maxX/200 * 0.0003;
+				backgroundOffset.y += maxY/200 * 0.0003;
                 if (camera.x > maxX || camera.y > maxY) {
                     ++lvl.currentTZ;
                     if (!(lvl.currentTZ < lvl.levelseries.size())) {
@@ -76,6 +78,8 @@ public class PanScreen extends EnigView {
             }else {
                 camera.x -= maxX/200;
                 camera.y -= maxY/200;
+				backgroundOffset.x -= maxX/200 * 0.0003;
+				backgroundOffset.y -= maxY/200 * 0.0003;
                 if (camera.x < minX || camera.y < minY) {
                     ++lvl.currentTZ;
                     if (!(lvl.currentTZ < lvl.levelseries.size())) {
@@ -84,6 +88,11 @@ public class PanScreen extends EnigView {
                     }
                 }
             }
+			if (backgroundMoveBool) {
+				backgroundVelocity.mul(0.99f);
+				backgroundVelocity.add((float) (delta_time * 0.000007f * (Math.random() - 0.5)), (float) (delta_time * 0.000007f * (Math.random() - 0.5)));
+				backgroundOffset.add(backgroundVelocity);
+			}
 			ttogui.render(-1, false);
             return false;
         } else {
