@@ -9,6 +9,11 @@ import org.joml.Vector4f;
 
 public class StringRenderer {
 	public static Texture[] textures = new Texture[62];
+	public static Texture commaTexture;
+	public static Texture periodTexture;
+	public static Texture openParenTexture;
+	public static Texture closeParenTexture;
+	public static Texture colonTexture;
 	public static VAO shape;//9*17
 	public static ShaderProgram shader;
 	public Matrix4f mat;
@@ -32,6 +37,11 @@ public class StringRenderer {
 				char letter = (char) (i + 'a');
 				textures[i + 36] = new Texture("res/letters/lower-" + letter + ".png");
 			}
+			commaTexture = new Texture("res/letters/comma.png");
+			colonTexture = new Texture("res/letters/colon.png");
+			periodTexture = new Texture("res/letters/period.png");
+			openParenTexture = new Texture("res/letters/parenthesis-open.png");
+			closeParenTexture = new Texture("res/letters/parenthesis-close.png");
 			shape = new VAO(-0.26470588235f, -0.5f, 0.5294117647f, 1f);
 			shader = new ShaderProgram("numberShader");
 		}
@@ -53,7 +63,17 @@ public class StringRenderer {
 		for (int i = 0; i < str.length(); ++i) {
 			char ch = str.charAt(i);
 			if (ch != ' ') {
-				if (ch < ':') {
+				if (ch == ',') {
+					commaTexture.bind();
+				}else if (ch == '.') {
+					periodTexture.bind();
+				}else if (ch == '(') {
+					openParenTexture.bind();
+				}else if (ch == ')') {
+					closeParenTexture.bind();
+				}else if (ch == ':') {
+					colonTexture.bind();
+				}else if (ch < ':') {
 					textures[Character.getNumericValue(str.charAt(i))].bind();
 				} else if (ch < '[') {
 					textures[ch - '7'].bind();
