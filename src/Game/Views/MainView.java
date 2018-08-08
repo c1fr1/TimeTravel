@@ -73,8 +73,8 @@ public class MainView extends EnigView {
 	public ShaderProgram playerShader;
 	
 	public Texture starBackground;
-	public Vector2f backgroundOffset = new Vector2f();
-	public Vector2f backgroundVelocity = new Vector2f();
+	public static Vector2f backgroundOffset = new Vector2f();
+	public static Vector2f backgroundVelocity = new Vector2f();
 
 	public Texture frontStars;
 	public Texture keyTexture;
@@ -300,7 +300,7 @@ public class MainView extends EnigView {
 			float yOffset = m.getYOffset();
 			//crate movement - sets the box x and y from entity
 			for (int i = 0; i < currentLevel.entities.size(); i++) {
-				float[] newOffsets = currentLevel.entities.get(i).getBoxMovement(cam.x + 25, cam.y + 25, m.getHSpeed(), m.getVSpeed());
+				float[] newOffsets = currentLevel.entities.get(i).getBoxMovement(cam.x + 25, cam.y + 25, m.getXOffset(), m.getYOffset());
 				xOffset = absMin(newOffsets[0], xOffset);
 				yOffset = absMin(newOffsets[1], yOffset);
 			}
@@ -371,7 +371,7 @@ public class MainView extends EnigView {
             checkButtonPress('z','Z');
 			
 			if (inv.check('k')) {
-				if (CamCollision.checkAndReplace(cam.x, cam.y, 16, 'l', ' ')) {
+				if (CamCollision.checkAndReplace(cam.x + m.getHSpeed(), cam.y + m.getVSpeed(), 14, 'l', ' ')) {
 					inv.getAndRemove('k');
 				}
 			}
@@ -499,7 +499,9 @@ public class MainView extends EnigView {
 				fileInput = new Scanner(new File("res/levels/Level" + currentLevelNum + ".cfg"));
 				while (fileInput.hasNextLine()) {
 					String nextline = fileInput.nextLine();
-					boolstr += nextline + "\n";
+					if (!nextline.startsWith("//")) {
+						boolstr += nextline + "\n";
+					}
 				}
 			}catch (FileNotFoundException ex) {
 				ex.printStackTrace();

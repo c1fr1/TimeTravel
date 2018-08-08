@@ -164,7 +164,7 @@ public class CamCollision
         if (block != '`')
         {
             x = 50 * Math.round(xsave/50);
-            x += 9.99 * Util.getSign(hspeed);
+            x += 9.9999 * Util.getSign(hspeed);
         }
 
         return x - xsave;
