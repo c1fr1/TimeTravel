@@ -121,7 +121,6 @@ public class MainView extends EnigView {
 		} else {
 			scale = window.getWidth()/1080f;
 		}
-		System.out.println(scale);
 		LevelSelect.createTextFolder();
         DoubleTextureButton.dtexShader = new ShaderProgram("buttonShader");
 		new MainMenu(window);
