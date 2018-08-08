@@ -167,7 +167,7 @@ public class EnigWindow {
 		
 		// Configure GLFW
 		glfwDefaultWindowHints(); // optional, the current window hints are already the default
-		glfwWindowHint(GLFW_SAMPLES, 4);
+		//glfwWindowHint(GLFW_SAMPLES, 4);
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be resizable
 		glfwWindowHint(GLFW_DECORATED, decorated ? 1 : 0);
@@ -261,7 +261,7 @@ public class EnigWindow {
 		initOpenGL();
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_MULTISAMPLE);
+		//glEnable(GL_MULTISAMPLE);
 		glEnable(GL_CULL_FACE);
 		glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -291,7 +291,7 @@ public class EnigWindow {
 		
 		// Configure GLFW
 		glfwDefaultWindowHints(); // optional, the current window hints are already the default
-		glfwWindowHint(GLFW_SAMPLES, 8);
+		//glfwWindowHint(GLFW_SAMPLES, 8);
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be resizable
 		glfwWindowHint(GLFW_DECORATED, decorated ? 1 : 0);
@@ -385,7 +385,7 @@ public class EnigWindow {
 		initOpenGL();
 		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_MULTISAMPLE);
+		//glEnable(GL_MULTISAMPLE);
 		glEnable(GL_CULL_FACE);
 		glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		

@@ -235,11 +235,11 @@ public class OptionsMenu extends EnigView {
             window.callbackView = null;
             return true;
         }
-        if(UserControls.pausePress(window) && !keyInput && !escapeRes){
+        if(UserControls.pausePress(window) && !keyInput && !escapeRes) {
             window.callbackView = null;
             return true;
 
-        } else if(UserControls.pausePress(window) && escapeRes){
+        } else if(UserControls.pausePress(window) && escapeRes) {
             escapeRes = false;
         }
 

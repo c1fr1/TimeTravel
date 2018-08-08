@@ -61,8 +61,9 @@ public class PanScreen extends EnigView {
             }
             FBO.prepareDefaultRender();
             MainView.main.renderBackground();
-			levelMarker.renderStr("level " + (currentLevelNum + 1));
             lvl.render(camera);
+	
+			levelMarker.renderStr("level " + (currentLevelNum + 1));
             if (lvl.currentTZ % 2 == 0) {
                 camera.x += maxX/200;
                 camera.y += maxY/200;
