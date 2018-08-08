@@ -78,6 +78,7 @@ public class MainView extends EnigView {
 
 	public Texture frontStars;
 	public Texture keyTexture;
+	public Texture inventoryTexture;
 	public Texture[] spriteTexture;
 	
 	public VAO playerVAO;
@@ -155,7 +156,7 @@ public class MainView extends EnigView {
             guiShader = new ShaderProgram("guiShader");
 			WinScreen.aespectShader = guiShader;
             keyTexture = new Texture("res/sprites/inventoryKey.png");
-            inventoryObjectVAO = new VAO(-1f, -0.9f, 0.1f, 0.1f);
+            inventoryObjectVAO = new VAO(-0.9f, -1f, 0.2f, 0.2f);
             playerVAO = new VAO(-15, -15f, 30f, 30f);
 
 
@@ -180,6 +181,7 @@ public class MainView extends EnigView {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
             Texture.unbind();
+            inventoryTexture = new Texture("res/sprites/inventory.png");
 			
 			backgroundShader = new ShaderProgram("backgroundShader");
 			starBackground = new Texture("res/sprites/stars.png");
@@ -237,12 +239,10 @@ public class MainView extends EnigView {
 			}
 		}
         //dev buttons
-        if (window.keys[GLFW_KEY_N] == 1)
-        {
+        if (window.keys[GLFW_KEY_N] == 1) {
             nextLevel(1);
         }
-        if (window.keys[GLFW_KEY_B] == 1)
-        {
+        if (window.keys[GLFW_KEY_B] == 1) {
             nextLevel(-1);
         }
 
@@ -263,6 +263,7 @@ public class MainView extends EnigView {
 			
 			ttogui.render(ttoOnInd, true);
 			
+			renderInventory();
 			travelShader.enable();
 			travelShader.shaders[2].uniforms[0].set(aspectRatio);
 			float dist = (float) timeTravelFrames / 5;
@@ -376,27 +377,10 @@ public class MainView extends EnigView {
 				}
 			}
 			
-			
-            inventoryShader.enable();
-			inventoryShader.shaders[0].uniforms[0].set(aspectRatio);
-            inventoryObjectVAO.prepareRender();
-            for (int i = 0; i < inv.getSize(); ++i) {
-				inventoryShader.shaders[0].uniforms[1].set((float) i * 0.1f);
-				if (inv.get(i) == 'k') {
-					keyTexture.bind();
-					inventoryObjectVAO.draw();
-				}
-			}
+            renderInventory();
 
-			guiShader.enable();
-			guiShader.shaders[0].uniforms[0].set(aspectRatio);
-			if (CamCollision.isColliding(cam.x,cam.y,1,currentLevel.levelseries.get(currentLevel.currentTZ),'g')) {
-				LevelSelect.levelState[currentLevelNum] = 1;
-				LevelSelect.updateLevelTextDoc();
-				new WinScreen(mainFBO.getBoundTexture(), aspectRatio);
-				if (nextLevel(1)) {
-					return true;
-				}
+			if (checkWin()) {
+				return true;
 			}
 
 			FBO.prepareDefaultRender();
@@ -406,8 +390,38 @@ public class MainView extends EnigView {
 		}
 		return false;
 	}
+	
+	public boolean checkWin() {
+		guiShader.enable();
+		guiShader.shaders[0].uniforms[0].set(aspectRatio);
+		if (CamCollision.isColliding(cam.x,cam.y,1,currentLevel.levelseries.get(currentLevel.currentTZ),'g')) {
+			LevelSelect.levelState[currentLevelNum] = 1;
+			LevelSelect.updateLevelTextDoc();
+			new WinScreen(mainFBO.getBoundTexture(), aspectRatio);
+			if (nextLevel(1)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-
+	public void renderInventory() {
+		inventoryShader.enable();
+		inventoryObjectVAO.prepareRender();
+		inventoryShader.shaders[0].uniforms[0].set(aspectRatio);
+		for (int i = 0; i < 9;++i) {
+			inventoryShader.shaders[0].uniforms[1].set((float) i * 0.2f * aspectRatio);
+			inventoryTexture.bind();
+			inventoryObjectVAO.draw();
+		}
+		for (int i = 0; i < inv.getSize(); ++i) {
+			inventoryShader.shaders[0].uniforms[1].set((float) i * 0.2f * aspectRatio);
+			if (inv.get(i) == 'k') {
+				keyTexture.bind();
+				inventoryObjectVAO.draw();
+			}
+		}
+	}
 
 	public boolean checkCorner(float xvel, float yvel) {
 		char a = currentLevel.charAtPos(cam.x + 15f + xvel, cam.y - 15f + yvel);

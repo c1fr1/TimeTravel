@@ -33,7 +33,7 @@ public class TTOGUI {
 		rightSide[2] = new Texture("res/timeline/right-closed.png");
 		arrow = new Texture("res/timeline/timeSelector.png");
 		upVAO = new VAO(-0.15f, 0.35f, 0.3f, 0.3f);
-		downVAO = new VAO(-0.075f, -0.95f, 0.15f, 0.15f);
+		downVAO = new VAO(-0.075f, -0.84f, 0.15f, 0.15f);
 		program = new ShaderProgram("ttoGUIShader");
 	}
 	public int render(int ttoInd, boolean enabled) {
