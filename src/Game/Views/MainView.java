@@ -63,7 +63,7 @@ public class MainView extends EnigView {
 	public static LevelBase currentLevel;
 	public static int currentLevelNum = 0;
 
-	public Inventory inv;
+	public static Inventory inv;
 
 	public ShaderProgram guiShader;
 	public ShaderProgram textureShader;
@@ -132,6 +132,7 @@ public class MainView extends EnigView {
 	@Override
 	public void setup() {
 		UserControls.getControls();
+		cam = new Camera((float) window.getWidth(), (float) window.getHeight());
 		main = this;
 		aspectRatio = (float)window.getHeight()/(float)window.getWidth();
 		if(window.getWidth() > window.getHeight()){
@@ -150,13 +151,13 @@ public class MainView extends EnigView {
             SpriteButton.shader = new ShaderProgram("buttonShader");
 
             currentLevel = new LevelBase("res/levels/Level" + currentLevelNum + ".txt"/*, new String[] {"res/levelTemplate.png", "res/levelTemplate.png"}*/);
-            cam = new Camera((float) window.getWidth(), (float) window.getHeight());
+
             guiShader = new ShaderProgram("guiShader");
 			WinScreen.aespectShader = guiShader;
             keyTexture = new Texture("res/sprites/inventoryKey.png");
             inventoryObjectVAO = new VAO(-1f, -0.9f, 0.1f, 0.1f);
             playerVAO = new VAO(-15, -15f, 30f, 30f);
-            inv = new Inventory();
+
 
             spriteTexture = new Texture[4];//down left right up;
             spriteTexture[0] = new Texture("res/anims/avatar-0.png");
@@ -207,6 +208,8 @@ public class MainView extends EnigView {
 			menuSelect = -1;
 			
 			ttogui = new TTOGUI();
+
+			nextLevel(currentLevelNum);
         }
 
 	}
@@ -403,7 +406,9 @@ public class MainView extends EnigView {
 		}
 		return false;
 	}
-	
+
+
+
 	public boolean checkCorner(float xvel, float yvel) {
 		char a = currentLevel.charAtPos(cam.x + 15f + xvel, cam.y - 15f + yvel);
 		char b = currentLevel.charAtPos(cam.x + 15f + xvel, cam.y + 15f + yvel);
