@@ -167,7 +167,7 @@ public class EnigWindow {
 		
 		// Configure GLFW
 		glfwDefaultWindowHints(); // optional, the current window hints are already the default
-		glfwWindowHint(GLFW_SAMPLES, 8);
+		glfwWindowHint(GLFW_SAMPLES, 4);
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be resizable
 		glfwWindowHint(GLFW_DECORATED, decorated ? 1 : 0);
