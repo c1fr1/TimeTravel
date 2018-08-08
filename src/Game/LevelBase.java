@@ -46,10 +46,13 @@ public class LevelBase
     public float[] ttoFrameCounter;
 
     public static boolean lockedTextures = false;
+	public float startSecondTime;
+
 
 
     //gets the map
 	public LevelBase(String filename) {
+		startSecondTime = System.nanoTime();
         init(filename, new String[0]);
 		for (int i = 0; i < timeZonePossibilities.size();++i) {
 			timeZonePossibilities.set(i, new Boolean[levelseries.size()]);
@@ -59,6 +62,7 @@ public class LevelBase
 		}
 	}
 	public LevelBase(String filename, ArrayList<Boolean[]> ttoAbilities) {
+		startSecondTime = System.nanoTime();
 		init(filename, new String[0]);
 		timeZonePossibilities = ttoAbilities;
 	}

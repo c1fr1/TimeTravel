@@ -43,6 +43,8 @@ public class OptionsMenu extends EnigView {
     StringRenderer controlMenu;
     StringRenderer restart;
     StringRenderer restart2;
+    StringRenderer timer;
+    StringRenderer timerOption;
 
     String[] options;
 
@@ -104,7 +106,14 @@ public class OptionsMenu extends EnigView {
         textureLockOption.centered = false;
         textureLockOption.unselectedColor = new Vector4f(1f,0f,0f,1f);
 
-        controlMenu = new StringRenderer(280, 0, 0);
+        timer = new StringRenderer(180, -1700, 100);
+        timer.centered = false;
+
+        timerOption = new StringRenderer(180, 400, 100);
+        timerOption.centered = false;
+        timerOption.unselectedColor = new Vector4f(1f,0f,0f,1f);
+
+        controlMenu = new StringRenderer(280, 0, -200);
 
         restart = new StringRenderer(280, 0, -800);
         restart2 = new StringRenderer(50, 0, -950);
@@ -144,6 +153,15 @@ public class OptionsMenu extends EnigView {
             backGroundMoveOptionText = "Disabled";
         }
         backgroundMoveOption.renderStr(backGroundMoveOptionText);
+
+        timer.renderStr("Timer");
+        String timerOptionText;
+        if(MainView.timerBool){
+            timerOptionText = "Enabled";
+        } else {
+            timerOptionText = "Disabled";
+        }
+        timerOption.renderStr(timerOptionText);
 
 
         controlMenu.renderStr("Controls");
@@ -192,9 +210,6 @@ public class OptionsMenu extends EnigView {
                 options[2] = "backgroundmove:t";
                 MainView.backgroundMoveBool = true;
             }
-            String[] write = getOptionsString().split("\n");
-            write[2] = options[2];
-            writeToOptions(write);
         }
         if(textureLockOption.hoverCheck(lockedTexturesOptionText, window.cursorXFloat, window.cursorYFloat, new Vector4f(.5f,.5f,1f,1f)) && UserControls.leftMBPress(window)){
             if(options[3].equals("texLock:t")){
@@ -203,9 +218,15 @@ public class OptionsMenu extends EnigView {
                 options[3] = "texLock:t";
             }
             LevelBase.lockedTextures = !LevelBase.lockedTextures;
-            String[] write = getOptionsString().split("\n");
-            write[3] = options[3];
-            writeToOptions(write);
+        }
+
+        if(timerOption.hoverCheck(timerOptionText, window.cursorXFloat, window.cursorYFloat, new Vector4f(.5f,.5f,1f,1f)) && UserControls.leftMBPress(window)){
+            if(options[4].equals("timer:t")){
+                options[4] =  "timer:f";
+            } else {
+                options[4] = "timer:t";
+            }
+            MainView.timerBool = !MainView.timerBool;
         }
         if(controlMenu.hoverCheck("Controls", window.cursorXFloat, window.cursorYFloat, new Vector4f(1f, 1f, 1f, 1f)) && UserControls.leftMBPress(window)){
             new ControlsMenu(window);
@@ -222,10 +243,17 @@ public class OptionsMenu extends EnigView {
         if(restartCheck) {
             restart.renderStr("Restart");
             restart.unselectedColor = new Vector4f(.5f, .5f, 1f, 1f);
-            restart2.renderStr("You must start up the game again yourself after closing  Sorry");
+            restart2.renderStr("You must start up the game again yourself after closing, Sorry");
         }
 
 
+        boolean check = false;
+        if(!options[2].equals(currentOptions[2])) check = true;
+        if(!options[3].equals(currentOptions[3])) check = true;
+        if(!options[4].equals(currentOptions[4])) check = true;
+        if(check){
+            writeToOptions(options);
+        }
 
         if(restartCheck && restart.hoverCheck("Restart", window.cursorXFloat, window.cursorYFloat, new Vector4f(1,1,1,1)) && UserControls.leftMBPress(window)){
             writeToOptions(options);
