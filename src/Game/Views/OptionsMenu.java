@@ -40,8 +40,9 @@ public class OptionsMenu extends EnigView {
     StringRenderer backgroundMoveOption;
     StringRenderer textureLock;
     StringRenderer textureLockOption;
-    ShaderOptimizedButton controlMenu;
-    ShaderOptimizedButton restart;
+    StringRenderer controlMenu;
+    StringRenderer restart;
+    StringRenderer restart2;
 
     String[] options;
 
@@ -103,8 +104,10 @@ public class OptionsMenu extends EnigView {
         textureLockOption.centered = false;
         textureLockOption.unselectedColor = new Vector4f(1f,0f,0f,1f);
 
-        controlMenu = new ShaderOptimizedButton(-1f, -.1f, 2f, .2f, "res/sprites/testex.png", aspectRatio);
-        restart = new ShaderOptimizedButton(-1, -.4f, 2f, .2f, "res/menu/restart.png", aspectRatio);
+        controlMenu = new StringRenderer(280, 0, 0);
+
+        restart = new StringRenderer(280, 0, -800);
+        restart2 = new StringRenderer(50, 0, -950);
 
         options = getOptionsString().split("\n");
 
@@ -141,7 +144,10 @@ public class OptionsMenu extends EnigView {
             backGroundMoveOptionText = "Disabled";
         }
         backgroundMoveOption.renderStr(backGroundMoveOptionText);
-        controlMenu.render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
+
+
+        controlMenu.renderStr("Controls");
+        controlMenu.unselectedColor = new Vector4f(.5f, .5f, 1f, 1f);
 
         textureLock.renderStr("Texture Lock");
 
@@ -201,7 +207,7 @@ public class OptionsMenu extends EnigView {
             write[3] = options[3];
             writeToOptions(write);
         }
-        if(controlMenu.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)){
+        if(controlMenu.hoverCheck("Controls", window.cursorXFloat, window.cursorYFloat, new Vector4f(1f, 1f, 1f, 1f)) && UserControls.leftMBPress(window)){
             new ControlsMenu(window);
         }
 
@@ -213,10 +219,15 @@ public class OptionsMenu extends EnigView {
         if(!options[0].equals(currentOptions[0])) restartCheck = true;
         if(!options[1].equals(currentOptions[1])) restartCheck = true;
 
-        if(restartCheck) restart.render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
+        if(restartCheck) {
+            restart.renderStr("Restart");
+            restart.unselectedColor = new Vector4f(.5f, .5f, 1f, 1f);
+            restart2.renderStr("You must start up the game again yourself after closing  Sorry");
+        }
 
 
-        if(restartCheck && restart.hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)){
+
+        if(restartCheck && restart.hoverCheck("Restart", window.cursorXFloat, window.cursorYFloat, new Vector4f(1,1,1,1)) && UserControls.leftMBPress(window)){
             writeToOptions(options);
             MainView.quit = true;
             MainMenu.mainMenuQuit = true;

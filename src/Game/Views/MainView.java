@@ -25,6 +25,24 @@ import static org.lwjgl.opengl.GL11.*;
 
 
 public class MainView extends EnigView {
+	public static String controlsDefault =
+			"forward:87\n" +
+			"backward:83\n" +
+			"left:65\n" +
+			"right:68\n" +
+			"arrowLeft:81,263\n" +
+			"arrowRight:69,262\n" +
+			"arrowUp:265,87\n" +
+			"arrowDown:264,83\n" +
+			"down:340\n" +
+			"up:32\n" +
+			"pause:256\n" +
+			"enter:82,257\n" +
+			"levelAdvance:78\n" +
+			"levelBack:66\n" +
+			"ohYknow:344\n" +
+			"skip:258,257";
+
     public static boolean quit = false;
 	public static MainView main;
 	
@@ -687,29 +705,8 @@ public class MainView extends EnigView {
         if(!checkc){
             try {
                 PrintWriter writer = new PrintWriter("res/controls.txt", "UTF-8");
-                String format =
-                        "forward:87\n" +
-                        "backward:83\n" +
-                        "left:65\n" +
-                        "right:68\n" +
-                        "arrowLeft:81,263\n" +
-                        "arrowRight:69,262\n" +
-                        "arrowUp:265,87\n" +
-                        "arrowDown:264,83\n" +
-                        "down:340\n" +
-                        "up:32\n" +
-                        "pause:256\n" +
-                        "enter:82,257\n" +
-                        "levelAdvance:78\n" +
-                        "levelBack:66\n" +
-                        "ohYknow:344\n" +
-						"skip:258,257";
 
-                //org.lwjgl.glfw.GLFW.glfwGetKeyName() use this
-
-				//org.lwjgl.glfw.GLFW.glfwGetKeyName();
-
-                writer.println(format);
+                writer.println(controlsDefault);
                 writer.close();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

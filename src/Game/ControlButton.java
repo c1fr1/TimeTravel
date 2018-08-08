@@ -27,7 +27,7 @@ public class ControlButton {
         this.control.centered = false;
         this.control.unselectedColor = new Vector4f(.5f, .5f,1f,1f);
 
-        this.controlAlt = new StringRenderer(90, 800, yPos);
+        this.controlAlt = new StringRenderer(90, 1200, yPos);
         this.controlAlt.centered = false;
         this.controlAlt.unselectedColor = new Vector4f(.5f, .5f,1f,1f);
 
@@ -44,7 +44,7 @@ public class ControlButton {
         this.control.centered = false;
         this.control.unselectedColor = new Vector4f(.5f, .5f,1f,1f);
 
-        this.controlAlt = new StringRenderer(90, 800, yPos);
+        this.controlAlt = new StringRenderer(90, 1200, yPos);
         this.controlAlt.centered = false;
         this.controlAlt.unselectedColor = new Vector4f(.5f, .5f,1f,1f);
 
@@ -93,34 +93,34 @@ public class ControlButton {
     }
 
     public void writeToFile(int key, boolean alt){
-        String[] controls = ControlsMenu.getControls();
-        for(int i = 0; i < controls.length; i++){
-            if(controls[i].startsWith(controlFunction)){
-                if(!alt){
-                    String thing = controlFunction + ":" + Integer.toString(key);
-                    if(currentButtonAlt != 0){
-                        thing += "," + currentButtonAlt;
+            String[] controls = ControlsMenu.getControls();
+            for (int i = 0; i < controls.length; i++) {
+                if (controls[i].startsWith(controlFunction)) {
+                    if (!alt) {
+                        String thing = controlFunction + ":" + Integer.toString(key);
+                        if (currentButtonAlt != 0) {
+                            thing += "," + currentButtonAlt;
+                        }
+                        controls[i] = thing;
+                    } else {
+                        String thing = controlFunction + ":" + Integer.toString(currentButton);
+                        thing += "," + Integer.toString(key);
+                        controls[i] = thing;
                     }
-                    controls[i] = thing;
-                } else {
-                    String thing = controlFunction + ":" + Integer.toString(currentButton);
-                    thing += "," + Integer.toString(key);
-                    controls[i] = thing;
                 }
             }
-        }
 
-        try {
-            PrintWriter w = new PrintWriter(new File("res/controls.txt"));
-            for (String i: controls){
-                w.println(i);
+            try {
+                PrintWriter w = new PrintWriter(new File("res/controls.txt"));
+                for (String i : controls) {
+                    w.println(i);
+                }
+                w.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-            w.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            UserControls.getControls();
+            UserControls.intit();
         }
-        UserControls.getControls();
-        UserControls.intit();
 
-    }
 }
