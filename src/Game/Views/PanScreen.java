@@ -57,6 +57,7 @@ public class PanScreen extends EnigView {
         if(!MainView.quit) {
             if (UserControls.skip(window)) {
             	lvl.currentTZ = startTZ;
+            	lvl.startSecondTime = System.nanoTime();
                 return true;
             }
             FBO.prepareDefaultRender();
@@ -72,6 +73,7 @@ public class PanScreen extends EnigView {
                     ++lvl.currentTZ;
                     if (!(lvl.currentTZ < lvl.levelseries.size())) {
                         lvl.currentTZ = startTZ;
+                        lvl.startSecondTime = System.nanoTime();
                         return true;
                     }
                 }
@@ -84,6 +86,7 @@ public class PanScreen extends EnigView {
                     ++lvl.currentTZ;
                     if (!(lvl.currentTZ < lvl.levelseries.size())) {
                         lvl.currentTZ = startTZ;
+						lvl.startSecondTime = System.nanoTime();
                         return true;
                     }
                 }
