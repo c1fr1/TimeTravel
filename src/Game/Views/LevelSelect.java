@@ -33,7 +33,7 @@ public class LevelSelect extends EnigView {
         }
         levels = new SpriteButton[LevelSelect.levelState.length];
         int columnNumber = (int)((window.getHeight()-50f)/100f);
-        int rowNumber = (int)((window.getWidth()-50f)/200f);
+        int rowNumber = (int)((window.getWidth()-200f)/200f);
         for(int i = 0; i < LevelSelect.levelState.length; i++){
 
             float thingY = (0.4f + (i / rowNumber)*0.4f);
@@ -45,8 +45,8 @@ public class LevelSelect extends EnigView {
             float thingWidth = 100f/window.getWidth()/aspectRatio;
             float thingHeight = 100f/window.getHeight();
 
-            float thingXPos = ((float)thingXIndex/(float)rowNumber*2f-1f)/aspectRatio + thingWidth * 4;
-            float thingYPos = ((float)thingYIndex/(float)columnNumber*-2f+1f) - thingHeight*4;
+            float thingXPos = ((float)thingXIndex/(float)rowNumber*2f-1f)/aspectRatio + thingWidth * 2;
+            float thingYPos = ((float)thingYIndex/(float)columnNumber*-2f+1f) - thingHeight*2;
 
             if(levelState[i] == 1){
                 levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos,thingWidth,thingHeight, "res/sprites/levelSelectComplete.png", aspectRatio);
@@ -152,10 +152,11 @@ public class LevelSelect extends EnigView {
                 PrintWriter writer = new PrintWriter("res/levelComplete.txt", "UTF-8");
                 String format = "n";
                 for(int i = 1; i < new File("res/levels").listFiles().length; i++){
-                    if(new File("res/Lebels").listFiles()[i].getName().contains(".txt")) {
+                    if(new File("res/levels").listFiles()[i].getName().contains(".txt")) {
                         format += ",n";
                     }
                 }
+                format = format.substring(0, format.length()-2);
                 writer.println(format);
                 writer.close();
             } catch (FileNotFoundException e) {
