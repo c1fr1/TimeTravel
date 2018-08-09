@@ -579,7 +579,8 @@ public class MainView extends EnigView {
 			ttoSelector = currentLevel.currentTZ;
 			cam.x = currentLevel.ystart[currentLevel.currentTZ] * 50;
 			cam.y = currentLevel.xstart[currentLevel.currentTZ] * 50;
-			if (increment == 1) {
+			//checks if n is not pressed dev auto skip
+			if (increment == 1 && window.keys[GLFW_KEY_N] == 0) {
 				new PanScreen(window);
 			}
 			return false;
