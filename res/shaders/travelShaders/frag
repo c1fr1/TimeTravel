@@ -1,11 +1,9 @@
-#version 400 core
-
 uniform sampler2D textureSampler;
 
-in vec3 verts;
-in vec2 texCoords;
+varying vec3 verts;
+varying vec2 texCoords;
 
-out vec4 color;
+vec4 color;
 
 uniform float aspectRatio;
 uniform float time;
@@ -23,4 +21,5 @@ void main() {
     float dist = distFromZeroSquared - time;
     float brit = 1/(1 + dist * dist);
     color += vec4(brit, brit, brit, brit);
+    gl_FragColor = color;
 }

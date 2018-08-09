@@ -1,9 +1,7 @@
-#version 400 core
+attribute vec3 vertices;
+attribute vec2 txtPos;
 
-layout (location = 0) in vec3 vertices;
-layout (location = 1) in vec2 txtPos;
-
-out vec2 texCoords;
+varying vec2 texCoords;
 
 uniform mat4 cam;
 uniform mat4 textcam;

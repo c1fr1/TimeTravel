@@ -1,0 +1,26 @@
+#version 400 core
+
+uniform sampler2D textureSampler;
+
+in vec3 verts;
+in vec2 texCoords;
+
+out vec4 color;
+
+uniform float aspectRatio;
+uniform float time;
+
+void main() {
+    color = texture(textureSampler, vec2(texCoords.x, 1-texCoords.y));
+    float glx = 0.5 - texCoords.x;
+    float gly = 0.5 - texCoords.y;
+    gly *= aspectRatio * 10;
+    glx *= 10;
+    float distFromZeroSquared = sqrt(glx * glx + gly * gly);
+    if (distFromZeroSquared < time) {
+        color = vec4(0, 0, 0, 0);
+    }
+    float dist = distFromZeroSquared - time;
+    float brit = 1/(1 + dist * dist);
+    color += vec4(brit, brit, brit, brit);
+}

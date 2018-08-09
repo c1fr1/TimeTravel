@@ -1,10 +1,6 @@
-#version 400 core
-
 uniform sampler2D textureSampler;
 
-in vec2 texCoords;
-
-out vec4 color;
+varying vec2 texCoords;
 
 uniform float threshold;
 
@@ -14,29 +10,29 @@ void main() {
         if (texCoords.x < threshold) {
             if (tempColor.y > 0.1) {
                 if (tempColor.y < 0.9) {
-                    color = vec4(0, 0, 1, 1);
+                    gl_FragColor = vec4(0, 0, 1, 1);
                 }else {
-                    color = tempColor;
+                    gl_FragColor = tempColor;
                 }
             }else {
-                color = tempColor;
+                gl_FragColor = tempColor;
             }
         }else {
-            color = tempColor;
+            gl_FragColor = tempColor;
         }
     }else {
         if (texCoords.x > threshold) {
             if (tempColor.y > 0.1) {
                 if (tempColor.y < 0.9) {
-                    color = vec4(0, 0, 1, 1);
+                    gl_FragColor = vec4(0, 0, 1, 1);
                 }else {
-                    color = tempColor;
+                    gl_FragColor = tempColor;
                 }
             }else {
-                color = tempColor;
+                gl_FragColor = tempColor;
             }
         }else {
-            color = tempColor;
+            gl_FragColor = tempColor;
         }
     }
 }
