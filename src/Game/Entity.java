@@ -53,7 +53,7 @@ public class Entity
         sprite = new Texture("res/sprites/crateEntity.png");
         spriteVAO = new VAO(-40, 10, 30f, 30f);
         levelProgram = new ShaderProgram("levelShader");
-        stringRenderer = new StringRenderer(30f * MainView.scale, xpos[0], ypos[0]);
+        stringRenderer = new StringRenderer(100f, xpos[0], ypos[0]);
         stringRenderer.color = new Vector4f(0f, 1f, 1f, 1f);
     }
     //Check for collision between player and crate

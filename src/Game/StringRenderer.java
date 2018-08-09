@@ -42,7 +42,7 @@ public class StringRenderer {
 			periodTexture = new Texture("res/letters/period.png");
 			openParenTexture = new Texture("res/letters/parenthesis-open.png");
 			closeParenTexture = new Texture("res/letters/parenthesis-close.png");
-			shape = new VAO(-0.26470588235f, -0.5f, 0.5294117647f, 1f);
+			shape = new VAO(-0.19047619f, -0.5f, 0.38095238f, 1f);//16*42
 			shader = new ShaderProgram("numberShader");
 		}
 		float semiWidth = ((float) EnigWindow.mainWindow.getWidth()) / 2f;
@@ -58,7 +58,7 @@ public class StringRenderer {
 		shape.prepareRender();
 		float offset = x;
 		if (centered) {
-			offset -= (float) (str.length() - 1) * 0.5294117647f * fontSize/2;
+			offset -= (float) (str.length() - 1) * 0.38095238f * fontSize/2;
 		}
 		for (int i = 0; i < str.length(); ++i) {
 			char ch = str.charAt(i);
@@ -81,7 +81,7 @@ public class StringRenderer {
 					textures[ch - '='].bind();
 				}
 				Matrix4f temp = new Matrix4f(mat);
-				shader.shaders[0].uniforms[0].set(temp.translate(offset + ((float) i) * 0.5294117647f * fontSize, y, 0f).scale(fontSize));
+				shader.shaders[0].uniforms[0].set(temp.translate(offset + ((float) i) * 0.38095238f * fontSize, y, 0f).scale(fontSize));
 				shape.drawTriangles();
 			}
 		}
@@ -92,11 +92,11 @@ public class StringRenderer {
 	public boolean hoverCheck(String str, float mouseX, float mouseY, Vector4f select){
 		selectColor = select;
 		//System.out.println(x + " " + y);
-		float width = (0.5294117647f * fontSize)/(EnigWindow.mainWindow.getWidth()/2) * str.length();
+		float width = (0.38095238f * fontSize)/(EnigWindow.mainWindow.getWidth()/2) * str.length();
 		float height = (fontSize)/(EnigWindow.mainWindow.getHeight()/2);
 		float xPos = x/(EnigWindow.mainWindow.getWidth()/2);
 		if(!centered){
-			xPos += ((str.length() - 1) * 0.5294117647f * fontSize/2) / (EnigWindow.mainWindow.getWidth()/2);
+			xPos += ((str.length() - 1) * 0.38095238f * fontSize/2) / (EnigWindow.mainWindow.getWidth()/2);
 		}
 		float yPos = y/(EnigWindow.mainWindow.getHeight()/2);
 
