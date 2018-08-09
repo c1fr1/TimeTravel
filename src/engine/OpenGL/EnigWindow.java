@@ -54,6 +54,8 @@ public class EnigWindow {
 	public double cursorXOffset;
 	public double cursorYOffset;
 	
+	public boolean cursorMoved;
+	
 	public boolean inputEnabled = false;
 	public boolean printFrames = false;
 	public boolean fullscreen = false;
@@ -209,6 +211,7 @@ public class EnigWindow {
 					cursorXFloat = (float) (2*xpos - width) / (float) width;
 					cursorYFloat = (float) -(2*ypos - height) / (float) height;
 				}
+				cursorMoved = true;
 			}
 		});
 		
@@ -430,6 +433,7 @@ public class EnigWindow {
 			openingObject.render(openingCamera);
 			ShaderProgram.disable();
 			glfwSwapBuffers(id);
+			cursorMoved = false;
 			glfwPollEvents();
 			sync(60);
 		}
