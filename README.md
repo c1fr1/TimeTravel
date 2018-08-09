@@ -1,5 +1,6 @@
 #NWAPW - Time Travel Puzzle Game
 
+
 USABILITY:
 
 -Use the robot to complete puzzles by traveling between timezones
@@ -10,6 +11,7 @@ USABILITY:
 
 
 MENUS:
+
 -Loads in each level from a text file of characters using a tile key
 
 -Options allow the user to change video settings as well as rebind keys
