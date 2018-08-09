@@ -36,12 +36,11 @@ public class LevelSelect extends EnigView {
         }
         levels = new SpriteButton[LevelSelect.levelState.length];
         levelNumbers =  new StringRenderer[LevelSelect.levelState.length];
-        int columnNumber = (int)(((window.getHeight()-50f)/100f)/MainView.scale);
-        int rowNumber = (int)(((window.getWidth()-200f)/200f)/MainView.scale);
-        for(int i = 0; i < LevelSelect.levelState.length; i++){
 
-            float thingY = (0.4f + (i / rowNumber)*0.4f);
-            float thingX = ((i%rowNumber)*0.4f + 0.4f) - 1;
+
+        int columnNumber = (int)(((window.getHeight())/100f)/MainView.scale);
+        int rowNumber = (int)(((window.getWidth())/100f)/MainView.scale) - 1;
+        for(int i = 0; i < LevelSelect.levelState.length; i++){
 
             int thingXIndex = i % rowNumber;
             int thingYIndex = i / rowNumber;
@@ -49,8 +48,8 @@ public class LevelSelect extends EnigView {
             float thingWidth = 100f/window.getWidth()/aspectRatio;
             float thingHeight = 100f/window.getHeight();
 
-            float thingXPos = ((float)thingXIndex/(float)rowNumber*2f-1f)/aspectRatio + thingWidth * 2;
-            float thingYPos = ((float)thingYIndex/(float)columnNumber*-2f+1f) - thingHeight*2;
+            float thingXPos = ((float)thingXIndex/(float)rowNumber*2f-1f)/aspectRatio + thingWidth*MainView.scale;
+            float thingYPos = ((float)thingYIndex/(float)columnNumber*-2f+1f) - thingHeight*MainView.scale*2;
 
             if(levelState[i] == 1){
                 levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos,thingWidth * MainView.scale,thingHeight * MainView.scale, "res/sprites/levelSelectComplete.png", aspectRatio);
@@ -60,7 +59,7 @@ public class LevelSelect extends EnigView {
                 levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos, thingWidth * MainView.scale, thingHeight * MainView.scale, "res/sprites/levelSelect.png", aspectRatio);
             }
 
-            levelNumbers[i] = new StringRenderer(180, (thingXPos*1920) * aspectRatio + 85, (thingYPos *1080) - 100);
+            levelNumbers[i] = new StringRenderer(100*MainView.scale, (thingXPos*1920) * aspectRatio + 85, (thingYPos *1080) - 70);
         }
     }
 
