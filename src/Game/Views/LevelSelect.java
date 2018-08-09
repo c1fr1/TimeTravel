@@ -59,7 +59,7 @@ public class LevelSelect extends EnigView {
                 levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos, thingWidth * MainView.scale, thingHeight * MainView.scale, "res/sprites/levelSelect.png", aspectRatio);
             }
 
-            levelNumbers[i] = new StringRenderer(100/MainView.scale, (thingXPos*1920) * aspectRatio + (thingWidth*1920/3.5f), (float)((thingYPos *1080) - (thingHeight*1080/2)));
+            levelNumbers[i] = new StringRenderer(100, (thingXPos*1920) * aspectRatio + (thingWidth*1920/3.5f), (float)((thingYPos *1080) - (thingHeight*1080/2)));
         }
     }
 
