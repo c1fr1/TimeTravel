@@ -334,13 +334,13 @@ public class MainView extends EnigView {
 				ohYknowVAO.fullRender();
 			}
 			if(currentLevelNum == 0) {
-				instructions.renderStr("Move with " + IHATEGLFW.getKeyName(UserControls.forwardSetting) + ", " +
-						IHATEGLFW.getKeyName(UserControls.leftSetting) + ", " +
-						IHATEGLFW.getKeyName(UserControls.backwardSetting) + ", " +
+				instructions.renderStr("Move with " + IHATEGLFW.getKeyName(UserControls.forwardSetting) + "," +
+						IHATEGLFW.getKeyName(UserControls.leftSetting) + "," +
+						IHATEGLFW.getKeyName(UserControls.backwardSetting) + "," +
 						IHATEGLFW.getKeyName(UserControls.rightSetting));
 			} else if(currentLevelNum == 4){
 				instructions.renderStr("Use " + IHATEGLFW.getKeyName(UserControls.leftArrowSetting) + " and " + IHATEGLFW.getKeyName(UserControls.rightArrowSetting) + " to move and " + IHATEGLFW.getKeyName(UserControls.enterSetting) + " to select");
-			} else if(currentLevelNum == 7){
+			} else if(currentLevelNum == 2 || currentLevelNum == 10){
 				instructions.renderStr("Press " + IHATEGLFW.getKeyName(UserControls.restartSetting) + " to restart");
 			}
 
