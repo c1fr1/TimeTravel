@@ -1,6 +1,6 @@
 #NWAPW - Time Travel Puzzle Game
 
-Usability Description:
+USABILITY:
 
 -Use the robot to complete puzzles by traveling between timezones
 
@@ -9,7 +9,7 @@ Usability Description:
 -Levels are completed by activating a gateway block in the level
 
 
-Menu Description:
+MENUS:
 -Loads in each level from a text file of characters using a tile key
 
 -Options allow the user to change video settings as well as rebind keys
@@ -19,7 +19,7 @@ Menu Description:
 -Pause Menu can be accessed by ESC
 
 
-Mechanics Description:
+MECHANICS:
 
 -Robot is controlled by the player
 
