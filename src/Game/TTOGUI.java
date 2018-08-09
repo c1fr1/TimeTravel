@@ -41,8 +41,8 @@ public class TTOGUI {
 		program = new ShaderProgram("ttoGUIShader");
 		past = new StringRenderer(50f * scale, 0f, 550);
 		future = new StringRenderer(50f * scale, 0f, 550f);
-		past.color = new Vector4f(1, 1, 0, 1);
-		future.color = new Vector4f(1, 1, 0, 1);
+		//past.color = new Vector4f(1, 1, 0, 1);
+		//future.color = new Vector4f(1, 1, 0, 1);
 	}
 	public int render(int ttoInd, boolean enabled) {
 		int tzCount = MainView.currentLevel.levelseries.size();
@@ -57,9 +57,9 @@ public class TTOGUI {
 			vao = upVAO;
 			
 			past.renderStr("Past");
-			past.x = -possibilities.length * 200;
+			past.x = -possibilities.length * 100 * scale;
 			future.renderStr("Future");
-			future.x = possibilities.length * 200;
+			future.x = possibilities.length * 100 * scale;
 		}else {
 			width = 0.15f;
 			vao = downVAO;
