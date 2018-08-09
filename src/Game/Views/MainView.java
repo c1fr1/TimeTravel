@@ -392,6 +392,7 @@ public class MainView extends EnigView {
 			checkButtonPress('x','X');
 			checkButtonPress('y','Y');
             checkButtonPress('z','Z');
+			checkButtonPress('w','W');
 			
 			if (inv.check('k')) {
 				if (CamCollision.checkAndReplace(cam.x + m.getHSpeed(), cam.y + m.getVSpeed(), 14, 'l', ' ')) {
@@ -650,6 +651,16 @@ public class MainView extends EnigView {
 						}
 					}
 				}
+			}else if (button == 'w') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size();++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0;i < currentRow.length; ++i) {
+						if (currentRow[i].equals('W')) {
+							replaceCurrentTile(i, row, 'u');
+						}
+					}
+				}
 			}
 		}else {
 			if (button == 'x') {
@@ -679,6 +690,16 @@ public class MainView extends EnigView {
 					for (int i = 0; i < currentRow.length; ++i) {
 						if (currentRow[i].equals('p')) {
 							replaceCurrentTile(i, row, 'Z');
+						}
+					}
+				}
+			}else if (button == 'w') {
+				ArrayList<Character[]> currentZone = getCurrentZone();
+				for(int row = 0; row < currentZone.size(); ++row) {
+					Character[] currentRow = currentZone.get(row);
+					for (int i = 0; i < currentRow.length; ++i) {
+						if (currentRow[i].equals('u')) {
+							replaceCurrentTile(i, row, 'W');
 						}
 					}
 				}

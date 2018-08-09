@@ -38,6 +38,7 @@ public class LevelBase
     public static Texture[] xElectricTextures;
 	public static Texture[] yElectricTextures;
 	public static Texture[] zElectricTextures;
+	public static Texture[] wElectricTextures;
 
     public Texture[] background;
     
@@ -121,6 +122,7 @@ public class LevelBase
 			xElectricTextures = new Texture[3];
 			yElectricTextures = new Texture[3];
 			zElectricTextures = new Texture[3];
+			wElectricTextures = new Texture[3];
 			xElectricTextures[0] = new Texture("res/sprites/xbutton.png");
 			xElectricTextures[1] = new Texture("res/sprites/xgate.png");
 			xElectricTextures[2] = new Texture("res/sprites/xgateopen.png");
@@ -130,6 +132,9 @@ public class LevelBase
 			zElectricTextures[0] = new Texture("res/sprites/zbutton.png");
 			zElectricTextures[1] = new Texture("res/sprites/zgate.png");
 			zElectricTextures[2] = new Texture("res/sprites/zgateopen.png");
+			wElectricTextures[0] = new Texture("res/sprites/zbutton.png");
+			wElectricTextures[1] = new Texture("res/sprites/zgate.png");
+			wElectricTextures[2] = new Texture("res/sprites/zgateopen.png");
 		}
 
 		Scanner fileInput;
@@ -316,6 +321,10 @@ public class LevelBase
 						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
 						zElectricTextures[0].bind();
+					}else if (currentChar == 'w') {
+						floorTexture[textureList].bind();
+						tileObj.drawTriangles();
+						wElectricTextures[0].bind();
 					}else if (currentChar == 'X') {
 						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
@@ -328,6 +337,10 @@ public class LevelBase
 						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
 						zElectricTextures[1].bind();
+					}else if (currentChar == 'W') {
+						floorTexture[textureList].bind();
+						tileObj.drawTriangles();
+						wElectricTextures[1].bind();
 					}else if (currentChar == 'i') {
 						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
@@ -340,6 +353,10 @@ public class LevelBase
 						floorTexture[textureList].bind();
 						tileObj.drawTriangles();
 						zElectricTextures[2].bind();
+					}else if (currentChar == 'u') {
+						floorTexture[textureList].bind();
+						tileObj.drawTriangles();
+						wElectricTextures[2].bind();
 					}else {
 						//floorTexture.bind();
 					}
