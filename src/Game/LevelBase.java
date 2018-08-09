@@ -92,7 +92,7 @@ public class LevelBase
 			wallTexture[2] = new Texture("res/tilesets/wall-future.png");
 			floorTexture[3] = new Texture("res/tilesets/floor-dystopia.png");
 			wallTexture[3] = new Texture("res/tilesets/wall-dystopia.png");
-			floorTexture[4] = new Texture("res/tilesets/floor-apocalypse.png");
+			floorTexture[4] = new Texture("res/tilesets/floor-apocalypse-no-ivy.png");
 			wallTexture[4] = new Texture("res/tilesets/wall-apocalypse.png");
 			
 			keyTexture = new Texture("res/sprites/inventoryKey.png");
