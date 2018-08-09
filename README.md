@@ -20,5 +20,9 @@ Mechanics Description:
 -Locked doors act the same as walls until they are unlocked: they then become open
 -If a door is unlocked all future tiles in that location will also be open, regardless of the tile there previously
 -If a key is collected all future versions of that key will no longer exist: the same is not true for the past
--Boxes are entities that follow all rules
+-One way doors can be moved through in all directions except from the direction the arrow is pointing: entities must be outside of the door for it to function
+-Boxes are entities that can be pushed by players or other boxes; They can only move through any barrier a player is able to
+-Buttons are interactive objects that can be pressed by a box or a player; It will open its color coded door.
+-Button Doors are barriers that are passable while their corresponding button is pressed
+-If a box is placed in an area that would result in it being in a barrier in another timezone, it will not exist in that timezone until it is removed from the area
 -Some time travel devices will have not be able to transport the player to all time zones
