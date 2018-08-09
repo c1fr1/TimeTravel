@@ -7,6 +7,7 @@ import Game.Game;
 import Game.UserControls;
 import Game.StringRenderer;
 import Game.LevelBase;
+import Game.Entity;
 import engine.EnigView;
 import engine.OpenGL.EnigWindow;
 import engine.OpenGL.FBO;
@@ -45,6 +46,8 @@ public class OptionsMenu extends EnigView {
     StringRenderer restart2;
     StringRenderer timer;
     StringRenderer timerOption;
+    StringRenderer boxNumbers;
+    StringRenderer boxNumbersOption;
 
     String[] options;
 
@@ -113,7 +116,14 @@ public class OptionsMenu extends EnigView {
         timerOption.centered = false;
         timerOption.unselectedColor = new Vector4f(1f,0f,0f,1f);
 
-        controlMenu = new StringRenderer(280, 0, -200);
+        boxNumbers = new StringRenderer(180, -1700, -100);
+        boxNumbers.centered = false;
+
+        boxNumbersOption = new StringRenderer(180, 400, -100);
+        boxNumbersOption.centered = false;
+        boxNumbersOption.unselectedColor = new Vector4f(1f,0f,0f,1f);
+
+        controlMenu = new StringRenderer(280, 0, -400);
 
         restart = new StringRenderer(280, 0, -800);
         restart2 = new StringRenderer(50, 0, -950);
@@ -177,6 +187,15 @@ public class OptionsMenu extends EnigView {
         }
         textureLockOption.renderStr(lockedTexturesOptionText);
 
+        boxNumbers.renderStr("Box Numbers");
+        String boxNumbersOptionText;
+        if(Entity.renderNumbers){
+            boxNumbersOptionText = "Enabled";
+        } else {
+            boxNumbersOptionText = "Disabled";
+        }
+        boxNumbersOption.renderStr(boxNumbersOptionText);
+
 
         if(fullScreenOption.hoverCheck(fullScreenOptionText, window.cursorXFloat, window.cursorYFloat, new Vector4f(.5f,.5f,1f,1f)) && UserControls.leftMBPress(window)){
             if(options[0].equals("fullscreen:t")){
@@ -228,6 +247,17 @@ public class OptionsMenu extends EnigView {
             }
             MainView.timerBool = !MainView.timerBool;
         }
+
+        if(boxNumbersOption.hoverCheck(boxNumbersOptionText, window.cursorXFloat, window.cursorYFloat, new Vector4f(.5f,.5f,1f,1f)) && UserControls.leftMBPress(window)){
+            if(options[5].equals("boxNum:t")){
+                options[5] =  "boxNum:f";
+            } else {
+                options[5] = "boxNum:t";
+            }
+            Entity.renderNumbers = !Entity.renderNumbers;
+        }
+
+
         if(controlMenu.hoverCheck("Controls", window.cursorXFloat, window.cursorYFloat, new Vector4f(1f, 1f, 1f, 1f)) && UserControls.leftMBPress(window)){
             new ControlsMenu(window);
         }
@@ -251,6 +281,7 @@ public class OptionsMenu extends EnigView {
         if(!options[2].equals(currentOptions[2])) check = true;
         if(!options[3].equals(currentOptions[3])) check = true;
         if(!options[4].equals(currentOptions[4])) check = true;
+        if(!options[5].equals(currentOptions[5])) check = true;
         if(check){
             writeToOptions(options);
         }

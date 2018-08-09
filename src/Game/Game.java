@@ -34,6 +34,7 @@ public class Game {
             String backgroundMove = s.nextLine();
             String texLock = s.nextLine();
             String timer = s.nextLine();
+            String boxNum = s.nextLine();
             MainView.inv = new Inventory();
             if (fullscreen.replace("fullscreen:", "").equals("t")) {
                 MainView.fullScreenBool = true;
@@ -53,6 +54,9 @@ public class Game {
             }
             if(timer.replace("timer:", "").equals("t")){
                 MainView.timerBool = true;
+            }
+            if(boxNum.replace("boxNum:", "").equals("t")){
+                Entity.renderNumbers = true;
             }
             if(MainView.fullScreenBool){
                 MainView.main = new MainView();

@@ -338,6 +338,8 @@ public class MainView extends EnigView {
 						IHATEGLFW.getKeyName(UserControls.leftSetting) + ", " +
 						IHATEGLFW.getKeyName(UserControls.backwardSetting) + ", " +
 						IHATEGLFW.getKeyName(UserControls.rightSetting));
+			} else if(currentLevelNum == 4){
+				instructions.renderStr("Use " + IHATEGLFW.getKeyName(UserControls.leftArrowSetting) + " and " + IHATEGLFW.getKeyName(UserControls.rightArrowSetting) + " to move and " + IHATEGLFW.getKeyName(UserControls.enterSetting) + " to select");
 			} else if(currentLevelNum == 7){
 				instructions.renderStr("Press " + IHATEGLFW.getKeyName(UserControls.restartSetting) + " to restart");
 			}
@@ -747,7 +749,8 @@ public class MainView extends EnigView {
                         "res:1080,720\n" +
                         "backgroundmove:f\n" +
 						"texLock:f\n" +
-						"timer:f";
+						"timer:f\n" +
+						"boxNum:f";
                 writer.println(format);
                 writer.close();
             } catch (FileNotFoundException e) {
