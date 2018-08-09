@@ -7,6 +7,6 @@ uniform float aspectRatio;
 uniform float xOffset;
 
 void main() {
-	gl_Position = vec4(aspectRatio * vertices.x + xOffset, vertices.y, vertices.z, 1);
+	gl_Position = vec4(aspectRatio * vertices.x + xOffset, vertices.y, vertices.z, 1.0);
 	texCoords = txtPos;
 }

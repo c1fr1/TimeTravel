@@ -7,6 +7,6 @@ uniform mat4 cam;
 uniform mat4 textcam;
 
 void main() {
-	gl_Position = cam * vec4(vertices.x, vertices.y, vertices.z, 1);
-	texCoords = (textcam * vec4(txtPos, 0, 1)).xy;
+	gl_Position = cam * vec4(vertices.x, vertices.y, vertices.z, 1.0);
+	texCoords = (textcam * vec4(txtPos, 0.0, 1.0)).xy;
 }
