@@ -6,10 +6,12 @@ import engine.OpenGL.ShaderProgram;
 import engine.OpenGL.Texture;
 import engine.OpenGL.VAO;
 import org.joml.Matrix4f;
+import org.joml.Vector4f;
 
 import java.util.ArrayList;
 
 import static Game.Views.MainView.aspectRatio;
+import static Game.Views.MainView.scale;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 public class TTOGUI {
@@ -21,6 +23,8 @@ public class TTOGUI {
 	public VAO upVAO;
 	public VAO downVAO;
 	public ShaderProgram program;
+	public StringRenderer past;
+	public StringRenderer future;
 	public TTOGUI() {
 		leftSide[0] = new Texture("res/timeline/left-open.png");
 		leftSide[1] = new Texture("res/timeline/left-selected.png");
@@ -35,6 +39,10 @@ public class TTOGUI {
 		upVAO = new VAO(-0.15f, 0.35f, 0.3f, 0.3f);
 		downVAO = new VAO(-0.075f, -0.84f, 0.15f, 0.15f);
 		program = new ShaderProgram("ttoGUIShader");
+		past = new StringRenderer(50f * scale, 0f, 550);
+		future = new StringRenderer(50f * scale, 0f, 550f);
+		past.color = new Vector4f(1, 1, 0, 1);
+		future.color = new Vector4f(1, 1, 0, 1);
 	}
 	public int render(int ttoInd, boolean enabled) {
 		int tzCount = MainView.currentLevel.levelseries.size();
@@ -47,6 +55,11 @@ public class TTOGUI {
 		if (enabled) {
 			possibilities = MainView.currentLevel.timeZonePossibilities.get(ttoInd);
 			vao = upVAO;
+			
+			past.renderStr("Past");
+			past.x = -possibilities.length * 200;
+			future.renderStr("Future");
+			future.x = possibilities.length * 200;
 		}else {
 			width = 0.15f;
 			vao = downVAO;

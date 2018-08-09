@@ -6,6 +6,8 @@ import engine.OpenGL.ShaderProgram;
 import engine.OpenGL.Texture;
 import engine.OpenGL.VAO;
 import org.joml.Matrix4f;
+import org.joml.Vector4f;
+import sun.applet.Main;
 
 import static Game.Util.absMin;
 
@@ -22,13 +24,16 @@ public class Entity
     public int startZone;
     public float hspeed;
     public float vspeed;
+    
+    public StringRenderer stringRenderer;
+    
+    public static boolean renderNumbers = false;
 
     Texture sprite;
     VAO spriteVAO;
     public static ShaderProgram levelProgram;
 
-    public Entity(float startX, float startY, int amountOfTimezones, int timeZone, int arrayLocation)
-    {
+    public Entity(float startX, float startY, int amountOfTimezones, int timeZone, int arrayLocation) {
         border = 15;
         arrayIndex = arrayLocation;
         startZone = timeZone;
@@ -48,6 +53,8 @@ public class Entity
         sprite = new Texture("res/sprites/crateEntity.png");
         spriteVAO = new VAO(-40, 10, 30f, 30f);
         levelProgram = new ShaderProgram("levelShader");
+        stringRenderer = new StringRenderer(30f * MainView.scale, xpos[0], ypos[0]);
+        stringRenderer.color = new Vector4f(0f, 1f, 1f, 1f);
     }
     //Check for collision between player and crate
 	public boolean testAABB(float x, float y) {
@@ -149,15 +156,20 @@ public class Entity
 
     public void render(Camera cam, int timeZone){
         if(xpos[timeZone] >= 0 && ypos[timeZone] >= 0) {
-                levelProgram.enable();
-                spriteVAO.prepareRender();
-                float x = xpos[timeZone];
-                float y = -ypos[timeZone];
-                sprite.bind();
-                Matrix4f mat = new Matrix4f(cam.projectionMatrix).scale(MainView.scale).translate(x - cam.x, y + cam.y, 0);
-                levelProgram.shaders[0].uniforms[0].set(mat/*cam.getCameraMatrix(x, y + 2 * cam.y, 0)*/);
-                levelProgram.shaders[0].uniforms[1].set(new Matrix4f());
-                spriteVAO.fullRender();
+            levelProgram.enable();
+            spriteVAO.prepareRender();
+            float x = xpos[timeZone];
+            float y = -ypos[timeZone];
+            sprite.bind();
+            Matrix4f mat = new Matrix4f(cam.projectionMatrix).scale(MainView.scale).translate(x - cam.x, y + cam.y, 0);
+            levelProgram.shaders[0].uniforms[0].set(mat/*cam.getCameraMatrix(x, y + 2 * cam.y, 0)*/);
+            levelProgram.shaders[0].uniforms[1].set(new Matrix4f());
+            spriteVAO.fullRender();
+            if (renderNumbers) {
+				stringRenderer.x = MainView.scale * (x - cam.x - 25);
+				stringRenderer.y = MainView.scale * (y + cam.y + 25);
+				stringRenderer.renderStr("" + (arrayIndex + 1));
+			}
         }
     }
 }

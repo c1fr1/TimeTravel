@@ -24,7 +24,7 @@ public class StringRenderer {
 	public Vector4f color = new Vector4f(1f, 1f, 1f, 1f);
 	public Vector4f selectColor = new Vector4f(.2f, .2f, 1f, 1f);
 	public Vector4f unselectedColor =  new Vector4f(1f,1f,1f,1f);
-	public StringRenderer(int fontSize, float x, float y) {
+	public StringRenderer(float fontSize, float x, float y) {
 		if (shape == null) {
 			for (int i = 0; i < 10; ++i) {
 				textures[i] = new Texture("res/numbers/num-" + i + ".png");
