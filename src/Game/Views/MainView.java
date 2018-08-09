@@ -32,7 +32,7 @@ public class MainView extends EnigView {
 			"left:65\n" +
 			"right:68\n" +
 			"arrowLeft:263,81\n" +
-			"arrowRight:263,69\n" +
+			"arrowRight:262,69\n" +
 			"arrowUp:265,87\n" +
 			"arrowDown:264,83\n" +
 			"down:340\n" +

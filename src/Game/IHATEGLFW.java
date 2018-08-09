@@ -60,10 +60,10 @@ public class IHATEGLFW {
         list[259] = "BACKSPACE";
         list[260] = "INSERT";
         list[261] = "DELETE";
-        list[262] = "RIGHT";
-        list[263] = "LEFT";
-        list[264] = "DOWN";
-        list[265] = "UP";
+        list[262] = "RIGHT ARROW";
+        list[263] = "LEFT ARROW";
+        list[264] = "DOWN ARROW";
+        list[265] = "UP ARROW";
         list[266] = "PAGE UP";
         list[267] = "PAGE DOWN";
         list[268] = "HOME";
