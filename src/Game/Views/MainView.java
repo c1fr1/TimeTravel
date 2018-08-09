@@ -31,18 +31,16 @@ public class MainView extends EnigView {
 			"backward:83\n" +
 			"left:65\n" +
 			"right:68\n" +
-			"arrowLeft:81,263\n" +
-			"arrowRight:69,262\n" +
+			"arrowLeft:263,81\n" +
+			"arrowRight:263,69\n" +
 			"arrowUp:265,87\n" +
 			"arrowDown:264,83\n" +
 			"down:340\n" +
 			"up:32\n" +
 			"pause:256\n" +
-			"enter:82,257\n" +
-			"levelAdvance:78\n" +
-			"levelBack:66\n" +
-			"ohYknow:344\n" +
-			"skip:258,257";
+			"enter:257\n" +
+			"skip:258,257\n" +
+			"restart:82";
 
     public static boolean quit = false;
 	public static MainView main;
@@ -340,6 +338,8 @@ public class MainView extends EnigView {
 						IHATEGLFW.getKeyName(UserControls.leftSetting) + ", " +
 						IHATEGLFW.getKeyName(UserControls.backwardSetting) + ", " +
 						IHATEGLFW.getKeyName(UserControls.rightSetting));
+			} else if(currentLevelNum == 7){
+				instructions.renderStr("Press " + IHATEGLFW.getKeyName(UserControls.restartSetting) + " to restart");
 			}
 
 			int[] nearesTTOCheck = new int[4];
@@ -401,6 +401,10 @@ public class MainView extends EnigView {
 
 			if (checkWin()) {
 				return true;
+			}
+
+			if(UserControls.restart(window)){
+				nextLevel(0);
 			}
 			if (timerBool){
 				if(currentLevel.startSecondTime < 1d){

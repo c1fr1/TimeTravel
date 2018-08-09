@@ -25,10 +25,8 @@ public class UserControls {
 	public static String upSettingString;
 	public static String pauseSettingString;
 	public static String enterSettingString;
-	public static String levelAdvanceSettingString;
-	public static String levelBackSettingString;
-	public static String ohYknowSettingString;
 	public static String skipSettingString;
+	public static String restartSettingString;
 
 	public static int forwardSetting;
 	public static int backwardSetting;
@@ -42,10 +40,8 @@ public class UserControls {
 	public static int upSetting;
 	public static int pauseSetting;
 	public static int enterSetting;
-	public static int levelAdvanceSetting;
-	public static int levelBackSetting;
-	public static int ohYknowSetting;
 	public static int skipSetting;
+	public static int restartSetting;
 
 	public static int forwardSetting2 = 0;
 	public static int backwardSetting2 = 0;
@@ -59,10 +55,8 @@ public class UserControls {
 	public static int upSetting2 = 0;
 	public static int pauseSetting2 = 0;
 	public static int enterSetting2 = 0;
-	public static int levelAdvanceSetting2 = 0;
-	public static int levelBackSetting2 = 0;
-	public static int ohYknowSetting2 = 0;
 	public static int skipSetting2 = 0;
+	public static int restartSetting2 = 0;
 
 	public static int[] forward = new int[] {GLFW_KEY_W};
 	public static int[] backward = new int[] {GLFW_KEY_S};
@@ -82,6 +76,7 @@ public class UserControls {
 	public static int[] levelBack = new int[] {GLFW_KEY_B};
 	public static int[] ohYknow = new int[] {GLFW_KEY_RIGHT_SHIFT};
 	public static int[] skip = new int[] {GLFW_KEY_TAB, GLFW_KEY_ENTER};
+	public static int[] restart = new int[] {GLFW_KEY_R};
 
 	public static float sensitivity = 1f/500f;
 
@@ -98,10 +93,11 @@ public class UserControls {
 		up =  new int[] {upSetting, upSetting2};
 		pause =  new int[] {pauseSetting, pauseSetting2};
 		enter =  new int[] {enterSetting, enterSetting2};
-		levelAdvance =  new int[] {levelAdvanceSetting, levelAdvanceSetting2};
-		levelBack =  new int[] {levelBackSetting, levelBackSetting2};
-		ohYknow =  new int[] {ohYknowSetting, ohYknowSetting2};
+		levelAdvance =  new int[] {GLFW_KEY_N};
+		levelBack =  new int[] {GLFW_KEY_B};
+		ohYknow =  new int[] {GLFW_KEY_RIGHT_SHIFT};
 		skip = new int[] {skipSetting, skipSetting2};
+		restart = new int[] {restartSetting, restartSetting2};
 	}
 	
 	public static boolean forward(EnigWindow window) {
@@ -312,6 +308,14 @@ public class UserControls {
 		}
 		return false;
 	}
+	public static boolean restart(EnigWindow window) {
+		for (int i:restart) {
+			if (window.keys[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public static void getControls(){
 		try {
 			Scanner s = new Scanner(new File("res/controls.txt"));
@@ -328,10 +332,8 @@ public class UserControls {
 			UserControls.upSettingString = s.nextLine();
 			UserControls.pauseSettingString = s.nextLine();
 			UserControls.enterSettingString = s.nextLine();
-			UserControls.levelAdvanceSettingString = s.nextLine();
-			UserControls.levelBackSettingString = s.nextLine();
-			UserControls.ohYknowSettingString = s.nextLine();
 			UserControls.skipSettingString = s.nextLine();
+			UserControls.restartSettingString = s.nextLine();
 			
 			String[] forwardSettingStringArray = UserControls.forwardSettingString.substring(UserControls.forwardSettingString.indexOf(":") + 1).split(",");
 			String[] backwardSettingStringArray = UserControls.backwardSettingString.substring(UserControls.backwardSettingString.indexOf(":") + 1).split(",");
@@ -345,10 +347,8 @@ public class UserControls {
 			String[] upSettingStringArray = UserControls.upSettingString.substring(UserControls.upSettingString.indexOf(":") + 1).split(",");
 			String[] pauseSettingStringArray = UserControls.pauseSettingString.substring(UserControls.pauseSettingString.indexOf(":") + 1).split(",");
 			String[] enterSettingStringArray = UserControls.enterSettingString.substring(UserControls.enterSettingString.indexOf(":") + 1).split(",");
-			String[] levelAdvanceSettingStringArray = UserControls.levelAdvanceSettingString.substring(UserControls.levelAdvanceSettingString.indexOf(":") + 1).split(",");
-			String[] levelBackSettingStringArray = UserControls.levelBackSettingString.substring(UserControls.levelBackSettingString.indexOf(":") + 1).split(",");
-			String[] ohYknowSettingStringArray = UserControls.ohYknowSettingString.substring(UserControls.ohYknowSettingString.indexOf(":") + 1).split(",");
 			String[] skipSettingStringArray = UserControls.skipSettingString.substring(UserControls.skipSettingString.indexOf(":") + 1).split(",");
+			String[] restartSettingStringArray = UserControls.restartSettingString.substring(UserControls.restartSettingString.indexOf(":") + 1).split(",");
 			
 			UserControls.forwardSetting = Integer.parseInt(forwardSettingStringArray[0]);
 			UserControls.backwardSetting = Integer.parseInt(backwardSettingStringArray[0]);
@@ -362,10 +362,8 @@ public class UserControls {
 			UserControls.upSetting = Integer.parseInt(upSettingStringArray[0]);
 			UserControls.pauseSetting = Integer.parseInt(pauseSettingStringArray[0]);
 			UserControls.enterSetting = Integer.parseInt(enterSettingStringArray[0]);
-			UserControls.levelAdvanceSetting = Integer.parseInt(levelAdvanceSettingStringArray[0]);
-			UserControls.levelBackSetting = Integer.parseInt(levelBackSettingStringArray[0]);
-			UserControls.ohYknowSetting = Integer.parseInt(ohYknowSettingStringArray[0]);
 			UserControls.skipSetting = Integer.parseInt(skipSettingStringArray[0]);
+			UserControls.restartSetting = Integer.parseInt(restartSettingStringArray[0]);
 			
 			if(forwardSettingStringArray.length > 1) UserControls.forwardSetting2 = Integer.parseInt(forwardSettingStringArray[1]);
 			if(backwardSettingStringArray.length > 1) UserControls.backwardSetting2 = Integer.parseInt(backwardSettingStringArray[1]);
@@ -379,10 +377,8 @@ public class UserControls {
 			if(upSettingStringArray.length > 1) UserControls.upSetting2 = Integer.parseInt(upSettingStringArray[1]);
 			if(pauseSettingStringArray.length > 1) UserControls.pauseSetting2 = Integer.parseInt(pauseSettingStringArray[1]);
 			if(enterSettingStringArray.length > 1) UserControls.enterSetting2 = Integer.parseInt(enterSettingStringArray[1]);
-			if(levelAdvanceSettingStringArray.length > 1) UserControls.levelAdvanceSetting2 = Integer.parseInt(levelAdvanceSettingStringArray[1]);
-			if(levelBackSettingStringArray.length > 1) UserControls.levelBackSetting2 = Integer.parseInt(levelBackSettingStringArray[1]);
-			if(ohYknowSettingStringArray.length > 1) UserControls.ohYknowSetting2 = Integer.parseInt(ohYknowSettingStringArray[1]);
 			if(skipSettingStringArray.length > 1) UserControls.skipSetting2 = Integer.parseInt(skipSettingStringArray[1]);
+			if(restartSettingStringArray.length > 1) UserControls.restartSetting2 = Integer.parseInt(restartSettingStringArray[1]);
 			
 			UserControls.intit();
 		} catch (FileNotFoundException e) {
