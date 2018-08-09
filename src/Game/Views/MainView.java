@@ -415,9 +415,9 @@ public class MainView extends EnigView {
 				int secondTime = (int)(System.nanoTime()/1000000000d) - (int)(currentLevel.startSecondTime/1000000000d);
 				String thing;
 				if(secondTime % 60 < 10){
-					thing = secondTime/60 + ":0" + secondTime % 60;
+					thing = "Time " + secondTime/60 + ":0" + secondTime % 60;
 				} else {
-					thing = secondTime/60 + ":" + secondTime % 60;
+					thing = "Time " + secondTime/60 + ":" + secondTime % 60;
 				}
 				timer.renderStr(thing);
 			}
