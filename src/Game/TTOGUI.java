@@ -57,9 +57,9 @@ public class TTOGUI {
 			vao = upVAO;
 			
 			past.renderStr("Past");
-			past.x = -possibilities.length * 100 * scale;
+			past.x = -possibilities.length * 75 * scale;
 			future.renderStr("Future");
-			future.x = possibilities.length * 100 * scale;
+			future.x = possibilities.length * 75 * scale;
 		}else {
 			width = 0.15f;
 			vao = downVAO;
