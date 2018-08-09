@@ -69,7 +69,7 @@ public class LevelSelect extends EnigView {
 
         for (int i = 0; i < levels.length; i++) {
             levels[i].render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
-            levelNumbers[i].renderStr(Integer.toString(i));
+            levelNumbers[i].renderStr(Integer.toString(i+1));
             if (((levels[i].hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)) ||
                     (levelNumbers[i].hoverCheck(Integer.toString(i), window.cursorXFloat, window.cursorYFloat, new Vector4f(.7f, .7f, 1f, 1f)) && UserControls.leftMBPress(window))) && levelState[i] != 2) {
                 MainView.currentLevelNum = 0;

@@ -340,7 +340,7 @@ public class MainView extends EnigView {
 						IHATEGLFW.getKeyName(UserControls.rightSetting));
 			} else if(currentLevelNum == 4){
 				instructions.renderStr("Use " + IHATEGLFW.getKeyName(UserControls.leftArrowSetting) + " and " + IHATEGLFW.getKeyName(UserControls.rightArrowSetting) + " to move and " + IHATEGLFW.getKeyName(UserControls.enterSetting) + " to select");
-			} else if(currentLevelNum == 7){
+			} else if(currentLevelNum == 2 || currentLevelNum == 10){
 				instructions.renderStr("Press " + IHATEGLFW.getKeyName(UserControls.restartSetting) + " to restart");
 			}
 
