@@ -221,7 +221,8 @@ public class MainView extends EnigView {
 
 			nextLevel(currentLevelNum);
 
-			instructions = new StringRenderer(180, 0, 880);
+			instructions = new StringRenderer(90, 0, 880);
+			instructions.color = new Vector4f(.65f, 1f, 1f, 1f);
 
 			timer = new StringRenderer(100, 1000, 1000);
 			timer.centered = false;
@@ -402,13 +403,15 @@ public class MainView extends EnigView {
 				return true;
 			}
 			if (timerBool){
+				if(currentLevel.startSecondTime < 1d){
+					currentLevel.startSecondTime = System.nanoTime();
+				}
 				int secondTime = (int)(System.nanoTime()/1000000000d) - (int)(currentLevel.startSecondTime/1000000000d);
-				//System.out.println(secondTime);
 				String thing;
 				if(secondTime % 60 < 10){
-					thing = "Time: " + secondTime/60 + ":0" + secondTime % 60;
+					thing = secondTime/60 + ":0" + secondTime % 60;
 				} else {
-					thing = "Time: " + secondTime/60 + ":" + secondTime % 60;
+					thing = secondTime/60 + ":" + secondTime % 60;
 				}
 				timer.renderStr(thing);
 			}
