@@ -1,5 +1,5 @@
-attribute in vec3 vertices;
-attribute in vec2 txtPos;
+attribute vec3 vertices;
+attribute vec2 txtPos;
 
 varying vec3 verts;
 varying vec2 texCoords;
