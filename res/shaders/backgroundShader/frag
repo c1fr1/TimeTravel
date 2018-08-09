@@ -1,9 +1,13 @@
+#version 400 core
+
 uniform sampler2D textureSampler;
 
-varying vec2 texCoords;
+in vec2 texCoords;
+
+out vec4 color;
 
 uniform vec2 offset;
 
 void main() {
-    gl_FragColor = texture(textureSampler, texCoords.xy + offset);
+    color = texture(textureSampler, texCoords.xy + offset);
 }

@@ -1,0 +1,14 @@
+uniform vec4 lightColor;
+uniform sampler2D textureSampler;
+
+varying vec2 texCoords;
+
+vec4 color;
+
+void main() {
+    color = texture(textureSampler, texCoords);
+    if (color.y > 0.8) {
+        color = lightColor;
+    }
+    gl_FragColor = color;
+}

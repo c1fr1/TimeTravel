@@ -2,9 +2,11 @@ package Game.Views;
 
 import Game.Buttons.ShaderOptimizedButton;
 import Game.Buttons.SpriteButton;
+import Game.StringRenderer;
 import Game.UserControls;
 import engine.EnigView;
 import engine.OpenGL.*;
+import org.joml.Vector4f;
 
 import java.io.*;
 import java.util.Scanner;
@@ -12,6 +14,7 @@ import java.util.Scanner;
 public class LevelSelect extends EnigView {
 
     public SpriteButton[] levels;
+    public StringRenderer[] levelNumbers;
 
     public static int[] levelState;
     //0 = not cleared
@@ -32,6 +35,7 @@ public class LevelSelect extends EnigView {
         for(int j: levelState){
         }
         levels = new SpriteButton[LevelSelect.levelState.length];
+        levelNumbers =  new StringRenderer[LevelSelect.levelState.length];
         int columnNumber = (int)((window.getHeight()-50f)/100f);
         int rowNumber = (int)((window.getWidth()-200f)/200f);
         for(int i = 0; i < LevelSelect.levelState.length; i++){
@@ -55,6 +59,8 @@ public class LevelSelect extends EnigView {
             } else {
                 levels[i] = new ShaderOptimizedButton(thingXPos, thingYPos, thingWidth, thingHeight, "res/sprites/levelSelect.png", aspectRatio);
             }
+
+            levelNumbers[i] = new StringRenderer(180, (thingXPos*1920) * aspectRatio + 85, (thingYPos *1080) - 100);
         }
     }
 
@@ -64,7 +70,9 @@ public class LevelSelect extends EnigView {
 
         for (int i = 0; i < levels.length; i++) {
             levels[i].render(window.cursorXFloat, window.cursorYFloat, aspectRatio);
-            if (levels[i].hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)/* && levelState[i] != 2*/) {
+            levelNumbers[i].renderStr(Integer.toString(i));
+            if (((levels[i].hoverCheck(window.cursorXFloat, window.cursorYFloat) && UserControls.leftMBPress(window)) ||
+                    (levelNumbers[i].hoverCheck(Integer.toString(i), window.cursorXFloat, window.cursorYFloat, new Vector4f(.7f, .7f, 1f, 1f)) && UserControls.leftMBPress(window))) && levelState[i] != 2) {
                 MainView.currentLevelNum = 0;
                 MainView.main.nextLevel(i);
                 //MainView.main.nextLevel(i);

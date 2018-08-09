@@ -1,6 +1,10 @@
+#version 400 core
+
 uniform sampler2D textureSampler;
 
-varying vec2 texCoords;
+in vec2 texCoords;
+
+out vec4 color;
 
 uniform float state;
 
@@ -8,15 +12,15 @@ void main() {
     vec4 tempColor = texture(textureSampler, vec2(texCoords.x, texCoords.y));
     if (tempColor.y - tempColor.x - tempColor.z> 0.9) {
         if (state < 0.5) {//disabled
-            gl_FragColor = vec4(0.7, 0, 0, 1);
+            color = vec4(0.7, 0, 0, 1);
         }else if (state < 1.5) {//enabled
-            gl_FragColor = vec4(0.6, 0.6, 0.6, 1);
+            color = vec4(0.6, 0.6, 0.6, 1);
         }else if (state < 2.5) {//current
-            gl_FragColor = tempColor;
+            color = tempColor;
         }else {//hover
-            gl_FragColor = vec4(0.3, 0.3, 1.0, 1.0);
+            color = vec4(0.3, 0.3, 1, 1);
         }
     }else {
-        gl_FragColor = tempColor;
+        color = tempColor;
     }
 }

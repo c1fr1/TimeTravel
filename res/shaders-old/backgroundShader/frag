@@ -1,0 +1,9 @@
+uniform sampler2D textureSampler;
+
+varying vec2 texCoords;
+
+uniform vec2 offset;
+
+void main() {
+    gl_FragColor = texture(textureSampler, texCoords.xy + offset);
+}

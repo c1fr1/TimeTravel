@@ -1,0 +1,11 @@
+attribute vec3 vertices;
+attribute vec2 txtPos;
+
+varying vec2 texCoords;
+
+uniform mat4 mat;
+
+void main() {
+	gl_Position = mat * vec4(vertices.x, vertices.y, vertices.z, 1.0);
+	texCoords = txtPos;
+}

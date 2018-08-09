@@ -1,11 +1,15 @@
+#version 400 core
+
 uniform sampler2D textureSampler;
 
-varying vec3 verts;
-varying vec2 texCoords;
+in vec3 verts;
+in vec2 texCoords;
+
+out vec4 color;
 
 uniform float greyScalar;
 
 void main() {
-    vec4 tempColor = texture(textureSampler, vec2(texCoords.x, 1.0-texCoords.y));
-    gl_FragColor = vec4(tempColor.x * greyScalar, tempColor.y * greyScalar, tempColor.z * greyScalar, tempColor.w);
+    vec4 tempColor = texture(textureSampler, vec2(texCoords.x, 1-texCoords.y));
+    color = vec4(tempColor.x * greyScalar, tempColor.y * greyScalar, tempColor.z * greyScalar, tempColor.w);
 }

@@ -1,0 +1,25 @@
+uniform sampler2D textureSampler;
+
+varying vec3 verts;
+varying vec2 texCoords;
+
+vec4 color;
+
+uniform float aspectRatio;
+uniform float time;
+
+void main() {
+    color = texture(textureSampler, vec2(texCoords.x, 1-texCoords.y));
+    float glx = 0.5 - texCoords.x;
+    float gly = 0.5 - texCoords.y;
+    gly *= aspectRatio * 10.0;
+    glx *= 10.0;
+    float distFromZeroSquared = sqrt(glx * glx + gly * gly);
+    if (distFromZeroSquared < time) {
+        color = vec4(0.0, 0.0, 0.0, 0.0);
+    }
+    float dist = distFromZeroSquared - time;
+    float brit = 1.0/(1.0 + dist * dist);
+    color += vec4(brit, brit, brit, brit);
+    gl_FragColor = color;
+}

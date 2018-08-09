@@ -1,0 +1,14 @@
+uniform sampler2D textureSampler;
+uniform vec4 otherColor;
+
+varying vec2 texCoords;
+
+void main() {
+    vec4 tempColor = texture2D(textureSampler, vec2(texCoords.x, texCoords.y));
+    if (tempColor.y > 0.5) {
+        if (tempColor.y < 0.8) {
+            tempColor = tempColor + otherColor;
+        }
+    }
+    gl_FragColor = tempColor;
+}

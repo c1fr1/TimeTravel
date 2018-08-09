@@ -1,0 +1,14 @@
+uniform vec4 fontColor;
+uniform sampler2D textureSampler;
+
+varying vec2 texCoords;
+
+vec4 color;
+
+void main() {
+    color = texture(textureSampler, vec2(texCoords.x, texCoords.y));
+    if (color.w > 0.5) {
+        color = fontColor;
+    }
+    gl_FragColor = color;
+}

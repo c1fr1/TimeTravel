@@ -1,12 +1,14 @@
-attribute vec3 vertices;
-attribute vec2 txtPos;
+#version 400 core
 
-varying vec2 texCoords;
+layout (location = 0) in vec3 vertices;
+layout (location = 1) in vec2 txtPos;
+
+out vec2 texCoords;
 
 uniform mat4 cam;
 uniform mat4 textcam;
 
 void main() {
-	gl_Position = cam * vec4(vertices.x, vertices.y, vertices.z, 1.0);
-	texCoords = (textcam * vec4(txtPos, 0.0, 1.0)).xy;
+	gl_Position = cam * vec4(vertices.x, vertices.y, vertices.z, 1);
+	texCoords = (textcam * vec4(txtPos, 0, 1)).xy;
 }
