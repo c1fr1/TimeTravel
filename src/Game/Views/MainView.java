@@ -93,6 +93,8 @@ public class MainView extends EnigView {
 
 	public float timeTravelFrames = 0;
 	public float animationFrameCounter = 0;
+	public float mousesavex = 0;
+	public static float mouseChangeFrameX = 0;
 
 	public long lastTime = System.nanoTime();
 	
@@ -240,7 +242,8 @@ public class MainView extends EnigView {
 			delta_time = 40f;
 		}
 		//aspectRatio = (float) window.getHeight() / (float) window.getWidth();
-		
+		mouseChangeFrameX = Math.abs(EnigWindow.mainWindow.cursorXFloat - mousesavex);
+
 		for (int i:UserControls.pause) {
 			if (window.keys[i] == 1) {
 				window.keys[i] = 2;
@@ -469,6 +472,7 @@ public class MainView extends EnigView {
 			mainFBO.getBoundTexture().bind();
 			screenVAO.fullRender();
 		}
+		mousesavex = EnigWindow.mainWindow.cursorXFloat;
 		return false;
 	}
 	

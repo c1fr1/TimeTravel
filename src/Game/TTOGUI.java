@@ -11,6 +11,7 @@ import org.joml.Vector4f;
 import java.util.ArrayList;
 
 import static Game.Views.MainView.aspectRatio;
+import static Game.Views.MainView.mouseChangeFrameX;
 import static Game.Views.MainView.scale;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
@@ -77,6 +78,22 @@ public class TTOGUI {
 		}
 		float yOff = EnigWindow.mainWindow.cursorYFloat - 0.5f;
 		float ys = (yOff) * (yOff);
+
+		//check if mouse has moved, if not do not account for mouse hover selection
+        for (int i = 0; i < translations.length; ++i) {
+            float xOff = translations[i] - EnigWindow.mainWindow.cursorXFloat;
+            if (ys + xOff * xOff < .01f) {
+                if (mouseChangeFrameX > .003) {
+                    selectedTZ = i;
+                }
+                if (EnigWindow.mainWindow.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] > 0) {
+                    if (possibilities[i]) {
+                        ret = i;
+                    }
+                }
+            }
+        }
+
 		if (UserControls.leftArrowPress(EnigWindow.mainWindow)) {
 			--selectedTZ;
 			if (selectedTZ < 0) {
@@ -89,17 +106,7 @@ public class TTOGUI {
 				selectedTZ = tzCount - 1;
 			}
 		}
-		for (int i = 0; i < translations.length;++i) {
-			float xOff = translations[i] - EnigWindow.mainWindow.cursorXFloat;
-			if (ys + xOff * xOff < 0.01f) {
-				selectedTZ = i;
-				if (EnigWindow.mainWindow.mouseButtons[GLFW_MOUSE_BUTTON_LEFT] > 0) {
-					if (possibilities[i]) {
-						ret = i;
-					}
-				}
-			}
-		}
+
 		if (UserControls.enter(EnigWindow.mainWindow)) {
 			if (possibilities[selectedTZ]) {
 				ret = selectedTZ;
