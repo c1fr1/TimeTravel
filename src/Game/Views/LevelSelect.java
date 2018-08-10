@@ -9,6 +9,10 @@ import engine.OpenGL.*;
 import org.joml.Vector4f;
 
 import java.io.*;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class LevelSelect extends EnigView {
@@ -151,10 +155,17 @@ public class LevelSelect extends EnigView {
 
     public static void createTextFolder(){
         boolean check = false;
-        for(File i:new File("res/").listFiles()){
-            if(i.getName().equals("levelComplete.txt")){
-                check = true;
+        Path dir = Paths.get("res/");
+        try {
+            DirectoryStream<Path> dirStream = Files.newDirectoryStream(dir);
+            for(Path i:dirStream){
+                System.out.println(i.getFileName().toString());
+                if(i.getFileName().toString().equals("levelComplete.txt")){
+                    check = true;
+                }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         if(!check){
             try {
