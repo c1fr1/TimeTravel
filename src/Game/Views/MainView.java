@@ -12,10 +12,11 @@ import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.lwjglx.debug.org.eclipse.jetty.server.Authentication;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -807,11 +808,19 @@ public class MainView extends EnigView {
 
     public static void createTextFolder(){
         boolean check = false;
-        for(File i:new File("res/").listFiles()){
-            if(i.getName().equals("options.txt")){
-                check = true;
-            }
-        }
+        Path dir = Paths.get("res/");
+		try {
+			DirectoryStream<Path> dirStream = Files.newDirectoryStream(dir);
+			for(Path i:dirStream){
+				System.out.println(i.getFileName().toString());
+				if(i.getFileName().toString().equals("options.txt")){
+					check = true;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
         if(!check){
             try {
                 PrintWriter writer = new PrintWriter("res/options.txt", "UTF-8");
@@ -831,11 +840,18 @@ public class MainView extends EnigView {
             }
         }
         boolean checkc = false;
-        for(File i:new File("res/").listFiles()){
-            if(i.getName().equals("controls.txt")){
-                checkc = true;
-            }
-        }
+		Path dirc = Paths.get("res/");
+		try {
+			DirectoryStream<Path> dirStreamc = Files.newDirectoryStream(dirc);
+			for(Path i:dirStreamc){
+				System.out.println(i.getFileName().toString());
+				if(i.getFileName().toString().equals("controls.txt")){
+					checkc = true;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         if(!checkc){
             try {
                 PrintWriter writer = new PrintWriter("res/controls.txt", "UTF-8");
