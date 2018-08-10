@@ -284,7 +284,8 @@ public class LevelBase
 					float yoffset = y + cam.y;
 					Matrix4f camMatrix = new Matrix4f(cam.projectionMatrix).scale(MainView.scale).translate(xoffset, yoffset, 0);
 					levelProgram.shaders[0].uniforms[0].set(camMatrix/*cam.getCameraMatrix(x * MainView.scale, (y * MainView.scale + 2*cam.y), 0).scale(MainView.scale)*/);
-					if (/*currentChar == 'w' || currentChar == 'G' || currentChar == 'K' || currentChar == 'C' || currentChar == '-' || currentChar == 'S' || currentChar == 'T' || currentChar == '/' || currentChar == '*' || currentChar == '.' || currentChar == ',' || currentChar == 'V'*/ false) {
+					if (/*currentChar == 'w' || currentChar == 'G' || currentChar == 'K' || currentChar == 'C' || currentChar == '-' || currentChar == 'S' || currentChar == 'T' || currentChar == '/' || currentChar == '*' || currentChar == '.' || currentChar == ',' || currentChar == 'V'*/ false
+                            ) {
 						background[textureList].bind();
 						levelProgram.shaders[0].uniforms[1].set(new Matrix4f().scale(0.02f).translate((float)chr, (float)row, 0f));
 					}else if (currentChar == ' ') {//sbiop
