@@ -275,8 +275,8 @@ public class MainView extends EnigView {
 			renderBackground();
 			
 			currentLevel.render(cam);
-			levelMarker.renderStr("level " + (currentLevelNum + 1));
-			jumpCounterText.renderStr(jumps + " jumps");
+			levelMarker.renderStr("Level " + (currentLevelNum + 1));
+			jumpCounterText.renderStr(jumps + " Jumps");
 			
 			//mvmt
 			Movement m;
