@@ -49,8 +49,8 @@ public class MainView extends EnigView {
 
 	public static Camera cam;
 
-	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v', 'X', 'Y', 'Z', 'w'};
-	public static char[] semiSolidBlocks = {'#', '_', 'l','X', 'Y', 'Z', 'w'};
+	public static char[] solidBlocks = {'#', '_', 'l','^','<','>','v', 'X', 'Y', 'Z', 'W'};
+	public static char[] semiSolidBlocks = {'#', '_', 'l','X', 'Y', 'Z', 'W'};
 
 	//Glodal booleans
 

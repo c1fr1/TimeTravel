@@ -132,9 +132,9 @@ public class LevelBase
 			zElectricTextures[0] = new Texture("res/sprites/zbutton.png");
 			zElectricTextures[1] = new Texture("res/sprites/zgate.png");
 			zElectricTextures[2] = new Texture("res/sprites/zgateopen.png");
-			wElectricTextures[0] = new Texture("res/sprites/zbutton.png");
-			wElectricTextures[1] = new Texture("res/sprites/zgate.png");
-			wElectricTextures[2] = new Texture("res/sprites/zgateopen.png");
+			wElectricTextures[0] = new Texture("res/sprites/wbutton.png");
+			wElectricTextures[1] = new Texture("res/sprites/wgate.png");
+			wElectricTextures[2] = new Texture("res/sprites/wgateopen.png");
 		}
 
 		Scanner fileInput;
