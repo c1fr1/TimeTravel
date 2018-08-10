@@ -271,7 +271,48 @@ public class MainView extends EnigView {
 			levelMarker.renderStr("level " + (currentLevelNum + 1));
 			jumpCounterText.renderStr(jumps + " jumps");
 			
+			//mvmt
+			Movement m;
+			m = new Movement(delta_time, window, cam, currentLevel, solidBlocks);
+			float xOffset = m.getXOffset();
+			float yOffset = m.getYOffset();
+			//crate movement - sets the box x and y from entity
+			for (int i = 0; i < currentLevel.entities.size(); i++) {
+				float[] newOffsets = currentLevel.entities.get(i).getBoxMovement(cam.x + 25, cam.y + 25, m.getXOffset(), m.getYOffset());
+				xOffset = absMin(newOffsets[0], xOffset);
+				yOffset = absMin(newOffsets[1], yOffset);
+			}
+			//avatar movement
+			if (checkCorner(xOffset, yOffset)) {
+				xOffset = 0;
+			}
+			cam.x += xOffset;
+			cam.y += yOffset;
+			
+			backgroundOffset.x += xOffset * 0.0003;
+			backgroundOffset.y += yOffset * 0.0003;
+			
+			if(currentLevelNum == 0) {
+				instructions.renderStr("Move with " + IHATEGLFW.getKeyName(UserControls.forwardSetting) + "," +
+						IHATEGLFW.getKeyName(UserControls.leftSetting) + "," +
+						IHATEGLFW.getKeyName(UserControls.backwardSetting) + "," +
+						IHATEGLFW.getKeyName(UserControls.rightSetting));
+			} else if(currentLevelNum == 4){
+				instructions.renderStr("Use " + IHATEGLFW.getKeyName(UserControls.leftArrowSetting) + " and " + IHATEGLFW.getKeyName(UserControls.rightArrowSetting) + " to move and " + IHATEGLFW.getKeyName(UserControls.enterSetting) + " to select");
+			} else if(currentLevelNum == 2 || currentLevelNum == 10){
+				instructions.renderStr("Press " + IHATEGLFW.getKeyName(UserControls.restartSetting) + " to restart");
+			}
+			
 			renderPlayer(0f, 0f, false);
+			
+			if (CamCollision.checkAndReplace(cam.x, cam.y, 15, 'k', ' ')) {
+				inv.add('k');
+			}
+			if (inv.check('k')) {
+				if (CamCollision.checkAndReplace(cam.x + m.getHSpeed(), cam.y + m.getVSpeed(), 14, 'l', ' ')) {
+					inv.getAndRemove('k');
+				}
+			}
 			
 			ttogui.render(ttoOnInd, true);
 			
