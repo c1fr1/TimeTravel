@@ -461,7 +461,9 @@ public class MainView extends EnigView {
 				} else {
 					thing = "Time " + secondTime/60 + ":" + secondTime % 60;
 				}
-				timer.renderStr(thing);
+				if(!(secondTime < 0)) {
+					timer.renderStr(thing);
+				}
 			}
 
 			FBO.prepareDefaultRender();
