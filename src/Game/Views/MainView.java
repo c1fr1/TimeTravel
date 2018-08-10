@@ -201,8 +201,11 @@ public class MainView extends EnigView {
             backgroundOffset = new Vector2f(0f, 0f);
             backgroundVelocity = new Vector2f(0f, 0f);
 
+            EnigWindow.checkGLError();
             mainFBO = new FBO(new Texture(window.getWidth(), window.getHeight()));
+            EnigWindow.checkGLError();
             screenVAO = new VAO(-1f, -1f, 2f, 2f);
+            EnigWindow.checkGLError();
 
             WinScreen.fullScreen = screenVAO;
 

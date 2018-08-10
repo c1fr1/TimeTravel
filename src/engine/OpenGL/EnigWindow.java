@@ -173,6 +173,10 @@ public class EnigWindow {
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be resizable
 		glfwWindowHint(GLFW_DECORATED, decorated ? 1 : 0);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		
 		// Create the window
 		GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -180,6 +184,7 @@ public class EnigWindow {
 		height = vidMode.height();
 		
 		id = glfwCreateWindow(width, height, title, glfwGetPrimaryMonitor(), NULL);//creates window
+        //glViewport(0, 0, width, height);
 		
 		if (id == NULL) {
 			throw new RuntimeException("Failed to create the GLFW window");
@@ -258,7 +263,7 @@ public class EnigWindow {
 		glfwSetWindowSizeCallback(id, (long window, int w, int h) -> {
 			width = w;
 			height = h;
-			glViewport(0, 0, width, height);
+			glViewport(0, 0, width * 2, height * 2);
 		});
 		
 		initOpenGL();
@@ -271,7 +276,9 @@ public class EnigWindow {
 		initOpenAL();
 		
 		mainWindow = this;
-		
+
+		System.out.println("OpenGL Version: " + glGetString(GL_VERSION).split(" ")[0]);
+		System.out.println("GLSL Version: " + glGetString(GL_SHADING_LANGUAGE_VERSION).split(" ")[0]);
 		//runOpeningSequence();
 	}
 	
@@ -298,6 +305,10 @@ public class EnigWindow {
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be resizable
 		glfwWindowHint(GLFW_DECORATED, decorated ? 1 : 0);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		
 		// Create the window
 		//GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -375,6 +386,7 @@ public class EnigWindow {
 		glfwSwapInterval(1);
 		
 		glfwSetInputMode(id, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        //glViewport(0, 0, width, height);
 		
 		// Make the window visible
 		glfwShowWindow(id);
@@ -402,6 +414,8 @@ public class EnigWindow {
 		mainWindow = this;
 		
 		//runOpeningSequence();
+		System.out.println("OpenGL Version: " + glGetString(GL_VERSION).split(" ")[0]);
+		System.out.println("GLSL Version: " + glGetString(GL_SHADING_LANGUAGE_VERSION).split(" ")[0]);
 	}
 	
 	/**
