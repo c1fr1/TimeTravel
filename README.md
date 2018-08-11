@@ -55,48 +55,48 @@
 
 
 # MAKING YOUR OWN LEVEL - use the following key to make levels
-'#'	Wall
+'#'	  Wall
 
-g	Gate (end of lvl)
-k	Key
+g	  Gate (end of lvl)
+k	  Key
 
-c	Cryochamber
+c	  Cryochamber - NOT IMPLEMENTED
 
-(space)	background tile
+(space)	  background tile
 
-s	Starting place
+s	  Starting place
 
-t	tto - time travel device
+t	  tto - time travel device
 
-_ Empty Void - Uninhabitable
+_   Empty Void - Uninhabitable
 
-l	Locked gate
+l	  Locked gate
 
-^	oneway UP
+^	  oneway UP
 
->	oneway RIGHT
+'>'   oneway RIGHT
 
-v	oneway DOWN
+v	  oneway DOWN
 
-<	oneway LEFT
+<	  oneway LEFT
 
-b	Box
+b	  Box
 
-w	button1
+w	  button1
 
-x	button 2
+x	  button 2
 
-y	button 3
+y	  button 3
 
-z	button 4
+z	  button 4
 
-W	Door 1
+W	  Door 1
 
-X	Door 2
+X	  Door 2
 
-Y	Door 3
+Y	  Door 3
 
-Z	Door 4
+Z	  Door 4
 
 
 IN ADDITION YOU MUST HAVE A cfg FILE - this tells the game where each time travel device is allowed to go
