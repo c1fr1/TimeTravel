@@ -1,4 +1,4 @@
-#NWAPW - Time Travel Puzzle Game
+# NWAPW - Time Travel Puzzle Game
 
 
 USABILITY:
@@ -51,30 +51,56 @@ MECHANICS:
 
 -Some time travel devices will have not be able to transport the player to all time zones
 
+
 MAKING YOUR OWN LEVEL - use the following key to make levels
-#	Wall
+'#'	Wall
+
 g	Gate (end of lvl)
 k	Key
+
 c	Cryochamber
+
 (space)	background tile
+
 s	Starting place
-t	tto
+
+t	tto - time travel device
+
 _ Empty Void - Uninhabitable
+
 l	Locked gate
+
 ^	oneway UP
+
 >	oneway RIGHT
+
 v	oneway DOWN
+
 <	oneway LEFT
+
 b	Box
+
 w	button1
+
 x	button 2
+
 y	button 3
+
 z	button 4
+
 W	Door 1
+
 X	Door 2
+
 Y	Door 3
+
 Z	Door 4
 
+
 IN ADDITION YOU MUST HAVE A cfg FILE - this tells the game where each time travel device is allowed to go
+
 Format:
 
+111\n110\n001
+
+Each series of numbers is a time travel device and each number represents a timezone. 0 means it is locked, 1 means it is open
