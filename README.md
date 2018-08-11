@@ -50,3 +50,31 @@ MECHANICS:
 -If a box is placed in an area that would result in it being in a barrier in another timezone, it will not exist in that timezone until it is removed from the area
 
 -Some time travel devices will have not be able to transport the player to all time zones
+
+MAKING YOUR OWN LEVEL - use the following key to make levels
+#	Wall
+g	Gate (end of lvl)
+k	Key
+c	Cryochamber
+(space)	background tile
+s	Starting place
+t	tto
+_ Empty Void - Uninhabitable
+l	Locked gate
+^	oneway UP
+>	oneway RIGHT
+v	oneway DOWN
+<	oneway LEFT
+b	Box
+w	button1
+x	button 2
+y	button 3
+z	button 4
+W	Door 1
+X	Door 2
+Y	Door 3
+Z	Door 4
+
+IN ADDITION YOU MUST HAVE A cfg FILE - this tells the game where each time travel device is allowed to go
+Format:
+
