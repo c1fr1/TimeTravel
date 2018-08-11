@@ -1,7 +1,9 @@
 # NWAPW - Time Travel Puzzle Game
+- Usability, Menus, Mechanics, Make your own level
 
 
-USABILITY:
+
+# USABILITY:
 
 -Use the robot to complete puzzles by traveling between timezones
 
@@ -10,7 +12,7 @@ USABILITY:
 -Levels are completed by activating a gateway block in the level
 
 
-MENUS:
+# MENUS:
 
 -Loads in each level from a text file of characters using a tile key
 
@@ -21,7 +23,7 @@ MENUS:
 -Pause Menu can be accessed by ESC
 
 
-MECHANICS:
+# MECHANICS:
 
 -Robot is controlled by the player
 
@@ -52,7 +54,7 @@ MECHANICS:
 -Some time travel devices will have not be able to transport the player to all time zones
 
 
-MAKING YOUR OWN LEVEL - use the following key to make levels
+# MAKING YOUR OWN LEVEL - use the following key to make levels
 '#'	Wall
 
 g	Gate (end of lvl)
